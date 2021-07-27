@@ -149,5 +149,13 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderHandler {
 						.font(NSFont.systemFont(ofSize: 9))
 				}
 			}
+
+			HStack {
+				ColorWell(showsAlpha: true)
+					.size(width: 60, height: 40)
+					.onChange { color in
+						Swift.print("Color - \(color)")
+					}
+			}
 		}
 }
