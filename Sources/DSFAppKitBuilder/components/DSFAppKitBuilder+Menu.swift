@@ -7,6 +7,7 @@
 
 import AppKit.NSMenu
 
+/// A menu item
 public class MenuItem {
 	let menuItem = NSMenuItem()
 	public init(title: String) {
@@ -26,6 +27,7 @@ public struct MenuBuilder {
 }
 #endif
 
+/// A resultBuilder to build menus
 public extension MenuBuilder {
 	static func buildBlock(_ settings: MenuItem...) -> [MenuItem] {
 		settings

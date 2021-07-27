@@ -8,10 +8,6 @@
 import AppKit.NSButton
 
 public class Button: Control {
-	let button = NSButton()
-	public override var nsView: NSView { return self.button }
-
-	var action: ((NSButton) -> Void)?
 
 	public init(
 		tag: Int? = nil,
@@ -55,12 +51,13 @@ public class Button: Control {
 
 	// MARK: Title
 
+	/// Set the button's title
 	public func title(_ title: String) -> Self {
 		self.button.stringValue = title
 		return self
 	}
 
-	private lazy var titleBinder = Bindable<String>()
+	/// Bind the title to a keypath
 	public func bindTitle<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
 		self.titleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.title = newValue
@@ -70,12 +67,13 @@ public class Button: Control {
 
 	// MARK: Alternate Title
 
+	/// The title that the button displays when the button is in an on state.
 	public func alternateTitle(_ title: String) -> Self {
 		self.button.alternateTitle = title
 		return self
 	}
 
-	private lazy var alternateTitleBinder = Bindable<String>()
+	/// Bind the alternatetitle to a keypath
 	public func bindAlternateTitle<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
 		self.alternateTitleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.alternateTitle = newValue
@@ -85,6 +83,7 @@ public class Button: Control {
 
 	// MARK: Image
 
+	/// Set the image that appears on the button when it’s in an off state
 	public func image(
 		_ image: NSImage,
 		imagePosition: NSControl.ImagePosition = .imageLeading,
@@ -98,6 +97,13 @@ public class Button: Control {
 		return self
 	}
 
+	/// Set the image that appears on the button when it’s in an on state
+	public func alternateImage(_ image: NSImage) -> Self{
+		self.button.alternateImage = image
+		return self
+	}
+
+	// A Boolean value that determines whether the button has a border.
 	public func isBordered(_ isBordered: Bool) -> Self {
 		self.button.isBordered = isBordered
 		return self
@@ -130,4 +136,13 @@ public class Button: Control {
 	@objc internal func performAction(_ item: NSButton) {
 		self.action?(item)
 	}
+
+	// Privates
+
+	private let button = NSButton()
+	public override var nsView: NSView { return self.button }
+	private var action: ((NSButton) -> Void)?
+
+	private lazy var titleBinder = Bindable<String>()
+	private lazy var alternateTitleBinder = Bindable<String>()
 }

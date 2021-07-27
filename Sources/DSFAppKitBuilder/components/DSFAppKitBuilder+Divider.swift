@@ -14,8 +14,11 @@ public class Divider: Element {
 		case vertical
 	}
 
-	let separator: NSBox
-	public override var nsView: NSView { return separator }
+
+	/// Create a divider
+	/// - Parameters:
+	///   - tag: (optional) The identifing tag
+	///   - direction: The direction
 	public init(tag: Int? = nil, direction: Direction) {
 		if direction == .horizontal {
 			separator = NSBox(frame: NSRect(x: 0, y: 0, width: 50, height: 5))
@@ -32,4 +35,9 @@ public class Divider: Element {
 			_ = self.contentHugging(v: .defaultLow)
 		}
 	}
+
+	// Privates
+
+	private let separator: NSBox
+	public override var nsView: NSView { return separator }
 }

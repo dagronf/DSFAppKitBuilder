@@ -13,7 +13,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderHandler {
 		return self.layout
 	}
 
-	@objc dynamic var progressValue: Double = 0.0
+	@objc dynamic var progressValue: Double = 33.0
 	@objc dynamic var descriptionColor: NSColor = .textColor
 
 
