@@ -39,6 +39,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderHandler {
 		}
 	}
 
+	@objc dynamic var selectedSegments = NSSet(array: [0, 2])
 
 
 	lazy var layout =
@@ -72,6 +73,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderHandler {
 					Swift.print("You pressed it!")
 					self.progressValue = Double.random(in: 0 ... 100)
 					self.descriptionColor = NSColor.randomRGB()
+					self.selectedSegments = NSSet(array: [1])
 				}
 				.contentHugging(h: .required)
 			}
@@ -117,6 +119,35 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderHandler {
 					.isSelectable(true)
 					.bindLabel(self, keyPath: \PrimaryDSL.sliderStringValue)
 					.width(50)
+			}
+
+			HStack {
+				VStack {
+					Segmented(trackingMode: .selectAny) {
+						Segment("One")
+						Segment("Two")
+						Segment("Three")
+					}
+					.bindSelectedSegments(self, keyPath: \PrimaryDSL.selectedSegments)
+					.width(200)
+					.toolTip("First segmented!")
+					Label("Select Many")
+						.font(NSFont.systemFont(ofSize: 9))
+				}
+
+				VStack {
+					Segmented(trackingMode: .selectOne) {
+						Segment("One", toolTip: "This is the first")
+						Segment("Two", toolTip: "This is the second")
+						Segment("Three", toolTip: "This is the last!")
+					}
+					.width(200)
+					.onChange { selected in
+						Swift.print(selected)
+					}
+					Label("Select One")
+						.font(NSFont.systemFont(ofSize: 9))
+				}
 			}
 		}
 }

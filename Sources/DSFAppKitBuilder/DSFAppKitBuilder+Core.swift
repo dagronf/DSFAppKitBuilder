@@ -86,10 +86,15 @@ public class Element: NSObject {
 		return self.width(width, priority: priority).height(height, priority: priority)
 	}
 
-	public func additional<ViewType: NSView>(_ block: (ViewType) -> Void) -> Self {
-		block(self.nsView as! ViewType)
+	// MARK: - Tooltip
+
+	/// Set the tooltip to be displayed for this control
+	public func toolTip(_ tip: String) -> Self {
+		self.nsView.toolTip = tip
 		return self
 	}
+
+	// MARK: - Autolayout
 
 	/// Set the content hugging for the element.
 	public func contentHugging(h: NSLayoutConstraint.Priority? = nil, v: NSLayoutConstraint.Priority? = nil) -> Self {
@@ -110,6 +115,13 @@ public class Element: NSObject {
 		if let v = v {
 			self.nsView.setContentCompressionResistancePriority(v, for: .vertical)
 		}
+		return self
+	}
+
+	// MARK: Fallback settings
+
+	public func additional<ViewType: NSView>(_ block: (ViewType) -> Void) -> Self {
+		block(self.nsView as! ViewType)
 		return self
 	}
 }
