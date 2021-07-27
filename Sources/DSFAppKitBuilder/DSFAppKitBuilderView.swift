@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder+EmptyView.swift
+//  DSFAppKitBuilder+Container.swift
 //
 //  Created by Darren Ford on 27/7/21
 //
@@ -24,13 +24,30 @@
 //  SOFTWARE.
 //
 
-import AppKit.NSView
+import AppKit
 
-/// An empty 'spacer' view
-public class EmptyView: Element {
-	let emptyView = NSView()
-	override public var nsView: NSView { return emptyView }
-	override public init(tag: Int? = nil) {
-		super.init(tag: tag)
+public protocol DSFAppKitBuilderHandler {
+	func rootElement() -> Element
+}
+
+/// Displays a DSFAppKitBuilder Element in a view
+public class DSFAppKitBuilderView: NSView {
+
+	public var builder: DSFAppKitBuilderHandler? {
+		didSet {
+			self.rootElement = builder?.rootElement()
+		}
+	}
+
+	private var rootElement: Element? = nil {
+		willSet {
+			self.rootElement?.nsView.removeFromSuperview()
+		}
+		didSet {
+			if let d = rootElement {
+				self.addSubview(d.nsView)
+				d.nsView.pinEdges(to: self)
+			}
+		}
 	}
 }

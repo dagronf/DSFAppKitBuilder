@@ -1,3 +1,3 @@
-# DSFAppkKitDSL
+# DSFAppKitBuilder
 
-A description of this package.
+A SwiftUI-style DSL for AppKit.

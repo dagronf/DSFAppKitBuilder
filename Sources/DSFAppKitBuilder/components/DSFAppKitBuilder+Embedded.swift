@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder+EmptyView.swift
+//  DSFAppKitBuilder+Container.swift
 //
 //  Created by Darren Ford on 27/7/21
 //
@@ -24,13 +24,16 @@
 //  SOFTWARE.
 //
 
-import AppKit.NSView
+import AppKit
 
-/// An empty 'spacer' view
-public class EmptyView: Element {
-	let emptyView = NSView()
-	override public var nsView: NSView { return emptyView }
-	override public init(tag: Int? = nil) {
+public class Embedded: Element {
+
+	private let embedded: Element
+	public override var nsView: NSView { return embedded.nsView }
+
+	/// Create an element that contains another SwiftDSL element
+	public init(tag: Int? = nil, dslElement: Element) {
+		self.embedded = dslElement
 		super.init(tag: tag)
 	}
 }
