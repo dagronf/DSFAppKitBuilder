@@ -78,6 +78,10 @@ public class PopupButton: Control {
 
 	@objc private func selectionChanged(_ sender: Any) {
 		self.selectionChangeBlock?(self.selectedIndex)
+
+		if selectionBinder.isActive {
+			selectionBinder.setValue(self.selectedIndex)
+		}
 	}
 
 	/// Bind the selection to a keypath

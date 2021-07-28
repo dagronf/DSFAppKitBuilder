@@ -28,34 +28,27 @@ import AppKit
 
 @available(macOS 10.15, *)
 public class Switch: Control {
-	let switchView = NSSwitch()
-	public override var nsView: NSView { return self.switchView }
-
 	public init(
 		tag: Int? = nil,
 		state: NSControl.StateValue = .off
 	) {
 		super.init(tag: tag)
 		self.switchView.state = state
+
+		self.switchView.target = self
+		self.switchView.action = #selector(self.switchDidChange(_:))
 	}
 
-	private var action: ((NSSwitch) -> Void)?
-	public func action(_ action: @escaping ((NSSwitch) -> Void)) -> Self {
+	public func action(_ action: @escaping ((NSButton.StateValue) -> Void)) -> Self {
 		self.setAction(action)
 		return self
 	}
 
-	private func setAction(_ action: @escaping ((NSSwitch) -> Void)) {
+	private func setAction(_ action: @escaping ((NSButton.StateValue) -> Void)) {
 		self.action = action
-		self.switchView.target = self
-		self.switchView.action = #selector(self.performAction(_:))
+
 	}
 
-	@objc internal func performAction(_ item: NSSwitch) {
-		self.action?(item)
-	}
-
-	private lazy var stateBinder = Bindable<NSControl.StateValue>()
 	public func bindState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSControl.StateValue>) -> Self {
 
 		self.action = nil
@@ -69,7 +62,19 @@ public class Switch: Control {
 		return self
 	}
 
-	@objc private func switchDidChange(_ sender: Any) {
-		stateBinder.setValue(self.switchView.doubleValue)
+	@objc private func switchDidChange(_ sender: NSSwitch) {
+		self.action?(sender.state)
+		if stateBinder.isActive {
+			stateBinder.setValue(self.switchView.state)
+		}
 	}
+
+	// Private
+
+	let switchView = NSSwitch()
+	public override var nsView: NSView { return self.switchView }
+
+	private var action: ((NSButton.StateValue) -> Void)?
+	private lazy var stateBinder = Bindable<NSControl.StateValue>()
+
 }

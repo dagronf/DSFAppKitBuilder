@@ -83,6 +83,9 @@ public class Segmented: Control {
 		self.content = content
 		super.init(tag: tag)
 
+		self.segmented.target = self
+		self.segmented.action = #selector(segmentChanged(_:))
+
 		if let s = segmentStyle { self.segmented.segmentStyle = s }
 		if let t = trackingMode { self.segmented.trackingMode = t }
 
@@ -157,13 +160,14 @@ public class Segmented: Control {
 	/// Set a callback block for when the selection changes
 	public func onChange(_ block: @escaping (NSSet) -> Void) -> Self {
 		self.actionCallback = block
-		self.segmented.target = self
-		self.segmented.action = #selector(segmentChanged(_:))
 		return self
 	}
 
 	@objc private func segmentChanged(_ sender: Any) {
 		self.actionCallback?(self.selectedSegments)
+		if valueBinder.isActive {
+			valueBinder.setValue(self.selectedSegments)
+		}
 	}
 
 	// The currently selected segments

@@ -28,7 +28,7 @@ import AppKit.NSButton
 
 /// A checkbox control
 public class CheckBox: Button {
-	public init(tag: Int? = nil, _ title: String) {
+	public init(tag: Int? = nil, _ title: String = "") {
 		super.init(tag: tag, title: title, type: .switch)
 	}
 }

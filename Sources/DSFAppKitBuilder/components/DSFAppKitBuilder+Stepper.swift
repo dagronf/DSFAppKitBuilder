@@ -49,6 +49,9 @@ public class Stepper: Control {
 
 	@objc private func stepperDidChange(_ sender: Any) {
 		valueBinder.setValue(self.stepper.doubleValue)
+		if valueBinder.isActive {
+			valueBinder.setValue(self.stepper.doubleValue)
+		}
 	}
 
 	private lazy var valueBinder = Bindable<Double>()

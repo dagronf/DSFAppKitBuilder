@@ -17,6 +17,10 @@ internal class Bindable<VALUETYPE>: NSObject {
 
 	private var valueChangeCallback: BindableCallback?
 
+	public var isActive: Bool {
+		return valueChangeCallback != nil
+	}
+
 	deinit {
 		bindValueKeyPath = nil
 		bindValueObserver = nil

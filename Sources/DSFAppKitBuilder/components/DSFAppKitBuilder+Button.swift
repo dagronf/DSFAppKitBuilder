@@ -40,6 +40,10 @@ public class Button: Control {
 		self.button.bezelStyle = bezelStyle
 		self.button.setButtonType(type)
 		self.button.allowsMixedState = allowMixedState
+
+		self.button.target = self
+		self.button.action = #selector(self.performAction(_:))
+
 	}
 
 	public init(
@@ -56,24 +60,10 @@ public class Button: Control {
 		self.button.setButtonType(type)
 		self.button.allowsMixedState = allowMixedState
 
+		self.button.target = self
+		self.button.action = #selector(self.performAction(_:))
+
 		self.setAction(action)
-	}
-
-	public init(
-		tag: Int? = nil,
-		title: String,
-		type: NSButton.ButtonType = .momentaryLight,
-		bezelStyle: NSButton.BezelStyle = .rounded,
-		target: AnyObject,
-		action: Selector
-	) {
-		super.init(tag: tag)
-		self.button.setButtonType(type)
-		self.button.bezelStyle = bezelStyle
-		self.button.title = title
-		self.button.isEnabled = true
-
-		self.setAction(target, action: action)
 	}
 
 	// MARK: Title
@@ -155,24 +145,22 @@ public class Button: Control {
 		return self
 	}
 
-	// MARK: Actions
-
-	/// Set the action callback via a selector
-	public func action(_ target: AnyObject, action: Selector) -> Self {
-		self.setAction(target, action: action)
+	/// Bind on/off state to a keypath
+	public func bindOnOffState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
+		self.onOffBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.button.state = newValue ? .on : .off
+		})
+		self.onOffBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
+
+
+	// MARK: Actions
 
 	/// Set the action callback via a block
 	public func action(_ action: @escaping ((NSButton) -> Void)) -> Self {
 		self.setAction(action)
 		return self
-	}
-
-	private func setAction(_: AnyObject, action: Selector) {
-		self.action = nil
-		self.button.target = self
-		self.button.action = action
 	}
 
 	private func setAction(_ action: @escaping ((NSButton) -> Void)) {
@@ -183,6 +171,12 @@ public class Button: Control {
 
 	@objc internal func performAction(_ item: NSButton) {
 		self.action?(item)
+		if onOffBinder.isActive {
+			onOffBinder.setValue(item.state == .off ? false : true)
+		}
+		if stateBinder.isActive {
+			stateBinder.setValue(item.state)
+		}
 	}
 
 	// Privates
@@ -191,6 +185,8 @@ public class Button: Control {
 	public override var nsView: NSView { return self.button }
 	private var action: ((NSButton) -> Void)?
 
+	// A cheaty -- bind to on/off only so you can link for enabling etc
+	private lazy var onOffBinder = Bindable<Bool>()
 	private lazy var stateBinder = Bindable<NSControl.StateValue>()
 	private lazy var titleBinder = Bindable<String>()
 	private lazy var alternateTitleBinder = Bindable<String>()
