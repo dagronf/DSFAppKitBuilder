@@ -13,7 +13,6 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 	lazy var body: Element =
 		ScrollView(fitHorizontally: true) {
 			VStack(spacing: 16, alignment: .leading) {
-
 				HStack(alignment: .lastBaseline) {
 					CheckBox("Play sound")
 					PopupButton {
@@ -108,20 +107,10 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 		.borderType(.lineBorder)
 
-
 	// MARK: - Toolbar
 
-	@objc dynamic var toolbar_enable: Bool = false {
-		didSet {
-			Swift.print("tool enable! \(toolbar_enable)")
-		}
-	}
-
-	@objc dynamic var toolbar_show_state: Int = 0 {
-		didSet {
-			Swift.print("toolbar show -> \(toolbar_show_state)")
-		}
-	}
+	@objc dynamic var toolbar_enable: Bool = false
+	@objc dynamic var toolbar_show_state: Int = 0
 
 	lazy var toolbars: Element =
 		HStack(alignment: .lastBaseline) {
@@ -160,6 +149,4 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 			.bindIsEnabled(self, keyPath: \ScrollerTestDSL.currentEditor_enable)
 			EmptyView()
 		}
-
-
 }
