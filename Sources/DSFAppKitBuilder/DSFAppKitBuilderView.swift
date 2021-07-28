@@ -26,14 +26,16 @@
 
 import AppKit
 
-public protocol DSFAppKitBuilderHandler {
+public protocol DSFAppKitBuilderViewHandler {
+	/// Return the root element to display within the Builder View
 	func rootElement() -> Element
 }
 
 /// Displays a DSFAppKitBuilder Element in a view
 public class DSFAppKitBuilderView: NSView {
 
-	public var builder: DSFAppKitBuilderHandler? {
+	/// The builder to use when displaying the view
+	public var builder: DSFAppKitBuilderViewHandler? {
 		didSet {
 			self.rootElement = builder?.rootElement()
 		}
@@ -51,3 +53,5 @@ public class DSFAppKitBuilderView: NSView {
 		}
 	}
 }
+
+

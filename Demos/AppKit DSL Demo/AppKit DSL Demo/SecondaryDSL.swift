@@ -9,7 +9,7 @@ import AppKit
 
 import DSFAppKitBuilder
 
-class SecondaryDSL: NSObject, DSFAppKitBuilderHandler {
+class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 	func rootElement() -> Element {
 		return self.layout
 	}
