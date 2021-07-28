@@ -85,6 +85,7 @@ public class Label: Control {
 				self.label.textColor = newValue
 			}
 		})
+		self.textColorBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 

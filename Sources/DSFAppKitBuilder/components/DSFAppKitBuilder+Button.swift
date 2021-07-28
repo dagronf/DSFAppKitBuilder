@@ -31,25 +31,30 @@ public class Button: Control {
 	public init(
 		tag: Int? = nil,
 		type: NSButton.ButtonType = .momentaryLight,
-		bezelStyle _: NSButton.BezelStyle = .rounded,
+		bezelStyle: NSButton.BezelStyle = .rounded,
+		allowMixedState: Bool = false,
 		title: String
 	) {
 		super.init(tag: tag)
-		self.button.bezelStyle = .rounded
-		self.button.setButtonType(type)
 		self.button.title = title
+		self.button.bezelStyle = bezelStyle
+		self.button.setButtonType(type)
+		self.button.allowsMixedState = allowMixedState
 	}
 
 	public init(
 		tag: Int? = nil,
 		type: NSButton.ButtonType = .momentaryLight,
-		bezelStyle _: NSButton.BezelStyle = .rounded,
-		_: String,
-		_ action: @escaping ((NSButton) -> Void)
+		bezelStyle: NSButton.BezelStyle = .rounded,
+		allowMixedState: Bool = false,
+		title: String,
+		action: @escaping ((NSButton) -> Void)
 	) {
 		super.init(tag: tag)
-		self.button.bezelStyle = .rounded
+		self.button.title = title
+		self.button.bezelStyle = bezelStyle
 		self.button.setButtonType(type)
+		self.button.allowsMixedState = allowMixedState
 
 		self.setAction(action)
 	}
@@ -57,13 +62,15 @@ public class Button: Control {
 	public init(
 		tag: Int? = nil,
 		type: NSButton.ButtonType = .momentaryLight,
-		bezelStyle _: NSButton.BezelStyle = .rounded,
-		_: String,
-		_ target: AnyObject, action: Selector
+		bezelStyle: NSButton.BezelStyle = .rounded,
+		title: String,
+		target: AnyObject,
+		action: Selector
 	) {
 		super.init(tag: tag)
-		self.button.bezelStyle = .rounded
 		self.button.setButtonType(type)
+		self.button.bezelStyle = bezelStyle
+		self.button.title = title
 		self.button.isEnabled = true
 
 		self.setAction(target, action: action)
@@ -82,6 +89,7 @@ public class Button: Control {
 		self.titleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.title = newValue
 		})
+		self.titleBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 
@@ -98,6 +106,7 @@ public class Button: Control {
 		self.alternateTitleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.alternateTitle = newValue
 		})
+		self.alternateTitleBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 
@@ -142,6 +151,7 @@ public class Button: Control {
 		self.stateBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.state = newValue
 		})
+		self.stateBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 

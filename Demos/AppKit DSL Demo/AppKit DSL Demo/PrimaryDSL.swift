@@ -67,7 +67,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.bindValue(self, keyPath: \PrimaryDSL.progressValue)
 				}
 				Divider(direction: .vertical)
-				Button("what?") { [weak self] _ in
+				Button(title: "what?") { [weak self] _ in
 					guard let `self` = self else { return }
 
 					Swift.print("You pressed it!")
@@ -89,8 +89,8 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					MenuItem(title: "Dogs")
 					MenuItem(title: "Caterpillar")
 				}
-				.onChange { popup in
-					Swift.print("popup changed \(popup.selectedIndex)")
+				.onChange { popupIndex in
+					Swift.print("popup changed - now \(popupIndex)")
 				}
 				.selectItem(at: 1)
 			}

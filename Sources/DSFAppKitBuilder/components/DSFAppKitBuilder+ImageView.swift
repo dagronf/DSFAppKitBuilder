@@ -60,6 +60,7 @@ public class ImageView: Control {
 		self.imageBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.imageView.image = newValue
 		})
+		self.imageBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 

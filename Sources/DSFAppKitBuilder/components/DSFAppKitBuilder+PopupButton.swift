@@ -24,15 +24,18 @@
 //  SOFTWARE.
 //
 
-
 import AppKit.NSPopUpButton
 
 public class PopupButton: Control {
-	public override var nsView: NSView { return self.popupButton }
+	override public var nsView: NSView { return self.popupButton }
 	let popupButton = NSPopUpButton()
 	let content: [MenuItem]
 
-	internal init(tag: Int? = nil, pullsDown: Bool = false, _ content: [MenuItem]) {
+	internal init(
+		tag: Int? = nil,
+		pullsDown: Bool = false,
+		content: [MenuItem])
+	{
 		self.content = content
 		super.init(tag: tag)
 
@@ -49,12 +52,13 @@ public class PopupButton: Control {
 	public convenience init(
 		tag: Int? = nil,
 		pullsDown: Bool = false,
-		@MenuBuilder builder: () -> [MenuItem]
-	) {
+		@MenuBuilder builder: () -> [MenuItem])
+	{
 		self.init(
 			tag: tag,
 			pullsDown: pullsDown,
-			builder())
+			content: builder()
+		)
 	}
 
 	public func selectItem(at index: Int) -> Self {
@@ -66,13 +70,27 @@ public class PopupButton: Control {
 		return self.popupButton.indexOfSelectedItem
 	}
 
-	var selectionChangeBlock: ((PopupButton) -> Void)? = nil
-	public func onChange(_ block: @escaping (PopupButton) -> Void) -> Self{
+	/// Set the block to be called when the selection changes
+	public func onChange(_ block: @escaping (Int) -> Void) -> Self {
 		self.selectionChangeBlock = block
 		return self
 	}
 
-	@objc func selectionChanged(_ sender: Any) {
-		self.selectionChangeBlock?(self)
+	@objc private func selectionChanged(_ sender: Any) {
+		self.selectionChangeBlock?(self.selectedIndex)
 	}
+
+	/// Bind the selection to a keypath
+	public func bindSelection<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
+		self.selectionBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.popupButton.selectItem(at: newValue)
+		})
+		self.selectionBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
+		return self
+	}
+
+	// Private
+
+	private lazy var selectionBinder = Bindable<Int>()
+	private var selectionChangeBlock: ((Int) -> Void)?
 }
