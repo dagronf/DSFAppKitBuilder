@@ -17,9 +17,30 @@ final class FlippedClipView: NSClipView {
 public class ScrollView: Element {
 	let scrollView = NSScrollView()
 
-	let documentElement: Element
+	let content = NSStackView()
+
+	let documentElements: [Element]
 
 	override public var nsView: NSView { return self.scrollView }
+
+	/// Create a ScrollView
+	/// - Parameters:
+	///   - tag: (optional) The identifing tag
+	///   - fitHorizontally: Set the width of the content to the width of the scrollview
+	///   - autohidesScrollers: A Boolean that indicates whether the scroll view automatically hides its scroll bars when they are not needed.
+	///   - documentElement: The content of the scrollview
+	convenience public init(
+		tag: Int? = nil,
+		fitHorizontally: Bool = true,
+		autohidesScrollers: Bool = true,
+		@StackBuilder builder: () -> [Element]
+	) {
+		self.init(
+			tag: tag,
+			fitHorizontally: fitHorizontally,
+			autohidesScrollers: autohidesScrollers,
+			contents: builder())
+	}
 
 	/// Create a ScrollView
 	/// - Parameters:
@@ -31,9 +52,9 @@ public class ScrollView: Element {
 		tag: Int? = nil,
 		fitHorizontally: Bool = true,
 		autohidesScrollers: Bool = true,
-		_ documentElement: Element
+		contents: [Element]
 	) {
-		self.documentElement = documentElement
+		self.documentElements = contents
 		super.init(tag: tag)
 
 		self.setup(fitHorizontally: fitHorizontally,
@@ -56,6 +77,16 @@ private extension ScrollView {
 		fitHorizontally: Bool,
 		autohidesScrollers: Bool)
 	{
+
+		self.content.translatesAutoresizingMaskIntoConstraints = false
+		self.content.orientation = .vertical
+		self.content.alignment = .leading
+
+		self.documentElements.forEach { element in
+			self.content.addArrangedSubview(element.nsView)
+		}
+
+
 		self.scrollView.translatesAutoresizingMaskIntoConstraints = false
 		self.scrollView.borderType = .noBorder
 		self.scrollView.backgroundColor = NSColor.gray
@@ -79,9 +110,7 @@ private extension ScrollView {
 			clipView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
 		])
 
-		let content = self.documentElement.nsView
-
-		self.scrollView.documentView = content
+		self.scrollView.documentView = self.content
 
 		NSLayoutConstraint.activate([
 			content.leftAnchor.constraint(equalTo: clipView.leftAnchor),
