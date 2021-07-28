@@ -710,112 +710,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <tabView translatesAutoresizingMaskIntoConstraints="NO" id="qKU-aH-sEN">
-                                <rect key="frame" x="13" y="10" width="454" height="254"/>
-                                <font key="font" metaFont="system"/>
-                                <tabViewItems>
-                                    <tabViewItem label="Demo 1" identifier="1" id="2F8-zv-EGc">
-                                        <view key="view" id="6XR-qW-T6i">
-                                            <rect key="frame" x="10" y="33" width="434" height="208"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <subviews>
-                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="xLy-1I-5BM" customClass="DSFAppKitBuilderView" customModule="DSFAppKitBuilder">
-                                                    <rect key="frame" x="20" y="20" width="394" height="168"/>
-                                                </customView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="xLy-1I-5BM" firstAttribute="leading" secondItem="6XR-qW-T6i" secondAttribute="leading" constant="20" symbolic="YES" id="HWt-2u-VHZ"/>
-                                                <constraint firstAttribute="trailing" secondItem="xLy-1I-5BM" secondAttribute="trailing" constant="20" symbolic="YES" id="dbw-y6-sRN"/>
-                                                <constraint firstItem="xLy-1I-5BM" firstAttribute="top" secondItem="6XR-qW-T6i" secondAttribute="top" constant="20" symbolic="YES" id="eqM-1e-fA4"/>
-                                                <constraint firstAttribute="bottom" secondItem="xLy-1I-5BM" secondAttribute="bottom" constant="20" symbolic="YES" id="gJl-SX-aWF"/>
-                                            </constraints>
-                                        </view>
-                                    </tabViewItem>
-                                    <tabViewItem label="Demo 2" identifier="2" id="dee-cw-GaM">
-                                        <view key="view" id="YXk-XM-Zia">
-                                            <rect key="frame" x="10" y="33" width="434" height="208"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <subviews>
-                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="zua-DB-w3c" customClass="DSFAppKitBuilderView" customModule="DSFAppKitBuilder">
-                                                    <rect key="frame" x="20" y="20" width="394" height="168"/>
-                                                </customView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="zua-DB-w3c" firstAttribute="top" secondItem="YXk-XM-Zia" secondAttribute="top" constant="20" symbolic="YES" id="6zo-bg-sZi"/>
-                                                <constraint firstAttribute="trailing" secondItem="zua-DB-w3c" secondAttribute="trailing" constant="20" symbolic="YES" id="8kB-ln-AqQ"/>
-                                                <constraint firstItem="zua-DB-w3c" firstAttribute="leading" secondItem="YXk-XM-Zia" secondAttribute="leading" constant="20" symbolic="YES" id="v7n-HB-d9j"/>
-                                                <constraint firstAttribute="bottom" secondItem="zua-DB-w3c" secondAttribute="bottom" constant="20" symbolic="YES" id="yLt-aL-8G1"/>
-                                            </constraints>
-                                        </view>
-                                    </tabViewItem>
-                                    <tabViewItem label="Demo 3" identifier="" id="wVS-Mf-qe7">
-                                        <view key="view" id="kb8-NV-kCu">
-                                            <rect key="frame" x="10" y="33" width="434" height="208"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <subviews>
-                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="KOC-fT-S3g" customClass="DSFAppKitBuilderView" customModule="DSFAppKitBuilder">
-                                                    <rect key="frame" x="20" y="20" width="394" height="168"/>
-                                                </customView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="KOC-fT-S3g" firstAttribute="leading" secondItem="kb8-NV-kCu" secondAttribute="leading" constant="20" symbolic="YES" id="L1S-RX-on2"/>
-                                                <constraint firstAttribute="bottom" secondItem="KOC-fT-S3g" secondAttribute="bottom" constant="20" symbolic="YES" id="nlP-u9-LYR"/>
-                                                <constraint firstItem="KOC-fT-S3g" firstAttribute="top" secondItem="kb8-NV-kCu" secondAttribute="top" constant="20" symbolic="YES" id="o7r-AN-srV"/>
-                                                <constraint firstAttribute="trailing" secondItem="KOC-fT-S3g" secondAttribute="trailing" constant="20" symbolic="YES" id="wq8-y2-Uyb"/>
-                                            </constraints>
-                                        </view>
-                                    </tabViewItem>
-                                    <tabViewItem label="Demo 4" identifier="" id="rap-B9-8nS">
-                                        <view key="view" id="EVL-3D-qkZ">
-                                            <rect key="frame" x="10" y="33" width="434" height="208"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <subviews>
-                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="r03-oK-RwT" customClass="DSFAppKitBuilderView" customModule="DSFAppKitBuilder">
-                                                    <rect key="frame" x="20" y="20" width="394" height="168"/>
-                                                </customView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="r03-oK-RwT" firstAttribute="top" secondItem="EVL-3D-qkZ" secondAttribute="top" constant="20" symbolic="YES" id="3jl-Zb-B0q"/>
-                                                <constraint firstAttribute="trailing" secondItem="r03-oK-RwT" secondAttribute="trailing" constant="20" symbolic="YES" id="NPb-zX-Jle"/>
-                                                <constraint firstItem="r03-oK-RwT" firstAttribute="leading" secondItem="EVL-3D-qkZ" secondAttribute="leading" constant="20" symbolic="YES" id="RLe-Dk-adk"/>
-                                                <constraint firstAttribute="bottom" secondItem="r03-oK-RwT" secondAttribute="bottom" constant="20" symbolic="YES" id="tD7-Yd-ROV"/>
-                                            </constraints>
-                                        </view>
-                                    </tabViewItem>
-                                    <tabViewItem label="Split View" identifier="" id="PHR-Pi-lnF">
-                                        <view key="view" id="UZl-9l-Cg6">
-                                            <rect key="frame" x="10" y="33" width="434" height="208"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <subviews>
-                                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="6JH-pc-KeB" customClass="DSFAppKitBuilderView" customModule="DSFAppKitBuilder">
-                                                    <rect key="frame" x="20" y="20" width="394" height="168"/>
-                                                </customView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="6JH-pc-KeB" secondAttribute="trailing" constant="20" symbolic="YES" id="3GB-ID-1dZ"/>
-                                                <constraint firstItem="6JH-pc-KeB" firstAttribute="top" secondItem="UZl-9l-Cg6" secondAttribute="top" constant="20" symbolic="YES" id="8st-B3-eyN"/>
-                                                <constraint firstItem="6JH-pc-KeB" firstAttribute="leading" secondItem="UZl-9l-Cg6" secondAttribute="leading" constant="20" symbolic="YES" id="EV1-k1-sic"/>
-                                                <constraint firstAttribute="bottom" secondItem="6JH-pc-KeB" secondAttribute="bottom" constant="20" symbolic="YES" id="QMQ-fN-v6b"/>
-                                            </constraints>
-                                        </view>
-                                    </tabViewItem>
-                                </tabViewItems>
-                            </tabView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="6af-7b-oSu" customClass="DSFAppKitBuilderView" customModule="DSFAppKitBuilder">
+                                <rect key="frame" x="20" y="20" width="440" height="230"/>
+                            </customView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="qKU-aH-sEN" secondAttribute="trailing" constant="20" symbolic="YES" id="6Vh-wI-VbG"/>
-                            <constraint firstAttribute="bottom" secondItem="qKU-aH-sEN" secondAttribute="bottom" constant="20" symbolic="YES" id="DS4-Ip-ZDx"/>
-                            <constraint firstItem="qKU-aH-sEN" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="12" symbolic="YES" id="Srj-b9-uJ6"/>
-                            <constraint firstItem="qKU-aH-sEN" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="sY4-e7-xb5"/>
+                            <constraint firstItem="6af-7b-oSu" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" symbolic="YES" id="868-De-0p8"/>
+                            <constraint firstItem="6af-7b-oSu" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" symbolic="YES" id="JsX-mI-qfR"/>
+                            <constraint firstAttribute="bottom" secondItem="6af-7b-oSu" secondAttribute="bottom" constant="20" symbolic="YES" id="WBR-vE-SKt"/>
+                            <constraint firstAttribute="trailing" secondItem="6af-7b-oSu" secondAttribute="trailing" constant="20" symbolic="YES" id="wXC-ts-aqr"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="demo1View" destination="xLy-1I-5BM" id="Zfk-w1-XPl"/>
-                        <outlet property="demo2View" destination="zua-DB-w3c" id="Jit-f2-lG9"/>
-                        <outlet property="demo3View" destination="KOC-fT-S3g" id="s5n-eZ-G7y"/>
-                        <outlet property="demo4View" destination="r03-oK-RwT" id="wLh-r9-xqP"/>
-                        <outlet property="demo5View" destination="6JH-pc-KeB" id="GIX-wE-9F0"/>
-                        <outlet property="dslView" destination="xLy-1I-5BM" id="QAh-JC-Fgb"/>
+                        <outlet property="mainView" destination="6af-7b-oSu" id="cvs-S0-ovz"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

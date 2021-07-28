@@ -50,4 +50,5 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				self?.radioSelection = 0
 			}
 	}
+	.horizontalPriorities(hugging: .defaultLow)
 }

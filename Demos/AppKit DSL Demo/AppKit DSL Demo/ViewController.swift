@@ -10,11 +10,24 @@ import Cocoa
 import DSFAppKitBuilder
 
 class ViewController: NSViewController {
-	@IBOutlet var demo1View: DSFAppKitBuilderView!
-	@IBOutlet var demo2View: DSFAppKitBuilderView!
-	@IBOutlet var demo3View: DSFAppKitBuilderView!
-	@IBOutlet var demo4View: DSFAppKitBuilderView!
-	@IBOutlet var demo5View: DSFAppKitBuilderView!
+
+	@IBOutlet var mainView: DSFAppKitBuilderView!
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+
+		// Do any additional setup after loading the view.
+		self.mainView.builder = MainTabs()
+	}
+
+	override var representedObject: Any? {
+		didSet {
+			// Update the view, if already loaded.
+		}
+	}
+}
+
+class MainTabs: NSObject, DSFAppKitBuilderViewHandler {
 
 	let primaryLayout = PrimaryDSL()
 	let secondaryLayout = SecondaryDSL()
@@ -22,21 +35,13 @@ class ViewController: NSViewController {
 	let tabTest = TabDSL()
 	let splitTest = SplitDSL()
 
-	override func viewDidLoad() {
-		super.viewDidLoad()
-
-		// Do any additional setup after loading the view.
-		self.demo1View.builder = self.primaryLayout
-		self.demo2View.builder = self.secondaryLayout
-		self.demo3View.builder = self.scrollTest
-		self.demo4View.builder = self.tabTest
-		self.demo5View.builder = self.splitTest
-	}
-
-	override var representedObject: Any? {
-		didSet {
-			// Update the view, if already loaded.
-		}
+	lazy var body: Element =
+	TabView(selectedIndex: 0) {
+		TabViewItem("Demo 1") { self.primaryLayout.body }
+		TabViewItem("Demo 2") { self.secondaryLayout.body }
+		TabViewItem("Demo 3") { self.scrollTest.body }
+		TabViewItem("Demo 4") { self.tabTest.body }
+		TabViewItem("Split Demo") { self.splitTest.body }
 	}
 }
 
@@ -49,13 +54,13 @@ class TabDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	lazy var body: Element =
 		TabView(tabViewType: .bottomTabsBezelBorder, selectedIndex: 2) {
-			Tab("first") {
+			TabViewItem("first") {
 				tab1
 			}
-			Tab("second") {
+			TabViewItem("second") {
 				VStack { Label("second") }
 			}
-			Tab("Third") {
+			TabViewItem("Third") {
 				VStack { Label("third") }
 			}
 		}

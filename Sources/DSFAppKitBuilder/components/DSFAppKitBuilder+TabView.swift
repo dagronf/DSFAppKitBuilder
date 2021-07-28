@@ -27,7 +27,7 @@
 import AppKit
 
 /// An individual tab item
-public class Tab {
+public class TabViewItem {
 	// TabView uses ViewControllers to manage the tabs.
 	fileprivate class Controller: NSViewController {
 		let content: Element
@@ -45,7 +45,21 @@ public class Tab {
 		}
 
 		override func loadView() {
-			self.view = self.content.nsView
+
+			// The NSTabView item doesn't seem to layout well if the tab item's container is autolayout
+			// Wrap our element in a non-autolayout NSView first
+			let container = NSView()
+			container.addSubview(self.content.nsView)
+			self.content.nsView.pinEdges(to: container)
+
+			self.view = container
+			self.view.setContentHuggingPriority(.defaultLow, for: .horizontal)
+			self.view.setContentHuggingPriority(.defaultLow, for: .vertical)
+			self.view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+			self.view.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+
+			self.view.needsLayout = true
+			self.view.needsUpdateConstraints = true
 		}
 	}
 
@@ -69,7 +83,7 @@ public class Tab {
 	) {
 		self.title = title
 		self.toolTip = toolTip
-		self.viewController = Tab.Controller(content: content)
+		self.viewController = TabViewItem.Controller(content: content)
 	}
 }
 
@@ -81,13 +95,13 @@ public enum TabBuilder {
 #else
 @resultBuilder
 public enum TabBuilder {
-	static func buildBlock() -> [Tab] { [] }
+	static func buildBlock() -> [TabViewItem] { [] }
 }
 #endif
 
 /// A resultBuilder to build menus
 public extension TabBuilder {
-	static func buildBlock(_ settings: Tab...) -> [Tab] {
+	static func buildBlock(_ settings: TabViewItem...) -> [TabViewItem] {
 		settings
 	}
 }
@@ -101,7 +115,7 @@ public class TabView: Control {
 		tag: Int? = nil,
 		tabViewType: NSTabView.TabType? = nil,
 		selectedIndex: Int = 0,
-		@TabBuilder builder: () -> [Tab]
+		@TabBuilder builder: () -> [TabViewItem]
 	) {
 		self.init(
 			tag: tag,
@@ -114,7 +128,7 @@ public class TabView: Control {
 		tag: Int? = nil,
 		tabViewType: NSTabView.TabType? = nil,
 		selectedIndex: Int = 0,
-		contents: [Tab]
+		contents: [TabViewItem]
 	) {
 		super.init(tag: tag)
 
@@ -126,11 +140,16 @@ public class TabView: Control {
 			let t = NSTabViewItem(viewController: item.viewController)
 			t.label = item.title ?? ""
 			t.toolTip = item.toolTip
+			t.view?.needsLayout = true
+
 			self.tabView.addTabViewItem(t)
 		}
 
 		self.tabView.selectTabViewItem(at: selectedIndex)
 		self.tabView.delegate = self
+
+		self.tabView.needsLayout = true
+		self.tabView.needsDisplay = true
 	}
 
 	public func onChange(_ changeBlock: @escaping (Int) -> Void) -> Self {
