@@ -26,23 +26,11 @@
 
 import AppKit
 
+// MARK: - Autolayout helpers
+
 public extension Element {
-	// MARK: - Autolayout
 
-	func priority(
-		orientation: NSLayoutConstraint.Orientation,
-		hugging: NSLayoutConstraint.Priority? = nil,
-		compressionResistance resistance: NSLayoutConstraint.Priority? = nil
-	) -> Self {
-		if let hugging = hugging {
-			self.nsView.setContentHuggingPriority(hugging, for: orientation)
-		}
-		if let resistance = resistance {
-			self.nsView.setContentCompressionResistancePriority(resistance, for: orientation)
-		}
-		return self
-	}
-
+	/// Set the horizontal hugging and compression resistance properties for an element
 	@inlinable func horizontalPriorities(hugging: Float? = nil, compressionResistance resistance: Float? = nil) -> Self {
 		return self.priority(
 			orientation: .horizontal,
@@ -51,12 +39,16 @@ public extension Element {
 		)
 	}
 
+	/// Set the horizontal hugging and compression resistance properties for an element
 	@inlinable func horizontalPriorities(hugging: NSLayoutConstraint.Priority? = nil, compressionResistance resistance: NSLayoutConstraint.Priority? = nil) -> Self {
 		return self.priority(
-			orientation: .horizontal, hugging: hugging, compressionResistance: resistance
+			orientation: .horizontal,
+			hugging: hugging,
+			compressionResistance: resistance
 		)
 	}
 
+	/// Set the vertical hugging and compression resistance properties for an element
 	@inlinable func verticalPriorities(hugging: Float? = nil, compressionResistance resistance: Float? = nil) -> Self {
 		return self.priority(
 			orientation: .vertical,
@@ -65,9 +57,28 @@ public extension Element {
 		)
 	}
 
+	/// Set the vertical hugging and compression resistance properties for an element
 	@inlinable func verticalPriorities(hugging: NSLayoutConstraint.Priority? = nil, compressionResistance resistance: NSLayoutConstraint.Priority? = nil) -> Self {
 		return self.priority(
-			orientation: .vertical, hugging: hugging, compressionResistance: resistance
+			orientation: .vertical,
+			hugging: hugging,
+			compressionResistance: resistance
 		)
+	}
+}
+
+public extension Element {
+	/// Set the hugging and compression resistance properties for an element
+	func priority(
+		orientation: NSLayoutConstraint.Orientation,
+		hugging: NSLayoutConstraint.Priority? = nil,
+		compressionResistance resistance: NSLayoutConstraint.Priority? = nil) -> Self {
+		if let hugging = hugging {
+			self.nsView.setContentHuggingPriority(hugging, for: orientation)
+		}
+		if let resistance = resistance {
+			self.nsView.setContentCompressionResistancePriority(resistance, for: orientation)
+		}
+		return self
 	}
 }
