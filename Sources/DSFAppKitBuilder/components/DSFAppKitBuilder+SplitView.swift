@@ -28,14 +28,19 @@ import AppKit
 
 
 public class SplitViewItem {
-	// TabView uses ViewControllers to manage the tabs.
+	// SplitViewController uses ViewControllers to manage the tabs.
 	fileprivate class Controller: NSViewController {
 		let content: Element
 
-		init(
-			content: Element)
+		let contentView = NSView()
+
+		init(content: Element)
 		{
 			self.content = content
+
+			contentView.addSubview(content.nsView)
+			content.nsView.pinEdges(to: contentView)
+
 			super.init(nibName: nil, bundle: nil)
 		}
 
@@ -122,10 +127,8 @@ public class SplitView: Control {
 		contents.enumerated().forEach { item in
 			let s = NSSplitViewItem(viewController: item.1.viewController)
 			self.controller.addSplitViewItem(s)
-
 			if let h = item.1.holdingPriority {
 				s.holdingPriority = h
-				//self.splitView.setHoldingPriority(h, forSubviewAt: item.0)
 			}
 		}
 	}

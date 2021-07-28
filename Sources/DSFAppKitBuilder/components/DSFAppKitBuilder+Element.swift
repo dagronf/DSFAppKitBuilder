@@ -129,6 +129,11 @@ public class Element: NSObject {
 		// Default -- do nothing
 	}
 
+	public func additionalAppKitControlSettings<VIEWTYPE>(_ block: (VIEWTYPE) -> Void) -> Self {
+		block(nsView as! VIEWTYPE)
+		return self
+	}
+
 }
 
 

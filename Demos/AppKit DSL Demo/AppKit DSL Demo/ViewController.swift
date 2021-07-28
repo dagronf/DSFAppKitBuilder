@@ -66,28 +66,30 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 	@objc dynamic var hidden = NSSet()
 
 	lazy var body: Element =
-		VStack {
-			HStack(alignment: .centerY) {
-				Label("Click a segment to turn off the split item")
-				Segmented(trackingMode: .selectAny) {
-					Segment("first")
-					Segment("second")
-					Segment("third")
+		Box("Split Testing") {
+			VStack {
+				HStack(alignment: .centerY) {
+					Label("Click a segment to turn off the split item")
+					Segmented(trackingMode: .selectAny) {
+						Segment("first")
+						Segment("second")
+						Segment("third")
+					}
+					.bindSelectedSegments(self, keyPath: \SplitDSL.hidden)
 				}
-				.bindSelectedSegments(self, keyPath: \SplitDSL.hidden)
-			}
 
-			EmptyView()
-				.backgroundColor(.systemIndigo)
-
-			SplitView {
-				SplitViewItem(content: split1)
-				SplitViewItem(content: split2)
-				SplitViewItem(content: split3)
+				SplitView {
+					SplitViewItem(content: split1)
+					SplitViewItem(content: split2)
+					SplitViewItem(content: split3)
+				}
+				.bindHiddenViews(self, keyPath: \SplitDSL.hidden)
 			}
-			.bindHiddenViews(self, keyPath: \SplitDSL.hidden)
 		}
-		
+//		.additionalAppKitControlSettings { (box: NSBox) in
+//			box.titleFont = NSFont.systemFont(ofSize: 18)
+//		}
+
 	lazy var split1: Element =
 		VStack {
 			Label("first").horizontalPriorities(hugging: 1)
