@@ -15,13 +15,15 @@ class ViewController: NSViewController {
 
 	lazy var primaryLayout = PrimaryDSL()
 	lazy var secondaryLayout = SecondaryDSL()
+	lazy var scrollTest = ScrollerTestDSL()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
 		//dslView.builder = primaryLayout
-		dslView.builder = secondaryLayout
+		//dslView.builder = secondaryLayout
+		dslView.builder = scrollTest
 	}
 
 	override var representedObject: Any? {

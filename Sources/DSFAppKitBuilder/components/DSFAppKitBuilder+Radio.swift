@@ -67,16 +67,23 @@ public class Radio: Control {
 	public convenience init(
 		tag: Int? = nil,
 		selected: Int = 0,
+		controlSize: NSButton.ControlSize? = nil,
 		spacing: CGFloat? = nil,
 		@RadioBuilder builder: () -> [RadioElement])
 	{
-		self.init(tag: tag, selected: selected, content: builder())
+		self.init(
+			tag: tag,
+			selected: selected,
+			controlSize: controlSize,
+			content: builder())
 	}
 
-	internal init(tag: Int? = nil,
-					  selected: Int = 0,
-					  spacing: CGFloat? = nil,
-					  content: [RadioElement])
+	internal init(
+		tag: Int? = nil,
+		selected: Int = 0,
+		controlSize: NSButton.ControlSize? = nil,
+		spacing: CGFloat? = nil,
+		content: [RadioElement])
 	{
 		self.content = content
 		super.init(tag: tag)
@@ -86,6 +93,7 @@ public class Radio: Control {
 		if let s = spacing {
 			self.radioGroup.spacing = s
 		}
+		self.radioGroup.edgeInsets = NSEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
 
 		content.enumerated().forEach { item in
 			let button = NSButton()
@@ -95,6 +103,8 @@ public class Radio: Control {
 			button.title = item.1.title
 			button.toolTip = item.1.toolTip
 			button.state = (selected == item.0) ? .on : .off
+
+			if let s = controlSize { button.controlSize = s }
 
 			button.target = self
 			button.action = #selector(radioSelected(_:))

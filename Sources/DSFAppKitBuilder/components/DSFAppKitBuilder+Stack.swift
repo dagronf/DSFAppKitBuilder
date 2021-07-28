@@ -30,7 +30,7 @@ import AppKit.NSStackView
 #if swift(<5.3)
 @_functionBuilder
 public struct StackBuilder {
-	static func buildBlock() -> [SwiftDSLElement] { [] }
+	static func buildBlock() -> [Element] { [] }
 }
 #else
 @resultBuilder

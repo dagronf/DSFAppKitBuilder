@@ -14,6 +14,7 @@
 		2304028B26AF7EFB002016FD /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304028A26AF7EFB002016FD /* Utilities.swift */; };
 		2314B32B26AFB816003BAA0C /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 2314B32A26AFB816003BAA0C /* DSFAppKitBuilder */; };
 		2314B32D26AFD71C003BAA0C /* SecondaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */; };
+		237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */; };
 		23C6E90A26AF971600FBF106 /* PrimaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C6E90926AF971600FBF106 /* PrimaryDSL.swift */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +27,7 @@
 		2304028A26AF7EFB002016FD /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2314B32926AFB80D003BAA0C /* DSFAppKitBuilder */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DSFAppKitBuilder; path = ../..; sourceTree = "<group>"; };
 		2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryDSL.swift; sourceTree = "<group>"; };
+		237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollerTestDSL.swift; sourceTree = "<group>"; };
 		23C6E90926AF971600FBF106 /* PrimaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDSL.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,6 +68,7 @@
 				2304027A26AF7E5F002016FD /* ViewController.swift */,
 				23C6E90926AF971600FBF106 /* PrimaryDSL.swift */,
 				2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */,
+				237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */,
 				2304027C26AF7E60002016FD /* Assets.xcassets */,
 				2304027E26AF7E60002016FD /* Main.storyboard */,
 				2304028A26AF7EFB002016FD /* Utilities.swift */,
@@ -158,6 +161,7 @@
 				2304027B26AF7E5F002016FD /* ViewController.swift in Sources */,
 				23C6E90A26AF971600FBF106 /* PrimaryDSL.swift in Sources */,
 				2304027926AF7E5F002016FD /* AppDelegate.swift in Sources */,
+				237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
