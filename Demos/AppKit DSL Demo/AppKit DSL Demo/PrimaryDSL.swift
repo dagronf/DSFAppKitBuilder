@@ -9,9 +9,6 @@ import AppKit
 import DSFAppKitBuilder
 
 class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
-	func rootElement() -> Element {
-		return self.layout
-	}
 
 	@objc dynamic var progressValue: Double = 33.0
 	@objc dynamic var descriptionColor: NSColor = .textColor
@@ -41,8 +38,9 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	@objc dynamic var selectedSegments = NSSet(array: [0, 2])
 
+	// Definition
 
-	lazy var layout =
+	lazy var body: Element =
 		VStack {
 			HStack(spacing: 8) {
 				ImageView(NSImage(named: "filter-icon")!)

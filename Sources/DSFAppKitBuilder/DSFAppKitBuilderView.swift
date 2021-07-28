@@ -28,7 +28,7 @@ import AppKit
 
 public protocol DSFAppKitBuilderViewHandler {
 	/// Return the root element to display within the Builder View
-	func rootElement() -> Element
+	var body: Element { get }
 }
 
 /// Displays a DSFAppKitBuilder Element in a view
@@ -37,7 +37,7 @@ public class DSFAppKitBuilderView: NSView {
 	/// The builder to use when displaying the view
 	public var builder: DSFAppKitBuilderViewHandler? {
 		didSet {
-			self.rootElement = builder?.rootElement()
+			self.rootElement = builder?.body
 		}
 	}
 
@@ -53,5 +53,3 @@ public class DSFAppKitBuilderView: NSView {
 		}
 	}
 }
-
-
