@@ -32,11 +32,12 @@ public class Button: Control {
 		tag: Int? = nil,
 		type: NSButton.ButtonType = .momentaryLight,
 		bezelStyle _: NSButton.BezelStyle = .rounded,
-		_: String
+		title: String
 	) {
 		super.init(tag: tag)
 		self.button.bezelStyle = .rounded
 		self.button.setButtonType(type)
+		self.button.title = title
 	}
 
 	public init(
@@ -128,13 +129,31 @@ public class Button: Control {
 		return self
 	}
 
+	// MARK: State
+
+	/// Set the button's initial state
+	public func state(_ state: NSControl.StateValue) -> Self {
+		self.button.state = state
+		return self
+	}
+
+	/// Bind the state to a keypath
+	public func bindState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSControl.StateValue>) -> Self {
+		self.stateBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.button.state = newValue
+		})
+		return self
+	}
+
 	// MARK: Actions
 
+	/// Set the action callback via a selector
 	public func action(_ target: AnyObject, action: Selector) -> Self {
 		self.setAction(target, action: action)
 		return self
 	}
 
+	/// Set the action callback via a block
 	public func action(_ action: @escaping ((NSButton) -> Void)) -> Self {
 		self.setAction(action)
 		return self
@@ -158,10 +177,11 @@ public class Button: Control {
 
 	// Privates
 
-	private let button = NSButton()
+	fileprivate let button = NSButton()
 	public override var nsView: NSView { return self.button }
 	private var action: ((NSButton) -> Void)?
 
+	private lazy var stateBinder = Bindable<NSControl.StateValue>()
 	private lazy var titleBinder = Bindable<String>()
 	private lazy var alternateTitleBinder = Bindable<String>()
 }
