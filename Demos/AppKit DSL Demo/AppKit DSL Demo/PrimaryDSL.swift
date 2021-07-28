@@ -53,16 +53,14 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.font(NSFont.systemFont(ofSize: 18))
 						.lineBreakMode(.byTruncatingTail)
 						.allowsDefaultTighteningForTruncation(true)
-						.contentHugging(h: .stackFiller)
-						.contentCompressionResistance(h: .defaultLow)
+						.horizontalPriorities(hugging: .stackFiller, compressionResistance: .defaultLow)
 						.minWidth(50)
 					Label("• Mount Everest is really really tall •")
 						.font(NSFont.systemFont(ofSize: 12))
 						.bindTextColor(self, keyPath: \PrimaryDSL.descriptionColor, animated: true)
 						.lineBreakMode(.byTruncatingTail)
 						.allowsDefaultTighteningForTruncation(true)
-						.contentHugging(h: .stackFiller)
-						.contentCompressionResistance(h: .defaultLow)
+						.horizontalPriorities(hugging: .stackFiller, compressionResistance: .defaultLow)
 					ProgressBar()
 						.bindValue(self, keyPath: \PrimaryDSL.progressValue)
 				}
@@ -75,7 +73,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					self.descriptionColor = NSColor.randomRGB()
 					self.selectedSegments = NSSet(array: [1])
 				}
-				.contentHugging(h: .required)
+				.horizontalPriorities(hugging: .required)
 			}
 
 			Divider(direction: .horizontal)
@@ -83,7 +81,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			HStack {
 				Label("Select something interesting")
 					.lineBreakMode(.byTruncatingHead)
-					.contentCompressionResistance(h: .defaultLow)
+					.horizontalPriorities(hugging: .defaultLow)
 				PopupButton {
 					MenuItem(title: "Cats")
 					MenuItem(title: "Dogs")

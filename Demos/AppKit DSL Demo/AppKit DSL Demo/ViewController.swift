@@ -20,8 +20,8 @@ class ViewController: NSViewController {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		dslView.builder = primaryLayout
-		//dslView.builder = secondaryLayout
+		//dslView.builder = primaryLayout
+		dslView.builder = secondaryLayout
 	}
 
 	override var representedObject: Any? {

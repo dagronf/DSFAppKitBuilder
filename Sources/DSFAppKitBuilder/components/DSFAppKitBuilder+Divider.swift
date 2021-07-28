@@ -48,10 +48,10 @@ public class Divider: Element {
 		super.init(tag: tag)
 		separator.boxType = .separator
 		if direction == .horizontal {
-			_ = self.contentHugging(h: .defaultLow)
+			_ = self.horizontalPriorities(hugging: .defaultLow)
 		}
 		else {
-			_ = self.contentHugging(v: .defaultLow)
+			_ = self.verticalPriorities(hugging: .defaultLow)
 		}
 	}
 
