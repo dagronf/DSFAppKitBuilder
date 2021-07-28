@@ -49,9 +49,15 @@ class TabDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	lazy var body: Element =
 		TabView(tabViewType: .bottomTabsBezelBorder, selectedIndex: 2) {
-			Tab("first", content: tab1)
-			Tab("second", content: Label("second"))
-			Tab("Third", content: Label("third"))
+			Tab("first") {
+				tab1
+			}
+			Tab("second") {
+				VStack { Label("second") }
+			}
+			Tab("Third") {
+				VStack { Label("third") }
+			}
 		}
 		.bindTabIndex(self, keyPath: \TabDSL.selectedTab)
 
@@ -85,6 +91,7 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 				}
 				.bindHiddenViews(self, keyPath: \SplitDSL.hidden)
 			}
+			.edgeInsets(NSEdgeInsetsMake(8, 0, 0, 0))
 		}
 //		.additionalAppKitControlSettings { (box: NSBox) in
 //			box.titleFont = NSFont.systemFont(ofSize: 18)

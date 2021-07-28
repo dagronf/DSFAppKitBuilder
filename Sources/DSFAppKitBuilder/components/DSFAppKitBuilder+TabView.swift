@@ -54,7 +54,15 @@ public class Tab {
 
 	fileprivate let viewController: Controller
 
-	public init(
+	convenience public init(
+		_ title: String? = nil,
+		toolTip: String? = nil,
+		_ builder: () -> Element
+	) {
+		self.init(title, toolTip: toolTip, content: builder())
+	}
+
+	init(
 		_ title: String? = nil,
 		toolTip: String? = nil,
 		content: Element
