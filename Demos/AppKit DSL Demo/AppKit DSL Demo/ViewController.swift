@@ -20,6 +20,8 @@ class ViewController: NSViewController {
 	let secondaryLayout = SecondaryDSL()
 	let scrollTest = ScrollerTestDSL()
 
+	let tabTest = TabDSL()
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -27,7 +29,7 @@ class ViewController: NSViewController {
 		demo1View.builder = primaryLayout
 		demo2View.builder = secondaryLayout
 		demo3View.builder = scrollTest
-		//demo4View.builder = ....
+		demo4View.builder = tabTest
 	}
 
 	override var representedObject: Any? {
@@ -35,4 +37,29 @@ class ViewController: NSViewController {
 		// Update the view, if already loaded.
 		}
 	}
+}
+
+
+class TabDSL: NSObject, DSFAppKitBuilderViewHandler {
+
+	@objc dynamic var selectedTab: Int = 1 {
+		didSet {
+			Swift.print("Changed tabs - now \(selectedTab)")
+		}
+	}
+
+	lazy var body: Element =
+		TabView(tabViewType: .bottomTabsBezelBorder, selectedIndex: 2) {
+			Tab("first", content: tab1)
+			Tab("second", content: Label("second"))
+			Tab("Third", content: Label("third"))
+		}
+		.bindTabIndex(self, keyPath: \TabDSL.selectedTab)
+
+	lazy var tab1: Element =
+	VStack {
+		Label("first")
+		Button(title: "goober!")
+	}
+
 }
