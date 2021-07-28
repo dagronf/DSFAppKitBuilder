@@ -30,10 +30,10 @@ public class Button: Control {
 
 	public init(
 		tag: Int? = nil,
+		title: String,
 		type: NSButton.ButtonType = .momentaryLight,
 		bezelStyle: NSButton.BezelStyle = .rounded,
-		allowMixedState: Bool = false,
-		title: String
+		allowMixedState: Bool = false
 	) {
 		super.init(tag: tag)
 		self.button.title = title
@@ -44,10 +44,10 @@ public class Button: Control {
 
 	public init(
 		tag: Int? = nil,
+		title: String,
 		type: NSButton.ButtonType = .momentaryLight,
 		bezelStyle: NSButton.BezelStyle = .rounded,
 		allowMixedState: Bool = false,
-		title: String,
 		action: @escaping ((NSButton) -> Void)
 	) {
 		super.init(tag: tag)
@@ -61,9 +61,9 @@ public class Button: Control {
 
 	public init(
 		tag: Int? = nil,
+		title: String,
 		type: NSButton.ButtonType = .momentaryLight,
 		bezelStyle: NSButton.BezelStyle = .rounded,
-		title: String,
 		target: AnyObject,
 		action: Selector
 	) {

@@ -83,6 +83,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				PopupButton {
 					MenuItem(title: "Cats")
 					MenuItem(title: "Dogs")
+					MenuItem.Divider()
 					MenuItem(title: "Caterpillar")
 				}
 				.onChange { popupIndex in

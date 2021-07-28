@@ -28,9 +28,19 @@ import AppKit.NSMenu
 
 /// A menu item
 public class MenuItem {
-	let menuItem = NSMenuItem()
+	let menuItem: NSMenuItem
 	public init(title: String) {
+		menuItem = NSMenuItem()
 		menuItem.title = title
+	}
+
+	/// Make a menu divider item
+	public static func Divider() -> MenuItem {
+		return MenuItem()
+	}
+
+	public init() {
+		menuItem = NSMenuItem.separator()
 	}
 }
 

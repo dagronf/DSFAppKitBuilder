@@ -28,6 +28,116 @@ import AppKit
 
 // TODO: This!
 
-//public class VRadioButtons: Control {
-//
-//}
+
+public class RadioElement {
+	let title: String
+	let toolTip: String?
+	public init(_ title: String,
+					toolTip: String? = nil)
+	{
+		self.title = title
+		self.toolTip = toolTip
+	}
+}
+
+#if swift(<5.3)
+@_functionBuilder
+public struct RadioBuilder {
+	static func buildBlock() -> [RadioElement] { [] }
+}
+#else
+@resultBuilder
+public struct RadioBuilder {
+	static func buildBlock() -> [RadioElement] { [] }
+}
+#endif
+
+/// A resultBuilder to build menus
+public extension RadioBuilder {
+	static func buildBlock(_ settings: RadioElement...) -> [RadioElement] {
+		settings
+	}
+}
+
+public class Radio: Control {
+	public override var nsView: NSView { return self.radioGroup }
+	let radioGroup = NSStackView()
+	let content: [RadioElement]
+
+	public convenience init(
+		tag: Int? = nil,
+		selected: Int = 0,
+		spacing: CGFloat? = nil,
+		@RadioBuilder builder: () -> [RadioElement])
+	{
+		self.init(tag: tag, selected: selected, content: builder())
+	}
+
+	internal init(tag: Int? = nil,
+					  selected: Int = 0,
+					  spacing: CGFloat? = nil,
+					  content: [RadioElement])
+	{
+		self.content = content
+		super.init(tag: tag)
+
+		self.radioGroup.orientation = .vertical
+		self.radioGroup.alignment = .leading
+		if let s = spacing {
+			self.radioGroup.spacing = s
+		}
+
+		content.enumerated().forEach { item in
+			let button = NSButton()
+			button.setButtonType(.radio)
+			button.translatesAutoresizingMaskIntoConstraints = false
+			button.tag = item.0
+			button.title = item.1.title
+			button.toolTip = item.1.toolTip
+			button.state = (selected == item.0) ? .on : .off
+
+			button.target = self
+			button.action = #selector(radioSelected(_:))
+
+			button.setContentHuggingPriority(.defaultLow, for: .horizontal)
+			button.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+			button.setContentHuggingPriority(.defaultHigh, for: .vertical)
+			button.setContentCompressionResistancePriority(.required, for: .vertical)
+
+			radioGroup.addArrangedSubview(button)
+		}
+	}
+
+	/// Set a callback block for when the selection changes
+	public func onChange(_ block: @escaping (Int) -> Void) -> Self {
+		self.actionCallback = block
+		return self
+	}
+
+	@objc private func radioSelected(_ item: NSButton) {
+		self.actionCallback?(item.tag)
+	}
+
+	func selectRadioWithTag(_ tag: Int) {
+		let rds = self.radioGroup.arrangedSubviews as? [NSButton]
+		rds?.forEach { $0.state = ($0.tag == tag) ? .on : .off}
+	}
+
+	/// Bind the selection to a keypath
+	public func bindSelection<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
+		self.selectionBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			if let `self` = self {
+				self.selectRadioWithTag(newValue)
+				self.actionCallback?(newValue)
+			}
+		})
+		self.selectionBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
+		return self
+	}
+
+	// Private
+
+	private var actionCallback: ((Int) -> Void)? = nil
+	private lazy var selectionBinder = Bindable<Int>()
+
+}
