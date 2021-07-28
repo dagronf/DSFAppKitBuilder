@@ -63,7 +63,10 @@ public class Stack: Element {
 		self.stack.spacing = spacing
 		self.stack.orientation = orientation
 		self.stack.alignment = alignment
-		content.forEach { stack.addArrangedSubview($0.nsView) }
+		content.forEach {
+			stack.addArrangedSubview($0.nsView)
+			$0.addedToParentView(stack)
+		}
 
 		self.stack.needsLayout = true
 		self.stack.needsUpdateConstraints = true

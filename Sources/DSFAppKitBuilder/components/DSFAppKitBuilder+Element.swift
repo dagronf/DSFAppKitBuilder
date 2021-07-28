@@ -122,6 +122,13 @@ public class Element: NSObject {
 	@inlinable public func size(width: CGFloat, height: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		return self.width(width, priority: priority).height(height, priority: priority)
 	}
+
+	// MARK: - Hack to handle silly sizing of split view
+
+	public func addedToParentView(_ parentView: NSView) {
+		// Default -- do nothing
+	}
+
 }
 
 

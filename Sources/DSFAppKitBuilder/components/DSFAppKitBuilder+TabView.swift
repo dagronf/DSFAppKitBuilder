@@ -117,6 +117,7 @@ public class TabView: Control {
 		contents.forEach { item in
 			let t = NSTabViewItem(viewController: item.viewController)
 			t.label = item.title ?? ""
+			t.toolTip = item.toolTip
 			self.tabView.addTabViewItem(t)
 		}
 
