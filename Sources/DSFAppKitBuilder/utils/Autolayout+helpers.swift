@@ -30,8 +30,8 @@ public extension NSView {
 	func pinEdges(to other: NSView, offset: CGFloat = 0, animate: Bool = false) {
 		let target = animate ? animator() : self
 		target.leadingAnchor.constraint(equalTo: other.leadingAnchor, constant: offset).isActive = true
-		target.trailingAnchor.constraint(equalTo: other.trailingAnchor, constant: offset).isActive = true
+		target.trailingAnchor.constraint(equalTo: other.trailingAnchor, constant: -offset).isActive = true
 		target.topAnchor.constraint(equalTo: other.topAnchor, constant: offset).isActive = true
-		target.bottomAnchor.constraint(equalTo: other.bottomAnchor, constant: offset).isActive = true
+		target.bottomAnchor.constraint(equalTo: other.bottomAnchor, constant: -offset).isActive = true
 	}
 }

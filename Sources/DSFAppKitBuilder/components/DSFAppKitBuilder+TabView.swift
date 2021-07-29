@@ -49,17 +49,15 @@ public class TabViewItem {
 			// The NSTabView item doesn't seem to layout well if the tab item's container is autolayout
 			// Wrap our element in a non-autolayout NSView first
 			let container = NSView()
+			container.translatesAutoresizingMaskIntoConstraints = false
 			container.addSubview(self.content.nsView)
-			self.content.nsView.pinEdges(to: container)
+			self.content.nsView.pinEdges(to: container, offset: 20)
 
 			self.view = container
-			self.view.setContentHuggingPriority(.defaultLow, for: .horizontal)
-			self.view.setContentHuggingPriority(.defaultLow, for: .vertical)
-			self.view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-			self.view.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-
-			self.view.needsLayout = true
-			self.view.needsUpdateConstraints = true
+			self.view.setContentHuggingPriority(NSLayoutConstraint.Priority(100), for: .horizontal)
+			self.view.setContentHuggingPriority(NSLayoutConstraint.Priority(100), for: .vertical)
+			self.view.setContentCompressionResistancePriority(NSLayoutConstraint.Priority(100), for: .horizontal)
+			self.view.setContentCompressionResistancePriority(NSLayoutConstraint.Priority(100), for: .vertical)
 		}
 	}
 
@@ -175,6 +173,7 @@ extension TabView: NSTabViewDelegate {
 	public func tabView(_: NSTabView, didSelect tabViewItem: NSTabViewItem?) {
 		if let item = tabViewItem {
 			let index = self.tabView.indexOfTabViewItem(item)
+			item.view?.needsUpdateConstraints = true
 			self.changeBlock?(index)
 			if self.valueBinder.isActive {
 				self.valueBinder.setValue(index)
