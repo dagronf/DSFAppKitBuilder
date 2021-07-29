@@ -49,15 +49,13 @@ public class TabViewItem {
 			// The NSTabView item doesn't seem to layout well if the tab item's container is autolayout
 			// Wrap our element in a non-autolayout NSView first
 			let container = NSView()
-			container.translatesAutoresizingMaskIntoConstraints = false
+			container.translatesAutoresizingMaskIntoConstraints = true
+			container.autoresizingMask = [.width, .height]
 			container.addSubview(self.content.nsView)
+
 			self.content.nsView.pinEdges(to: container, offset: 20)
 
 			self.view = container
-			self.view.setContentHuggingPriority(NSLayoutConstraint.Priority(100), for: .horizontal)
-			self.view.setContentHuggingPriority(NSLayoutConstraint.Priority(100), for: .vertical)
-			self.view.setContentCompressionResistancePriority(NSLayoutConstraint.Priority(100), for: .horizontal)
-			self.view.setContentCompressionResistancePriority(NSLayoutConstraint.Priority(100), for: .vertical)
 		}
 	}
 

@@ -74,10 +74,10 @@
 				2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */,
 				232EC66026B223A30042C7F7 /* TabDSL.swift */,
 				237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */,
+				232EC66226B223C40042C7F7 /* SplitDSL.swift */,
 				2304027C26AF7E60002016FD /* Assets.xcassets */,
 				2304027E26AF7E60002016FD /* Main.storyboard */,
 				2304028A26AF7EFB002016FD /* Utilities.swift */,
-				232EC66226B223C40042C7F7 /* SplitDSL.swift */,
 			);
 			path = "AppKit DSL Demo";
 			sourceTree = "<group>";

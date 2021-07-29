@@ -46,13 +46,11 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 	lazy var split2: Element =
 		VStack {
 			Label("second")
-				.horizontalPriorities(hugging: 10)
 		}
 		.backgroundColor(.systemGreen)
 	lazy var split3: Element =
 		VStack {
 			Label("third")
-				.horizontalPriorities(hugging: 10)
 		}
 		.backgroundColor(.systemBlue)
 }
