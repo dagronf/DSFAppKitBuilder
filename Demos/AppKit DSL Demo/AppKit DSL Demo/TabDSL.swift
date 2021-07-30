@@ -23,8 +23,9 @@ class TabDSL: NSObject, DSFAppKitBuilderViewHandler {
 			TabViewItem("second") {
 				VStack { Label("second") }
 			}
-			TabViewItem("Third") {
-				VStack { Label("third") }
+			TabViewItem("Image") {
+				ImageView(NSImage(named: "filter-icon"))
+					.scaling(.scaleProportionallyUpOrDown)
 			}
 		}
 		.bindTabIndex(self, keyPath: \TabDSL.selectedTab)

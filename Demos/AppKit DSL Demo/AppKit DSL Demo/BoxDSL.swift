@@ -16,13 +16,13 @@ class BoxDSL: NSObject, DSFAppKitBuilderViewHandler {
 			Box("Fishy 1") {
 				VStack {
 					Label("This is test")
-						.horizontalPriorities(hugging: 10)
+						.horizontalPriorities(hugging: 100)
 					TextField()
 						.placeholderText("Noodles")
-						.horizontalPriorities(hugging: 10)
+						.horizontalPriorities(hugging: 100)
 					EmptyView()
-						.verticalPriorities(hugging: 10, compressionResistance: 10)
-						.horizontalPriorities(hugging: 10, compressionResistance: 10)
+						.verticalPriorities(hugging: 100, compressionResistance: 100)
+						.horizontalPriorities(hugging: 100, compressionResistance: 100)
 				}
 				.edgeInsets(8)
 				.hugging(h: 10)
