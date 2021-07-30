@@ -34,13 +34,15 @@ class MainTabs: NSObject, DSFAppKitBuilderViewHandler {
 	let scrollTest = ScrollerTestDSL()
 	let tabTest = TabDSL()
 	let splitTest = SplitDSL()
+	let boxText = BoxDSL()
 
 	lazy var body: Element =
 	TabView(selectedIndex: 0) {
 		TabViewItem("Demo 1") { self.primaryLayout.body }
 		TabViewItem("Demo 2") { self.secondaryLayout.body }
-		TabViewItem("Demo 3") { self.scrollTest.body }
-		TabViewItem("Demo 4") { self.tabTest.body }
-		TabViewItem("Split Demo") { self.splitTest.body }
+		TabViewItem("Scroll") { self.scrollTest.body }
+		TabViewItem("Tab") { self.tabTest.body }
+		TabViewItem("Split") { self.splitTest.body }
+		TabViewItem("Box") { self.boxText.body }
 	}
 }

@@ -18,7 +18,7 @@ class TabDSL: NSObject, DSFAppKitBuilderViewHandler {
 	lazy var body: Element =
 		TabView(tabViewType: .bottomTabsBezelBorder, selectedIndex: 2) {
 			TabViewItem("first") {
-				tab1
+				inner
 			}
 			TabViewItem("second") {
 				VStack { Label("second") }
@@ -29,9 +29,17 @@ class TabDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 		.bindTabIndex(self, keyPath: \TabDSL.selectedTab)
 
-	lazy var tab1: Element =
-		VStack {
-			Label("first")
-			Button(title: "goober!")
+
+	lazy var inner: Element =
+		TabView(tabViewType: .rightTabsBezelBorder, selectedIndex: 0) {
+			TabViewItem("first") {
+				VStack { Label("first-first") }
+			}
+			TabViewItem("second") {
+				VStack { Label("first-second") }
+			}
+			TabViewItem("Third") {
+				VStack { Label("first-third") }
+			}
 		}
 }
