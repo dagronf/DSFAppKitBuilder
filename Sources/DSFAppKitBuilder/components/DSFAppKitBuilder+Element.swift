@@ -143,3 +143,23 @@ public extension Element {
 		return self
 	}
 }
+
+// MARK: - Result Builder for stacks
+
+#if swift(<5.3)
+@_functionBuilder
+public enum ElementBuilder {
+	static func buildBlock() -> [Element] { [] }
+}
+#else
+@resultBuilder
+public enum ElementBuilder {
+	static func buildBlock() -> [Element] { [] }
+}
+#endif
+
+public extension ElementBuilder {
+	static func buildBlock(_ settings: Element...) -> [Element] {
+		settings
+	}
+}

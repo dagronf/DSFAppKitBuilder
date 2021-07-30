@@ -93,23 +93,3 @@ public extension Stack {
 		return self.edgeInsets(NSEdgeInsets(top: value, left: value, bottom: value, right: value))
 	}
 }
-
-// MARK: - Result Builder for stacks
-
-#if swift(<5.3)
-@_functionBuilder
-public enum StackBuilder {
-	static func buildBlock() -> [Element] { [] }
-}
-#else
-@resultBuilder
-public enum StackBuilder {
-	static func buildBlock() -> [Element] { [] }
-}
-#endif
-
-public extension StackBuilder {
-	static func buildBlock(_ settings: Element...) -> [Element] {
-		settings
-	}
-}

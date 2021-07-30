@@ -26,6 +26,7 @@
 
 import AppKit
 
+// Wrapper for NSSplitView
 public class SplitView: Control {
 	private let controller = NSSplitViewController(nibName: nil, bundle: nil)
 	private lazy var splitView: NSSplitView = {
@@ -95,19 +96,42 @@ public class SplitView: Control {
 
 }
 
-/// MARK: Split View Item
+// MARK: Split View Item
 
 public class SplitViewItem {
-	// SplitViewController uses ViewControllers to manage the tabs.
-	fileprivate class Controller: NSViewController {
-		let content: Element
 
+	convenience public init(
+		holdingPriority: NSLayoutConstraint.Priority? = .defaultLow,
+		builder: () -> Element) {
+		self.init(
+			holdingPriority: holdingPriority,
+			content: builder()
+		)
+	}
+
+	public init(
+		holdingPriority: NSLayoutConstraint.Priority? = .defaultLow,
+		content: Element)
+	{
+		self.viewController = SplitViewItem.Controller(content: content)
+		self.holdingPriority = holdingPriority
+	}
+
+	// Private
+	fileprivate let viewController: Controller
+	fileprivate let holdingPriority: NSLayoutConstraint.Priority?
+}
+
+// SplitViewController uses ViewControllers to manage the tabs.
+private extension SplitViewItem {
+	 class Controller: NSViewController {
+		let content: Element
 		let contentView = NSView()
 
-		init(content: Element)
+		public init(content: Element)
 		{
 			self.content = content
-
+			contentView.autoresizingMask = [.width, .height]
 			contentView.addSubview(content.nsView)
 			content.nsView.pinEdges(to: contentView)
 
@@ -123,20 +147,9 @@ public class SplitViewItem {
 			self.view = self.content.nsView
 		}
 	}
-
-	fileprivate let viewController: Controller
-	fileprivate let holdingPriority: NSLayoutConstraint.Priority?
-
-	public init(
-		holdingPriority: NSLayoutConstraint.Priority? = .defaultLow,
-		content: Element)
-	{
-		self.viewController = SplitViewItem.Controller(content: content)
-		self.holdingPriority = holdingPriority
-	}
 }
 
-/// MARK: - Result Builder for SplitViewItems
+// MARK: - Result Builder for SplitViewItems
 
 #if swift(<5.3)
 @_functionBuilder

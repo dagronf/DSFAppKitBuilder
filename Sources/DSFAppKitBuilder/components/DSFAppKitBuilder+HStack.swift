@@ -46,7 +46,7 @@ public class HStack: Stack {
 		tag: Int? = nil,
 		spacing: CGFloat = 8,
 		alignment: NSLayoutConstraint.Attribute = .centerY,
-		@StackBuilder builder: () -> [Element]
+		@ElementBuilder builder: () -> [Element]
 	) {
 		self.init(
 			tag: tag,

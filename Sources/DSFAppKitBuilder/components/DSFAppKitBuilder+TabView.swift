@@ -26,65 +26,6 @@
 
 import AppKit
 
-/// An individual tab item
-public class TabViewItem {
-	/// Create a TabViewItem using a resultBuilder
-	public convenience init(
-		_ title: String? = nil,
-		toolTip: String? = nil,
-		_ builder: () -> Element
-	) {
-		self.init(title, toolTip: toolTip, content: builder())
-	}
-
-	/// Create a TabViewItem
-	init(
-		_ title: String? = nil,
-		toolTip: String? = nil,
-		content: Element
-	) {
-		self.title = title
-		self.toolTip = toolTip
-		self.viewController = TabViewItem.Controller(content: content)
-	}
-
-	// Private
-
-	// TabView uses ViewControllers to manage the tabs.
-	fileprivate class Controller: NSViewController {
-		let content: Element
-
-		init(
-			content: Element)
-		{
-			self.content = content
-			super.init(nibName: nil, bundle: nil)
-		}
-
-		@available(*, unavailable)
-		required init?(coder _: NSCoder) {
-			fatalError("init(coder:) has not been implemented")
-		}
-
-		override func loadView() {
-			// The NSTabView item doesn't seem to layout well if the tab item's container is autolayout
-			// Wrap our element in a non-autolayout NSView first
-			let container = NSView()
-			container.translatesAutoresizingMaskIntoConstraints = true
-			container.autoresizingMask = [.width, .height]
-			container.addSubview(self.content.nsView)
-
-			self.content.nsView.pinEdges(to: container, offset: 20)
-
-			self.view = container
-		}
-	}
-
-	fileprivate let title: String?
-	fileprivate let toolTip: String?
-	fileprivate let viewController: Controller
-}
-
 /// A Tab View control
 public class TabView: Control {
 	public convenience init(
@@ -170,6 +111,58 @@ extension TabView: NSTabViewDelegate {
 			if self.valueBinder.isActive {
 				self.valueBinder.setValue(index)
 			}
+		}
+	}
+}
+
+// MARK: - Tab Item
+
+/// An individual tab item
+public class TabViewItem {
+	/// Create a TabViewItem using a resultBuilder
+	public convenience init(_ title: String? = nil, toolTip: String? = nil, _ builder: () -> Element) {
+		self.init(title, toolTip: toolTip, content: builder())
+	}
+
+	/// Create a TabViewItem
+	init(_ title: String? = nil, toolTip: String? = nil, content: Element) {
+		self.title = title
+		self.toolTip = toolTip
+		self.viewController = TabViewItem.Controller(content: content)
+	}
+
+	// Private
+	fileprivate let title: String?
+	fileprivate let toolTip: String?
+	fileprivate let viewController: Controller
+}
+
+private extension TabViewItem {
+	// TabView uses ViewControllers to manage the tabs.
+	class Controller: NSViewController {
+		private let content: Element
+
+		init(content: Element) {
+			self.content = content
+			super.init(nibName: nil, bundle: nil)
+		}
+
+		@available(*, unavailable)
+		required init?(coder _: NSCoder) {
+			fatalError("init(coder:) has not been implemented")
+		}
+
+		override func loadView() {
+			// The NSTabView item doesn't seem to layout well if the tab item's container is autolayout
+			// Wrap our element in a non-autolayout NSView first
+			let container = NSView()
+			container.translatesAutoresizingMaskIntoConstraints = true
+			container.autoresizingMask = [.width, .height]
+			container.addSubview(self.content.nsView)
+
+			self.content.nsView.pinEdges(to: container, offset: 20)
+
+			self.view = container
 		}
 	}
 }

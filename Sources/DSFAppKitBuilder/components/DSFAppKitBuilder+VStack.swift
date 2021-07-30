@@ -45,7 +45,7 @@ public class VStack: Stack {
 		tag: Int? = nil,
 		spacing: CGFloat = 8,
 		alignment: NSLayoutConstraint.Attribute = .centerX,
-		@StackBuilder builder: () -> [Element]
+		@ElementBuilder builder: () -> [Element]
 	) {
 		self.init(
 			tag: tag,

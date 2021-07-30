@@ -45,7 +45,7 @@ public class ScrollView: Element {
 		tag: Int? = nil,
 		fitHorizontally: Bool = true,
 		autohidesScrollers: Bool = true,
-		@StackBuilder builder: () -> [Element]
+		@ElementBuilder builder: () -> [Element]
 	) {
 		self.init(
 			tag: tag,
