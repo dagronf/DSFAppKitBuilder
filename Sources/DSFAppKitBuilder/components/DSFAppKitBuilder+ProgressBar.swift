@@ -24,30 +24,36 @@
 //  SOFTWARE.
 //
 
-
 import AppKit.NSProgressIndicator
 
 public class ProgressBar: Element {
-	let progress = NSProgressIndicator()
-	public override var nsView: NSView { return self.progress }
-
 	public init(
 		tag: Int? = nil,
 		indeterminite: Bool = false,
-		range: ClosedRange<Double> = 0...100,
+		range: ClosedRange<Double> = 0 ... 100,
 		value: Double = 20
 	) {
 		super.init(tag: tag)
-
+		
 		self.progress.isIndeterminate = false
 		self.progress.minValue = range.lowerBound
 		self.progress.maxValue = range.upperBound
 		self.progress.doubleValue = value
 		self.progress.isIndeterminate = indeterminite
 	}
-
+	
+	// Private
+	
+	override public var nsView: NSView { return self.progress }
+	
+	private let progress = NSProgressIndicator()
 	private lazy var progressBinder = Bindable<Double>()
-	public func bindValue<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Double>) -> Self {
+}
+
+// MARK: - Bindings
+
+public extension ProgressBar {
+	func bindValue<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Double>) -> Self {
 		self.progressBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.progress.doubleValue = newValue
 		})

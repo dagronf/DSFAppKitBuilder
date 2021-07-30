@@ -36,11 +36,11 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			.horizontalPriorities(hugging: .defaultLow)
 		}
 		CheckBox("Checkbox!")
-			.action { button in
-				Swift.print("State is now \(button.state)")
+			.onAction { state in
+				Swift.print("State is now \(state)")
 			}
 
-		Radio() {
+		RadioGroup() {
 			RadioElement("first")
 			RadioElement("second")
 			RadioElement("third")
@@ -51,7 +51,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 
 		Button(title: "Reset radio")
-			.action { [weak self] _ in
+			.onAction { [weak self] _ in
 				self?.radioSelection = 0
 			}
 

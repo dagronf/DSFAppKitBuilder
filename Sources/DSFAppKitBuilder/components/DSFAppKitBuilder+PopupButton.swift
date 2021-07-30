@@ -26,16 +26,35 @@
 
 import AppKit.NSPopUpButton
 
+/// Wrapper for NSPopupButton
 public class PopupButton: Control {
+
+	public convenience init(
+		tag: Int? = nil,
+		pullsDown: Bool = false,
+		@MenuBuilder builder: () -> [MenuItem]
+	) {
+		self.init(
+			tag: tag,
+			pullsDown: pullsDown,
+			content: builder()
+		)
+	}
+
+	// Private
+
 	override public var nsView: NSView { return self.popupButton }
-	let popupButton = NSPopUpButton()
-	let content: [MenuItem]
+	private let popupButton = NSPopUpButton()
+	private let content: [MenuItem]
+
+	private lazy var selectionBinder = Bindable<Int>()
+	private var selectionChangeBlock: ((Int) -> Void)?
 
 	internal init(
 		tag: Int? = nil,
 		pullsDown: Bool = false,
-		content: [MenuItem])
-	{
+		content: [MenuItem]
+	) {
 		self.content = content
 		super.init(tag: tag)
 
@@ -48,53 +67,54 @@ public class PopupButton: Control {
 		}
 		self.popupButton.menu = menu
 	}
+}
 
-	public convenience init(
-		tag: Int? = nil,
-		pullsDown: Bool = false,
-		@MenuBuilder builder: () -> [MenuItem])
-	{
-		self.init(
-			tag: tag,
-			pullsDown: pullsDown,
-			content: builder()
-		)
-	}
+// MARK: - Modifiers
 
-	public func selectItem(at index: Int) -> Self {
+public extension PopupButton {
+	/// Set the initially selected popup item
+	func selectItem(at index: Int) -> Self {
 		self.popupButton.selectItem(at: index)
 		return self
 	}
+}
 
-	public var selectedIndex: Int {
-		return self.popupButton.indexOfSelectedItem
-	}
+// MARK: - Action
 
+public extension PopupButton {
 	/// Set the block to be called when the selection changes
-	public func onChange(_ block: @escaping (Int) -> Void) -> Self {
+	func onChange(_ block: @escaping (Int) -> Void) -> Self {
 		self.selectionChangeBlock = block
 		return self
 	}
+}
 
-	@objc private func selectionChanged(_ sender: Any) {
-		self.selectionChangeBlock?(self.selectedIndex)
+// MARK: - Binding
 
-		if selectionBinder.isActive {
-			selectionBinder.setValue(self.selectedIndex)
-		}
-	}
-
+public extension PopupButton {
 	/// Bind the selection to a keypath
-	public func bindSelection<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
+	func bindSelection<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
 		self.selectionBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.popupButton.selectItem(at: newValue)
 		})
 		self.selectionBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
+}
 
-	// Private
+// MARK: Private
 
-	private lazy var selectionBinder = Bindable<Int>()
-	private var selectionChangeBlock: ((Int) -> Void)?
+private extension PopupButton {
+
+	var selectedIndex: Int {
+		return self.popupButton.indexOfSelectedItem
+	}
+
+	@objc private func selectionChanged(_: Any) {
+		self.selectionChangeBlock?(self.selectedIndex)
+
+		if self.selectionBinder.isActive {
+			self.selectionBinder.setValue(self.selectedIndex)
+		}
+	}
 }

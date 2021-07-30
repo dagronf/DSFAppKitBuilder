@@ -36,31 +36,16 @@ public class ColorWell: Control {
 		color: NSColor? = nil)
 	{
 		super.init(tag: tag)
-
 		self.colorWell.showsAlpha = showsAlpha
-
 		self.colorWell.isBordered = isBordered
-		if let c = color { self.colorWell.color = c }
-	}
 
-	/// Set a callback block for when the color changes
-	public func onChange(_ block: @escaping (NSColor) -> Void) -> Self {
-		self.actionCallback = block
+		// Capture changes
 		self.colorWell.target = self
 		self.colorWell.action = #selector(colorChanged(_:))
-		return self
-	}
 
-	@objc private func colorChanged(_ sender: Any) {
-		self.actionCallback?(self.colorWell.color)
-	}
-
-	/// Bind the image to a keypath
-	public func bindColor<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSColor>) -> Self {
-		self.colorBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
-			self?.colorWell.color = newValue
-		})
-		return self
+		if let c = color {
+			self.colorWell.color = c
+		}
 	}
 
 	// Privates
@@ -70,9 +55,36 @@ public class ColorWell: Control {
 	private lazy var colorBinder = Bindable<NSColor>()
 	private var actionCallback: ((NSColor) -> Void)? = nil
 
+	@objc private func colorChanged(_ sender: Any) {
+		self.actionCallback?(self.colorWell.color)
+	}
 }
 
-class AlphaCompatibleColorWell: NSColorWell {
+// MARK: - Action callbacks
+
+public extension ColorWell {
+	/// Set a callback block for when the color changes
+	func onChange(_ block: @escaping (NSColor) -> Void) -> Self {
+		self.actionCallback = block
+		return self
+	}
+}
+
+// MARK: - Bindings
+
+public extension ColorWell {
+	/// Bind the image to a keypath
+	func bindColor<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSColor>) -> Self {
+		self.colorBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.colorWell.color = newValue
+		})
+		return self
+	}
+}
+
+// MARK: - Custom Colorwell
+
+internal class AlphaCompatibleColorWell: NSColorWell {
 	var showsAlpha: Bool = false
 	override func activate(_ exclusive: Bool) {
 		NSColorPanel.shared.showsAlpha = self.showsAlpha

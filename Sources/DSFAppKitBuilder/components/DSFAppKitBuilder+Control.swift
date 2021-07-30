@@ -28,29 +28,37 @@ import AppKit.NSControl
 
 /// A DSL Element that is a control (ie. it is interactive in some way, like a button)
 public class Control: Element {
-	var control: NSControl { return nsView as! NSControl }
-
 	// Block the initializer so can't be created outside the package
 	internal override init(tag: Int? = nil) {
 		super.init(tag: tag)
 	}
 
+	// Private
+	private lazy var isEnabledBinder = Bindable<Bool>()
+	private var control: NSControl { return nsView as! NSControl }
+}
+
+// MARK: - Modifiers
+
+public extension Control {
 	/// Set the enabled state for the control
-	public func isEnabled(_ isEnabled: Bool) -> Self {
+	func isEnabled(_ isEnabled: Bool) -> Self {
 		control.isEnabled = isEnabled
 		return self
 	}
 
 	/// Set the control size for the element
-	public func controlSize(_ controlSize: NSControl.ControlSize) -> Self {
+	func controlSize(_ controlSize: NSControl.ControlSize) -> Self {
 		self.control.controlSize = controlSize
 		return self
 	}
+}
 
-	private lazy var isEnabledBinder = Bindable<Bool>()
+// MARK: - Bindings
 
+public extension Control {
 	/// Binding for isEnabled
-	public func bindIsEnabled<TYPE: NSObject>(_ object: TYPE, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
+	func bindIsEnabled<TYPE: NSObject>(_ object: TYPE, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
 		self.isEnabledBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.control.isEnabled = newValue
 		})

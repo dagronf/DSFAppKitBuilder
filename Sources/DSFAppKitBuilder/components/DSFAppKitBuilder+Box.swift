@@ -55,16 +55,19 @@ public class Box: Element {
 		boxView.titlePosition = titlePosition
 	}
 
-
-	/// Set the font for the box title
-	public func titleFont(_ font: NSFont) -> Self {
-		self.boxView.titleFont = font
-		return self
-	}
-
 	// Private
 	private let boxView = NSBox()
 	override public var nsView: NSView { return self.boxView }
 	private let containerView = NSView()
 	private let content: Element
+}
+
+// MARK: - Modifiers
+
+public extension Box {
+	/// Set the font for the box title
+	func titleFont(_ font: NSFont) -> Self {
+		self.boxView.titleFont = font
+		return self
+	}
 }

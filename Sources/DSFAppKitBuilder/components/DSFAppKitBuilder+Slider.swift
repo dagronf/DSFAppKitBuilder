@@ -27,9 +27,6 @@
 import AppKit.NSSlider
 
 public class Slider: Control {
-	let slider = NSSlider()
-	public override var nsView: NSView { return self.slider }
-
 	public init(
 		tag: Int? = nil,
 		range: ClosedRange<Double> = 0...100,
@@ -47,22 +44,47 @@ public class Slider: Control {
 		self.slider.isVertical = isVertical
 	}
 
+	// Private
+	private let slider = NSSlider()
+	public override var nsView: NSView { return self.slider }
+	private lazy var valueBinder = Bindable<Double>()
+	private var actionCallback: ((Double) -> Void)? = nil
+}
+
+// MARK: - Modifiers
+
+public extension Slider {
+	func numberOfTickMarks(_ count: Int, allowsTickMarkValuesOnly: Bool = false) -> Self {
+		self.slider.numberOfTickMarks = count
+		self.slider.allowsTickMarkValuesOnly = allowsTickMarkValuesOnly
+		return self
+	}
+}
+
+// MARK: - Actions
+
+public extension Slider {
+
+	/// Set a callback block for when the selection changes
+	func onChange(_ block: @escaping (Double) -> Void) -> Self {
+		self.actionCallback = block
+		return self
+	}
+
 	@objc private func sliderDidChange(_ sender: Any) {
 		valueBinder.setValue(self.slider.doubleValue)
 	}
+}
 
-	private lazy var valueBinder = Bindable<Double>()
-	public func bindValue<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Double>) -> Self {
+// MARK: - Bindings
+
+public extension Slider {
+	/// Bind the value for the slider to a key path
+	func bindValue<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Double>) -> Self {
 		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.slider.doubleValue = newValue
 		})
 		self.valueBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
-		return self
-	}
-
-	public func numberOfTickMarks(_ count: Int, allowsTickMarkValuesOnly: Bool = false) -> Self {
-		self.slider.numberOfTickMarks = count
-		self.slider.allowsTickMarkValuesOnly = allowsTickMarkValuesOnly
 		return self
 	}
 }

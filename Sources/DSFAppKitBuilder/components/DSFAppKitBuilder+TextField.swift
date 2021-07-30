@@ -40,49 +40,6 @@ public class TextField: Label {
 		self.label.delegate = self
 	}
 
-	/// Set the placeholder text for the text field
-	public func placeholderText(_ label: String) -> Self {
-		self.label.placeholderString = label
-		return self
-	}
-
-	public func isContinuous(_ b: Bool) -> Self {
-		self.label.isContinuous = b
-		return self
-	}
-
-	// MARK: - Binding
-
-	/// Bind the text content to a keypath
-	public func bindText<TYPE>(updateOnEndEditingOnly: Bool = false, _ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
-		self.updateOnEndEditingOnly = updateOnEndEditingOnly
-		self.textFieldBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
-			self?.label.stringValue = newValue
-		})
-		self.textFieldBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
-		return self
-	}
-
-	// MARK: - Editing callbacks
-
-	/// Block to call when the user starts editing the field
-	public func didStartEditing(_ block: @escaping (NSTextField) -> Void) -> Self {
-		self.didBeginEditing = block
-		return self
-	}
-
-	/// Block to call when the user modifies the content in the field
-	public func didEdit(_ block: @escaping (NSTextField) -> Void) -> Self {
-		self.didEdit = block
-		return self
-	}
-
-	/// Block to call when the user ends editing within the field
-	public func didEndEditing(_ block: @escaping (NSTextField) -> Void) -> Self {
-		self.didEndEditing = block
-		return self
-	}
-
 	// Privates
 
 	// Block callbacks
@@ -93,6 +50,58 @@ public class TextField: Label {
 	// Text Content binding
 	private lazy var textFieldBinder = Bindable<String>()
 	private var updateOnEndEditingOnly: Bool = false
+}
+
+// MARK: Modifiers
+
+public extension TextField {
+	/// Set the placeholder text for the text field
+	func placeholderText(_ label: String) -> Self {
+		self.label.placeholderString = label
+		return self
+	}
+
+	/// Set continuous updates from the text field
+	func isContinuous(_ b: Bool) -> Self {
+		self.label.isContinuous = b
+		return self
+	}
+}
+
+// MARK: Actions
+
+public extension TextField {
+	/// Block to call when the user starts editing the field
+	func onStartEditing(_ block: @escaping (NSTextField) -> Void) -> Self {
+		self.didBeginEditing = block
+		return self
+	}
+
+	/// Block to call when the user modifies the content in the field
+	func onEdit(_ block: @escaping (NSTextField) -> Void) -> Self {
+		self.didEdit = block
+		return self
+	}
+
+	/// Block to call when the user ends editing within the field
+	func onEndEditing(_ block: @escaping (NSTextField) -> Void) -> Self {
+		self.didEndEditing = block
+		return self
+	}
+}
+
+// MARK: Bindings
+
+public extension TextField {
+	/// Bind the text content to a keypath
+	func bindText<TYPE>(updateOnEndEditingOnly: Bool = false, _ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
+		self.updateOnEndEditingOnly = updateOnEndEditingOnly
+		self.textFieldBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.label.stringValue = newValue
+		})
+		self.textFieldBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
+		return self
+	}
 }
 
 // MARK: Text Field delegate methods

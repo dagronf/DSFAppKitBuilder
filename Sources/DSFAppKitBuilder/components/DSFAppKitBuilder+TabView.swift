@@ -87,9 +87,6 @@ public class TabViewItem {
 
 /// A Tab View control
 public class TabView: Control {
-	let tabView = NSTabView()
-	override public var nsView: NSView { return self.tabView }
-
 	public convenience init(
 		tag: Int? = nil,
 		tabViewType: NSTabView.TabType? = nil,
@@ -132,24 +129,37 @@ public class TabView: Control {
 		self.tabView.needsDisplay = true
 	}
 
-	public func onChange(_ changeBlock: @escaping (Int) -> Void) -> Self {
+	// Private
+	private let tabView = NSTabView()
+	override public var nsView: NSView { return self.tabView }
+
+	private lazy var valueBinder = Bindable<Int>()
+	private var changeBlock: ((Int) -> Void)?
+}
+
+// MARK: - Actions
+
+public extension TabView {
+	func onChange(_ changeBlock: @escaping (Int) -> Void) -> Self {
 		self.changeBlock = changeBlock
 		return self
 	}
+}
 
+// MARK: - Bindings
+
+public extension TabView {
 	/// Bind the selected segments to a keypath
-	public func bindTabIndex<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
+	func bindTabIndex<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
 		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.tabView.selectTabViewItem(at: newValue)
 		})
 		self.valueBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
-
-	// Private
-	private lazy var valueBinder = Bindable<Int>()
-	private var changeBlock: ((Int) -> Void)?
 }
+
+// MARK: - NSTabViewDelegate
 
 extension TabView: NSTabViewDelegate {
 	public func tabView(_: NSTabView, didSelect tabViewItem: NSTabViewItem?) {

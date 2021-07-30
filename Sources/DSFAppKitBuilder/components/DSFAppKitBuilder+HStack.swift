@@ -1,7 +1,7 @@
 //
-//  DSFAppKitBuilder+Container.swift
+//  DSFAppKitBuilder+HStack.swift
 //
-//  Created by Darren Ford on 27/7/21
+//  Created by Darren Ford on 30/7/21
 //
 //  MIT License
 //
@@ -24,16 +24,34 @@
 //  SOFTWARE.
 //
 
-import AppKit
 
-public class Embedded: Element {
+import AppKit.NSStackView
 
-	private let embedded: Element
-	public override var nsView: NSView { return embedded.nsView }
+/// A horizontal NSStackView wrapper
+public class HStack: Stack {
+	public init(
+		tag: Int? = nil,
+		spacing: CGFloat = 8,
+		alignment: NSLayoutConstraint.Attribute = .centerY,
+		content: [Element]) {
+			super.init(
+				tag: tag,
+				orientation: .horizontal,
+				spacing: spacing,
+				alignment: alignment,
+				content: content)
+		}
 
-	/// Create an element that contains another SwiftDSL element
-	public init(tag: Int? = nil, dslElement: Element) {
-		self.embedded = dslElement
-		super.init(tag: tag)
+	public convenience init(
+		tag: Int? = nil,
+		spacing: CGFloat = 8,
+		alignment: NSLayoutConstraint.Attribute = .centerY,
+		@StackBuilder builder: () -> [Element]
+	) {
+		self.init(
+			tag: tag,
+			spacing: spacing,
+			alignment: alignment,
+			content: builder())
 	}
 }

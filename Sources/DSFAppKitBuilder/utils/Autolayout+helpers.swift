@@ -35,3 +35,44 @@ public extension NSView {
 		target.bottomAnchor.constraint(equalTo: other.bottomAnchor, constant: -offset).isActive = true
 	}
 }
+
+//protocol LayoutTokenInstaller {
+//	func installConstraint()
+//}
+//
+//class LayoutToken {
+//
+//	var elements = WeakArray<Element>()
+//
+//
+////	func installConstraint() {
+////		guard let v1 = first?.nsView, let v2 = second?.nsView else {
+////			return
+////		}
+////
+////	}
+//
+//}
+//
+//class EqualWidthToken: LayoutToken, LayoutTokenInstaller {
+//	func installConstraint() {
+//		let nonNil = self.elements
+//			.filter { $0 != nil }
+//
+//		guard nonNil.count > 1 else { return }
+//
+//		let firstItem = nonNil[0]
+//		let attach = nonNil.suffix(nonNil.count - 1)
+//
+//
+//		attach.forEach { item in
+//			let c = NSLayoutConstraint(item: v2, attribute: NSLayoutConstraint.Attribute, relatedBy: .width, toItem: firstItem?.nsView, attribute: .width, multiplier: 1, constant: 0)
+//			firstItem
+//		}
+//
+//
+//
+//	}
+//
+//
+//}

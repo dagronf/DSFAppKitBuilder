@@ -1,7 +1,7 @@
 //
-//  DSFAppKitBuilder+Divider.swift
+//  DSFAppKitBuilder+VStack.swift
 //
-//  Created by Darren Ford on 27/7/21
+//  Created by Darren Ford on 30/7/21
 //
 //  MIT License
 //
@@ -24,38 +24,33 @@
 //  SOFTWARE.
 //
 
-import AppKit.NSBox
 
-public class Divider: Element {
+import AppKit.NSStackView
 
-	public enum Direction {
-		case horizontal
-		case vertical
+/// A horizontal NSStackView wrapper
+public class VStack: Stack {
+	public init(
+		tag: Int? = nil,
+		spacing: CGFloat = 8,
+		alignment: NSLayoutConstraint.Attribute = .centerX,
+		content: [Element]) {
+			super.init(tag: tag,
+						  orientation: .vertical,
+						  spacing: spacing,
+						  alignment: alignment,
+						  content: content)
+		}
+
+	public convenience init(
+		tag: Int? = nil,
+		spacing: CGFloat = 8,
+		alignment: NSLayoutConstraint.Attribute = .centerX,
+		@StackBuilder builder: () -> [Element]
+	) {
+		self.init(
+			tag: tag,
+			spacing: spacing,
+			alignment: alignment,
+			content: builder())
 	}
-
-	/// Create a divider
-	/// - Parameters:
-	///   - tag: (optional) The identifing tag
-	///   - direction: The direction
-	public init(tag: Int? = nil, direction: Direction) {
-		if direction == .horizontal {
-			separator = NSBox(frame: NSRect(x: 0, y: 0, width: 50, height: 5))
-		}
-		else {
-			separator = NSBox(frame: NSRect(x: 0, y: 0, width: 5, height: 50))
-		}
-		super.init(tag: tag)
-		separator.boxType = .separator
-		if direction == .horizontal {
-			_ = self.horizontalPriorities(hugging: .defaultLow)
-		}
-		else {
-			_ = self.verticalPriorities(hugging: .defaultLow)
-		}
-	}
-
-	// Privates
-
-	private let separator: NSBox
-	public override var nsView: NSView { return separator }
 }

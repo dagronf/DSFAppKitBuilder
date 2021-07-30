@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder+Radio.swift
+//  DSFAppKitBuilder+RadioGroup.swift
 //
 //  Created by Darren Ford on 27/7/21
 //
@@ -26,65 +26,52 @@
 
 import AppKit
 
-// TODO: This!
-
-
+/// An individual radio element for the group
 public class RadioElement {
 	let title: String
 	let toolTip: String?
-	public init(_ title: String,
-					toolTip: String? = nil)
-	{
+	public init(
+		_ title: String,
+		toolTip: String? = nil
+	) {
 		self.title = title
 		self.toolTip = toolTip
 	}
 }
 
-#if swift(<5.3)
-@_functionBuilder
-public struct RadioBuilder {
-	static func buildBlock() -> [RadioElement] { [] }
-}
-#else
-@resultBuilder
-public struct RadioBuilder {
-	static func buildBlock() -> [RadioElement] { [] }
-}
-#endif
-
-/// A resultBuilder to build menus
-public extension RadioBuilder {
-	static func buildBlock(_ settings: RadioElement...) -> [RadioElement] {
-		settings
-	}
-}
-
-public class Radio: Control {
-	public override var nsView: NSView { return self.radioGroup }
-	let radioGroup = NSStackView()
-	let content: [RadioElement]
-
+/// A group of managed radio buttons
+public class RadioGroup: Control {
 	public convenience init(
 		tag: Int? = nil,
 		selected: Int = 0,
 		controlSize: NSButton.ControlSize? = nil,
-		spacing: CGFloat? = nil,
-		@RadioBuilder builder: () -> [RadioElement])
-	{
+		spacing _: CGFloat? = nil,
+		@RadioBuilder builder: () -> [RadioElement]
+	) {
 		self.init(
 			tag: tag,
 			selected: selected,
 			controlSize: controlSize,
-			content: builder())
+			content: builder()
+		)
 	}
+
+	// Private
+
+	override public var nsView: NSView { return self.radioGroup }
+	private let radioGroup = NSStackView()
+	private let content: [RadioElement]
+
+	private var actionCallback: ((Int) -> Void)?
+	private lazy var selectionBinder = Bindable<Int>()
 
 	internal init(
 		tag: Int? = nil,
 		selected: Int = 0,
 		controlSize: NSButton.ControlSize? = nil,
 		spacing: CGFloat? = nil,
-		content: [RadioElement])
-	{
+		content: [RadioElement]
+	) {
 		self.content = content
 		super.init(tag: tag)
 
@@ -117,37 +104,67 @@ public class Radio: Control {
 			radioGroup.addArrangedSubview(button)
 		}
 	}
+}
 
+// MARK: - Modifiers
+
+public extension RadioGroup {
+	/// Set the initial selection for the RadioGroup
+	func selectRadioWithTag(_ tag: Int) {
+		let rds = self.radioGroup.arrangedSubviews as? [NSButton]
+		rds?.forEach { $0.state = ($0.tag == tag) ? .on : .off }
+	}
+}
+
+// MARK: - Actions
+
+public extension RadioGroup {
 	/// Set a callback block for when the selection changes
-	public func onChange(_ block: @escaping (Int) -> Void) -> Self {
+	func onChange(_ block: @escaping (Int) -> Void) -> Self {
 		self.actionCallback = block
 		return self
 	}
 
 	@objc private func radioSelected(_ item: NSButton) {
 		self.actionCallback?(item.tag)
+		if self.selectionBinder.isActive {
+			self.selectionBinder.setValue(item.tag)
+		}
 	}
+}
 
-	func selectRadioWithTag(_ tag: Int) {
-		let rds = self.radioGroup.arrangedSubviews as? [NSButton]
-		rds?.forEach { $0.state = ($0.tag == tag) ? .on : .off}
-	}
+// MARK: - Bindings
 
+public extension RadioGroup {
 	/// Bind the selection to a keypath
-	public func bindSelection<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
+	func bindSelection<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
 		self.selectionBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
-			if let `self` = self {
-				self.selectRadioWithTag(newValue)
-				self.actionCallback?(newValue)
-			}
+			guard let `self` = self else { return }
+			self.selectRadioWithTag(newValue)
+			self.actionCallback?(newValue)
 		})
 		self.selectionBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
+}
 
-	// Private
+// MARK: - Result builder for RadioElements
 
-	private var actionCallback: ((Int) -> Void)? = nil
-	private lazy var selectionBinder = Bindable<Int>()
+#if swift(<5.3)
+@_functionBuilder
+public enum RadioBuilder {
+	static func buildBlock() -> [RadioElement] { [] }
+}
+#else
+@resultBuilder
+public enum RadioBuilder {
+	static func buildBlock() -> [RadioElement] { [] }
+}
+#endif
 
+/// A resultBuilder to build menus
+public extension RadioBuilder {
+	static func buildBlock(_ settings: RadioElement...) -> [RadioElement] {
+		settings
+	}
 }

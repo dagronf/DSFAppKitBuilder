@@ -36,11 +36,12 @@ public class Segment {
 	let imageScaling: NSImageScaling?
 	let toolTip: String?
 
-	public init(_ title: String? = nil,
-					_ textAlignment: NSTextAlignment? = nil,
-					_ image: NSImage? = nil,
-					_ imageScaling: NSImageScaling? = nil,
-					toolTip: String? = nil)
+	public init(
+		_ title: String? = nil,
+		textAlignment: NSTextAlignment? = nil,
+		image: NSImage? = nil,
+		imageScaling: NSImageScaling? = nil,
+		toolTip: String? = nil)
 	{
 		self.title = title
 		self.textAlignment = textAlignment
@@ -50,31 +51,36 @@ public class Segment {
 	}
 }
 
-#if swift(<5.3)
-@_functionBuilder
-public struct SegmentBuilder {
-	static func buildBlock() -> [Segment] { [] }
-}
-#else
-@resultBuilder
-public struct SegmentBuilder {
-	static func buildBlock() -> [Segment] { [] }
-}
-#endif
-
-/// A resultBuilder to build menus
-public extension SegmentBuilder {
-	static func buildBlock(_ settings: Segment...) -> [Segment] {
-		settings
-	}
-}
-
 // MARK: - Segmented control
 
+/// Wrapper for NSSegmentedControl
 public class Segmented: Control {
+	public convenience init(
+		tag: Int? = nil,
+		segmentStyle: NSSegmentedControl.Style? = nil,
+		trackingMode: NSSegmentedControl.SwitchTracking? = nil,
+		@SegmentBuilder builder: () -> [Segment])
+	{
+		self.init(tag: tag, segmentStyle: segmentStyle, trackingMode: trackingMode, content: builder())
+	}
+
+	// The currently selected segments
+	var selectedSegments: NSSet {
+		let selected = (0 ..< self.segmented.segmentCount).filter { index in
+			self.segmented.isSelected(forSegment: index)
+		}
+		return NSSet(array: selected)
+	}
+
+	// Privates
 	public override var nsView: NSView { return self.segmented }
-	let segmented = NSSegmentedControl()
-	let content: [Segment]
+	private let segmented = NSSegmentedControl()
+	private let content: [Segment]
+
+	private var actionCallback: ((NSSet) -> Void)? = nil
+
+	private lazy var valueBinder = Bindable<NSSet>()
+	private lazy var segmentedEnabledBinder = Bindable<NSSet>()
 
 	internal init(tag: Int? = nil,
 					  segmentStyle: NSSegmentedControl.Style? = nil,
@@ -109,56 +115,24 @@ public class Segmented: Control {
 			}
 		}
 	}
+}
 
-	public convenience init(
-		tag: Int? = nil,
-		segmentStyle: NSSegmentedControl.Style? = nil,
-		trackingMode: NSSegmentedControl.SwitchTracking? = nil,
-		@SegmentBuilder builder: () -> [Segment])
-	{
-		self.init(tag: tag, segmentStyle: segmentStyle, trackingMode: trackingMode, content: builder())
-	}
+// MARK: - Modifiers
 
+public extension Segmented {
 	/// Select exactly one segment
-	public func selectSegment(_ index: Int) -> Self {
+	func selectSegment(_ index: Int) -> Self {
 		self.selectSegments(from: NSSet(array: [index]))
 		return self
 	}
+}
 
-	/// Bind the selected segments to a keypath
-	public func bindSelectedSegments<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSSet>) -> Self {
-		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
-			self?.selectSegments(from: newValue)
-		})
-		self.valueBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
-		return self
-	}
+// MARK: - Actions
 
-	private func selectSegments(from nsSet: NSSet) {
-		(0 ..< self.segmented.segmentCount).forEach { index in
-			let value = nsSet.contains(index)
-			self.segmented.setSelected(value, forSegment: index)
-		}
-	}
-
-	/// Bind enabled state for each segment to a key path
-	public func bindEnabledSegments<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSSet>) -> Self {
-		self.segmentedEnabledBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
-			self?.enableSegments(from: newValue)
-		})
-		self.segmentedEnabledBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
-		return self
-	}
-
-	private func enableSegments(from nsSet: NSSet) {
-		(0 ..< self.segmented.segmentCount).forEach { index in
-			let value = nsSet.contains(index)
-			self.segmented.setEnabled(value, forSegment: index)
-		}
-	}
+public extension Segmented {
 
 	/// Set a callback block for when the selection changes
-	public func onChange(_ block: @escaping (NSSet) -> Void) -> Self {
+	func onChange(_ block: @escaping (NSSet) -> Void) -> Self {
 		self.actionCallback = block
 		return self
 	}
@@ -169,18 +143,66 @@ public class Segmented: Control {
 			valueBinder.setValue(self.selectedSegments)
 		}
 	}
+}
 
-	// The currently selected segments
-	var selectedSegments: NSSet {
-		let selected = (0 ..< self.segmented.segmentCount).filter { index in
-			self.segmented.isSelected(forSegment: index)
-		}
-		return NSSet(array: selected)
+
+// MARK: - Bindings
+
+public extension Segmented {
+	/// Bind enabled state for each segment to a key path
+	func bindEnabledSegments<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSSet>) -> Self {
+		self.segmentedEnabledBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.enableSegments(from: newValue)
+		})
+		self.segmentedEnabledBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
+		return self
 	}
 
-	// Privates
-	private var actionCallback: ((NSSet) -> Void)? = nil
+	/// Bind the selected segments to a keypath
+	func bindSelectedSegments<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSSet>) -> Self {
+		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.selectSegments(from: newValue)
+		})
+		self.valueBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
+		return self
+	}
+}
 
-	private lazy var valueBinder = Bindable<NSSet>()
-	private lazy var segmentedEnabledBinder = Bindable<NSSet>()
+// MARK: - Result Builder for Segments
+
+#if swift(<5.3)
+@_functionBuilder
+public struct SegmentBuilder {
+	static func buildBlock() -> [Segment] { [] }
+}
+#else
+@resultBuilder
+public struct SegmentBuilder {
+	static func buildBlock() -> [Segment] { [] }
+}
+#endif
+
+/// A resultBuilder to build menus
+public extension SegmentBuilder {
+	static func buildBlock(_ settings: Segment...) -> [Segment] {
+		settings
+	}
+}
+
+// MARK: - Private
+
+private extension Segmented {
+	func selectSegments(from nsSet: NSSet) {
+		(0 ..< self.segmented.segmentCount).forEach { index in
+			let value = nsSet.contains(index)
+			self.segmented.setSelected(value, forSegment: index)
+		}
+	}
+
+	func enableSegments(from nsSet: NSSet) {
+		(0 ..< self.segmented.segmentCount).forEach { index in
+			let value = nsSet.contains(index)
+			self.segmented.setEnabled(value, forSegment: index)
+		}
+	}
 }

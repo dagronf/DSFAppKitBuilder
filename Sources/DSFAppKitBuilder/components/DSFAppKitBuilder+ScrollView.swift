@@ -1,8 +1,27 @@
 //
-//  File.swift
-//  File
+//  DSFAppKitBuilder+ScrollView.swift
 //
-//  Created by Darren Ford on 28/7/21.
+//  Created by Darren Ford on 30/7/21
+//
+//  MIT License
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
 //
 
 import AppKit
@@ -13,15 +32,8 @@ final class FlippedClipView: NSClipView {
 	}
 }
 
-/// Embed another NSView within the DSL
+/// Wrapper for NSScrollView
 public class ScrollView: Element {
-	let scrollView = NSScrollView()
-
-	let content = NSStackView()
-
-	let documentElements: [Element]
-
-	override public var nsView: NSView { return self.scrollView }
 
 	/// Create a ScrollView
 	/// - Parameters:
@@ -29,7 +41,7 @@ public class ScrollView: Element {
 	///   - fitHorizontally: Set the width of the content to the width of the scrollview
 	///   - autohidesScrollers: A Boolean that indicates whether the scroll view automatically hides its scroll bars when they are not needed.
 	///   - documentElement: The content of the scrollview
-	convenience public init(
+	public convenience init(
 		tag: Int? = nil,
 		fitHorizontally: Bool = true,
 		autohidesScrollers: Bool = true,
@@ -39,7 +51,8 @@ public class ScrollView: Element {
 			tag: tag,
 			fitHorizontally: fitHorizontally,
 			autohidesScrollers: autohidesScrollers,
-			contents: builder())
+			contents: builder()
+		)
 	}
 
 	/// Create a ScrollView
@@ -58,26 +71,37 @@ public class ScrollView: Element {
 		super.init(tag: tag)
 
 		self.setup(fitHorizontally: fitHorizontally,
-		           autohidesScrollers: autohidesScrollers)
+					  autohidesScrollers: autohidesScrollers)
 	}
 
-	public func autohidesScrollers(_ autohidesScrollers: Bool) -> Self {
+	// Private
+	private let scrollView = NSScrollView()
+	private let content = NSStackView()
+	private let documentElements: [Element]
+	override public var nsView: NSView { return self.scrollView }
+}
+
+// MARK: - Modifiers
+
+public extension ScrollView {
+	func autohidesScrollers(_ autohidesScrollers: Bool) -> Self {
 		self.scrollView.autohidesScrollers = autohidesScrollers
 		return self
 	}
 
-	public func borderType(_ type: NSBorderType) -> Self {
+	func borderType(_ type: NSBorderType) -> Self {
 		self.scrollView.borderType = type
 		return self
 	}
 }
 
+// MARK: - Private
+
 private extension ScrollView {
 	func setup(
 		fitHorizontally: Bool,
-		autohidesScrollers: Bool)
-	{
-
+		autohidesScrollers: Bool
+	) {
 		self.content.translatesAutoresizingMaskIntoConstraints = false
 		self.content.orientation = .vertical
 		self.content.alignment = .leading
@@ -85,7 +109,6 @@ private extension ScrollView {
 		self.documentElements.forEach { element in
 			self.content.addArrangedSubview(element.nsView)
 		}
-
 
 		self.scrollView.translatesAutoresizingMaskIntoConstraints = false
 		self.scrollView.borderType = .noBorder
@@ -113,14 +136,14 @@ private extension ScrollView {
 		self.scrollView.documentView = self.content
 
 		NSLayoutConstraint.activate([
-			content.leftAnchor.constraint(equalTo: clipView.leftAnchor),
-			content.topAnchor.constraint(equalTo: clipView.topAnchor),
+			self.content.leftAnchor.constraint(equalTo: clipView.leftAnchor),
+			self.content.topAnchor.constraint(equalTo: clipView.topAnchor),
 			// NOTE: No need for bottomAnchor
 		])
 
 		if fitHorizontally {
 			NSLayoutConstraint.activate([
-				content.rightAnchor.constraint(equalTo: clipView.rightAnchor),
+				self.content.rightAnchor.constraint(equalTo: clipView.rightAnchor),
 			])
 		}
 	}

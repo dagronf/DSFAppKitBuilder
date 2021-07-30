@@ -26,33 +26,15 @@
 
 import AppKit.NSButton
 
+/// An NSButton wrapper
 public class Button: Control {
-
-	public init(
-		tag: Int? = nil,
-		title: String,
-		type: NSButton.ButtonType = .momentaryLight,
-		bezelStyle: NSButton.BezelStyle = .rounded,
-		allowMixedState: Bool = false
-	) {
-		super.init(tag: tag)
-		self.button.title = title
-		self.button.bezelStyle = bezelStyle
-		self.button.setButtonType(type)
-		self.button.allowsMixedState = allowMixedState
-
-		self.button.target = self
-		self.button.action = #selector(self.performAction(_:))
-
-	}
-
 	public init(
 		tag: Int? = nil,
 		title: String,
 		type: NSButton.ButtonType = .momentaryLight,
 		bezelStyle: NSButton.BezelStyle = .rounded,
 		allowMixedState: Bool = false,
-		action: @escaping ((NSButton) -> Void)
+		_ action: ((NSButton.StateValue) -> Void)? = nil
 	) {
 		super.init(tag: tag)
 		self.button.title = title
@@ -60,55 +42,47 @@ public class Button: Control {
 		self.button.setButtonType(type)
 		self.button.allowsMixedState = allowMixedState
 
-		self.button.target = self
-		self.button.action = #selector(self.performAction(_:))
-
-		self.setAction(action)
+		if let action = action {
+			self.setAction(action)
+		}
 	}
 
-	// MARK: Title
+	// Privates
+
+	fileprivate let button = NSButton()
+	override public var nsView: NSView { return self.button }
+	private var action: ((NSButton.StateValue) -> Void)?
+
+	// A cheaty -- bind to on/off only so you can link for enabling etc
+	private lazy var onOffBinder = Bindable<Bool>()
+	private lazy var stateBinder = Bindable<NSControl.StateValue>()
+	private lazy var titleBinder = Bindable<String>()
+	private lazy var alternateTitleBinder = Bindable<String>()
+}
+
+// MARK: - Modifiers
+
+public extension Button {
 
 	/// Set the button's title
-	public func title(_ title: String) -> Self {
+	func title(_ title: String) -> Self {
 		self.button.stringValue = title
 		return self
 	}
 
-	/// Bind the title to a keypath
-	public func bindTitle<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
-		self.titleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
-			self?.button.title = newValue
-		})
-		self.titleBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
-		return self
-	}
-
-	// MARK: Alternate Title
-
 	/// The title that the button displays when the button is in an on state.
-	public func alternateTitle(_ title: String) -> Self {
+	func alternateTitle(_ title: String) -> Self {
 		self.button.alternateTitle = title
 		return self
 	}
 
-	/// Bind the alternatetitle to a keypath
-	public func bindAlternateTitle<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
-		self.alternateTitleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
-			self?.button.alternateTitle = newValue
-		})
-		self.alternateTitleBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
-		return self
-	}
-
-	// MARK: Image
-
 	/// Set the image that appears on the button when it’s in an off state
-	public func image(
+	func image(
 		_ image: NSImage,
 		imagePosition: NSControl.ImagePosition = .imageLeading,
 		imageScaling: NSImageScaling? = nil,
-		imageHugsTitle: Bool? = nil) -> Self
-	{
+		imageHugsTitle: Bool? = nil
+	) -> Self {
 		self.button.image = image
 		self.button.imagePosition = imagePosition
 		if let i = imageHugsTitle { self.button.imageHugsTitle = i }
@@ -117,27 +91,73 @@ public class Button: Control {
 	}
 
 	/// Set the image that appears on the button when it’s in an on state
-	public func alternateImage(_ image: NSImage) -> Self{
+	func alternateImage(_ image: NSImage) -> Self {
 		self.button.alternateImage = image
 		return self
 	}
 
 	// A Boolean value that determines whether the button has a border.
-	public func isBordered(_ isBordered: Bool) -> Self {
+	func isBordered(_ isBordered: Bool) -> Self {
 		self.button.isBordered = isBordered
 		return self
 	}
 
-	// MARK: State
-
 	/// Set the button's initial state
-	public func state(_ state: NSControl.StateValue) -> Self {
+	func state(_ state: NSControl.StateValue) -> Self {
 		self.button.state = state
+		return self
+	}
+}
+
+// MARK: - Actions
+
+public extension Button {
+	/// Set the action callback via a block
+	func onAction(_ action: @escaping ((NSButton.StateValue) -> Void)) -> Self {
+		self.setAction(action)
+		return self
+	}
+
+	private func setAction(_ action: @escaping ((NSButton.StateValue) -> Void)) {
+		self.action = action
+		self.button.target = self
+		self.button.action = #selector(self.performAction(_:))
+	}
+
+	@objc internal func performAction(_ item: NSButton) {
+		self.action?(item.state)
+		if self.onOffBinder.isActive {
+			self.onOffBinder.setValue(item.state == .off ? false : true)
+		}
+		if self.stateBinder.isActive {
+			self.stateBinder.setValue(item.state)
+		}
+	}
+}
+
+// MARK: - Bindings
+
+public extension Button {
+	/// Bind the title to a keypath
+	func bindTitle<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
+		self.titleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.button.title = newValue
+		})
+		self.titleBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
+		return self
+	}
+
+	/// Bind the alternatetitle to a keypath
+	func bindAlternateTitle<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
+		self.alternateTitleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.button.alternateTitle = newValue
+		})
+		self.alternateTitleBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 
 	/// Bind the state to a keypath
-	public func bindState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSControl.StateValue>) -> Self {
+	func bindState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSControl.StateValue>) -> Self {
 		self.stateBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.state = newValue
 		})
@@ -146,48 +166,11 @@ public class Button: Control {
 	}
 
 	/// Bind on/off state to a keypath
-	public func bindOnOffState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
+	func bindOnOffState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
 		self.onOffBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.state = newValue ? .on : .off
 		})
 		self.onOffBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
-
-
-	// MARK: Actions
-
-	/// Set the action callback via a block
-	public func action(_ action: @escaping ((NSButton) -> Void)) -> Self {
-		self.setAction(action)
-		return self
-	}
-
-	private func setAction(_ action: @escaping ((NSButton) -> Void)) {
-		self.action = action
-		self.button.target = self
-		self.button.action = #selector(self.performAction(_:))
-	}
-
-	@objc internal func performAction(_ item: NSButton) {
-		self.action?(item)
-		if onOffBinder.isActive {
-			onOffBinder.setValue(item.state == .off ? false : true)
-		}
-		if stateBinder.isActive {
-			stateBinder.setValue(item.state)
-		}
-	}
-
-	// Privates
-
-	fileprivate let button = NSButton()
-	public override var nsView: NSView { return self.button }
-	private var action: ((NSButton) -> Void)?
-
-	// A cheaty -- bind to on/off only so you can link for enabling etc
-	private lazy var onOffBinder = Bindable<Bool>()
-	private lazy var stateBinder = Bindable<NSControl.StateValue>()
-	private lazy var titleBinder = Bindable<String>()
-	private lazy var alternateTitleBinder = Bindable<String>()
 }

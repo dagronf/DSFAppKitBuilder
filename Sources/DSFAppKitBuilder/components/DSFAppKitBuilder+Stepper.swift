@@ -26,9 +26,8 @@
 
 import AppKit.NSStepper
 
+/// Wrapper for NSStepper
 public class Stepper: Control {
-	let stepper = NSStepper()
-	public override var nsView: NSView { return self.stepper }
 
 	public init(
 		tag: Int? = nil,
@@ -54,8 +53,17 @@ public class Stepper: Control {
 		}
 	}
 
+	// Private
+	private let stepper = NSStepper()
+	public override var nsView: NSView { return self.stepper }
 	private lazy var valueBinder = Bindable<Double>()
-	public func bindValue<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Double>) -> Self {
+}
+
+// MARK: - Bindings
+
+public extension Stepper {
+	/// Bind the stepper value to a keypath
+	func bindValue<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Double>) -> Self {
 		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.stepper.doubleValue = newValue
 		})

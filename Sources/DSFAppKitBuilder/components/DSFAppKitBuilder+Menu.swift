@@ -44,6 +44,8 @@ public class MenuItem {
 	}
 }
 
+// MARK: - Result builder for menu items
+
 #if swift(<5.3)
 @_functionBuilder
 public struct MenuBuilder {

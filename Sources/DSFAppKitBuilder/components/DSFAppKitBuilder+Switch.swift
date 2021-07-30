@@ -39,18 +39,44 @@ public class Switch: Control {
 		self.switchView.action = #selector(self.switchDidChange(_:))
 	}
 
-	public func action(_ action: @escaping ((NSButton.StateValue) -> Void)) -> Self {
+	// Private
+
+	let switchView = NSSwitch()
+	public override var nsView: NSView { return self.switchView }
+
+	private var action: ((NSButton.StateValue) -> Void)?
+	private lazy var stateBinder = Bindable<NSControl.StateValue>()
+
+}
+
+// MARK: - Actions
+
+@available(macOS 10.15, *)
+public extension Switch {
+	func action(_ action: @escaping ((NSButton.StateValue) -> Void)) -> Self {
 		self.setAction(action)
 		return self
 	}
 
 	private func setAction(_ action: @escaping ((NSButton.StateValue) -> Void)) {
 		self.action = action
-
 	}
 
-	public func bindState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSControl.StateValue>) -> Self {
+	@objc private func switchDidChange(_ sender: NSSwitch) {
+		self.action?(sender.state)
+		if stateBinder.isActive {
+			stateBinder.setValue(self.switchView.state)
+		}
+	}
+}
 
+// MARK: - Bindings
+
+@available(macOS 10.15, *)
+public extension Switch {
+
+	/// Bind the switch state to a keypath
+	func bindState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSControl.StateValue>) -> Self {
 		self.action = nil
 		self.switchView.target = self
 		self.switchView.action = #selector(switchDidChange(_:))
@@ -61,20 +87,4 @@ public class Switch: Control {
 		self.stateBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
-
-	@objc private func switchDidChange(_ sender: NSSwitch) {
-		self.action?(sender.state)
-		if stateBinder.isActive {
-			stateBinder.setValue(self.switchView.state)
-		}
-	}
-
-	// Private
-
-	let switchView = NSSwitch()
-	public override var nsView: NSView { return self.switchView }
-
-	private var action: ((NSButton.StateValue) -> Void)?
-	private lazy var stateBinder = Bindable<NSControl.StateValue>()
-
 }
