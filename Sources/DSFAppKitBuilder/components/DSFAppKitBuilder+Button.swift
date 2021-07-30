@@ -42,6 +42,9 @@ public class Button: Control {
 		self.button.setButtonType(type)
 		self.button.allowsMixedState = allowMixedState
 
+		self.button.target = self
+		self.button.action = #selector(self.performAction(_:))
+
 		if let action = action {
 			self.setAction(action)
 		}
@@ -120,8 +123,6 @@ public extension Button {
 
 	private func setAction(_ action: @escaping ((NSButton.StateValue) -> Void)) {
 		self.action = action
-		self.button.target = self
-		self.button.action = #selector(self.performAction(_:))
 	}
 
 	@objc internal func performAction(_ item: NSButton) {
