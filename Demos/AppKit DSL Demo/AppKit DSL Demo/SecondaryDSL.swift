@@ -65,7 +65,25 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				self?.firstName = ""
 			}
 		}
-		EmptyView()
+
+		Box("Fishy") {
+			VStack {
+				Label("This is test")
+					.horizontalPriorities(hugging: 10)
+				TextField()
+					.placeholderText("Noodles")
+					.horizontalPriorities(hugging: 10)
+				EmptyView()
+					.verticalPriorities(hugging: 10, compressionResistance: 10)
+					.horizontalPriorities(hugging: 10, compressionResistance: 10)
+			}
+			.edgeInsets(8)
+			.hugging(h: 10)
+		}
+		.verticalPriorities(hugging: 100)
+		.horizontalPriorities(hugging: 100)
+
+		//EmptyView()
 	}
 	.horizontalPriorities(hugging: .defaultLow)
 }

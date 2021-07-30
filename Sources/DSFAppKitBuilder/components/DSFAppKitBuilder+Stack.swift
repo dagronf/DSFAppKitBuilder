@@ -57,21 +57,25 @@ public class Stack: Element {
 // MARK: - Modifiers
 
 public extension Stack {
+	/// The minimum spacing, in points, between adjacent views in the stack view.
 	func spacing(_ spacing: CGFloat) -> Self {
 		self.stack.spacing = spacing
 		return self
 	}
 
+	/// The spacing and sizing distribution of stacked views along the primary axis. Defaults to GravityAreas.
 	func distribution(_ dist: NSStackView.Distribution) -> Self {
 		self.stack.distribution = dist
 		return self
 	}
 
+	/// The view alignment within the stack view.
 	func alignment(_ alignment: NSLayoutConstraint.Attribute) -> Self {
 		self.stack.alignment = alignment
 		return self
 	}
 
+	/// Set the hugging priorites for the stack
 	func hugging(h: NSLayoutConstraint.Priority? = nil, v: NSLayoutConstraint.Priority? = nil) -> Self {
 		if let h = h {
 			self.nsView.setContentHuggingPriority(h, for: .horizontal)
@@ -82,13 +86,26 @@ public extension Stack {
 		return self
 	}
 
+	/// Set the hugging priorites for the stack
+	func hugging(h: Float? = nil, v: Float? = nil) -> Self {
+		if let h = h {
+			self.nsView.setContentHuggingPriority(NSLayoutConstraint.Priority(h), for: .horizontal)
+		}
+		if let v = v {
+			self.nsView.setContentHuggingPriority(NSLayoutConstraint.Priority(v), for: .vertical)
+		}
+		return self
+	}
+
 	// MARK: - Edge insets
 
+	/// The geometric padding, in points, inside the stack view, surrounding its views.
 	func edgeInsets(_ edgeInsets: NSEdgeInsets) -> Self {
 		self.stack.edgeInsets = edgeInsets
 		return self
 	}
 
+	/// The geometric padding, in points, inside the stack view, surrounding its views.
 	func edgeInsets(_ value: CGFloat) -> Self {
 		return self.edgeInsets(NSEdgeInsets(top: value, left: value, bottom: value, right: value))
 	}

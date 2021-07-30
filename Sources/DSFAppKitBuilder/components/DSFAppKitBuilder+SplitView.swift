@@ -28,16 +28,6 @@ import AppKit
 
 // Wrapper for NSSplitView
 public class SplitView: Control {
-	private let controller = NSSplitViewController(nibName: nil, bundle: nil)
-	private lazy var splitView: NSSplitView = {
-		controller.loadView()
-		return controller.splitView
-	}()
-	
-	override public var nsView: NSView { return self.splitView }
-
-	let splitItems: [SplitViewItem]
-
 	convenience public init(
 		tag: Int? = nil,
 		isVertical: Bool = true,
@@ -50,6 +40,18 @@ public class SplitView: Control {
 			dividerStyle: dividerStyle,
 			contents: builder())
 	}
+
+	// Private
+
+	private let splitItems: [SplitViewItem]
+	override public var nsView: NSView { return self.splitView }
+	private let controller = NSSplitViewController(nibName: nil, bundle: nil)
+	private lazy var splitView: NSSplitView = {
+		controller.loadView()
+		return controller.splitView
+	}()
+
+	private lazy var hiddenSplitBinder = Bindable<NSSet>()
 
 	internal init(
 		tag: Int? = nil,
@@ -74,9 +76,14 @@ public class SplitView: Control {
 			}
 		}
 	}
+}
 
-	private lazy var hiddenSplitBinder = Bindable<NSSet>()
-	public func bindHiddenViews<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSSet>) -> Self {
+// MARK: - Bindings
+
+public extension SplitView {
+
+	/// Bind the splitview item hidden status to a keypath set
+	func bindHiddenViews<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSSet>) -> Self {
 		self.hiddenSplitBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			guard let `self` = self else { return }
 			self.controller.splitViewItems.enumerated().forEach { item in
@@ -86,17 +93,9 @@ public class SplitView: Control {
 		self.hiddenSplitBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
-
-	/// This is a hack specifically for the split view - it seems like it doesn't handle the sizing
-//	override public func addedToParentView(_ parentView: NSView) {
-//		let which: NSLayoutConstraint.Attribute = splitView.isVertical ? .width : .height
-//		let c = NSLayoutConstraint(item: splitView, attribute: which, relatedBy: .equal, toItem: parentView, attribute: which, multiplier: 1, constant: 0)
-//		parentView.addConstraint(c)
-//	}
-
 }
 
-// MARK: Split View Item
+// MARK: - Split View Item
 
 public class SplitViewItem {
 
