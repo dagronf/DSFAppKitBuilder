@@ -28,6 +28,28 @@ import AppKit
 
 /// An individual tab item
 public class TabViewItem {
+	/// Create a TabViewItem using a resultBuilder
+	public convenience init(
+		_ title: String? = nil,
+		toolTip: String? = nil,
+		_ builder: () -> Element
+	) {
+		self.init(title, toolTip: toolTip, content: builder())
+	}
+
+	/// Create a TabViewItem
+	init(
+		_ title: String? = nil,
+		toolTip: String? = nil,
+		content: Element
+	) {
+		self.title = title
+		self.toolTip = toolTip
+		self.viewController = TabViewItem.Controller(content: content)
+	}
+
+	// Private
+
 	// TabView uses ViewControllers to manage the tabs.
 	fileprivate class Controller: NSViewController {
 		let content: Element
@@ -45,7 +67,6 @@ public class TabViewItem {
 		}
 
 		override func loadView() {
-
 			// The NSTabView item doesn't seem to layout well if the tab item's container is autolayout
 			// Wrap our element in a non-autolayout NSView first
 			let container = NSView()
@@ -61,45 +82,7 @@ public class TabViewItem {
 
 	fileprivate let title: String?
 	fileprivate let toolTip: String?
-
 	fileprivate let viewController: Controller
-
-	convenience public init(
-		_ title: String? = nil,
-		toolTip: String? = nil,
-		_ builder: () -> Element
-	) {
-		self.init(title, toolTip: toolTip, content: builder())
-	}
-
-	init(
-		_ title: String? = nil,
-		toolTip: String? = nil,
-		content: Element
-	) {
-		self.title = title
-		self.toolTip = toolTip
-		self.viewController = TabViewItem.Controller(content: content)
-	}
-}
-
-#if swift(<5.3)
-@_functionBuilder
-public enum TabBuilder {
-	static func buildBlock() -> [Tab] { [] }
-}
-#else
-@resultBuilder
-public enum TabBuilder {
-	static func buildBlock() -> [TabViewItem] { [] }
-}
-#endif
-
-/// A resultBuilder to build menus
-public extension TabBuilder {
-	static func buildBlock(_ settings: TabViewItem...) -> [TabViewItem] {
-		settings
-	}
 }
 
 /// A Tab View control
@@ -117,7 +100,8 @@ public class TabView: Control {
 			tag: tag,
 			tabViewType: tabViewType,
 			selectedIndex: selectedIndex,
-			contents: builder())
+			contents: builder()
+		)
 	}
 
 	public init(
@@ -177,5 +161,26 @@ extension TabView: NSTabViewDelegate {
 				self.valueBinder.setValue(index)
 			}
 		}
+	}
+}
+
+// MARK: - Result Builders for Tab Views
+
+#if swift(<5.3)
+@_functionBuilder
+public enum TabBuilder {
+	static func buildBlock() -> [Tab] { [] }
+}
+#else
+@resultBuilder
+public enum TabBuilder {
+	static func buildBlock() -> [TabViewItem] { [] }
+}
+#endif
+
+/// A resultBuilder to build menus
+public extension TabBuilder {
+	static func buildBlock(_ settings: TabViewItem...) -> [TabViewItem] {
+		settings
 	}
 }

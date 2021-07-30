@@ -24,18 +24,20 @@
 //  SOFTWARE.
 //
 
-import Foundation
 import AppKit
 
+/// An NSBox element
 public class Box: Element {
-	private let boxView = NSBox()
-	override public var nsView: NSView { return self.boxView }
 
-	private let containerView = NSView()
+	public convenience init(
+		tag: Int? = nil,
+		_ title: String,
+		titlePosition: NSBox.TitlePosition = .atTop,
+		_ builder: () -> Element) {
+			self.init(tag: tag, title, titlePosition: titlePosition, content: builder())
+	}
 
-	let content: Element
-
-	internal init(
+	public init(
 		tag: Int? = nil,
 		_ title: String,
 		titlePosition: NSBox.TitlePosition = .atTop,
@@ -53,13 +55,16 @@ public class Box: Element {
 		boxView.titlePosition = titlePosition
 	}
 
-	public convenience init(
-		tag: Int? = nil,
-		_ title: String,
-		titlePosition: NSBox.TitlePosition = .atTop,
-		_ builder: () -> Element) {
-			self.init(tag: tag, title, titlePosition: titlePosition, content: builder())
+
+	/// Set the font for the box title
+	public func titleFont(_ font: NSFont) -> Self {
+		self.boxView.titleFont = font
+		return self
 	}
 
+	// Private
+	private let boxView = NSBox()
+	override public var nsView: NSView { return self.boxView }
+	private let containerView = NSView()
+	private let content: Element
 }
-

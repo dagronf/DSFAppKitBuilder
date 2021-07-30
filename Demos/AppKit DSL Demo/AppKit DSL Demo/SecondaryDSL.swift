@@ -12,6 +12,11 @@ import DSFAppKitBuilder
 class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	@objc dynamic var radioSelection: Int = 1
+	@objc dynamic var firstName: String = "" {
+		didSet {
+			Swift.print("First name changed to '\(firstName)'")
+		}
+	}
 
 	lazy var body: Element =
 	VStack(alignment: .leading) {
@@ -49,6 +54,18 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			.action { [weak self] _ in
 				self?.radioSelection = 0
 			}
+
+		Divider(direction: .horizontal)
+
+		HStack {
+			TextField()
+				.placeholderText("First Name")
+				.bindText(updateOnEndEditingOnly: true, self, keyPath: \SecondaryDSL.firstName)
+			Button(title: "Reset") { [weak self] _ in
+				self?.firstName = ""
+			}
+		}
+		EmptyView()
 	}
 	.horizontalPriorities(hugging: .defaultLow)
 }

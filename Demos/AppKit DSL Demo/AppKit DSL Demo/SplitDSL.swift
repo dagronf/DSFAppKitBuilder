@@ -12,17 +12,17 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 	@objc dynamic var hidden = NSSet()
 
 	lazy var body: Element =
-		Box("Split Testing") {
-			VStack {
-				HStack(alignment: .centerY) {
-					Label("Click a segment to turn off the split item")
-					Segmented(trackingMode: .selectAny) {
-						Segment("first")
-						Segment("second")
-						Segment("third")
-					}
-					.bindSelectedSegments(self, keyPath: \SplitDSL.hidden)
-				}
+//		Box("Split Testing") {
+//			VStack {
+//				HStack(alignment: .centerY) {
+//					Label("Click a segment to turn off the split item")
+//					Segmented(trackingMode: .selectAny) {
+//						Segment("first")
+//						Segment("second")
+//						Segment("third")
+//					}
+//					.bindSelectedSegments(self, keyPath: \SplitDSL.hidden)
+//				}
 
 				SplitView {
 					SplitViewItem(content: split1)
@@ -30,9 +30,6 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 					SplitViewItem(content: split3)
 				}
 				.bindHiddenViews(self, keyPath: \SplitDSL.hidden)
-			}
-			.edgeInsets(NSEdgeInsetsMake(8, 0, 0, 0))
-		}
 //		.additionalAppKitControlSettings { (box: NSBox) in
 //			box.titleFont = NSFont.systemFont(ofSize: 18)
 //		}

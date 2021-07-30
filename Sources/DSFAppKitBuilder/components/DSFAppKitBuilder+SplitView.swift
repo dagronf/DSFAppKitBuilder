@@ -26,65 +26,6 @@
 
 import AppKit
 
-
-public class SplitViewItem {
-	// SplitViewController uses ViewControllers to manage the tabs.
-	fileprivate class Controller: NSViewController {
-		let content: Element
-
-		let contentView = NSView()
-
-		init(content: Element)
-		{
-			self.content = content
-
-			contentView.addSubview(content.nsView)
-			content.nsView.pinEdges(to: contentView)
-
-			super.init(nibName: nil, bundle: nil)
-		}
-
-		@available(*, unavailable)
-		required init?(coder _: NSCoder) {
-			fatalError("init(coder:) has not been implemented")
-		}
-
-		override func loadView() {
-			self.view = self.content.nsView
-		}
-	}
-
-	fileprivate let viewController: Controller
-	fileprivate let holdingPriority: NSLayoutConstraint.Priority?
-
-	public init(
-		holdingPriority: NSLayoutConstraint.Priority? = .defaultLow,
-		content: Element)
-	{
-		self.viewController = SplitViewItem.Controller(content: content)
-		self.holdingPriority = holdingPriority
-	}
-}
-
-#if swift(<5.3)
-@_functionBuilder
-public enum SplitViewBuilder {
-	static func buildBlock() -> [SplitViewItem] { [] }
-}
-#else
-@resultBuilder
-public enum SplitViewBuilder {
-	static func buildBlock() -> [SplitViewItem] { [] }
-}
-#endif
-
-/// A resultBuilder to build menus
-public extension SplitViewBuilder {
-	static func buildBlock(_ settings: SplitViewItem...) -> [SplitViewItem] {
-		settings
-	}
-}
-
 public class SplitView: Control {
 	private let controller = NSSplitViewController(nibName: nil, bundle: nil)
 	private lazy var splitView: NSSplitView = {
@@ -154,3 +95,64 @@ public class SplitView: Control {
 
 }
 
+/// MARK: Split View Item
+
+public class SplitViewItem {
+	// SplitViewController uses ViewControllers to manage the tabs.
+	fileprivate class Controller: NSViewController {
+		let content: Element
+
+		let contentView = NSView()
+
+		init(content: Element)
+		{
+			self.content = content
+
+			contentView.addSubview(content.nsView)
+			content.nsView.pinEdges(to: contentView)
+
+			super.init(nibName: nil, bundle: nil)
+		}
+
+		@available(*, unavailable)
+		required init?(coder _: NSCoder) {
+			fatalError("init(coder:) has not been implemented")
+		}
+
+		override func loadView() {
+			self.view = self.content.nsView
+		}
+	}
+
+	fileprivate let viewController: Controller
+	fileprivate let holdingPriority: NSLayoutConstraint.Priority?
+
+	public init(
+		holdingPriority: NSLayoutConstraint.Priority? = .defaultLow,
+		content: Element)
+	{
+		self.viewController = SplitViewItem.Controller(content: content)
+		self.holdingPriority = holdingPriority
+	}
+}
+
+/// MARK: - Result Builder for SplitViewItems
+
+#if swift(<5.3)
+@_functionBuilder
+public enum SplitViewBuilder {
+	static func buildBlock() -> [SplitViewItem] { [] }
+}
+#else
+@resultBuilder
+public enum SplitViewBuilder {
+	static func buildBlock() -> [SplitViewItem] { [] }
+}
+#endif
+
+/// A resultBuilder to build menus
+public extension SplitViewBuilder {
+	static func buildBlock(_ settings: SplitViewItem...) -> [SplitViewItem] {
+		settings
+	}
+}

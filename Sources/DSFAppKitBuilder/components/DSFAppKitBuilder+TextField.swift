@@ -27,24 +27,20 @@
 import AppKit.NSTextField
 
 /// An editable text control
-public class TextField: Label, NSTextFieldDelegate {
-	var didBeginEditing: ((NSTextField) -> Void)?
-	var didEdit: ((NSTextField) -> Void)?
-	var didEndEditing: ((NSTextField) -> Void)?
-
-	public init(tag: Int? = nil,
-					_ label: String? = nil,
-					_ placeholderText: String? = nil)
+public class TextField: Label {
+	public init(
+		tag: Int? = nil,
+		_ label: String? = nil,
+		_ placeholderText: String? = nil)
 	{
 		super.init(tag: tag, label)
 		self.label.isEditable = true
 		self.label.isBezeled = true
-		if let p = placeholderText {
-			self.label.placeholderString = p
-		}
+		self.label.placeholderString = placeholderText
 		self.label.delegate = self
 	}
 
+	/// Set the placeholder text for the text field
 	public func placeholderText(_ label: String) -> Self {
 		self.label.placeholderString = label
 		return self
@@ -55,32 +51,68 @@ public class TextField: Label, NSTextFieldDelegate {
 		return self
 	}
 
+	// MARK: - Binding
+
+	/// Bind the text content to a keypath
+	public func bindText<TYPE>(updateOnEndEditingOnly: Bool = false, _ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
+		self.updateOnEndEditingOnly = updateOnEndEditingOnly
+		self.textFieldBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.label.stringValue = newValue
+		})
+		self.textFieldBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
+		return self
+	}
+
 	// MARK: - Editing callbacks
 
+	/// Block to call when the user starts editing the field
 	public func didStartEditing(_ block: @escaping (NSTextField) -> Void) -> Self {
 		self.didBeginEditing = block
 		return self
 	}
 
+	/// Block to call when the user modifies the content in the field
 	public func didEdit(_ block: @escaping (NSTextField) -> Void) -> Self {
 		self.didEdit = block
 		return self
 	}
 
+	/// Block to call when the user ends editing within the field
 	public func didEndEditing(_ block: @escaping (NSTextField) -> Void) -> Self {
 		self.didEndEditing = block
 		return self
 	}
 
+	// Privates
+
+	// Block callbacks
+	private var didBeginEditing: ((NSTextField) -> Void)?
+	private var didEdit: ((NSTextField) -> Void)?
+	private var didEndEditing: ((NSTextField) -> Void)?
+
+	// Text Content binding
+	private lazy var textFieldBinder = Bindable<String>()
+	private var updateOnEndEditingOnly: Bool = false
+}
+
+// MARK: Text Field delegate methods
+
+extension TextField: NSTextFieldDelegate {
 	public func controlTextDidBeginEditing(_: Notification) {
 		self.didBeginEditing?(self.label)
 	}
 
 	public func controlTextDidChange(_: Notification) {
 		self.didEdit?(self.label)
+		if !updateOnEndEditingOnly && self.textFieldBinder.isActive {
+			self.textFieldBinder.setValue(self.label.stringValue)
+		}
 	}
 
 	public func controlTextDidEndEditing(_: Notification) {
 		self.didEndEditing?(self.label)
+		if updateOnEndEditingOnly && self.textFieldBinder.isActive {
+			self.textFieldBinder.setValue(self.label.stringValue)
+		}
 	}
 }
