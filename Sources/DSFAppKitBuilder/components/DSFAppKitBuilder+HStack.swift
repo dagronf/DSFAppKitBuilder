@@ -29,29 +29,19 @@ import AppKit.NSStackView
 
 /// A horizontal NSStackView wrapper
 public class HStack: Stack {
-	public init(
-		tag: Int? = nil,
-		spacing: CGFloat = 8,
-		alignment: NSLayoutConstraint.Attribute = .centerY,
-		content: [Element]) {
-			super.init(
-				tag: tag,
-				orientation: .horizontal,
-				spacing: spacing,
-				alignment: alignment,
-				content: content)
-		}
-
 	public convenience init(
 		tag: Int? = nil,
 		spacing: CGFloat = 8,
 		alignment: NSLayoutConstraint.Attribute = .centerY,
+		distribution: NSStackView.Distribution? = nil,
 		@ElementBuilder builder: () -> [Element]
 	) {
 		self.init(
 			tag: tag,
+			orientation: .horizontal,
 			spacing: spacing,
 			alignment: alignment,
+			distribution: distribution,
 			content: builder())
 	}
 }

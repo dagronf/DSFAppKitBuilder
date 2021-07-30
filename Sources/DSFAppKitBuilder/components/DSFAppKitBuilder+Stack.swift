@@ -32,6 +32,7 @@ public class Stack: Element {
 		orientation: NSUserInterfaceLayoutOrientation,
 		spacing: CGFloat = 8,
 		alignment: NSLayoutConstraint.Attribute,
+		distribution: NSStackView.Distribution? = nil,
 		content: [Element]
 	) {
 		self.content = content
@@ -39,6 +40,11 @@ public class Stack: Element {
 		self.stack.spacing = spacing
 		self.stack.orientation = orientation
 		self.stack.alignment = alignment
+
+		if let d = distribution {
+			_ = self.distribution(d)
+		}
+
 		content.forEach {
 			stack.addArrangedSubview($0.nsView)
 			$0.addedToParentView(parent: stack)

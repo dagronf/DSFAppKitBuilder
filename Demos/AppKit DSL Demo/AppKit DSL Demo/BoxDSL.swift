@@ -9,9 +9,10 @@ import AppKit
 import DSFAppKitBuilder
 
 class BoxDSL: NSObject, DSFAppKitBuilderViewHandler {
-	var body: Element =
-	VStack {
-		HStack {
+
+	lazy var body: Element =
+	VStack(spacing: 12) {
+		HStack(spacing: 20) {
 			Box("Fishy 1") {
 				VStack {
 					Label("This is test")
@@ -53,7 +54,7 @@ class BoxDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 		.distribution(.fillEqually)
 
-		HStack {
+		HStack(spacing: 20) {
 
 			Box("Fishy 21") {
 				VStack {
@@ -100,3 +101,28 @@ class BoxDSL: NSObject, DSFAppKitBuilderViewHandler {
 	.distribution(.fillEqually)
 }
 
+
+
+/*
+
+ var body: Element =
+ VStack {
+	 HStack(distribution: .fillEqually) {
+		 Label("Name").alignment(.right).horizontalPriorities(hugging: 10)
+		 TextField().alignment(.left).horizontalPriorities(hugging: 10)
+	 }
+	 HStack(distribution: .fillEqually) {
+		 Label("Username").alignment(.right).horizontalPriorities(hugging: 10)
+		 TextField().alignment(.left).horizontalPriorities(hugging: 10)
+	 }
+	 HStack(distribution: .fillEqually) {
+		 Label("Subscription Type").alignment(.right).horizontalPriorities(hugging: 10)
+		 PopupButton {
+			 MenuItem(title: "Weekly")
+			 MenuItem(title: "Monthly")
+			 MenuItem(title: "Yearly")
+		 }
+	 }
+ }
+
+ */
