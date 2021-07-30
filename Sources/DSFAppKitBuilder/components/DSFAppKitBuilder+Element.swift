@@ -43,7 +43,7 @@ public class Element: NSObject {
 		self.nsView.translatesAutoresizingMaskIntoConstraints = false
 	}
 
-	public var nsView: NSView { fatalError() }
+	var nsView: NSView { fatalError() }
 	private lazy var isHiddenBinder = Bindable<Bool>()
 }
 

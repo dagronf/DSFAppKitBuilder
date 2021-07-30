@@ -28,7 +28,8 @@ import AppKit.NSMenu
 
 /// A menu item
 public class MenuItem {
-	let menuItem: NSMenuItem
+
+	/// Create a MenuItem with a title string
 	public init(title: String) {
 		menuItem = NSMenuItem()
 		menuItem.title = title
@@ -39,9 +40,14 @@ public class MenuItem {
 		return MenuItem()
 	}
 
+	/// Create a divider MenuItem
 	public init() {
 		menuItem = NSMenuItem.separator()
 	}
+
+	// Private
+
+	let menuItem: NSMenuItem
 }
 
 // MARK: - Result builder for menu items

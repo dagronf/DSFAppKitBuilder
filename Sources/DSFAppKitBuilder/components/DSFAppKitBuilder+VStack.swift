@@ -27,8 +27,16 @@
 
 import AppKit.NSStackView
 
-/// A horizontal NSStackView wrapper
+/// A vertical NSStackView wrapper
 public class VStack: Stack {
+
+	/// Create a vertical stack
+	/// - Parameters:
+	///   - tag: The tag to use when identifying elements
+	///   - spacing: The minimum spacing, in points, between adjacent views in the stack view
+	///   - alignment: The view alignment within the stack view
+	///   - distribution: The spacing and sizing distribution of stacked views along the primary axis. Defaults to GravityAreas.
+	///   - builder: The builder for generating the stack's content
 	public convenience init(
 		tag: Int? = nil,
 		spacing: CGFloat = 8,

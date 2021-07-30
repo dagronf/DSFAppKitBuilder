@@ -43,7 +43,7 @@ public class PopupButton: Control {
 
 	// Private
 
-	override public var nsView: NSView { return self.popupButton }
+	override var nsView: NSView { return self.popupButton }
 	private let popupButton = NSPopUpButton()
 	private let content: [MenuItem]
 

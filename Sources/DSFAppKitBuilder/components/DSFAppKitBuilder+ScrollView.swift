@@ -78,7 +78,7 @@ public class ScrollView: Element {
 	private let scrollView = NSScrollView()
 	private let content = NSStackView()
 	private let documentElements: [Element]
-	override public var nsView: NSView { return self.scrollView }
+	override var nsView: NSView { return self.scrollView }
 }
 
 // MARK: - Modifiers

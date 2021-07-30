@@ -29,6 +29,12 @@ import AppKit
 /// An NSBox element
 public class Box: Element {
 
+	/// Create a box
+	/// - Parameters:
+	///   - tag: The tag to use when identifying elements
+	///   - title: The title of the box
+	///   - titlePosition: The position of the title within the box
+	///   - builder: The builder for the boxes content
 	public convenience init(
 		tag: Int? = nil,
 		_ title: String,
@@ -37,6 +43,12 @@ public class Box: Element {
 			self.init(tag: tag, title, titlePosition: titlePosition, content: builder())
 	}
 
+	/// Create a box
+	/// - Parameters:
+	///   - tag: The tag to use when identifying elements
+	///   - title: The title of the box
+	///   - titlePosition: The position of the title within the box
+	///   - content: An array of elements to use for the boxes content
 	public init(
 		tag: Int? = nil,
 		_ title: String,
@@ -57,7 +69,7 @@ public class Box: Element {
 
 	// Private
 	private let boxView = NSBox()
-	override public var nsView: NSView { return self.boxView }
+	override var nsView: NSView { return self.boxView }
 	private let containerView = NSView()
 	private let content: Element
 }

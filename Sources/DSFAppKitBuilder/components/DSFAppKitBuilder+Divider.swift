@@ -26,10 +26,14 @@
 
 import AppKit.NSBox
 
+/// A divider element
 public class Divider: Element {
 
+	/// The direction for the divider
 	public enum Direction {
+		/// Horizontal orientation
 		case horizontal
+		/// Vertical orientation
 		case vertical
 	}
 
@@ -57,5 +61,21 @@ public class Divider: Element {
 	// Privates
 
 	private let separator: NSBox
-	public override var nsView: NSView { return separator }
+	override var nsView: NSView { return separator }
+}
+
+/// A vertical divider element
+public class VDivider: Divider {
+	/// Create a vertical divider
+	public init(tag: Int? = nil) {
+		super.init(tag: tag, direction: .vertical)
+	}
+}
+
+/// A horizontal divider element
+public class HDivider: Divider {
+	/// Create a horizontal divider
+	public init(tag: Int? = nil) {
+		super.init(tag: tag, direction: .horizontal)
+	}
 }

@@ -55,7 +55,7 @@ public class Stepper: Control {
 
 	// Private
 	private let stepper = NSStepper()
-	public override var nsView: NSView { return self.stepper }
+	override var nsView: NSView { return self.stepper }
 	private lazy var valueBinder = Bindable<Double>()
 }
 

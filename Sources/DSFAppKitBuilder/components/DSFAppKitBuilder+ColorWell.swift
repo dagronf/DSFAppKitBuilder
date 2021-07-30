@@ -29,6 +29,12 @@ import AppKit.NSColorWell
 /// An color view
 public class ColorWell: Control {
 
+	/// Create a ColorWell
+	/// - Parameters:
+	///   - tag: The tag to use when identifying elements
+	///   - showsAlpha: true if the color well should allow setting the opacity of the returned color
+	///   - isBordered: true if the color well has a border
+	///   - color: The initial color
 	public init(
 		tag: Int? = nil,
 		showsAlpha: Bool = false,
@@ -50,7 +56,7 @@ public class ColorWell: Control {
 
 	// Privates
 	private let colorWell = AlphaCompatibleColorWell()
-	public override var nsView: NSView { return self.colorWell }
+	override var nsView: NSView { return self.colorWell }
 
 	private lazy var colorBinder = Bindable<NSColor>()
 	private var actionCallback: ((NSColor) -> Void)? = nil

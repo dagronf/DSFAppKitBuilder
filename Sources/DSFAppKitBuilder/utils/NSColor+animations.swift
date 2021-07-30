@@ -37,10 +37,13 @@
 
 import AppKit
 
+/// A animation handler for NSColor transitions
 class NSColorAnimator: NSAnimation {
 	var color1: NSColor = .clear
 	var color2: NSColor = .clear
 	var target: ((NSColor) -> Void)?
+
+	/// Called when the progress is updated
 	override public var currentProgress: NSAnimation.Progress {
 		get {
 			super.currentProgress
@@ -54,8 +57,17 @@ class NSColorAnimator: NSAnimation {
 }
 
 extension NSColor {
+
+	/// An animation class that handles animating between two NSColor objects
 	class Animator {
-		let animator = NSColorAnimator()
+		private let animator = NSColorAnimator()
+
+		/// Start an animation between two colors. If an animation is already running, it will be automatically completed
+		/// - Parameters:
+		///   - from: Color to start from
+		///   - to: Color to end on
+		///   - duration: The length (in seconds) of the animation
+		///   - progress: The block to call when an intermediate color is presented. Will be called on the main thread.
 		func animate(from: NSColor, to: NSColor, duration: CGFloat = 0.2, _ progress: @escaping (NSColor) -> Void) {
 			self.animator.stop()
 			self.animator.color1 = from

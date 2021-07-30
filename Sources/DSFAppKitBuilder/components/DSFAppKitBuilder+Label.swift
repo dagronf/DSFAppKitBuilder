@@ -29,7 +29,7 @@ import AppKit.NSTextField
 /// A read-only text control
 public class Label: Control {
 	let label = NSTextField()
-	override public var nsView: NSView { return self.label }
+	override var nsView: NSView { return self.label }
 
 	public init(tag: Int? = nil, _ label: String? = nil) {
 		super.init(tag: tag)

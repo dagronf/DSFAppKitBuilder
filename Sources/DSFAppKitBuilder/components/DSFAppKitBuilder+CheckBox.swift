@@ -28,6 +28,11 @@ import AppKit.NSButton
 
 /// A checkbox control
 public class CheckBox: Button {
+
+	/// Create a CheckBox
+	/// - Parameters:
+	///   - tag: The tag to use when identifying elements
+	///   - title: The title to display
 	public init(tag: Int? = nil, _ title: String = "") {
 		super.init(tag: tag, title: title, type: .switch)
 	}

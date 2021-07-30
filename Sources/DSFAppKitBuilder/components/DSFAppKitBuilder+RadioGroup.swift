@@ -58,7 +58,7 @@ public class RadioGroup: Control {
 
 	// Private
 
-	override public var nsView: NSView { return self.radioGroup }
+	override var nsView: NSView { return self.radioGroup }
 	private let radioGroup = NSStackView()
 	private let content: [RadioElement]
 
