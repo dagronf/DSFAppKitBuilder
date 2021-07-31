@@ -114,7 +114,9 @@ public extension Button {
 // MARK: - Actions
 
 public extension Button {
-	/// Set the action callback via a block
+	/// Set a block to be called when the button is activated
+	///
+	/// Passes the new button state to the callback block
 	func onAction(_ action: @escaping ((NSButton.StateValue) -> Void)) -> Self {
 		self.setAction(action)
 		return self
@@ -124,7 +126,7 @@ public extension Button {
 		self.action = action
 	}
 
-	@objc internal func performAction(_ item: NSButton) {
+	@objc private func performAction(_ item: NSButton) {
 		self.action?(item.state)
 		if self.onOffBinder.isActive {
 			self.onOffBinder.setValue(item.state == .off ? false : true)
