@@ -46,16 +46,30 @@ public class Stepper: Control {
 	}
 
 	@objc private func stepperDidChange(_ sender: Any) {
-		valueBinder.setValue(self.stepper.doubleValue)
-		if valueBinder.isActive {
-			valueBinder.setValue(self.stepper.doubleValue)
-		}
+		let newValue = self.stepper.doubleValue
+
+		// Call the callback if it is set
+		self.actionCallback?(newValue)
+
+		// Tell the binder to update
+		self.valueBinder.setValue(self.stepper.doubleValue)
 	}
 
 	// Private
 	private let stepper = NSStepper()
 	override var nsView: NSView { return self.stepper }
 	private lazy var valueBinder = Bindable<Double>()
+	private var actionCallback: ((Double) -> Void)? = nil
+}
+
+// MARK: - Actions
+
+public extension Stepper {
+	/// Set a callback block for when the selection changes
+	func onChange(_ block: @escaping (Double) -> Void) -> Self {
+		self.actionCallback = block
+		return self
+	}
 }
 
 // MARK: - Bindings
@@ -66,7 +80,6 @@ public extension Stepper {
 		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.stepper.doubleValue = newValue
 		})
-		self.valueBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }

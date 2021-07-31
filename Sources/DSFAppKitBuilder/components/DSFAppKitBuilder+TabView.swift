@@ -92,7 +92,6 @@ public extension TabView {
 		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.tabView.selectTabViewItem(at: newValue)
 		})
-		self.valueBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }
@@ -105,9 +104,9 @@ extension TabView: NSTabViewDelegate {
 			let index = self.tabView.indexOfTabViewItem(item)
 			item.view?.needsUpdateConstraints = true
 			self.changeBlock?(index)
-			if self.valueBinder.isActive {
-				self.valueBinder.setValue(index)
-			}
+
+			// Tell the binder to update its value
+			self.valueBinder.setValue(index)
 		}
 	}
 }

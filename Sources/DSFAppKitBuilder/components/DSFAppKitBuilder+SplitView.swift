@@ -87,7 +87,6 @@ public extension SplitView {
 				item.1.isCollapsed = newValue.contains(item.0)
 			}
 		})
-		self.hiddenSplitBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }

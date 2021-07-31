@@ -52,11 +52,11 @@ public class ProgressBar: Element {
 // MARK: - Bindings
 
 public extension ProgressBar {
+	/// Bind the value of the progress bar to a keypath
 	func bindValue<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Double>) -> Self {
 		self.progressBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.progress.doubleValue = newValue
 		})
-		self.progressBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }

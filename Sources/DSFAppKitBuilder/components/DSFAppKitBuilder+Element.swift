@@ -139,7 +139,6 @@ public extension Element {
 		self.isHiddenBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.nsView.isHidden = newValue
 		})
-		self.isHiddenBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }

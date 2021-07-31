@@ -111,9 +111,9 @@ public extension RadioGroup {
 
 	@objc private func radioSelected(_ item: NSButton) {
 		self.actionCallback?(item.tag)
-		if self.selectionBinder.isActive {
-			self.selectionBinder.setValue(item.tag)
-		}
+
+		// Tell the binder to update
+		self.selectionBinder.setValue(item.tag)
 	}
 }
 
@@ -127,7 +127,6 @@ public extension RadioGroup {
 			self.selectRadioWithTag(newValue)
 			self.actionCallback?(newValue)
 		})
-		self.selectionBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }

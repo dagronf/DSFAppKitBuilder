@@ -60,7 +60,11 @@ public class ColorWell: Control {
 	private var actionCallback: ((NSColor) -> Void)? = nil
 
 	@objc private func colorChanged(_ sender: Any) {
-		self.actionCallback?(self.colorWell.color)
+		let newColor = self.colorWell.color
+		self.actionCallback?(newColor)
+
+		// Tell the binder to update
+		self.colorBinder.setValue(newColor)
 	}
 }
 
@@ -77,7 +81,7 @@ public extension ColorWell {
 // MARK: - Bindings
 
 public extension ColorWell {
-	/// Bind the image to a keypath
+	/// Bind the color to a keypath
 	func bindColor<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSColor>) -> Self {
 		self.colorBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.colorWell.color = newValue

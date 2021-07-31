@@ -62,7 +62,6 @@ public extension Control {
 		self.isEnabledBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.control.isEnabled = newValue
 		})
-		self.isEnabledBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }

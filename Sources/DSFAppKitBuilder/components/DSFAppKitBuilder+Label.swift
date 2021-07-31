@@ -118,7 +118,6 @@ public extension Label {
 		self.labelBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.label.stringValue = newValue
 		})
-		self.labelBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 
@@ -139,7 +138,6 @@ public extension Label {
 				self.label.textColor = newValue
 			}
 		})
-		self.textColorBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }

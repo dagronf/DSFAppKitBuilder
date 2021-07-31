@@ -17,16 +17,18 @@ internal class Bindable<VALUETYPE>: NSObject {
 
 	private var valueChangeCallback: BindableCallback?
 
-	public var isActive: Bool {
+	// Is this bindable currently bound to a keypath?
+	var isActive: Bool {
 		return valueChangeCallback != nil
 	}
 
 	deinit {
-		bindValueKeyPath = nil
-		bindValueObserver = nil
-		valueChangeCallback = nil
+		self.bindValueKeyPath = nil
+		self.bindValueObserver = nil
+		self.valueChangeCallback = nil
 	}
 
+	// Bind an object-keypath to this value
 	func bind<TYPE, VALUETYPE>(
 		_ object: AnyObject,
 		keyPath: ReferenceWritableKeyPath<TYPE, VALUETYPE>,
@@ -38,6 +40,9 @@ internal class Bindable<VALUETYPE>: NSObject {
 		bindValueKeyPath = stringKeyPath
 		self.bindValueObserver = object
 		object.addObserver(self, forKeyPath: stringKeyPath, options: [.new], context: nil)
+
+		// Initialize the binder with the current value of the keypath
+		self.setValue(object.value(forKeyPath: stringKeyPath))
 	}
 
 	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
@@ -51,8 +56,12 @@ internal class Bindable<VALUETYPE>: NSObject {
 	}
 
 	func setValue<VALUETYPE>(_ value: VALUETYPE) {
+		guard self.isActive else {
+			// Do nothing if we're currently not bound to a keypath
+			return
+		}
 		if let kp = bindValueKeyPath {
-			bindValueObserver?.setValue(value, forKeyPath: kp)
+			self.bindValueObserver?.setValue(value, forKeyPath: kp)
 		}
 	}
 

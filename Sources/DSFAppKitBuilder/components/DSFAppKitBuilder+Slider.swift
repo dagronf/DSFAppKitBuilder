@@ -71,7 +71,13 @@ public extension Slider {
 	}
 
 	@objc private func sliderDidChange(_ sender: Any) {
-		valueBinder.setValue(self.slider.doubleValue)
+		let newValue = self.slider.doubleValue
+
+		// Call the callback if it is set
+		self.actionCallback?(newValue)
+
+		// Tell the binder to update
+		self.valueBinder.setValue(self.slider.doubleValue)
 	}
 }
 
@@ -83,7 +89,6 @@ public extension Slider {
 		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.slider.doubleValue = newValue
 		})
-		self.valueBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }

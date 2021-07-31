@@ -128,12 +128,10 @@ public extension Button {
 
 	@objc private func performAction(_ item: NSButton) {
 		self.action?(item.state)
-		if self.onOffBinder.isActive {
-			self.onOffBinder.setValue(item.state == .off ? false : true)
-		}
-		if self.stateBinder.isActive {
-			self.stateBinder.setValue(item.state)
-		}
+
+		/// Tell the binders to update
+		self.onOffBinder.setValue(item.state == .off ? false : true)
+		self.stateBinder.setValue(item.state)
 	}
 }
 
@@ -145,7 +143,6 @@ public extension Button {
 		self.titleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.title = newValue
 		})
-		self.titleBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 
@@ -154,7 +151,6 @@ public extension Button {
 		self.alternateTitleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.alternateTitle = newValue
 		})
-		self.alternateTitleBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 
@@ -163,7 +159,6 @@ public extension Button {
 		self.stateBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.state = newValue
 		})
-		self.stateBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 
@@ -172,7 +167,6 @@ public extension Button {
 		self.onOffBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.button.state = newValue ? .on : .off
 		})
-		self.onOffBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }

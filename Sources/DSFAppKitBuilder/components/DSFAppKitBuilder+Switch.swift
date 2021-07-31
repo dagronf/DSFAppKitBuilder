@@ -43,29 +43,26 @@ public class Switch: Control {
 	let switchView = NSSwitch()
 	override var nsView: NSView { return self.switchView }
 
-	private var action: ((NSButton.StateValue) -> Void)?
+	private var actionCallback: ((NSButton.StateValue) -> Void)?
 	private lazy var stateBinder = Bindable<NSControl.StateValue>()
-
+	private lazy var onOffBinder = Bindable<Bool>()
 }
 
 // MARK: - Actions
 
 @available(macOS 10.15, *)
 public extension Switch {
-	func action(_ action: @escaping ((NSButton.StateValue) -> Void)) -> Self {
-		self.setAction(action)
+
+	/// Set a block to be called when the button is activated
+	func onAction(_ action: @escaping ((NSButton.StateValue) -> Void)) -> Self {
+		self.actionCallback = action
 		return self
 	}
 
-	private func setAction(_ action: @escaping ((NSButton.StateValue) -> Void)) {
-		self.action = action
-	}
-
 	@objc private func switchDidChange(_ sender: NSSwitch) {
-		self.action?(sender.state)
-		if stateBinder.isActive {
-			stateBinder.setValue(self.switchView.state)
-		}
+		self.actionCallback?(sender.state)
+		self.stateBinder.setValue(self.switchView.state)
+		self.onOffBinder.setValue(self.switchView.state == .off ? false : true)
 	}
 }
 
@@ -74,16 +71,19 @@ public extension Switch {
 @available(macOS 10.15, *)
 public extension Switch {
 
+	/// Bind the on/off switch state to a keypath.
+	func bindOnOffState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
+		self.onOffBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.switchView.state = (newValue == false) ? .off : .on
+		})
+		return self
+	}
+
 	/// Bind the switch state to a keypath
 	func bindState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSControl.StateValue>) -> Self {
-		self.action = nil
-		self.switchView.target = self
-		self.switchView.action = #selector(switchDidChange(_:))
-
 		self.stateBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.switchView.state = newValue
 		})
-		self.stateBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }

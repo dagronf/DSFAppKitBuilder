@@ -94,7 +94,6 @@ public extension PopupButton {
 		self.selectionBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.popupButton.selectItem(at: newValue)
 		})
-		self.selectionBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }
@@ -110,8 +109,7 @@ private extension PopupButton {
 	@objc private func selectionChanged(_: Any) {
 		self.selectionChangeBlock?(self.selectedIndex)
 
-		if self.selectionBinder.isActive {
-			self.selectionBinder.setValue(self.selectedIndex)
-		}
+		// Tell the binder to update
+		self.selectionBinder.setValue(self.selectedIndex)
 	}
 }

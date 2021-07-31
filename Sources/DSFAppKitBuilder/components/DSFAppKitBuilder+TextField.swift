@@ -98,7 +98,6 @@ public extension TextField {
 		self.textFieldBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.label.stringValue = newValue
 		})
-		self.textFieldBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }
@@ -112,14 +111,14 @@ extension TextField: NSTextFieldDelegate {
 
 	public func controlTextDidChange(_: Notification) {
 		self.didEdit?(self.label)
-		if !updateOnEndEditingOnly && self.textFieldBinder.isActive {
+		if !updateOnEndEditingOnly {
 			self.textFieldBinder.setValue(self.label.stringValue)
 		}
 	}
 
 	public func controlTextDidEndEditing(_: Notification) {
 		self.didEndEditing?(self.label)
-		if updateOnEndEditingOnly && self.textFieldBinder.isActive {
+		if updateOnEndEditingOnly {
 			self.textFieldBinder.setValue(self.label.stringValue)
 		}
 	}

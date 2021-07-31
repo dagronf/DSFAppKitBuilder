@@ -142,9 +142,9 @@ public extension Segmented {
 
 	@objc private func segmentChanged(_ sender: Any) {
 		self.actionCallback?(self.selectedSegments)
-		if valueBinder.isActive {
-			valueBinder.setValue(self.selectedSegments)
-		}
+
+		// Tell the binder to update
+		valueBinder.setValue(self.selectedSegments)
 	}
 }
 
@@ -157,7 +157,6 @@ public extension Segmented {
 		self.segmentedEnabledBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.enableSegments(from: newValue)
 		})
-		self.segmentedEnabledBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 
@@ -166,7 +165,6 @@ public extension Segmented {
 		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.selectSegments(from: newValue)
 		})
-		self.valueBinder.setValue(object.value(forKeyPath: NSExpression(forKeyPath: keyPath).keyPath))
 		return self
 	}
 }
