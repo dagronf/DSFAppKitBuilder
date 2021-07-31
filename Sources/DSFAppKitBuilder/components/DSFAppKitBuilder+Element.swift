@@ -35,9 +35,7 @@ public class Element: NSObject {
 
 	// Private
 
-	private let tag: Int?
-	internal init(tag: Int? = nil) {
-		self.tag = tag
+	internal override init() {
 		super.init()
 		self.nsView.wantsLayer = true
 		self.nsView.translatesAutoresizingMaskIntoConstraints = false

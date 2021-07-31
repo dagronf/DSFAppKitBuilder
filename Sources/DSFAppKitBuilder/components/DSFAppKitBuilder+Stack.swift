@@ -28,7 +28,6 @@ import AppKit.NSStackView
 
 public class Stack: Element {
 	internal init(
-		tag: Int? = nil,
 		orientation: NSUserInterfaceLayoutOrientation,
 		spacing: CGFloat = 8,
 		alignment: NSLayoutConstraint.Attribute,
@@ -36,7 +35,7 @@ public class Stack: Element {
 		content: [Element]
 	) {
 		self.content = content
-		super.init(tag: tag)
+		super.init()
 		self.stack.spacing = spacing
 		self.stack.orientation = orientation
 		self.stack.alignment = alignment

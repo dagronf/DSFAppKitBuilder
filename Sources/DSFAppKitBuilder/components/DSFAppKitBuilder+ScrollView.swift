@@ -37,18 +37,15 @@ public class ScrollView: Element {
 
 	/// Create a ScrollView
 	/// - Parameters:
-	///   - tag: (optional) The identifing tag
 	///   - fitHorizontally: Set the width of the content to the width of the scrollview
 	///   - autohidesScrollers: A Boolean that indicates whether the scroll view automatically hides its scroll bars when they are not needed.
 	///   - documentElement: The content of the scrollview
 	public convenience init(
-		tag: Int? = nil,
 		fitHorizontally: Bool = true,
 		autohidesScrollers: Bool = true,
 		@ElementBuilder builder: () -> [Element]
 	) {
 		self.init(
-			tag: tag,
 			fitHorizontally: fitHorizontally,
 			autohidesScrollers: autohidesScrollers,
 			contents: builder()
@@ -57,18 +54,16 @@ public class ScrollView: Element {
 
 	/// Create a ScrollView
 	/// - Parameters:
-	///   - tag: (optional) The identifing tag
 	///   - fitHorizontally: Set the width of the content to the width of the scrollview
 	///   - autohidesScrollers: A Boolean that indicates whether the scroll view automatically hides its scroll bars when they are not needed.
 	///   - documentElement: The content of the scrollview
 	public init(
-		tag: Int? = nil,
 		fitHorizontally: Bool = true,
 		autohidesScrollers: Bool = true,
 		contents: [Element]
 	) {
 		self.documentElements = contents
-		super.init(tag: tag)
+		super.init()
 
 		self.setup(fitHorizontally: fitHorizontally,
 					  autohidesScrollers: autohidesScrollers)

@@ -29,14 +29,13 @@ import AppKit.NSButton
 /// An NSButton wrapper
 public class Button: Control {
 	public init(
-		tag: Int? = nil,
 		title: String,
 		type: NSButton.ButtonType = .momentaryLight,
 		bezelStyle: NSButton.BezelStyle = .rounded,
 		allowMixedState: Bool = false,
 		_ action: ((NSButton.StateValue) -> Void)? = nil
 	) {
-		super.init(tag: tag)
+		super.init()
 		self.button.title = title
 		self.button.bezelStyle = bezelStyle
 		self.button.setButtonType(type)

@@ -32,20 +32,17 @@ public class HStack: Stack {
 
 	/// Create a horizontal stack
 	/// - Parameters:
-	///   - tag: The tag to use when identifying elements
 	///   - spacing: The minimum spacing, in points, between adjacent views in the stack view
 	///   - alignment: The view alignment within the stack view
 	///   - distribution: The spacing and sizing distribution of stacked views along the primary axis. Defaults to GravityAreas.
 	///   - builder: The builder for generating the stack's content
 	public convenience init(
-		tag: Int? = nil,
 		spacing: CGFloat = 8,
 		alignment: NSLayoutConstraint.Attribute = .centerY,
 		distribution: NSStackView.Distribution? = nil,
 		@ElementBuilder builder: () -> [Element]
 	) {
 		self.init(
-			tag: tag,
 			orientation: .horizontal,
 			spacing: spacing,
 			alignment: alignment,

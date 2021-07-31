@@ -31,8 +31,8 @@ public class Label: Control {
 	let label = NSTextField()
 	override var nsView: NSView { return self.label }
 
-	public init(tag: Int? = nil, _ label: String? = nil) {
-		super.init(tag: tag)
+	public init(_ label: String? = nil) {
+		super.init()
 		self.label.isEditable = false
 		self.label.drawsBackground = false
 		self.label.isBezeled = false

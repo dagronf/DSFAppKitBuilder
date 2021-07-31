@@ -29,10 +29,9 @@ import AppKit
 @available(macOS 10.15, *)
 public class Switch: Control {
 	public init(
-		tag: Int? = nil,
 		state: NSControl.StateValue = .off
 	) {
-		super.init(tag: tag)
+		super.init()
 		self.switchView.state = state
 
 		self.switchView.target = self

@@ -29,9 +29,9 @@ import AppKit
 /// Embed another NSView within the DSL
 public class View: Element {
 
-	public init(tag: Int? = nil, containedView: NSView) {
+	public init(containedView: NSView) {
 		self.containedView = containedView
-		super.init(tag: tag)
+		super.init()
 	}
 
 	// Private

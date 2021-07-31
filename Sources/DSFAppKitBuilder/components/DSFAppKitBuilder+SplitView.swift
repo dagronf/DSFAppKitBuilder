@@ -29,13 +29,11 @@ import AppKit
 // Wrapper for NSSplitView
 public class SplitView: Control {
 	convenience public init(
-		tag: Int? = nil,
 		isVertical: Bool = true,
 		dividerStyle: NSSplitView.DividerStyle? = nil,
 		@SplitViewBuilder builder: () -> [SplitViewItem])
 	{
 		self.init(
-			tag: tag,
 			isVertical: isVertical,
 			dividerStyle: dividerStyle,
 			contents: builder())
@@ -54,13 +52,12 @@ public class SplitView: Control {
 	private lazy var hiddenSplitBinder = Bindable<NSSet>()
 
 	internal init(
-		tag: Int? = nil,
 		isVertical: Bool = true,
 		dividerStyle: NSSplitView.DividerStyle? = nil,
 		contents: [SplitViewItem])
 	{
 		self.splitItems = contents
-		super.init(tag: tag)
+		super.init()
 
 		self.splitView.isVertical = isVertical
 

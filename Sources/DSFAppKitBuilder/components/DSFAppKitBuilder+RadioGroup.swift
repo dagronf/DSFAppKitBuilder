@@ -26,30 +26,15 @@
 
 import AppKit
 
-/// An individual radio element for the group
-public class RadioElement {
-	let title: String
-	let toolTip: String?
-	public init(
-		_ title: String,
-		toolTip: String? = nil
-	) {
-		self.title = title
-		self.toolTip = toolTip
-	}
-}
-
 /// A group of managed radio buttons
 public class RadioGroup: Control {
 	public convenience init(
-		tag: Int? = nil,
 		selected: Int = 0,
 		controlSize: NSButton.ControlSize? = nil,
 		spacing _: CGFloat? = nil,
 		@RadioBuilder builder: () -> [RadioElement]
 	) {
 		self.init(
-			tag: tag,
 			selected: selected,
 			controlSize: controlSize,
 			content: builder()
@@ -66,14 +51,13 @@ public class RadioGroup: Control {
 	private lazy var selectionBinder = Bindable<Int>()
 
 	internal init(
-		tag: Int? = nil,
 		selected: Int = 0,
 		controlSize: NSButton.ControlSize? = nil,
 		spacing: CGFloat? = nil,
 		content: [RadioElement]
 	) {
 		self.content = content
-		super.init(tag: tag)
+		super.init()
 
 		self.radioGroup.orientation = .vertical
 		self.radioGroup.alignment = .leading
@@ -147,6 +131,27 @@ public extension RadioGroup {
 		return self
 	}
 }
+
+// MARK: - RadioElement
+
+/// An individual radio element for the group
+public class RadioElement {
+	let title: String
+	let toolTip: String?
+
+	/// Create a radio button within a radio group
+	/// - Parameters:
+	///   - title: The title to use for the radio control
+	///   - toolTip: The tooltip
+	public init(
+		_ title: String,
+		toolTip: String? = nil
+	) {
+		self.title = title
+		self.toolTip = toolTip
+	}
+}
+
 
 // MARK: - Result builder for RadioElements
 

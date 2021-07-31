@@ -30,12 +30,10 @@ import AppKit.NSPopUpButton
 public class PopupButton: Control {
 
 	public convenience init(
-		tag: Int? = nil,
 		pullsDown: Bool = false,
 		@MenuBuilder builder: () -> [MenuItem]
 	) {
 		self.init(
-			tag: tag,
 			pullsDown: pullsDown,
 			content: builder()
 		)
@@ -51,12 +49,11 @@ public class PopupButton: Control {
 	private var selectionChangeBlock: ((Int) -> Void)?
 
 	internal init(
-		tag: Int? = nil,
 		pullsDown: Bool = false,
 		content: [MenuItem]
 	) {
 		self.content = content
-		super.init(tag: tag)
+		super.init()
 
 		self.popupButton.pullsDown = pullsDown
 		let menu = NSMenu()

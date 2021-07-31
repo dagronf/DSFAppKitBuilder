@@ -28,12 +28,11 @@ import AppKit.NSProgressIndicator
 
 public class ProgressBar: Element {
 	public init(
-		tag: Int? = nil,
 		indeterminite: Bool = false,
 		range: ClosedRange<Double> = 0 ... 100,
 		value: Double = 20
 	) {
-		super.init(tag: tag)
+		super.init()
 		
 		self.progress.isIndeterminate = false
 		self.progress.minValue = range.lowerBound

@@ -30,7 +30,6 @@ import AppKit.NSImageView
 public class ImageView: Control {
 	/// Create an Image view
 	/// - Parameters:
-	///   - tag: (optional) The identifing tag
 	///   - frameStyle: The style to use for the frame, or nil for no frame
 	///   - image: the image to initially display
 	public init(
@@ -38,7 +37,7 @@ public class ImageView: Control {
 		frameStyle: NSImageView.FrameStyle? = nil,
 		_ image: NSImage? = nil
 	) {
-		super.init(tag: tag)
+		super.init()
 		if let i = image {
 			self.imageView.image = i
 		}

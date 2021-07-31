@@ -29,11 +29,10 @@ import AppKit.NSTextField
 /// An editable text control
 public class TextField: Label {
 	public init(
-		tag: Int? = nil,
 		_ label: String? = nil,
 		_ placeholderText: String? = nil)
 	{
-		super.init(tag: tag, label)
+		super.init(label)
 		self.label.isEditable = true
 		self.label.isBezeled = true
 		self.label.placeholderString = placeholderText

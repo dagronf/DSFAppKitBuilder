@@ -39,7 +39,6 @@ public class Divider: Element {
 
 	/// Create a divider
 	/// - Parameters:
-	///   - tag: (optional) The identifing tag
 	///   - direction: The direction
 	public init(tag: Int? = nil, direction: Direction) {
 		if direction == .horizontal {
@@ -48,7 +47,7 @@ public class Divider: Element {
 		else {
 			separator = NSBox(frame: NSRect(x: 0, y: 0, width: 5, height: 50))
 		}
-		super.init(tag: tag)
+		super.init()
 		separator.boxType = .separator
 		if direction == .horizontal {
 			_ = self.horizontalPriorities(hugging: .defaultLow)
@@ -67,15 +66,15 @@ public class Divider: Element {
 /// A vertical divider element
 public class VDivider: Divider {
 	/// Create a vertical divider
-	public init(tag: Int? = nil) {
-		super.init(tag: tag, direction: .vertical)
+	public init() {
+		super.init(direction: .vertical)
 	}
 }
 
 /// A horizontal divider element
 public class HDivider: Divider {
 	/// Create a horizontal divider
-	public init(tag: Int? = nil) {
-		super.init(tag: tag, direction: .horizontal)
+	public init() {
+		super.init(direction: .horizontal)
 	}
 }

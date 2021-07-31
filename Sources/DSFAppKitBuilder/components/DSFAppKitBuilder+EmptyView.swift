@@ -28,8 +28,8 @@ import AppKit.NSView
 
 /// An empty 'spacer' view
 public class EmptyView: Element {
-	override public init(tag: Int? = nil) {
-		super.init(tag: tag)
+	public override init() {
+		super.init()
 	}
 
 	// Private

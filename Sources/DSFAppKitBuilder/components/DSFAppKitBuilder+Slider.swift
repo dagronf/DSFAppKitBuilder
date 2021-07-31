@@ -28,12 +28,11 @@ import AppKit.NSSlider
 
 public class Slider: Control {
 	public init(
-		tag: Int? = nil,
 		range: ClosedRange<Double> = 0...100,
 		value: Double = 20,
 		isVertical: Bool = false
 	) {
-		super.init(tag: tag)
+		super.init()
 
 		self.slider.minValue = range.lowerBound
 		self.slider.maxValue = range.upperBound

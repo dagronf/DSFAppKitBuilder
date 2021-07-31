@@ -31,17 +31,15 @@ public class ColorWell: Control {
 
 	/// Create a ColorWell
 	/// - Parameters:
-	///   - tag: The tag to use when identifying elements
 	///   - showsAlpha: true if the color well should allow setting the opacity of the returned color
 	///   - isBordered: true if the color well has a border
 	///   - color: The initial color
 	public init(
-		tag: Int? = nil,
 		showsAlpha: Bool = false,
 		isBordered: Bool = true,
 		color: NSColor? = nil)
 	{
-		super.init(tag: tag)
+		super.init()
 		self.colorWell.showsAlpha = showsAlpha
 		self.colorWell.isBordered = isBordered
 

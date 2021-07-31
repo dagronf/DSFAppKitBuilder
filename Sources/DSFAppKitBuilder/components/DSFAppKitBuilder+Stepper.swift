@@ -30,12 +30,11 @@ import AppKit.NSStepper
 public class Stepper: Control {
 
 	public init(
-		tag: Int? = nil,
 		range: ClosedRange<Double> = 0...100,
 		increment: Double = 1,
 		value: Double = 20
 	) {
-		super.init(tag: tag)
+		super.init()
 
 		self.stepper.minValue = range.lowerBound
 		self.stepper.maxValue = range.upperBound

@@ -29,8 +29,8 @@ import AppKit.NSControl
 /// A DSL Element that is a control (ie. it is interactive in some way, like a button)
 public class Control: Element {
 	// Block the initializer so can't be created outside the package
-	internal override init(tag: Int? = nil) {
-		super.init(tag: tag)
+	internal override init() {
+		super.init()
 	}
 
 	// Private

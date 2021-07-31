@@ -56,12 +56,14 @@ public class Segment {
 /// Wrapper for NSSegmentedControl
 public class Segmented: Control {
 	public convenience init(
-		tag: Int? = nil,
 		segmentStyle: NSSegmentedControl.Style? = nil,
 		trackingMode: NSSegmentedControl.SwitchTracking? = nil,
 		@SegmentBuilder builder: () -> [Segment])
 	{
-		self.init(tag: tag, segmentStyle: segmentStyle, trackingMode: trackingMode, content: builder())
+		self.init(
+			segmentStyle: segmentStyle,
+			trackingMode: trackingMode,
+			content: builder())
 	}
 
 	// The currently selected segments
@@ -82,12 +84,13 @@ public class Segmented: Control {
 	private lazy var valueBinder = Bindable<NSSet>()
 	private lazy var segmentedEnabledBinder = Bindable<NSSet>()
 
-	internal init(tag: Int? = nil,
-					  segmentStyle: NSSegmentedControl.Style? = nil,
-					  trackingMode: NSSegmentedControl.SwitchTracking? = nil,
-					  content: [Segment]) {
+	internal init(
+		segmentStyle: NSSegmentedControl.Style? = nil,
+		trackingMode: NSSegmentedControl.SwitchTracking? = nil,
+		content: [Segment])
+	{
 		self.content = content
-		super.init(tag: tag)
+		super.init()
 
 		self.segmented.target = self
 		self.segmented.action = #selector(segmentChanged(_:))

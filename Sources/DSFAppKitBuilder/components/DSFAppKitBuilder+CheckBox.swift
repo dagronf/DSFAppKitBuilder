@@ -33,7 +33,7 @@ public class CheckBox: Button {
 	/// - Parameters:
 	///   - tag: The tag to use when identifying elements
 	///   - title: The title to display
-	public init(tag: Int? = nil, _ title: String = "") {
-		super.init(tag: tag, title: title, type: .switch)
+	public init(_ title: String = "") {
+		super.init(title: title, type: .switch)
 	}
 }

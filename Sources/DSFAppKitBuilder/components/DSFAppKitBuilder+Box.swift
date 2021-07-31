@@ -31,32 +31,31 @@ public class Box: Element {
 
 	/// Create a box
 	/// - Parameters:
-	///   - tag: The tag to use when identifying elements
 	///   - title: The title of the box
 	///   - titlePosition: The position of the title within the box
 	///   - builder: The builder for the boxes content
 	public convenience init(
-		tag: Int? = nil,
 		_ title: String,
 		titlePosition: NSBox.TitlePosition = .atTop,
 		_ builder: () -> Element) {
-			self.init(tag: tag, title, titlePosition: titlePosition, content: builder())
+			self.init(
+				title,
+				titlePosition: titlePosition,
+				content: builder())
 	}
 
 	/// Create a box
 	/// - Parameters:
-	///   - tag: The tag to use when identifying elements
 	///   - title: The title of the box
 	///   - titlePosition: The position of the title within the box
 	///   - content: An array of elements to use for the boxes content
 	public init(
-		tag: Int? = nil,
 		_ title: String,
 		titlePosition: NSBox.TitlePosition = .atTop,
 		content: Element)
 	{
 		self.content = content
-		super.init(tag: tag)
+		super.init()
 
 		// If we set the box's contentView to the nsView, the autolayout constraints gets all screwy
 		boxView.contentView = containerView

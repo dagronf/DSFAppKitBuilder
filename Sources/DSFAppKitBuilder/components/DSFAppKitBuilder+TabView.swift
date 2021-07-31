@@ -29,13 +29,11 @@ import AppKit
 /// A Tab View control
 public class TabView: Control {
 	public convenience init(
-		tag: Int? = nil,
 		tabViewType: NSTabView.TabType? = nil,
 		selectedIndex: Int = 0,
 		@TabBuilder builder: () -> [TabViewItem]
 	) {
 		self.init(
-			tag: tag,
 			tabViewType: tabViewType,
 			selectedIndex: selectedIndex,
 			contents: builder()
@@ -43,12 +41,11 @@ public class TabView: Control {
 	}
 
 	public init(
-		tag: Int? = nil,
 		tabViewType: NSTabView.TabType? = nil,
 		selectedIndex: Int = 0,
 		contents: [TabViewItem]
 	) {
-		super.init(tag: tag)
+		super.init()
 
 		if let type = tabViewType {
 			self.tabView.tabViewType = type
