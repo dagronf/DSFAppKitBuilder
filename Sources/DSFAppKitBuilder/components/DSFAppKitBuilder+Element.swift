@@ -26,11 +26,13 @@
 
 import AppKit.NSView
 
+/// The base element.
 public class Element: NSObject {
 
 	/// Called when the view is added to a parent.
 	public func addedToParentView(parent: NSView) {
 		// Default -- do nothing
+		// Can be overriden in inherited classes if needed
 	}
 
 	// Private
