@@ -40,7 +40,7 @@ public class Divider: Element {
 	/// Create a divider
 	/// - Parameters:
 	///   - direction: The direction
-	public init(tag: Int? = nil, direction: Direction) {
+	public init(direction: Direction) {
 		if direction == .horizontal {
 			separator = NSBox(frame: NSRect(x: 0, y: 0, width: 50, height: 5))
 		}

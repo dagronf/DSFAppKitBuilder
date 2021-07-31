@@ -33,7 +33,6 @@ public class ImageView: Control {
 	///   - frameStyle: The style to use for the frame, or nil for no frame
 	///   - image: the image to initially display
 	public init(
-		tag: Int? = nil,
 		frameStyle: NSImageView.FrameStyle? = nil,
 		_ image: NSImage? = nil
 	) {

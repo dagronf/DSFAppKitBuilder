@@ -31,7 +31,6 @@ public class CheckBox: Button {
 
 	/// Create a CheckBox
 	/// - Parameters:
-	///   - tag: The tag to use when identifying elements
 	///   - title: The title to display
 	public init(_ title: String = "") {
 		super.init(title: title, type: .switch)
