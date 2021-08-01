@@ -26,8 +26,38 @@
 
 import AppKit
 
-// Wrapper for NSSplitView
+/// Wrapper for NSSplitView
+///
+/// Usage:
+///
+/// ```swift
+/// SplitView {
+///    SplitViewItem {
+///       VStack {
+///          Label("1")
+///       }
+///       EmptyView()
+///    }
+///    SplitViewItem {
+///       VStack {
+///          Label("1")
+///       }
+///       EmptyView()
+///    }
+///    SplitViewItem {
+///       VStack {
+///          Label("1")
+///       }
+///       EmptyView(
+///    }
+/// }
 public class SplitView: Control {
+
+	/// Create a split view
+	/// - Parameters:
+	///   - isVertical: A Boolean value that determines the geometric orientation of the split view's dividers.
+	///   - dividerStyle: The style of divider between views.
+	///   - builder: The builder for generating the split items
 	convenience public init(
 		isVertical: Bool = true,
 		dividerStyle: NSSplitView.DividerStyle? = nil,
@@ -93,8 +123,13 @@ public extension SplitView {
 
 // MARK: - Split View Item
 
+/// A split view item
 public class SplitViewItem {
 
+	/// Create a split view item
+	/// - Parameters:
+	///   - holdingPriority: The holding priority to assign to this split item
+	///   - builder: The builder for generating the split item's content
 	convenience public init(
 		holdingPriority: NSLayoutConstraint.Priority? = .defaultLow,
 		builder: () -> Element) {
@@ -104,7 +139,7 @@ public class SplitViewItem {
 		)
 	}
 
-	public init(
+	init(
 		holdingPriority: NSLayoutConstraint.Priority? = .defaultLow,
 		content: Element)
 	{

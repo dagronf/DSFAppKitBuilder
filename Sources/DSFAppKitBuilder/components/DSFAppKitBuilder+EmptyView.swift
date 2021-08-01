@@ -26,8 +26,10 @@
 
 import AppKit.NSView
 
-/// An empty 'spacer' view
+/// An empty 'spacer' view.
 public class EmptyView: Element {
+
+	/// Create an empty (spacer) view
 	public override init() {
 		super.init()
 	}

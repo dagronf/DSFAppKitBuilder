@@ -25,9 +25,9 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 				}
 
 				SplitView {
-					SplitViewItem(content: split1)
-					SplitViewItem(content: split2)
-					SplitViewItem(content: split3)
+					SplitViewItem { self.split1 }
+					SplitViewItem { self.split2 }
+					SplitViewItem { self.split3 }
 				}
 				.bindHiddenViews(self, keyPath: \SplitDSL.hidden)
 				.verticalPriorities(hugging: 10, compressionResistance: 10)
@@ -38,9 +38,6 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 			.hugging(h: 10, v: 10)
 		}
 		.horizontalPriorities(hugging: 10, compressionResistance: 10)
-//		.additionalAppKitControlSettings { (box: NSBox) in
-//			box.titleFont = NSFont.systemFont(ofSize: 18)
-//		}
 
 	lazy var split1: Element =
 		VStack {

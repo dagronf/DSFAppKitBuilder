@@ -26,8 +26,20 @@
 
 import AppKit
 
+/// A switch element
+///
+/// Usage:
+///
+/// ```swift
+/// Switch(state: .on)
+///    .bindState(self, keyPath: \MyController.switchState)
+/// ```
+///
 @available(macOS 10.15, *)
 public class Switch: Control {
+
+	/// Create a switch
+	/// - Parameter state: the initial state for the control
 	public init(
 		state: NSControl.StateValue = .off
 	) {

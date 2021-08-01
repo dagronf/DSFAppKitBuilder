@@ -27,8 +27,26 @@
 import AppKit.NSPopUpButton
 
 /// Wrapper for NSPopupButton
+///
+/// Usage:
+///
+/// ```swift
+/// PopupButton {
+///    MenuItem(title: "Weekly")
+///    MenuItem(title: "Monthly")
+///    MenuItem.Divider()
+///    MenuItem(title: "Yearly")
+/// }
+/// .onChange { popupIndex in
+///    // do something when the selection changes
+/// }
+/// ```
 public class PopupButton: Control {
 
+	/// Create a PopupButton instance
+	/// - Parameters:
+	///   - pullsDown: A Boolean value indicating whether the button displays a pull-down or pop-up menu.
+	///   - builder: The result builder for the popup buttons menu content
 	public convenience init(
 		pullsDown: Bool = false,
 		@MenuBuilder builder: () -> [MenuItem]

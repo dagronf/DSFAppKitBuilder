@@ -62,7 +62,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					ProgressBar()
 						.bindValue(self, keyPath: \PrimaryDSL.progressValue)
 				}
-				Divider(direction: .vertical)
+				VDivider()
 				Button(title: "what?") { [weak self] _ in
 					guard let `self` = self else { return }
 
@@ -74,7 +74,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				.horizontalPriorities(hugging: .required)
 			}
 
-			Divider(direction: .horizontal)
+			HDivider()
 
 			HStack {
 				Label("Select something interesting")

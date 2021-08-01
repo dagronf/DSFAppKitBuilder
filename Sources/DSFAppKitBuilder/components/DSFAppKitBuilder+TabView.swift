@@ -27,7 +27,35 @@
 import AppKit
 
 /// A Tab View control
+///
+/// Usage:
+///
+/// ```swift
+/// TabView {
+///    TabViewItem("First") {
+///       VStack {
+///          Label("Tab View 1")
+///       }
+///    }
+///    TabViewItem("Second") {
+///       VStack {
+///          Label("Tab View 2")
+///       }
+///    }
+///    TabViewItem("Third") {
+///       VStack {
+///          Label("Tab View 3")
+///       }
+///    }
+/// }
+/// ```
+///
 public class TabView: Control {
+	/// Create a tab view element
+	/// - Parameters:
+	///   - tabViewType: The tab type to display the tabs.
+	///   - selectedIndex: The initially selected tab index
+	///   - builder: The builder for generating the tabviewitems
 	public convenience init(
 		tabViewType: NSTabView.TabType? = nil,
 		selectedIndex: Int = 0,
@@ -40,7 +68,7 @@ public class TabView: Control {
 		)
 	}
 
-	public init(
+	init(
 		tabViewType: NSTabView.TabType? = nil,
 		selectedIndex: Int = 0,
 		contents: [TabViewItem]
@@ -78,6 +106,8 @@ public class TabView: Control {
 // MARK: - Actions
 
 public extension TabView {
+
+	/// Set a block to be called when the tab changes
 	func onChange(_ changeBlock: @escaping (Int) -> Void) -> Self {
 		self.changeBlock = changeBlock
 		return self
@@ -116,8 +146,16 @@ extension TabView: NSTabViewDelegate {
 /// An individual tab item
 public class TabViewItem {
 	/// Create a TabViewItem using a resultBuilder
+	/// - Parameters:
+	///   - title: The title to use for the tab item
+	///   - toolTip: The tooltip to use for the tab item
+	///   - builder: The builder for generating the tab item content
 	public convenience init(_ title: String? = nil, toolTip: String? = nil, _ builder: () -> Element) {
-		self.init(title, toolTip: toolTip, content: builder())
+		self.init(
+			title,
+			toolTip: toolTip,
+			content: builder()
+		)
 	}
 
 	/// Create a TabViewItem

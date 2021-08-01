@@ -27,6 +27,14 @@
 import AppKit.NSImageView
 
 /// An image view
+///
+/// Usage:
+///
+/// ```swift
+/// ImageView(NSImage(named: "MyImage")!)
+///    .scaling(.scaleProportionallyUpOrDown)
+///    .size(width: 36, height: 36)
+/// ```
 public class ImageView: Control {
 	/// Create an Image view
 	/// - Parameters:

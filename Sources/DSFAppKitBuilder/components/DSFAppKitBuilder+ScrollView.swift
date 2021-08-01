@@ -33,19 +33,32 @@ final class FlippedClipView: NSClipView {
 }
 
 /// Wrapper for NSScrollView
+///
+/// Usage:
+///
+/// ```swift
+/// ScrollView(fitHorizontally: true) {
+///    VStack(spacing: 16, alignment: .leading) {
+///       Label("This is the first line")
+///       Label("This is the second line")
+///    }
+///}
+/// ```
 public class ScrollView: Element {
 
 	/// Create a ScrollView
 	/// - Parameters:
-	///   - fitHorizontally: Set the width of the content to the width of the scrollview
+	///   - fitHorizontally: Fix the width of the content to the width of the scrollview (so no horizontal scroller)
 	///   - autohidesScrollers: A Boolean that indicates whether the scroll view automatically hides its scroll bars when they are not needed.
 	///   - documentElement: The content of the scrollview
 	public convenience init(
+		borderType: NSBorderType = .lineBorder,
 		fitHorizontally: Bool = true,
 		autohidesScrollers: Bool = true,
 		@ElementBuilder builder: () -> [Element]
 	) {
 		self.init(
+			borderType: borderType,
 			fitHorizontally: fitHorizontally,
 			autohidesScrollers: autohidesScrollers,
 			contents: builder()
@@ -54,10 +67,12 @@ public class ScrollView: Element {
 
 	/// Create a ScrollView
 	/// - Parameters:
+	///   - borderType: A value that specifies the appearance of the scroll view’s border
 	///   - fitHorizontally: Set the width of the content to the width of the scrollview
 	///   - autohidesScrollers: A Boolean that indicates whether the scroll view automatically hides its scroll bars when they are not needed.
 	///   - documentElement: The content of the scrollview
-	public init(
+	init(
+		borderType: NSBorderType = .lineBorder,
 		fitHorizontally: Bool = true,
 		autohidesScrollers: Bool = true,
 		contents: [Element]
@@ -65,8 +80,10 @@ public class ScrollView: Element {
 		self.documentElements = contents
 		super.init()
 
-		self.setup(fitHorizontally: fitHorizontally,
-					  autohidesScrollers: autohidesScrollers)
+		self.setup(
+			borderType: borderType,
+			fitHorizontally: fitHorizontally,
+			autohidesScrollers: autohidesScrollers)
 	}
 
 	// Private
@@ -79,11 +96,13 @@ public class ScrollView: Element {
 // MARK: - Modifiers
 
 public extension ScrollView {
+	/// A Boolean that indicates whether the scroll view automatically hides its scroll bars when they are not needed.
 	func autohidesScrollers(_ autohidesScrollers: Bool) -> Self {
 		self.scrollView.autohidesScrollers = autohidesScrollers
 		return self
 	}
 
+	/// A value that specifies the appearance of the scroll view’s border.
 	func borderType(_ type: NSBorderType) -> Self {
 		self.scrollView.borderType = type
 		return self
@@ -94,6 +113,7 @@ public extension ScrollView {
 
 private extension ScrollView {
 	func setup(
+		borderType: NSBorderType,
 		fitHorizontally: Bool,
 		autohidesScrollers: Bool
 	) {
@@ -111,6 +131,7 @@ private extension ScrollView {
 
 		self.scrollView.autohidesScrollers = autohidesScrollers
 		self.scrollView.hasVerticalScroller = true
+		self.scrollView.borderType = borderType
 
 		if !fitHorizontally {
 			self.scrollView.hasHorizontalScroller = true

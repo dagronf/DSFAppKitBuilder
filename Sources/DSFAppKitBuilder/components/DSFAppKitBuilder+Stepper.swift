@@ -27,8 +27,20 @@
 import AppKit.NSStepper
 
 /// Wrapper for NSStepper
+///
+/// Usage:
+///
+/// ```swift
+/// Stepper(range: 0 ... 100, value: 20)
+///    .bindValue(self, keyPath: \MyController.stepperValue)
+/// ```
 public class Stepper: Control {
 
+	/// Create a stepper element
+	/// - Parameters:
+	///   - range: The range of values
+	///   - increment: The amount by which the receiver changes with each increment or decrement.
+	///   - value: The initial value for the stepper
 	public init(
 		range: ClosedRange<Double> = 0...100,
 		increment: Double = 1,
@@ -45,16 +57,6 @@ public class Stepper: Control {
 		self.stepper.action = #selector(stepperDidChange(_:))
 	}
 
-	@objc private func stepperDidChange(_ sender: Any) {
-		let newValue = self.stepper.doubleValue
-
-		// Call the callback if it is set
-		self.actionCallback?(newValue)
-
-		// Tell the binder to update
-		self.valueBinder.setValue(self.stepper.doubleValue)
-	}
-
 	// Private
 	private let stepper = NSStepper()
 	override var nsView: NSView { return self.stepper }
@@ -69,6 +71,16 @@ public extension Stepper {
 	func onChange(_ block: @escaping (Double) -> Void) -> Self {
 		self.actionCallback = block
 		return self
+	}
+
+	@objc private func stepperDidChange(_ sender: Any) {
+		let newValue = self.stepper.doubleValue
+
+		// Call the callback if it is set
+		self.actionCallback?(newValue)
+
+		// Tell the binder to update
+		self.valueBinder.setValue(self.stepper.doubleValue)
 	}
 }
 

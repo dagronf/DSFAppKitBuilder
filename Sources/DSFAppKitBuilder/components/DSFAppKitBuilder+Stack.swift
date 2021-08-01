@@ -26,6 +26,7 @@
 
 import AppKit.NSStackView
 
+/// A base class for stack element.
 public class Stack: Element {
 	internal init(
 		orientation: NSUserInterfaceLayoutOrientation,
@@ -115,3 +116,74 @@ public extension Stack {
 		return self.edgeInsets(NSEdgeInsets(top: value, left: value, bottom: value, right: value))
 	}
 }
+
+// MARK: - Horizontal Stack
+
+/// A convenience class for a horizontal NSStackView wrapper
+///
+/// Usage:
+///
+/// ```swift
+/// HStack(distribution: .fillEqually) {
+///    Label("Name").alignment(.right).horizontalPriorities(hugging: 10)
+///    TextField().alignment(.left).horizontalPriorities(hugging: 10)
+/// }
+/// ```
+public class HStack: Stack {
+
+	/// Create a horizontal stack
+	/// - Parameters:
+	///   - spacing: The minimum spacing, in points, between adjacent views in the stack view
+	///   - alignment: The view alignment within the stack view
+	///   - distribution: The spacing and sizing distribution of stacked views along the primary axis. Defaults to GravityAreas.
+	///   - builder: The builder for generating the stack's content
+	public convenience init(
+		spacing: CGFloat = 8,
+		alignment: NSLayoutConstraint.Attribute = .centerY,
+		distribution: NSStackView.Distribution? = nil,
+		@ElementBuilder builder: () -> [Element]
+	) {
+		self.init(
+			orientation: .horizontal,
+			spacing: spacing,
+			alignment: alignment,
+			distribution: distribution,
+			content: builder())
+	}
+}
+
+// MARK: - Vertical Stack
+
+/// A convenience class for a vertical NSStackView wrapper
+///
+/// Usage:
+///
+/// ```swift
+/// VStack(distribution: .fillEqually) {
+///    Label("Name").alignment(.right).horizontalPriorities(hugging: 10)
+///    TextField().alignment(.left).horizontalPriorities(hugging: 10)
+/// }
+/// ```
+public class VStack: Stack {
+
+	/// Create a vertical stack
+	/// - Parameters:
+	///   - spacing: The minimum spacing, in points, between adjacent views in the stack view
+	///   - alignment: The view alignment within the stack view
+	///   - distribution: The spacing and sizing distribution of stacked views along the primary axis. Defaults to GravityAreas.
+	///   - builder: The builder for generating the stack's content
+	public convenience init(
+		spacing: CGFloat = 8,
+		alignment: NSLayoutConstraint.Attribute = .centerX,
+		distribution: NSStackView.Distribution? = nil,
+		@ElementBuilder builder: () -> [Element]
+	) {
+		self.init(
+			orientation: .vertical,
+			spacing: spacing,
+			alignment: alignment,
+			distribution: distribution,
+			content: builder())
+	}
+}
+

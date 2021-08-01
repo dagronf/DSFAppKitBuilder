@@ -26,7 +26,17 @@
 
 import AppKit.NSColorWell
 
-/// An color view
+/// A color well
+///
+/// Usage:
+///
+/// ```swift
+/// ColorWell(showsAlpha: true)
+///    .size(width: 60, height: 40)
+///    .onChange { color in
+///       // Do something with 'color'
+/// }
+/// ```
 public class ColorWell: Control {
 
 	/// Create a ColorWell

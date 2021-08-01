@@ -30,7 +30,7 @@ import AppKit.NSBox
 public class Divider: Element {
 
 	/// The direction for the divider
-	public enum Direction {
+	public enum Orientation {
 		/// Horizontal orientation
 		case horizontal
 		/// Vertical orientation
@@ -39,9 +39,9 @@ public class Divider: Element {
 
 	/// Create a divider
 	/// - Parameters:
-	///   - direction: The direction
-	public init(direction: Direction) {
-		if direction == .horizontal {
+	///   - orientation: The dividers orientation
+	public init(orientation: Orientation) {
+		if orientation == .horizontal {
 			separator = NSBox(frame: NSRect(x: 0, y: 0, width: 50, height: 5))
 		}
 		else {
@@ -49,7 +49,7 @@ public class Divider: Element {
 		}
 		super.init()
 		separator.boxType = .separator
-		if direction == .horizontal {
+		if orientation == .horizontal {
 			_ = self.horizontalPriorities(hugging: .defaultLow)
 		}
 		else {
@@ -63,18 +63,18 @@ public class Divider: Element {
 	override var nsView: NSView { return separator }
 }
 
-/// A vertical divider element
+/// A convenience class for a vertical divider element
 public class VDivider: Divider {
 	/// Create a vertical divider
 	public init() {
-		super.init(direction: .vertical)
+		super.init(orientation: .vertical)
 	}
 }
 
-/// A horizontal divider element
+/// A convenience class for a horizontal divider element
 public class HDivider: Divider {
 	/// Create a horizontal divider
 	public init() {
-		super.init(direction: .horizontal)
+		super.init(orientation: .horizontal)
 	}
 }

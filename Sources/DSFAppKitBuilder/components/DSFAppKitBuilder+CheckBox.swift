@@ -27,12 +27,30 @@
 import AppKit.NSButton
 
 /// A checkbox control
+///
+/// Usage:
+///
+/// ```swift
+/// CheckBox("Notify using system notification") { [weak self] newState in
+///    // button action code
+/// }
+/// ```
 public class CheckBox: Button {
-
 	/// Create a CheckBox
 	/// - Parameters:
 	///   - title: The title to display
-	public init(_ title: String = "") {
-		super.init(title: title, type: .switch)
+	///   - allowMixedState: Does the button allow mixed state?
+	///   - action: The action block to perform when the button is activated
+	public init(
+		_ title: String = "Checkbox",
+		allowMixedState: Bool = false,
+		_ action: ((NSButton.StateValue) -> Void)? = nil
+	) {
+		super.init(
+			title: title,
+			type: .switch,
+			allowMixedState: allowMixedState,
+			action
+		)
 	}
 }

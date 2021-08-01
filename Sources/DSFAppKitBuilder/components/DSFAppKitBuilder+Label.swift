@@ -27,10 +27,19 @@
 import AppKit.NSTextField
 
 /// A read-only text control
+///
+/// Usage:
+///
+/// ```swift
+/// Label()
+///   .alignment(.right)
+///   .lineBreakMode(.byTruncatingHead)
+///   .horizontalPriorities(hugging: .defaultLow)
+///   .bindLabel(self, keyPath: \PrimaryDSL.stepperStringValue)
+/// ```
 public class Label: Control {
-	let label = NSTextField()
-	override var nsView: NSView { return self.label }
-
+	/// Create a label control
+	/// - Parameter label: The label
 	public init(_ label: String? = nil) {
 		super.init()
 		self.label.isEditable = false
@@ -40,6 +49,8 @@ public class Label: Control {
 	}
 
 	// Privates
+	let label = NSTextField()
+	override var nsView: NSView { return self.label }
 
 	private lazy var labelBinder = Bindable<String>()
 	private lazy var textColorAnimator = NSColor.Animator()

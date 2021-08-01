@@ -27,16 +27,39 @@
 import AppKit
 
 /// A group of managed radio buttons
+///
+/// Usage:
+///
+/// ```swift
+/// RadioGroup() {
+///    RadioElement("first")
+///    RadioElement("second")
+///    RadioElement("third")
+/// }
+/// .bindSelection(self, keyPath: \MyObject.radioSelection)
+/// .onChange { whichSelection in
+///    Swift.print("radio is now \(whichSelection)")
+/// }
+/// ```
 public class RadioGroup: Control {
+
+
+	/// Create a vertical radio group
+	/// - Parameters:
+	///   - selected: Which of the group should be initially selected
+	///   - controlSize: The size for the control
+	///   - spacing: The spacing between radio buttons in the control
+	///   - builder: The builder for generating the group of radio elements
 	public convenience init(
 		selected: Int = 0,
 		controlSize: NSButton.ControlSize? = nil,
-		spacing _: CGFloat? = nil,
+		spacing: CGFloat? = nil,
 		@RadioBuilder builder: () -> [RadioElement]
 	) {
 		self.init(
 			selected: selected,
 			controlSize: controlSize,
+			spacing: spacing,
 			content: builder()
 		)
 	}
@@ -92,8 +115,8 @@ public class RadioGroup: Control {
 
 // MARK: - Modifiers
 
-public extension RadioGroup {
-	/// Set the initial selection for the RadioGroup
+internal extension RadioGroup {
+	// Set the currently selected radio button
 	func selectRadioWithTag(_ tag: Int) {
 		let rds = self.radioGroup.arrangedSubviews as? [NSButton]
 		rds?.forEach { $0.state = ($0.tag == tag) ? .on : .off }

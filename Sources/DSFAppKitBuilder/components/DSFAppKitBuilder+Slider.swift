@@ -26,7 +26,21 @@
 
 import AppKit.NSSlider
 
+/// A slider control
+///
+/// Usage:
+///
+/// ```swift
+/// Slider(range: 0 ... 100, value: 10)
+///    .bindIsEnabled(self, keyPath: \MyController.switchOn)
+///    .bindValue(self, keyPath: \MyController.sliderValue)
+/// ```
 public class Slider: Control {
+	/// Createa slider element
+	/// - Parameters:
+	///   - range: The range of the slider
+	///   - value: The initial value for the slider
+	///   - isVertical: A bool indicating the orientation (horizontal or vertical) of the slider.
 	public init(
 		range: ClosedRange<Double> = 0...100,
 		value: Double = 20,
@@ -53,6 +67,7 @@ public class Slider: Control {
 // MARK: - Modifiers
 
 public extension Slider {
+	/// The number of tick marks associated with the slider.
 	func numberOfTickMarks(_ count: Int, allowsTickMarkValuesOnly: Bool = false) -> Self {
 		self.slider.numberOfTickMarks = count
 		self.slider.allowsTickMarkValuesOnly = allowsTickMarkValuesOnly

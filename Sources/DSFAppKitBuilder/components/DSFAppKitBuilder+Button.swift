@@ -27,13 +27,29 @@
 import AppKit.NSButton
 
 /// An NSButton wrapper
+///
+/// Usage:
+///
+/// ```swift
+/// Button(title: "Title") { [weak self] newState in
+///    // button action code
+/// }
+/// ```
 public class Button: Control {
+
+	/// Create a button
+	/// - Parameters:
+	///   - title: The button title
+	///   - type: The type of button
+	///   - bezelStyle: The bezel to use for the button
+	///   - allowMixedState: Does the button allow mixed state?
+	///   - onChange: The block to call when the state of the button changes
 	public init(
 		title: String,
 		type: NSButton.ButtonType = .momentaryLight,
 		bezelStyle: NSButton.BezelStyle = .rounded,
 		allowMixedState: Bool = false,
-		_ action: ((NSButton.StateValue) -> Void)? = nil
+		_ onChange: ((NSButton.StateValue) -> Void)? = nil
 	) {
 		super.init()
 		self.button.title = title
@@ -44,8 +60,8 @@ public class Button: Control {
 		self.button.target = self
 		self.button.action = #selector(self.performAction(_:))
 
-		if let action = action {
-			self.setAction(action)
+		if let onChange = onChange {
+			self.action = onChange
 		}
 	}
 
@@ -98,7 +114,7 @@ public extension Button {
 		return self
 	}
 
-	// A Boolean value that determines whether the button has a border.
+	/// A Boolean value that determines whether the button has a border.
 	func isBordered(_ isBordered: Bool) -> Self {
 		self.button.isBordered = isBordered
 		return self
@@ -114,16 +130,12 @@ public extension Button {
 // MARK: - Actions
 
 public extension Button {
-	/// Set a block to be called when the button is activated
+	/// Set a block to be called when the button state changes
 	///
 	/// Passes the new button state to the callback block
-	func onAction(_ action: @escaping ((NSButton.StateValue) -> Void)) -> Self {
-		self.setAction(action)
+	func onChange(_ onChange: @escaping ((NSButton.StateValue) -> Void)) -> Self {
+		self.action = onChange
 		return self
-	}
-
-	private func setAction(_ action: @escaping ((NSButton.StateValue) -> Void)) {
-		self.action = action
 	}
 
 	@objc private func performAction(_ item: NSButton) {

@@ -26,6 +26,7 @@
 
 import AppKit
 
+/// A protocol for defining AppKitBuilder conformance for a class
 public protocol DSFAppKitBuilderViewHandler {
 	/// Return the root element to display within the Builder View
 	var body: Element { get }

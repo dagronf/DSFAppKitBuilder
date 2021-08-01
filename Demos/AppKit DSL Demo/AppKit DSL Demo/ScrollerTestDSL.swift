@@ -11,7 +11,7 @@ import DSFAppKitBuilder
 
 class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 	lazy var body: Element =
-		ScrollView(fitHorizontally: true) {
+		ScrollView(borderType: .lineBorder, fitHorizontally: true) {
 			VStack(spacing: 16, alignment: .leading) {
 				HStack(alignment: .lastBaseline) {
 					CheckBox("Play sound")
@@ -42,7 +42,7 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.horizontalPriorities(hugging: 100)
 				}
 
-				Divider(direction: .horizontal)
+				HDivider()
 
 				HStack(alignment: .lastBaseline) {
 					CheckBox()
@@ -105,7 +105,6 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 			.edgeInsets(16)
 		}
-		.borderType(.lineBorder)
 
 	// MARK: - Toolbar
 

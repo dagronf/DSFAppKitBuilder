@@ -27,13 +27,23 @@
 import AppKit
 
 /// An NSBox element
+///
+/// Usage:
+///
+/// ```swift
+/// Box("My Box Title") {
+///    VStack {
+///       ...
+///    }
+/// }
+/// ```
 public class Box: Element {
 
 	/// Create a box
 	/// - Parameters:
 	///   - title: The title of the box
 	///   - titlePosition: The position of the title within the box
-	///   - builder: The builder for the boxes content
+	///   - builder: The builder for the box content
 	public convenience init(
 		_ title: String,
 		titlePosition: NSBox.TitlePosition = .atTop,
@@ -48,7 +58,7 @@ public class Box: Element {
 	/// - Parameters:
 	///   - title: The title of the box
 	///   - titlePosition: The position of the title within the box
-	///   - content: An array of elements to use for the boxes content
+	///   - content: An array of elements to use for the box content
 	public init(
 		_ title: String,
 		titlePosition: NSBox.TitlePosition = .atTop,

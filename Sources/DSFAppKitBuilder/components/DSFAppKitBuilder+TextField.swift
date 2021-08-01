@@ -26,8 +26,20 @@
 
 import AppKit.NSTextField
 
-/// An editable text control
+/// An editable text element
+///
+/// Usage:
+///
+/// ```swift
+/// TextField()
+///    .placeholderText("User Name")
+///    .bindText(self, keyPath: \MyController.userName)
+/// ```
 public class TextField: Label {
+/// Create a text field element
+	/// - Parameters:
+	///   - label: The initial text for the text field
+	///   - placeholderText: The placeholder text to use for the text field
 	public init(
 		_ label: String? = nil,
 		_ placeholderText: String? = nil)

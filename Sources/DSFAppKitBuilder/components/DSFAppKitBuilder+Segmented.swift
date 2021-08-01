@@ -24,46 +24,40 @@
 //  SOFTWARE.
 //
 
-
 import AppKit.NSSegmentedControl
-
-// MARK: - Segment
-
-public class Segment {
-	let title: String?
-	let textAlignment: NSTextAlignment?
-	let image: NSImage?
-	let imageScaling: NSImageScaling?
-	let toolTip: String?
-
-	public init(
-		_ title: String? = nil,
-		textAlignment: NSTextAlignment? = nil,
-		image: NSImage? = nil,
-		imageScaling: NSImageScaling? = nil,
-		toolTip: String? = nil)
-	{
-		self.title = title
-		self.textAlignment = textAlignment
-		self.image = image
-		self.imageScaling = imageScaling
-		self.toolTip = toolTip
-	}
-}
 
 // MARK: - Segmented control
 
 /// Wrapper for NSSegmentedControl
+///
+/// Usage:
+///
+/// ```swift
+/// Segmented(trackingMode: .selectAny) {
+///    Segment("One")
+///    Segment("Two")
+///    Segment("Three")
+/// }
+/// .bindSelectedSegments(self, keyPath: \MyController.selectedSegments)
+/// .width(200)
+/// .toolTip("Which one")
+/// ```
 public class Segmented: Control {
+	/// Create a segmented control
+	/// - Parameters:
+	///   - segmentStyle: The style for the segments
+	///   - trackingMode: The tracking mode (eg. selectAny, selectOne)
+	///   - builder: The resultBuilder to generate the segment items
 	public convenience init(
 		segmentStyle: NSSegmentedControl.Style? = nil,
 		trackingMode: NSSegmentedControl.SwitchTracking? = nil,
-		@SegmentBuilder builder: () -> [Segment])
-	{
+		@SegmentBuilder builder: () -> [Segment]
+	) {
 		self.init(
 			segmentStyle: segmentStyle,
 			trackingMode: trackingMode,
-			content: builder())
+			content: builder()
+		)
 	}
 
 	// The currently selected segments
@@ -79,7 +73,7 @@ public class Segmented: Control {
 	private let segmented = NSSegmentedControl()
 	private let content: [Segment]
 
-	private var actionCallback: ((NSSet) -> Void)? = nil
+	private var actionCallback: ((NSSet) -> Void)?
 
 	private lazy var valueBinder = Bindable<NSSet>()
 	private lazy var segmentedEnabledBinder = Bindable<NSSet>()
@@ -87,8 +81,8 @@ public class Segmented: Control {
 	internal init(
 		segmentStyle: NSSegmentedControl.Style? = nil,
 		trackingMode: NSSegmentedControl.SwitchTracking? = nil,
-		content: [Segment])
-	{
+		content: [Segment]
+	) {
 		self.content = content
 		super.init()
 
@@ -133,21 +127,19 @@ public extension Segmented {
 // MARK: - Actions
 
 public extension Segmented {
-
 	/// Set a callback block for when the selection changes
 	func onChange(_ block: @escaping (NSSet) -> Void) -> Self {
 		self.actionCallback = block
 		return self
 	}
 
-	@objc private func segmentChanged(_ sender: Any) {
+	@objc private func segmentChanged(_: Any) {
 		self.actionCallback?(self.selectedSegments)
 
 		// Tell the binder to update
-		valueBinder.setValue(self.selectedSegments)
+		self.valueBinder.setValue(self.selectedSegments)
 	}
 }
-
 
 // MARK: - Bindings
 
@@ -169,16 +161,48 @@ public extension Segmented {
 	}
 }
 
+// MARK: - Segment
+
+/// A segment within a segmented control
+public class Segment {
+	let title: String?
+	let textAlignment: NSTextAlignment?
+	let image: NSImage?
+	let imageScaling: NSImageScaling?
+	let toolTip: String?
+
+	/// Create a segment for a segmented control
+	/// - Parameters:
+	///   - title: The title to use for the segment
+	///   - textAlignment: The title's alignment
+	///   - image: The segment's image
+	///   - imageScaling: How to scale the segment's image
+	///   - toolTip: The tooltip for the segment
+	public init(
+		_ title: String? = nil,
+		textAlignment: NSTextAlignment? = nil,
+		image: NSImage? = nil,
+		imageScaling: NSImageScaling? = nil,
+		toolTip: String? = nil
+	) {
+		self.title = title
+		self.textAlignment = textAlignment
+		self.image = image
+		self.imageScaling = imageScaling
+		self.toolTip = toolTip
+	}
+}
+
 // MARK: - Result Builder for Segments
 
 #if swift(<5.3)
 @_functionBuilder
-public struct SegmentBuilder {
+public enum SegmentBuilder {
 	static func buildBlock() -> [Segment] { [] }
 }
 #else
 @resultBuilder
-public struct SegmentBuilder {
+public enum SegmentBuilder {
 	static func buildBlock() -> [Segment] { [] }
 }
 #endif
