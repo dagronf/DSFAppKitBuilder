@@ -150,6 +150,10 @@ TextField()
 | `TextField`      | An `NSTextField` wrapper configured as an editable field |
 | `View`           | A wrapper for an `NSView` instance |
 
+## Documentation
+
+The code is documented and will produce nice documentation for each element when run through [`jazzy`](https://github.com/realm/jazzy) or similar documentation generator tools.
+
 ## Known bugs
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
