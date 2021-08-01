@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DSFAppKitBuilder",
+        "repositoryURL": "https://github.com/dagronf/DSFAppKitBuilder",
+        "state": {
+          "branch": null,
+          "revision": "01172b5091b71ed2afb157694b2058d6ba3ecd15",
+          "version": "0.1.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

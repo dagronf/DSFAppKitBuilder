@@ -40,29 +40,43 @@ class IdentityContainer: NSObject, DSFAppKitBuilderViewHandler {
    lazy var body: Element =
       HStack(spacing: 4) {
          ImageView()
-            .image(NSImage(named: "filter-color")!)               // The image
-            .size(width: 42, height: 42, priority: .required)     // fixed size
+            .image(NSImage(named: "apple_logo_orig")!)               // The image
+            .size(width: 42, height: 42, priority: .required)        // fixed size
          VStack(spacing: 2, alignment: .leading) {
-            Label("Name")                                         // The label with title 'Name'
-               .font(NSFont.systemFont(ofSize: 24))               // Font size 12
-               .lineBreakMode(.byTruncatingTail)                  // Truncate line
-               .horizontalPriorities(compressionResistance: 100)  // Allow the text field to compress
-            Label("Description")                                  // The label with title 'Description'
-               .font(NSFont.systemFont(ofSize: 12))               // Font size 12
-               .textColor(.placeholderTextColor)                  // Grey text
-               .lineBreakMode(.byTruncatingTail)                  // Truncate line
-               .horizontalPriorities(compressionResistance: 100)  // Allow the text field to compress
+            Label("Apple Computer")                                  // The label with title 'Name'
+               .font(NSFont.systemFont(ofSize: 24))                  // Font size 12
+               .lineBreakMode(.byTruncatingTail)                     // Truncate line
+               .horizontalPriorities(compressionResistance: 100)     // Allow the text field to compress
+            Label("This is the description that can be quite long")  // The label with title 'Description'
+               .font(NSFont.systemFont(ofSize: 12))                  // Font size 12
+               .textColor(.placeholderTextColor)                     // Grey text
+               .lineBreakMode(.byTruncatingTail)                     // Truncate line
+               .horizontalPriorities(compressionResistance: 100)     // Allow the text field to compress
+         }
+      }
 }
 ```
 
 To display the builder content, assign the container to an instance of `DSFAppKitBuilderView`
 
 ```swift
-@IBOutlet var mainView: DSFAppKitBuilderView!
-...
-self.mainView.builder = IdentityContainer()
+class ViewController: NSViewController {
+   @IBOutlet weak var mainView: DSFAppKitBuilderView!
+   let identity = IdentityContainer()
+   override func viewDidLoad() {
+      super.viewDidLoad()
+      mainView.builder = self.identity  // Set our builder as the view's builder
+   }
+}
 ```
 
+And the result is...
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/dagronf/dagronf.github.io/master/art/projects/DSFAppKitBuilder/s1.png" alt="Result image" width="310" />
+</p>
+
+You can find this demo in the `Demos/Simple AppKitBuilder Test` folder.
 
 ## Behaviours
 
@@ -149,6 +163,12 @@ TextField()
 | `TabView`        | An `NSTabView` wrapper |
 | `TextField`      | An `NSTextField` wrapper configured as an editable field |
 | `View`           | A wrapper for an `NSView` instance |
+
+## Integration
+
+### Swift package manager
+
+Add `https://github.com/dagronf/DSFAppKitBuilder` to your project.
 
 ## Documentation
 
