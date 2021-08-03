@@ -57,15 +57,18 @@ public class SplitView: Control {
 	/// - Parameters:
 	///   - isVertical: A Boolean value that determines the geometric orientation of the split view's dividers.
 	///   - dividerStyle: The style of divider between views.
+	///   - autosaveName: The name to use when the system automatically saves the split view’s divider configuration.
 	///   - builder: The builder for generating the split items
 	convenience public init(
 		isVertical: Bool = true,
 		dividerStyle: NSSplitView.DividerStyle? = nil,
+		autosaveName: String? = nil,
 		@SplitViewBuilder builder: () -> [SplitViewItem])
 	{
 		self.init(
 			isVertical: isVertical,
 			dividerStyle: dividerStyle,
+			autosaveName: autosaveName,
 			contents: builder())
 	}
 
@@ -84,10 +87,15 @@ public class SplitView: Control {
 	internal init(
 		isVertical: Bool = true,
 		dividerStyle: NSSplitView.DividerStyle? = nil,
+		autosaveName: String? = nil,
 		contents: [SplitViewItem])
 	{
 		self.splitItems = contents
 		super.init()
+
+		if let a = autosaveName {
+			self.splitView.autosaveName = a
+		}
 
 		self.splitView.isVertical = isVertical
 
