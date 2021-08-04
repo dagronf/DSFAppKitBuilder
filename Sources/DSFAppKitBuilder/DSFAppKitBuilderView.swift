@@ -33,7 +33,7 @@ public protocol DSFAppKitBuilderViewHandler {
 }
 
 /// Displays a DSFAppKitBuilder Element in a view
-public class DSFAppKitBuilderView: NSView {
+open class DSFAppKitBuilderView: NSView {
 
 	/// The builder to use when displaying the view
 	public var builder: DSFAppKitBuilderViewHandler? {
