@@ -55,13 +55,13 @@ public class ScrollView: Element {
 		borderType: NSBorderType = .lineBorder,
 		fitHorizontally: Bool = true,
 		autohidesScrollers: Bool = true,
-		@ElementBuilder builder: () -> [Element]
+		_ builder: () -> Element
 	) {
 		self.init(
 			borderType: borderType,
 			fitHorizontally: fitHorizontally,
 			autohidesScrollers: autohidesScrollers,
-			contents: builder()
+			content: builder()
 		)
 	}
 
@@ -70,14 +70,14 @@ public class ScrollView: Element {
 	///   - borderType: A value that specifies the appearance of the scroll view’s border
 	///   - fitHorizontally: Set the width of the content to the width of the scrollview
 	///   - autohidesScrollers: A Boolean that indicates whether the scroll view automatically hides its scroll bars when they are not needed.
-	///   - documentElement: The content of the scrollview
+	///   - content: The content of the scrollview
 	init(
 		borderType: NSBorderType = .lineBorder,
 		fitHorizontally: Bool = true,
 		autohidesScrollers: Bool = true,
-		contents: [Element]
+		content: Element
 	) {
-		self.documentElements = contents
+		self.documentContent = content
 		super.init()
 
 		self.setup(
@@ -88,8 +88,7 @@ public class ScrollView: Element {
 
 	// Private
 	private let scrollView = NSScrollView()
-	private let content = NSStackView()
-	private let documentElements: [Element]
+	private let documentContent: Element
 	override var nsView: NSView { return self.scrollView }
 }
 
@@ -117,14 +116,6 @@ private extension ScrollView {
 		fitHorizontally: Bool,
 		autohidesScrollers: Bool
 	) {
-		self.content.translatesAutoresizingMaskIntoConstraints = false
-		self.content.orientation = .vertical
-		self.content.alignment = .leading
-
-		self.documentElements.forEach { element in
-			self.content.addArrangedSubview(element.nsView)
-		}
-
 		self.scrollView.translatesAutoresizingMaskIntoConstraints = false
 		self.scrollView.borderType = .noBorder
 		self.scrollView.backgroundColor = NSColor.gray
@@ -149,17 +140,19 @@ private extension ScrollView {
 			clipView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
 		])
 
-		self.scrollView.documentView = self.content
+		let contentView = documentContent.nsView
+
+		self.scrollView.documentView = contentView
 
 		NSLayoutConstraint.activate([
-			self.content.leftAnchor.constraint(equalTo: clipView.leftAnchor),
-			self.content.topAnchor.constraint(equalTo: clipView.topAnchor),
+			contentView.leftAnchor.constraint(equalTo: clipView.leftAnchor),
+			contentView.topAnchor.constraint(equalTo: clipView.topAnchor),
 			// NOTE: No need for bottomAnchor
 		])
 
 		if fitHorizontally {
 			NSLayoutConstraint.activate([
-				self.content.rightAnchor.constraint(equalTo: clipView.rightAnchor),
+				contentView.rightAnchor.constraint(equalTo: clipView.rightAnchor),
 			])
 		}
 	}
