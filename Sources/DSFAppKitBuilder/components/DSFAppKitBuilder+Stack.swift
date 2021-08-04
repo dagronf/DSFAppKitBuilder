@@ -112,6 +112,11 @@ public extension Stack {
 	}
 
 	/// The geometric padding, in points, inside the stack view, surrounding its views.
+	@inlinable func edgeInsets(top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> Self {
+		return self.edgeInsets(NSEdgeInsets(top: top, left: left, bottom: bottom, right: right))
+	}
+
+	/// The geometric padding, in points, inside the stack view, surrounding its views.
 	func edgeInsets(_ value: CGFloat) -> Self {
 		return self.edgeInsets(NSEdgeInsets(top: value, left: value, bottom: value, right: value))
 	}
