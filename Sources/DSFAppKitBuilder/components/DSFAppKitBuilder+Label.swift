@@ -48,11 +48,19 @@ public class Label: Control {
 		if let l = label { self.label.stringValue = l }
 	}
 
+	public init(_ attributedLabel: NSAttributedString) {
+		self.label.isEditable = false
+		self.label.drawsBackground = false
+		self.label.isBezeled = false
+		self.label.attributedStringValue = attributedLabel
+	}
+
 	// Privates
 	let label = NSTextField()
 	override var nsView: NSView { return self.label }
 
 	private lazy var labelBinder = Bindable<String>()
+	private lazy var attributedLabelBinder = Bindable<NSAttributedString>()
 	private lazy var textColorAnimator = NSColor.Animator()
 	private lazy var textColorBinder = Bindable<NSColor>()
 }
@@ -128,6 +136,14 @@ public extension Label {
 	func bindLabel<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
 		self.labelBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
 			self?.label.stringValue = newValue
+		})
+		return self
+	}
+
+	/// Bind the attributed label to a keypath
+	func bindAttributedLabel<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSAttributedString>) -> Self {
+		self.attributedLabelBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.label.attributedStringValue = newValue
 		})
 		return self
 	}
