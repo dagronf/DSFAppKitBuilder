@@ -58,11 +58,13 @@ public class TabView: Control {
 	///   - builder: The builder for generating the tabviewitems
 	public convenience init(
 		tabViewType: NSTabView.TabType? = nil,
+		tabPosition: NSTabView.TabPosition? = nil,
 		selectedIndex: Int = 0,
 		@TabBuilder builder: () -> [TabViewItem]
 	) {
 		self.init(
 			tabViewType: tabViewType,
+			tabPosition: tabPosition,
 			selectedIndex: selectedIndex,
 			contents: builder()
 		)
@@ -70,6 +72,7 @@ public class TabView: Control {
 
 	init(
 		tabViewType: NSTabView.TabType? = nil,
+		tabPosition: NSTabView.TabPosition? = nil,
 		selectedIndex: Int = 0,
 		contents: [TabViewItem]
 	) {
@@ -77,6 +80,10 @@ public class TabView: Control {
 
 		if let type = tabViewType {
 			self.tabView.tabViewType = type
+		}
+
+		if let tabPos = tabPosition {
+			self.tabView.tabPosition = tabPos
 		}
 
 		contents.forEach { item in
@@ -194,7 +201,7 @@ private extension TabViewItem {
 			container.autoresizingMask = [.width, .height]
 			container.addSubview(self.content.nsView)
 
-			self.content.nsView.pinEdges(to: container, offset: 20)
+			self.content.nsView.pinEdges(to: container)
 
 			self.view = container
 		}
