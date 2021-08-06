@@ -27,7 +27,7 @@
 import AppKit
 
 /// A protocol for defining AppKitBuilder conformance for a class
-public protocol DSFAppKitBuilderViewHandler {
+public protocol DSFAppKitBuilderViewHandler: NSObjectProtocol {
 	/// Return the root element to display within the Builder View
 	var body: Element { get }
 }
@@ -36,12 +36,18 @@ public protocol DSFAppKitBuilderViewHandler {
 open class DSFAppKitBuilderView: NSView {
 
 	/// The builder to use when displaying the view
-	public var builder: DSFAppKitBuilderViewHandler? {
+	///
+	/// This object is not strongly held by the view. Thus, if you want to keep the builder around
+	/// after the view has gone away you must hold onto the builder object elsewhere.
+	///
+	/// This allows a view to contain itself as a builder without having a reference count loop.
+	public weak var builder: DSFAppKitBuilderViewHandler? {
 		didSet {
 			self.rootElement = builder?.body
 		}
 	}
 
+	// The root element for the view
 	private var rootElement: Element? = nil {
 		willSet {
 			self.rootElement?.nsView.removeFromSuperview()

@@ -13,11 +13,13 @@ class ViewController: NSViewController {
 
 	@IBOutlet var mainView: DSFAppKitBuilderView!
 
+	let mainTabs = MainTabs()
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		self.mainView.builder = MainTabs()
+		self.mainView.builder = mainTabs
 	}
 
 	override var representedObject: Any? {
