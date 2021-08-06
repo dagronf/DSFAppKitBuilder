@@ -35,6 +35,16 @@ public protocol DSFAppKitBuilderViewHandler: NSObjectProtocol {
 /// Displays a DSFAppKitBuilder Element in a view
 open class DSFAppKitBuilderView: NSView {
 
+	/// Create an instance
+	public init() {
+		super.init(frame: .zero)
+	}
+
+	/// Create an instance
+	required public init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
 	/// The builder to use when displaying the view
 	///
 	/// This object is not strongly held by the view. Thus, if you want to keep the builder around
@@ -43,12 +53,12 @@ open class DSFAppKitBuilderView: NSView {
 	/// This allows a view to contain itself as a builder without having a reference count loop.
 	public weak var builder: DSFAppKitBuilderViewHandler? {
 		didSet {
-			self.rootElement = builder?.body
+			self.rootElement = self.builder?.body
 		}
 	}
 
 	// The root element for the view
-	private var rootElement: Element? = nil {
+	private var rootElement: Element? {
 		willSet {
 			self.rootElement?.nsView.removeFromSuperview()
 		}
