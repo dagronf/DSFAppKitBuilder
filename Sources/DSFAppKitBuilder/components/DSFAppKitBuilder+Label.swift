@@ -48,6 +48,8 @@ public class Label: Control {
 		if let l = label { self.label.stringValue = l }
 	}
 
+	/// Create a label control
+	/// - Parameter attributedLabel: An attributed string to use as the label
 	public init(_ attributedLabel: NSAttributedString) {
 		self.label.isEditable = false
 		self.label.drawsBackground = false

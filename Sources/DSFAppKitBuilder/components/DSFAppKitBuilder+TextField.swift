@@ -105,6 +105,11 @@ public extension TextField {
 
 public extension TextField {
 	/// Bind the text content to a keypath
+	///
+	/// - Parameters:
+	///   - updateOnEndEditingOnly: If true, only updates the binding when the text field ends editing
+	///   - object: The object to observe
+	///   - keyPath: The keyPath defining the member variable to observe within the object
 	func bindText<TYPE>(updateOnEndEditingOnly: Bool = false, _ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
 		self.updateOnEndEditingOnly = updateOnEndEditingOnly
 		self.textFieldBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
@@ -129,9 +134,9 @@ extension TextField: NSTextFieldDelegate {
 	}
 
 	public func controlTextDidEndEditing(_: Notification) {
-		self.didEndEditing?(self.label)
 		if updateOnEndEditingOnly {
 			self.textFieldBinder.setValue(self.label.stringValue)
 		}
+		self.didEndEditing?(self.label)
 	}
 }
