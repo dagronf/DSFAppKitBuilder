@@ -140,29 +140,30 @@ TextField()
 
 ### Controls
 
-| Element Type     |  Description            |
-|------------------|-------------------------|
-| `Box`            | An `NSBox` wrapper      |
-| `Button`         | An `NSButton` wrapper   |
-| `CheckBox`       | An `NSButton` wrapper configured to display as a checkbox |
-| `ColorWell`      | An `NSColorWell` wrapper |
+| Element Type       |  Description            |
+|--------------------|-------------------------|
+| `Box`              | An `NSBox` wrapper      |
+| `Button`           | An `NSButton` wrapper   |
+| `CheckBox`         | An `NSButton` wrapper configured to display as a checkbox |
+| `ColorWell`        | An `NSColorWell` wrapper |
 | `Divider`<br/>`HDivider/VDivider` | A divider element (a single line, either horizontal or vertical) |
-| `EmptyView`      | A spacer view |
-| `ImageView`      | An `NSImageView` wrapper |
-| `Label`          | An `NSTextField` wrapper configured as a read-only label |
-| `PopupButton`    | An `NSPopupButton` wrapper |
-| `ProgressBar`    | An `NSProgressIndicator` wrapper |
-| `RadioGroup`     | A grouped stack of buttons configured as a radio group |
-| `ScrollView`     | An `NSScrollView` wrapper |
-| `Segmented`      | An `NSSegmentedControl` wrapper |
-| `Slider`         | An `NSSlider` wrapper |
-| `SplitView`      | An `NSSplitView` wrapper |
+| `EmptyView`        | A spacer view |
+| `ImageView`        | An `NSImageView` wrapper |
+| `Label`            | An `NSTextField` wrapper configured as a read-only label |
+| `PopupButton`      | An `NSPopupButton` wrapper |
+| `ProgressBar`      | An `NSProgressIndicator` wrapper |
+| `RadioGroup`       | A grouped stack of buttons configured as a radio group |
+| `ScrollView`       | An `NSScrollView` wrapper |
+| `Segmented`        | An `NSSegmentedControl` wrapper |
+| `Slider`           | An `NSSlider` wrapper |
+| `SplitView`        | An `NSSplitView` wrapper |
 | `Stack`<br/>`HStack/VStack` | An `NSStackView` wrapper (horizontal or vertical) |
-| `Stepper`        | An `NSStepper` wrapper |
+| `Stepper`          | An `NSStepper` wrapper |
 | `Switch`<br/>(10.15+) | An `NSSwitch` wrapper |
-| `TabView`        | An `NSTabView` wrapper |
-| `TextField`      | An `NSTextField` wrapper configured as an editable field |
-| `View`           | A wrapper for an `NSView` instance |
+| `TabView`          | An `NSTabView` wrapper |
+| `TextField`        | An `NSTextField` wrapper configured as an editable field |
+| `View`             | A wrapper for an `NSView` instance |
+| `VisualEffectView` | A wrapper for a `NSVisualEffectView` instance |
 
 ## Integration
 
@@ -177,6 +178,10 @@ The code is documented and will produce nice documentation for each element when
 ## Known bugs
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
+
+### 0.2.0
+
+* Added `VisualEffectView`
 
 ### 0.1.0
 

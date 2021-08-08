@@ -1,0 +1,83 @@
+//
+//  DSFAppKitBuilder+VisualEffectView.swift
+//
+//  Created by Darren Ford on 8/8/21
+//
+//  MIT License
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in all
+//  copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+//  SOFTWARE.
+//
+
+import AppKit
+
+/// Set a visual effect view
+public class VisualEffectView: Element {
+
+	/// Create a visual effect view
+	/// - Parameters:
+	///   - material: The material shown by the visual effect view
+	///   - blendingMode: A value indicating how the view’s contents blend with the surrounding content
+	///   - builder: The builder to generate the content of the effect view
+	///   - isEmphasized: A Boolean value indicating whether to emphasize the look of the material
+	///
+	/// See: [NSVisualEffectView](https://developer.apple.com/documentation/appkit/nsvisualeffectview)
+	public init(
+		material: NSVisualEffectView.Material? = nil,
+		blendingMode: NSVisualEffectView.BlendingMode? = nil,
+		isEmphasized: Bool = false,
+		_ builder: () -> Element
+	) {
+		self.content = builder()
+		super.init()
+
+		self.visualView.wantsLayer = true
+		self.visualView.translatesAutoresizingMaskIntoConstraints = false
+		self.visualView.isEmphasized = isEmphasized
+		if let m = material {
+			self.visualView.material = m
+		}
+		if let b = blendingMode {
+			self.visualView.blendingMode = b
+		}
+
+		let contentView = content.nsView
+
+		self.visualView.addSubview(contentView)
+		contentView.pinEdges(to: self.visualView)
+	}
+
+	// Private
+	override var nsView: NSView { return self.visualView }
+	private let visualView = NSVisualEffectView()
+	private let content: Element
+
+	private lazy var isEmphasizedBinder = Bindable<Bool>()
+}
+
+// MARK: Bindings
+
+public extension VisualEffectView {
+	/// Bind the emphasized state of the visual effect view to a keypath
+	func bindIsEmphasized<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
+		self.isEmphasizedBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+			self?.visualView.isEmphasized = newValue
+		})
+		return self
+	}
+}
