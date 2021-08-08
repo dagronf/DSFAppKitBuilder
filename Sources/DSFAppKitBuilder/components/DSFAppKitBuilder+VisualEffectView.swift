@@ -26,7 +26,20 @@
 
 import AppKit
 
-/// Set a visual effect view
+/// A view that adds translucency and vibrancy effects to the views in your interface.
+///
+/// Usage:
+
+/// ```swift
+/// VisualEffectView {
+///    VStack {
+///       Label("My effect view content!")
+///    }
+/// }
+/// ```
+///
+/// See: [NSVisualEffectView](https://developer.apple.com/documentation/appkit/nsvisualeffectview)
+///
 public class VisualEffectView: Element {
 
 	/// Create a visual effect view
@@ -35,8 +48,6 @@ public class VisualEffectView: Element {
 	///   - blendingMode: A value indicating how the view’s contents blend with the surrounding content
 	///   - builder: The builder to generate the content of the effect view
 	///   - isEmphasized: A Boolean value indicating whether to emphasize the look of the material
-	///
-	/// See: [NSVisualEffectView](https://developer.apple.com/documentation/appkit/nsvisualeffectview)
 	public init(
 		material: NSVisualEffectView.Material? = nil,
 		blendingMode: NSVisualEffectView.BlendingMode? = nil,
