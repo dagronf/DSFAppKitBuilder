@@ -74,7 +74,7 @@ public class VisualEffectView: Element {
 	}
 
 	// Private
-	override public var nsView: NSView { return self.visualView }
+	override var nsView: NSView { return self.visualView }
 	private let visualView = NSVisualEffectView()
 	private let content: Element
 

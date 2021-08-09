@@ -29,18 +29,15 @@ import AppKit.NSView
 /// The base element.
 public class Element: NSObject {
 
-	/// Called when the view is added to a parent.
-	public func addedToParentView(parent: NSView) {
-		// Default -- do nothing
-		// Can be overriden in inherited classes if needed
-	}
-
 	// Set to true in derived classes to receive a callback when the system theme changes
 	internal var receiveThemeNotifications = false {
 		willSet {
 			self.updateReceiveThemeNotifications(to: newValue)
 		}
 	}
+
+	/// Return the AppKit NSView instance for this element
+	public func view() -> NSView { return self.nsView }
 
 	// Private
 
@@ -53,13 +50,13 @@ public class Element: NSObject {
 
 	deinit {
 		self.receiveThemeNotifications = false
-		Swift.print("Element deinit")
+		Logger.Debug("Element deinit")
 	}
 
-	/// Overridden in derived classes to return the root AppKit type for the element
-	public var nsView: NSView { fatalError() }
+	// Overridden in derived classes to return the root AppKit type for the element
+	var nsView: NSView { fatalError() }
 
-	/// Returns the layer defined for the root AppKit element view type
+	// Returns the layer defined for the root AppKit element view type
 	var nsLayer: CALayer? { return self.nsView.layer }
 
 	// MARK: Binding

@@ -78,7 +78,7 @@ public class ZStack: Element {
 	}
 
 	// Private
-	override public var nsView: NSView { return self.containerView }
+	override var nsView: NSView { return self.containerView }
 	private let containerView = NSView()
 	private var elements: [Element] = []
 }

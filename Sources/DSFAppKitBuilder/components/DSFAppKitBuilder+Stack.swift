@@ -47,7 +47,6 @@ public class Stack: Element {
 
 		content.forEach {
 			stack.addArrangedSubview($0.nsView)
-			$0.addedToParentView(parent: stack)
 		}
 
 		self.stack.needsLayout = true
@@ -55,7 +54,7 @@ public class Stack: Element {
 	}
 
 	// Private
-	override public var nsView: NSView { return self.stack }
+	override var nsView: NSView { return self.stack }
 	private let stack = NSStackView()
 	private let content: [Element]
 }

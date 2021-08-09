@@ -75,7 +75,7 @@ public class SplitView: Control {
 	// Private
 
 	private let splitItems: [SplitViewItem]
-	override public var nsView: NSView { return self.splitView }
+	override var nsView: NSView { return self.splitView }
 	private let controller = NSSplitViewController(nibName: nil, bundle: nil)
 	private lazy var splitView: NSSplitView = {
 		controller.loadView()

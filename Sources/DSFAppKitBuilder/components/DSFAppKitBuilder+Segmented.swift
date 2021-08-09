@@ -69,7 +69,7 @@ public class Segmented: Control {
 	}
 
 	// Privates
-	override public var nsView: NSView { return self.segmented }
+	override var nsView: NSView { return self.segmented }
 	private let segmented = NSSegmentedControl()
 	private let content: [Segment]
 

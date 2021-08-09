@@ -104,7 +104,7 @@ public class TabView: Control {
 
 	// Private
 	private let tabView = NSTabView()
-	override public var nsView: NSView { return self.tabView }
+	override var nsView: NSView { return self.tabView }
 
 	private lazy var valueBinder = Bindable<Int>()
 	private var changeBlock: ((Int) -> Void)?

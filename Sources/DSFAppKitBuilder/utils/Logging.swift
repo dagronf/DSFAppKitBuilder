@@ -1,7 +1,7 @@
 //
-//  DSFAppKitBuilder+View.swift
+//  Logging.swift
 //
-//  Created by Darren Ford on 27/7/21
+//  Created by Darren Ford on 10/8/21
 //
 //  MIT License
 //
@@ -25,17 +25,20 @@
 //
 
 import AppKit
+import os.log
 
-/// Embed another NSView within the DSL
-public class View: Element {
-
-	/// Create an element which embeds another NSView
-	public init(containedView: NSView) {
-		self.containedView = containedView
-		super.init()
+internal class Logger {
+	@inline(__always)
+	internal static func Debug(_ str: StaticString) {
+		if DSFAppKitBuilder.ShowDebuggingOutput {
+			os_log(str, log: OSLog.logger, type: .debug)
+		}
 	}
+}
 
-	// Private
-	private let containedView: NSView
-	override var nsView: NSView { return containedView }
+internal extension OSLog {
+	 private static var subsystem = Bundle.main.bundleIdentifier!
+
+	 /// Logs the view cycles like viewDidLoad.
+	 static let logger = OSLog(subsystem: subsystem, category: "DSFAppKitBuilder")
 }

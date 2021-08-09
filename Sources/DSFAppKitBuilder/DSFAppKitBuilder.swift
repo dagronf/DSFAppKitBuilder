@@ -1,7 +1,7 @@
 //
-//  DSFAppKitBuilder+View.swift
+//  DSFAppKitBuilder.swift
 //
-//  Created by Darren Ford on 27/7/21
+//  Created by Darren Ford on 10/8/21
 //
 //  MIT License
 //
@@ -26,16 +26,8 @@
 
 import AppKit
 
-/// Embed another NSView within the DSL
-public class View: Element {
-
-	/// Create an element which embeds another NSView
-	public init(containedView: NSView) {
-		self.containedView = containedView
-		super.init()
-	}
-
-	// Private
-	private let containedView: NSView
-	override var nsView: NSView { return containedView }
+/// DSFAppKitBuilder
+public class DSFAppKitBuilder {
+	/// Set this value to true to write debugging info out to the log
+	static public var ShowDebuggingOutput: Bool = false
 }

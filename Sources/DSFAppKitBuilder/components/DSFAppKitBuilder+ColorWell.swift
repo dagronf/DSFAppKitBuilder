@@ -64,7 +64,7 @@ public class ColorWell: Control {
 
 	// Privates
 	private let colorWell = AlphaCompatibleColorWell()
-	override public var nsView: NSView { return self.colorWell }
+	override var nsView: NSView { return self.colorWell }
 
 	private lazy var colorBinder = Bindable<NSColor>()
 	private var actionCallback: ((NSColor) -> Void)? = nil
