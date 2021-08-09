@@ -44,11 +44,9 @@ class IdentityContainer: NSObject, DSFAppKitBuilderViewHandler {
 			}
 			.width(300, priority: .defaultLow)
 			.edgeInsets(8)
-			.additionalAppKitControlSettings { (view: NSStackView) in
-				view.wantsLayer = true
-				view.layer!.borderWidth = 1
-				view.layer!.borderColor = NSColor.purple.cgColor
-			}
+			.border(width: 0.5, color: .textColor)
+			.backgroundColor(.quaternaryLabelColor)
+			.cornerRadius(4)
 		}
 	}
 }

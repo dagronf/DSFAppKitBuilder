@@ -44,6 +44,8 @@ public class Element: NSObject {
 	}
 
 	var nsView: NSView { fatalError() }
+	var nsLayer: CALayer? { return self.nsView.layer }
+
 	private lazy var isHiddenBinder = Bindable<Bool>()
 }
 
@@ -58,13 +60,20 @@ public extension Element {
 
 	/// Set the background color
 	func backgroundColor(_ color: NSColor) -> Self {
-		self.nsView.layer?.backgroundColor = color.cgColor
+		self.nsLayer?.backgroundColor = color.cgColor
+		return self
+	}
+
+	/// Set the border width and color for the element
+	func border(width: CGFloat, color: NSColor) -> Self {
+		self.nsLayer?.borderColor = color.cgColor
+		self.nsLayer?.borderWidth = width
 		return self
 	}
 
 	/// Set the corner radius for the element
 	func cornerRadius(_ amount: CGFloat) -> Self {
-		self.nsView.layer?.cornerRadius = amount
+		self.nsLayer?.cornerRadius = amount
 		return self
 	}
 
