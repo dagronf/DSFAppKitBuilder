@@ -125,6 +125,12 @@ public extension Button {
 		self.button.state = state
 		return self
 	}
+
+	/// Set the button's font
+	func font(_ font: NSFont) -> Self {
+		self.button.font = font
+		return self
+	}
 }
 
 // MARK: - Actions

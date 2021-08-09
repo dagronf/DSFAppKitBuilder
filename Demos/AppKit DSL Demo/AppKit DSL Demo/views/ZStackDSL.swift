@@ -27,9 +27,7 @@ class ZStackDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 		ZLayer(layoutType: .center) {
 			Button(title: "Do it!", bezelStyle: .regularSquare)
-				.additionalAppKitControlSettings { (b: NSButton) in
-					b.font = NSFont.boldSystemFont(ofSize: 24)
-				}
+				.font(NSFont.boldSystemFont(ofSize: 24))
 		}
 	}
 }
