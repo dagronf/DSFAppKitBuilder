@@ -18,8 +18,11 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 	}
 
+	let EverestBackgroundColor = NSColor(named: "secondary-background-color")!
+
 	lazy var body: Element =
 	VStack(alignment: .leading) {
+
 		HStack(spacing: 8) {
 			ImageView(NSImage(named: "filter-icon")!)
 				.scaling(.scaleProportionallyUpOrDown)
@@ -29,12 +32,17 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					.font(NSFont.systemFont(ofSize: 18))
 					.lineBreakMode(.byTruncatingTail)
 					.horizontalPriorities(hugging: 100, compressionResistance: 100)
-				Label("Mount Everest is really really tall")
+				Label("Mount Everest (Nepali: सगरमाथा, romanized: Sagarmāthā; Tibetan: Chomolungma ཇོ་མོ་གླང་མ) is Earth's highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas.")
 					.lineBreakMode(.byTruncatingTail)
 					.horizontalPriorities(hugging: 100, compressionResistance: 100)
 			}
 			.horizontalPriorities(hugging: .defaultLow)
 		}
+		.border(width: 0.5, color: .textColor)
+		.backgroundColor(EverestBackgroundColor)
+		.cornerRadius(8)
+		.edgeInsets(8)
+
 		CheckBox("Checkbox!")
 			.onChange { state in
 				Swift.print("State is now \(state)")

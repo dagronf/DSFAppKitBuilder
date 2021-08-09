@@ -35,18 +35,102 @@ public class Element: NSObject {
 		// Can be overriden in inherited classes if needed
 	}
 
+	// Set to true in derived classes to receive a callback when the system theme changes
+	internal var receiveThemeNotifications = false {
+		willSet {
+			self.updateReceiveThemeNotifications(to: newValue)
+		}
+	}
+
 	// Private
 
+	// Default constructor - should only be called from a derived class
 	internal override init() {
 		super.init()
 		self.nsView.wantsLayer = true
 		self.nsView.translatesAutoresizingMaskIntoConstraints = false
 	}
 
+	deinit {
+		self.receiveThemeNotifications = false
+	}
+
 	var nsView: NSView { fatalError() }
 	var nsLayer: CALayer? { return self.nsView.layer }
 
+	// MARK: Binding
+
 	private lazy var isHiddenBinder = Bindable<Bool>()
+
+	// CGColor convertibles
+	private var _backgroundColor: NSColor?
+	private var _borderColor: NSColor?
+}
+
+// MARK: - Dark mode handling
+
+extension Element {
+
+	// Called when the element is setting the 'receiveThemeNotifications' value
+	private func updateReceiveThemeNotifications(to newValue: Bool) {
+		if newValue == self.receiveThemeNotifications {
+			// No change -- just ignore
+			return
+		}
+
+		if newValue == true {
+			// Start listening for theme changes
+			ThemeNotificationCenter.addObserver(
+				self,
+				selector: #selector(self.themeChange),
+				name: NSNotification.Name.ThemeChangedNotification,
+				object: nil
+			)
+		}
+		else {
+			// Stop listening
+			ThemeNotificationCenter.removeObserver(
+				self,
+				name: NSNotification.Name.ThemeChangedNotification,
+				object: nil)
+		}
+	}
+
+	// Called when the system theme has changed AND the element has called
+	@objc private func themeChange() {
+		DispatchQueue.main.async { [weak self] in
+			guard let `self` = self else { return }
+
+			// Make sure we use the appearance of the view to handle drawing, or else it may not take effect
+			UsingEffectiveAppearance(of: self.nsView) {
+				self.onThemeChange()
+			}
+		}
+	}
+
+	/// Called when the system's theme has changed. Guaranteed to be called on the main thread.
+	///
+	/// Override this in inherited classes if you need to tweak appearances for display mode.
+	/// The `Element` must have called `enableThemeChangeNotification()` to receive this call.
+	///
+	/// You must always call `super.onThemeChange()` from within your override.
+	open func onThemeChange() {
+		assert(Thread.isMainThread)
+
+		// Any setting that uses cgColor to provide the color will not automatically be updated
+		// when the theme changes.  NSColor provides magic to handle the theme change, but as soon
+		// as you 'tweak' the color (eg. via calling cgColor) the auto magic is lost.
+		//
+		// As such, as layers use `CGColor`s, we need to handle this change ourselves for any settings
+		// that use `CGColor` under the hood
+
+		if let b = self._backgroundColor {
+			self.nsLayer?.backgroundColor = b.cgColor
+		}
+		if let c = self._borderColor {
+			self.nsLayer?.borderColor = c.cgColor
+		}
+	}
 }
 
 // MARK: - Modifiers
@@ -60,12 +144,16 @@ public extension Element {
 
 	/// Set the background color
 	func backgroundColor(_ color: NSColor) -> Self {
+		self.receiveThemeNotifications = true   // Background color uses CGColor, so we have to update manually
+		_backgroundColor = color
 		self.nsLayer?.backgroundColor = color.cgColor
 		return self
 	}
 
 	/// Set the border width and color for the element
 	func border(width: CGFloat, color: NSColor) -> Self {
+		self.receiveThemeNotifications = true   // Border color uses CGColor, so we have to update manually
+		_borderColor = color
 		self.nsLayer?.borderColor = color.cgColor
 		self.nsLayer?.borderWidth = width
 		return self
