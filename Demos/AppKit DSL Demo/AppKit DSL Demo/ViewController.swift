@@ -38,6 +38,8 @@ class MainTabs: NSObject, DSFAppKitBuilderViewHandler {
 	let splitTest = SplitDSL()
 	let boxText = BoxDSL()
 
+	let zStack = ZStackDSL()
+
 	lazy var body: Element =
 	TabView(selectedIndex: 0) {
 		TabViewItem("Demo 1") { self.primaryLayout.body }
@@ -46,5 +48,6 @@ class MainTabs: NSObject, DSFAppKitBuilderViewHandler {
 		TabViewItem("Tab") { self.tabTest.body }
 		TabViewItem("Split") { self.splitTest.body }
 		TabViewItem("Box") { self.boxText.body }
+		TabViewItem("ZStack") { self.zStack.body }
 	}
 }

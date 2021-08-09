@@ -14,6 +14,7 @@
 		2304028B26AF7EFB002016FD /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304028A26AF7EFB002016FD /* Utilities.swift */; };
 		2314B32B26AFB816003BAA0C /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 2314B32A26AFB816003BAA0C /* DSFAppKitBuilder */; };
 		2314B32D26AFD71C003BAA0C /* SecondaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */; };
+		2324632626C11A2800FF3158 /* ZStackDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2324632526C11A2800FF3158 /* ZStackDSL.swift */; };
 		232EC66126B223A30042C7F7 /* TabDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232EC66026B223A30042C7F7 /* TabDSL.swift */; };
 		232EC66326B223C40042C7F7 /* SplitDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232EC66226B223C40042C7F7 /* SplitDSL.swift */; };
 		2351367C26B3DAAE0026EAA1 /* BoxDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */; };
@@ -30,6 +31,7 @@
 		2304028A26AF7EFB002016FD /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		2314B32926AFB80D003BAA0C /* DSFAppKitBuilder */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DSFAppKitBuilder; path = ../..; sourceTree = "<group>"; };
 		2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryDSL.swift; sourceTree = "<group>"; };
+		2324632526C11A2800FF3158 /* ZStackDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZStackDSL.swift; sourceTree = "<group>"; };
 		232EC66026B223A30042C7F7 /* TabDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDSL.swift; sourceTree = "<group>"; };
 		232EC66226B223C40042C7F7 /* SplitDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitDSL.swift; sourceTree = "<group>"; };
 		2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxDSL.swift; sourceTree = "<group>"; };
@@ -72,12 +74,7 @@
 			children = (
 				2304027826AF7E5F002016FD /* AppDelegate.swift */,
 				2304027A26AF7E5F002016FD /* ViewController.swift */,
-				23C6E90926AF971600FBF106 /* PrimaryDSL.swift */,
-				2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */,
-				232EC66026B223A30042C7F7 /* TabDSL.swift */,
-				2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */,
-				237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */,
-				232EC66226B223C40042C7F7 /* SplitDSL.swift */,
+				2324632426C11A0300FF3158 /* views */,
 				2304027C26AF7E60002016FD /* Assets.xcassets */,
 				2304027E26AF7E60002016FD /* Main.storyboard */,
 				2304028A26AF7EFB002016FD /* Utilities.swift */,
@@ -90,6 +87,20 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2324632426C11A0300FF3158 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				23C6E90926AF971600FBF106 /* PrimaryDSL.swift */,
+				2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */,
+				232EC66026B223A30042C7F7 /* TabDSL.swift */,
+				2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */,
+				237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */,
+				232EC66226B223C40042C7F7 /* SplitDSL.swift */,
+				2324632526C11A2800FF3158 /* ZStackDSL.swift */,
+			);
+			path = views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -174,6 +185,7 @@
 				2304027926AF7E5F002016FD /* AppDelegate.swift in Sources */,
 				2351367C26B3DAAE0026EAA1 /* BoxDSL.swift in Sources */,
 				237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */,
+				2324632626C11A2800FF3158 /* ZStackDSL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

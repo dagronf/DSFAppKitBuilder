@@ -164,6 +164,7 @@ TextField()
 | `TextField`        | An `NSTextField` wrapper configured as an editable field |
 | `View`             | A wrapper for an `NSView` instance |
 | `VisualEffectView` | A wrapper for a `NSVisualEffectView` instance |
+| `ZStack`           | Layer multiple Elements on top of each other |
 
 ## Integration
 
