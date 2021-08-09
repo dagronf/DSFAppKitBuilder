@@ -78,7 +78,7 @@ public class Box: Element {
 
 	// Private
 	private let boxView = NSBox()
-	override var nsView: NSView { return self.boxView }
+	override public var nsView: NSView { return self.boxView }
 	private let containerView = NSView()
 	private let content: Element
 }

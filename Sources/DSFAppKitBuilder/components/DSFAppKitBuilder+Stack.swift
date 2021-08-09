@@ -55,7 +55,7 @@ public class Stack: Element {
 	}
 
 	// Private
-	override var nsView: NSView { return self.stack }
+	override public var nsView: NSView { return self.stack }
 	private let stack = NSStackView()
 	private let content: [Element]
 }

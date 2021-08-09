@@ -60,7 +60,7 @@ public class Divider: Element {
 	// Privates
 
 	private let separator: NSBox
-	override var nsView: NSView { return separator }
+	override public var nsView: NSView { return separator }
 }
 
 /// A convenience class for a vertical divider element

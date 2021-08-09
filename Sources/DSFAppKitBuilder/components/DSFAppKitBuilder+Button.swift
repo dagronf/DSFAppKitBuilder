@@ -68,7 +68,7 @@ public class Button: Control {
 	// Privates
 
 	fileprivate let button = NSButton()
-	override var nsView: NSView { return self.button }
+	override public var nsView: NSView { return self.button }
 	private var action: ((NSButton.StateValue) -> Void)?
 
 	// A cheaty -- bind to on/off only so you can link for enabling etc

@@ -37,5 +37,5 @@ public class View: Element {
 
 	// Private
 	private let containedView: NSView
-	override var nsView: NSView { return containedView }
+	override public var nsView: NSView { return containedView }
 }

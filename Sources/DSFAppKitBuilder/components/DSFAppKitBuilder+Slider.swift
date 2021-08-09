@@ -59,7 +59,7 @@ public class Slider: Control {
 
 	// Private
 	private let slider = NSSlider()
-	override var nsView: NSView { return self.slider }
+	override public var nsView: NSView { return self.slider }
 	private lazy var valueBinder = Bindable<Double>()
 	private var actionCallback: ((Double) -> Void)? = nil
 }

@@ -55,7 +55,7 @@ public class ImageView: Control {
 
 	// Privates
 	private let imageView = NSImageView()
-	override var nsView: NSView { return self.imageView }
+	override public var nsView: NSView { return self.imageView }
 	private lazy var imageBinder = Bindable<NSImage>()
 }
 

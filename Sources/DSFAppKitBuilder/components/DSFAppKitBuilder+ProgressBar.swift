@@ -71,7 +71,7 @@ public class ProgressBar: Element {
 	
 	// Private
 	
-	override var nsView: NSView { return self.progress }
+	override public var nsView: NSView { return self.progress }
 	
 	private let progress = NSProgressIndicator()
 	private lazy var progressBinder = Bindable<Double>()

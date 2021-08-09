@@ -37,5 +37,5 @@ public class EmptyView: Element {
 	// Private
 
 	private let emptyView = NSView()
-	override var nsView: NSView { return emptyView }
+	override public var nsView: NSView { return emptyView }
 }

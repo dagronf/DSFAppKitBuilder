@@ -53,7 +53,7 @@ public class Switch: Control {
 	// Private
 
 	let switchView = NSSwitch()
-	override var nsView: NSView { return self.switchView }
+	override public var nsView: NSView { return self.switchView }
 
 	private var actionCallback: ((NSButton.StateValue) -> Void)?
 	private lazy var stateBinder = Bindable<NSControl.StateValue>()

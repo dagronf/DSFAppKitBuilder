@@ -59,7 +59,7 @@ public class Label: Control {
 
 	// Privates
 	let label = NSTextField()
-	override var nsView: NSView { return self.label }
+	override public var nsView: NSView { return self.label }
 
 	private lazy var labelBinder = Bindable<String>()
 	private lazy var attributedLabelBinder = Bindable<NSAttributedString>()

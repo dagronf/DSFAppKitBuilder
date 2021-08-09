@@ -89,7 +89,7 @@ public class ScrollView: Element {
 	// Private
 	private let scrollView = NSScrollView()
 	private let documentContent: Element
-	override var nsView: NSView { return self.scrollView }
+	override public var nsView: NSView { return self.scrollView }
 }
 
 // MARK: - Modifiers

@@ -53,9 +53,13 @@ public class Element: NSObject {
 
 	deinit {
 		self.receiveThemeNotifications = false
+		Swift.print("Element deinit")
 	}
 
-	var nsView: NSView { fatalError() }
+	/// Overridden in derived classes to return the root AppKit type for the element
+	public var nsView: NSView { fatalError() }
+
+	/// Returns the layer defined for the root AppKit element view type
 	var nsLayer: CALayer? { return self.nsView.layer }
 
 	// MARK: Binding
