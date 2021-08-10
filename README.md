@@ -150,6 +150,7 @@ TextField()
 | `EmptyView`        | A spacer view |
 | `ImageView`        | An `NSImageView` wrapper |
 | `Label`            | An `NSTextField` wrapper configured as a read-only label |
+| `PathControl`      | An `NSPathControl` wrapper |
 | `PopupButton`      | An `NSPopupButton` wrapper |
 | `ProgressBar`      | An `NSProgressIndicator` wrapper |
 | `RadioGroup`       | A grouped stack of buttons configured as a radio group |
@@ -179,6 +180,10 @@ The code is documented and will produce nice documentation for each element when
 ## Known bugs
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
+
+### 0.3.1
+
+* Added `PathControl`
 
 ### 0.3.0
 
