@@ -59,7 +59,7 @@ import AppKit.NSView
 /// ```
 public class ZStack: Element {
 	/// Create a ZStack element using a ZLayerBuilder
-	public init(@ZLayersBuilder builder: () -> [ZLayer]) {
+	public init(edgeOffset: CGFloat = 0, @ZLayersBuilder builder: () -> [ZLayer]) {
 		let layers = builder()
 
 		super.init()
@@ -70,7 +70,7 @@ public class ZStack: Element {
 			containerView.addSubview(element.nsView)
 			switch layer.layoutType {
 			case .pinEdges:
-				element.nsView.pinEdges(to: containerView)
+				element.nsView.pinEdges(to: containerView, offset: edgeOffset)
 			case .center:
 				element.nsView.center(in: containerView)
 			}
