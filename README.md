@@ -180,6 +180,18 @@ The code is documented and will produce nice documentation for each element when
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
 
+### 0.3.0
+
+* Add theme handling (dark mode detection)
+* Add font modifier for Button
+* Removed `addedToParentView` overridable function
+* Changed public `nsView` to `view()`
+* Simple logging
+
+### 0.2.1
+
+* Added `ZStack`
+
 ### 0.2.0
 
 * Added `VisualEffectView`
