@@ -55,6 +55,9 @@ public class ValueBinder<TYPE: Any> {
 	public init(_ value: TYPE, _ changeCallback: ((TYPE) -> Void)? = nil) {
 		self.wrappedValue = value
 		self.changeCallback = changeCallback
+
+		// Initially call the callback to set any initial value through to anything that needs to know the initial value
+		self.changeCallback?(value)
 	}
 
 	deinit {
