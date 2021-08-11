@@ -22,13 +22,20 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	let sliderStringValue = ValueBinder<String>("0.0")
 	lazy var sliderValue = ValueBinder<Double>(50.0) { newValue in
-		self.sliderStringValue.wrappedValue = "\(newValue)"
+		self.sliderStringValue.wrappedValue = self.numberFormatter.string(for: newValue) ?? "0.0"
 	}
 
 	let switchOn = ValueBinder<Bool>(false)
 	let switchState = ValueBinder<NSControl.StateValue>(.off)
 
 	let selectedSegments = ValueBinder(NSSet(array: [0, 2]))
+
+	let numberFormatter: NumberFormatter = {
+		let n = NumberFormatter()
+		n.maximumFractionDigits = 1
+		n.minimumFractionDigits = 1
+		return n
+	}()
 
 	// Definition
 
@@ -97,12 +104,13 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 			HStack {
 				Switch(state: .on)
-					.bindState(self.switchState)
+					.bindOnOffState(self.switchOn)
 				Slider(range: 0 ... 100, value: 10)
 					.bindIsEnabled(self.switchOn)
 					.bindValue(self.sliderValue)
 				Label()
 					.bindIsEnabled(self.switchOn)
+					.formatter(self.numberFormatter)
 					.alignment(.right)
 					.isBezeled(true)
 					.isSelectable(true)

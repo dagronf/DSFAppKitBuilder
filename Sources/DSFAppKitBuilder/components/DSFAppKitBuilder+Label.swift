@@ -24,6 +24,7 @@
 //  SOFTWARE.
 //
 
+import Foundation
 import AppKit.NSTextField
 
 /// A read-only text control
@@ -134,6 +135,12 @@ public extension Label {
 	/// A Boolean value that controls whether single-line text fields tighten intercharacter spacing before truncating the text.
 	func allowsDefaultTighteningForTruncation(_ allow: Bool) -> Self {
 		self.label.allowsDefaultTighteningForTruncation = allow
+		return self
+	}
+
+	/// Set a formatter for the field
+	func formatter(_ formatter: Formatter) -> Self {
+		self.label.formatter = formatter
 		return self
 	}
 }

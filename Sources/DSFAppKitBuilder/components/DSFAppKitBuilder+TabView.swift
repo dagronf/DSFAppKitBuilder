@@ -103,14 +103,14 @@ public class TabView: Control {
 	}
 
 	deinit {
-		valueBinder?.deregister(self)
+		tabIndexBinder?.deregister(self)
 	}
 
 	// Private
 	private let tabView = NSTabView()
 	public override func view() -> NSView { return self.tabView }
 
-	private var valueBinder: ValueBinder<Int>?
+	private var tabIndexBinder: ValueBinder<Int>?
 	private var changeBlock: ((Int) -> Void)?
 }
 
@@ -130,7 +130,7 @@ public extension TabView {
 public extension TabView {
 	/// Bind the selected segments to a keypath
 	func bindTabIndex(_ tabIndexBinder: ValueBinder<Int>) -> Self {
-		self.valueBinder = tabIndexBinder
+		self.tabIndexBinder = tabIndexBinder
 		tabIndexBinder.register(self) { [weak self] newValue in
 			self?.tabView.selectTabViewItem(at: newValue)
 		}
@@ -148,7 +148,7 @@ extension TabView: NSTabViewDelegate {
 			self.changeBlock?(index)
 
 			// Tell the binder to update its value
-			self.valueBinder?.wrappedValue = index
+			self.tabIndexBinder?.wrappedValue = index
 		}
 	}
 }

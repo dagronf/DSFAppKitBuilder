@@ -105,6 +105,7 @@ public extension Slider {
 public extension Slider {
 	/// Bind the value for the slider to a key path
 	func bindValue(_ valueBinder: ValueBinder<Double>) -> Self {
+		self.valueBinder = valueBinder
 		valueBinder.register(self) { [weak self] newValue in
 			self?.slider.doubleValue = newValue
 		}
