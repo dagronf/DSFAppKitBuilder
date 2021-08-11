@@ -33,7 +33,7 @@ import AppKit.NSColorWell
 /// ```swift
 /// ColorWell(showsAlpha: true)
 ///    .size(width: 60, height: 40)
-///    .onChange { color in
+///    .onChange { [weak self] color in
 ///       // Do something with 'color'
 /// }
 /// ```

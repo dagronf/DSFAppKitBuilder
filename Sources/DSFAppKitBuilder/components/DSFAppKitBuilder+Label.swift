@@ -32,11 +32,13 @@ import AppKit.NSTextField
 /// Usage:
 ///
 /// ```swift
+/// let textValue = ValueBinder("")
+/// ...
 /// Label()
 ///   .alignment(.right)
 ///   .lineBreakMode(.byTruncatingHead)
 ///   .horizontalPriorities(hugging: .defaultLow)
-///   .bindLabel(self, keyPath: \PrimaryDSL.stepperStringValue)
+///   .bindLabel(self.textValue)
 /// ```
 public class Label: Control {
 	/// Create a label control

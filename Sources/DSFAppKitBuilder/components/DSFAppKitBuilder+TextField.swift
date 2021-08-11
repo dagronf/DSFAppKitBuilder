@@ -31,9 +31,11 @@ import AppKit.NSTextField
 /// Usage:
 ///
 /// ```swift
+/// let userName = ValueBinder("")
+/// ...
 /// TextField()
-///    .placeholderText("User Name")
-///    .bindText(self, keyPath: \MyController.userName)
+///    .placeholderText("Username")
+///    .bindText(self.userName)
 /// ```
 public class TextField: Label {
 /// Create a text field element
