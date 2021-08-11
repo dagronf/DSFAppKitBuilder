@@ -9,10 +9,8 @@ import AppKit
 import DSFAppKitBuilder
 
 class TabDSL: NSObject, DSFAppKitBuilderViewHandler {
-	@objc dynamic var selectedTab: Int = 1 {
-		didSet {
-			Swift.print("Changed tabs - now \(selectedTab)")
-		}
+	let selectedTab = ValueBinder<Int>(1) { newValue in
+		Swift.print("Changed tabs - now \(newValue)")
 	}
 
 	lazy var body: Element =
@@ -28,8 +26,7 @@ class TabDSL: NSObject, DSFAppKitBuilderViewHandler {
 					.scaling(.scaleProportionallyUpOrDown)
 			}
 		}
-		.bindTabIndex(self, keyPath: \TabDSL.selectedTab)
-
+		.bindTabIndex(self.selectedTab)
 
 	lazy var inner: Element =
 		TabView(tabViewType: .rightTabsBezelBorder, selectedIndex: 0) {

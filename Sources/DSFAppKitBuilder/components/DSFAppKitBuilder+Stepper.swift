@@ -57,10 +57,14 @@ public class Stepper: Control {
 		self.stepper.action = #selector(stepperDidChange(_:))
 	}
 
+	deinit {
+		valueBinder?.deregister(self)
+	}
+
 	// Private
 	private let stepper = NSStepper()
-	override var nsView: NSView { return self.stepper }
-	private lazy var valueBinder = Bindable<Double>()
+	public override func view() -> NSView { return self.stepper }
+	private var valueBinder: ValueBinder<Double>?
 	private var actionCallback: ((Double) -> Void)? = nil
 }
 
@@ -80,18 +84,21 @@ public extension Stepper {
 		self.actionCallback?(newValue)
 
 		// Tell the binder to update
-		self.valueBinder.setValue(self.stepper.doubleValue)
+		self.valueBinder?.wrappedValue = self.stepper.doubleValue
 	}
 }
 
 // MARK: - Bindings
 
 public extension Stepper {
-	/// Bind the stepper value to a keypath
-	func bindValue<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Double>) -> Self {
-		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+
+	/// Bind the stepper value
+	func bindValue(_ value: ValueBinder<Double>) -> Self {
+		self.valueBinder = value
+		value.register(self) { [weak self] newValue in
 			self?.stepper.doubleValue = newValue
-		})
+		}
+
 		return self
 	}
 }

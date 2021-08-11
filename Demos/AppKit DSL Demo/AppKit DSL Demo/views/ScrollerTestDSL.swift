@@ -108,44 +108,47 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	// MARK: - Toolbar
 
-	@objc dynamic var toolbar_enable: Bool = false
-	@objc dynamic var toolbar_show_state: Int = 0
+
+
+	let toolbar_enable = ValueBinder<Bool>(false)
+	let toolbar_show_state = ValueBinder<Int>(0)
 
 	lazy var toolbars: Element =
 		HStack(alignment: .lastBaseline) {
-			CheckBox().state(toolbar_enable ? .on : .off)
-				.bindOnOffState(self, keyPath: \ScrollerTestDSL.toolbar_enable)
+			CheckBox()
+				.state(toolbar_enable.wrappedValue ? .on : .off)
+				.bindOnOffState(self.toolbar_enable)
 			PopupButton {
 				MenuItem(title: "Show")
 				MenuItem(title: "Hide")
 			}
-			.bindIsEnabled(self, keyPath: \ScrollerTestDSL.toolbar_enable)
-			.bindSelection(self, keyPath: \ScrollerTestDSL.toolbar_show_state)
+			.bindIsEnabled(self.toolbar_enable)
+			.bindSelection(self.toolbar_show_state)
 			Label("toolbars")
 			EmptyView()
 		}
 
 	// MARK: - Editor
 
-	@objc dynamic var currentEditor_enable: Bool = false
+	let currentEditor_enable = ValueBinder<Bool>(false)
 	lazy var currentEditor: Element =
 		HStack(alignment: .lastBaseline) {
 			CheckBox()
-				.bindOnOffState(self, keyPath: \ScrollerTestDSL.currentEditor_enable)
+				.bindOnOffState(self.currentEditor_enable)
 			PopupButton {
 				MenuItem(title: "Show")
 				MenuItem(title: "Hide")
 			}
-			.bindIsEnabled(self, keyPath: \ScrollerTestDSL.currentEditor_enable)
+			.bindIsEnabled(self.currentEditor_enable)
 			PopupButton {
 				MenuItem(title: "Current Editor")
 			}
-			.bindIsEnabled(self, keyPath: \ScrollerTestDSL.currentEditor_enable)
+			.bindIsEnabled(self.currentEditor_enable)
 			Label("in")
 			PopupButton {
 				MenuItem(title: "Focused Editor")
 			}
-			.bindIsEnabled(self, keyPath: \ScrollerTestDSL.currentEditor_enable)
+			.bindIsEnabled(self.currentEditor_enable)
 			EmptyView()
 		}
 }

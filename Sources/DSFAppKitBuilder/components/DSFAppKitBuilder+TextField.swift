@@ -51,6 +51,10 @@ public class TextField: Label {
 		self.label.delegate = self
 	}
 
+	deinit {
+		self.textValueBinder?.deregister(self)
+	}
+
 	// Privates
 
 	// Block callbacks
@@ -59,8 +63,10 @@ public class TextField: Label {
 	private var didEndEditing: ((NSTextField) -> Void)?
 
 	// Text Content binding
-	private lazy var textFieldBinder = Bindable<String>()
+	private var textValueBinder: ValueBinder<String>?
 	private var updateOnEndEditingOnly: Bool = false
+
+	private var hasTextBinder: ValueBinder<Bool>?
 }
 
 // MARK: Modifiers
@@ -104,17 +110,29 @@ public extension TextField {
 // MARK: Bindings
 
 public extension TextField {
-	/// Bind the text content to a keypath
-	///
+	/// Bind to the bindable string value
 	/// - Parameters:
 	///   - updateOnEndEditingOnly: If true, only updates the binding when the text field ends editing
-	///   - object: The object to observe
-	///   - keyPath: The keyPath defining the member variable to observe within the object
-	func bindText<TYPE>(updateOnEndEditingOnly: Bool = false, _ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
+	///   - textValue: The value binding for the text to display
+	/// - Returns: Self
+	func bindText(updateOnEndEditingOnly: Bool = false, _ textValue: ValueBinder<String>) -> Self {
 		self.updateOnEndEditingOnly = updateOnEndEditingOnly
-		self.textFieldBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+		self.textValueBinder = textValue
+		textValue.register(self) { [weak self] newValue in
 			self?.label.stringValue = newValue
-		})
+		}
+		return self
+	}
+
+	/// Binding whether the control has text in it
+	/// - Parameters:
+	///   - hasTextBinder: The value binding for indicating whether the field has text or not
+	/// - Returns: Self
+	func bindHasText(_ hasTextBinder: ValueBinder<Bool>) -> Self {
+		self.hasTextBinder = hasTextBinder
+		hasTextBinder.register(self) { _ in
+			// Nothing to do
+		}
 		return self
 	}
 }
@@ -129,13 +147,15 @@ extension TextField: NSTextFieldDelegate {
 	public func controlTextDidChange(_: Notification) {
 		self.didEdit?(self.label)
 		if !updateOnEndEditingOnly {
-			self.textFieldBinder.setValue(self.label.stringValue)
+			self.textValueBinder?.wrappedValue = self.label.stringValue
+			self.hasTextBinder?.wrappedValue = !self.label.stringValue.isEmpty
 		}
 	}
 
 	public func controlTextDidEndEditing(_: Notification) {
 		if updateOnEndEditingOnly {
-			self.textFieldBinder.setValue(self.label.stringValue)
+			self.textValueBinder?.wrappedValue = self.label.stringValue
+			self.hasTextBinder?.wrappedValue = !self.label.stringValue.isEmpty
 		}
 		self.didEndEditing?(self.label)
 	}

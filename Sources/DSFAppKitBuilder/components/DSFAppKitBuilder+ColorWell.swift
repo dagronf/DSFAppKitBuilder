@@ -62,11 +62,15 @@ public class ColorWell: Control {
 		}
 	}
 
+	deinit {
+		colorBinder?.deregister(self)
+	}
+
 	// Privates
 	private let colorWell = AlphaCompatibleColorWell()
-	override var nsView: NSView { return self.colorWell }
+	public override func view() -> NSView { return self.colorWell }
 
-	private lazy var colorBinder = Bindable<NSColor>()
+	private var colorBinder: ValueBinder<NSColor>?
 	private var actionCallback: ((NSColor) -> Void)? = nil
 
 	@objc private func colorChanged(_ sender: Any) {
@@ -74,7 +78,7 @@ public class ColorWell: Control {
 		self.actionCallback?(newColor)
 
 		// Tell the binder to update
-		self.colorBinder.setValue(newColor)
+		self.colorBinder?.wrappedValue = newColor
 	}
 }
 
@@ -92,10 +96,11 @@ public extension ColorWell {
 
 public extension ColorWell {
 	/// Bind the color to a keypath
-	func bindColor<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSColor>) -> Self {
-		self.colorBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindColor(_ colorBinder: ValueBinder<NSColor>) -> Self {
+		self.colorBinder = colorBinder
+		colorBinder.register(self) { [weak self] newValue in
 			self?.colorWell.color = newValue
-		})
+		}
 		return self
 	}
 }

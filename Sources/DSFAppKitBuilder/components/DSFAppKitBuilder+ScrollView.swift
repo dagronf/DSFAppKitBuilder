@@ -89,7 +89,7 @@ public class ScrollView: Element {
 	// Private
 	private let scrollView = NSScrollView()
 	private let documentContent: Element
-	override var nsView: NSView { return self.scrollView }
+	public override func view() -> NSView { return self.scrollView }
 }
 
 // MARK: - Modifiers
@@ -140,7 +140,7 @@ private extension ScrollView {
 			clipView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
 		])
 
-		let contentView = documentContent.nsView
+		let contentView = documentContent.view()
 
 		self.scrollView.documentView = contentView
 

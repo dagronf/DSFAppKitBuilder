@@ -57,13 +57,17 @@ public class PopupButton: Control {
 		)
 	}
 
+	deinit {
+		selectionBinder?.deregister(self)
+	}
+
 	// Private
 
-	override var nsView: NSView { return self.popupButton }
+	public override func view() -> NSView { return self.popupButton }
 	private let popupButton = NSPopUpButton()
 	private let content: [MenuItem]
 
-	private lazy var selectionBinder = Bindable<Int>()
+	private var selectionBinder: ValueBinder<Int>?
 	private var selectionChangeBlock: ((Int) -> Void)?
 
 	internal init(
@@ -90,6 +94,7 @@ public extension PopupButton {
 	/// Set the initially selected popup item
 	func selectItem(at index: Int) -> Self {
 		self.popupButton.selectItem(at: index)
+		self.selectionBinder?.wrappedValue = index
 		return self
 	}
 }
@@ -108,10 +113,11 @@ public extension PopupButton {
 
 public extension PopupButton {
 	/// Bind the selection to a keypath
-	func bindSelection<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
-		self.selectionBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindSelection(_ selectionBinder: ValueBinder<Int>) -> Self {
+		self.selectionBinder = selectionBinder
+		selectionBinder.register(self) { [weak self] newValue in
 			self?.popupButton.selectItem(at: newValue)
-		})
+		}
 		return self
 	}
 }
@@ -128,6 +134,6 @@ private extension PopupButton {
 		self.selectionChangeBlock?(self.selectedIndex)
 
 		// Tell the binder to update
-		self.selectionBinder.setValue(self.selectedIndex)
+		self.selectionBinder?.wrappedValue = self.selectedIndex
 	}
 }

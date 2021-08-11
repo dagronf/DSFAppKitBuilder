@@ -64,14 +64,18 @@ public class RadioGroup: Control {
 		)
 	}
 
+	deinit {
+		selectionBinder?.deregister(self)
+	}
+
 	// Private
 
-	override var nsView: NSView { return self.radioGroup }
+	public override func view() -> NSView { return self.radioGroup }
 	private let radioGroup = NSStackView()
 	private let content: [RadioElement]
 
 	private var actionCallback: ((Int) -> Void)?
-	private lazy var selectionBinder = Bindable<Int>()
+	private var selectionBinder: ValueBinder<Int>?
 
 	internal init(
 		selected: Int = 0,
@@ -136,7 +140,7 @@ public extension RadioGroup {
 		self.actionCallback?(item.tag)
 
 		// Tell the binder to update
-		self.selectionBinder.setValue(item.tag)
+		self.selectionBinder?.wrappedValue = item.tag
 	}
 }
 
@@ -144,12 +148,13 @@ public extension RadioGroup {
 
 public extension RadioGroup {
 	/// Bind the selection to a keypath
-	func bindSelection<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
-		self.selectionBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindSelection(_ selectionBinder: ValueBinder<Int>) -> Self {
+		self.selectionBinder = selectionBinder
+		selectionBinder.register(self) { [weak self] newValue in
 			guard let `self` = self else { return }
 			self.selectRadioWithTag(newValue)
 			self.actionCallback?(newValue)
-		})
+		}
 		return self
 	}
 }

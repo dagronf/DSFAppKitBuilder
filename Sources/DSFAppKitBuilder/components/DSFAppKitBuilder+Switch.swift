@@ -50,14 +50,19 @@ public class Switch: Control {
 		self.switchView.action = #selector(self.switchDidChange(_:))
 	}
 
+	deinit {
+		stateBinder?.deregister(self)
+		onOffBinder?.deregister(self)
+	}
+
 	// Private
 
 	let switchView = NSSwitch()
-	override var nsView: NSView { return self.switchView }
+	public override func view() -> NSView { return self.switchView }
 
 	private var actionCallback: ((NSButton.StateValue) -> Void)?
-	private lazy var stateBinder = Bindable<NSControl.StateValue>()
-	private lazy var onOffBinder = Bindable<Bool>()
+	private var stateBinder: ValueBinder<NSControl.StateValue>?
+	private var onOffBinder: ValueBinder<Bool>?
 }
 
 // MARK: - Actions
@@ -73,8 +78,8 @@ public extension Switch {
 
 	@objc private func switchDidChange(_ sender: NSSwitch) {
 		self.actionCallback?(sender.state)
-		self.stateBinder.setValue(self.switchView.state)
-		self.onOffBinder.setValue(self.switchView.state == .off ? false : true)
+		self.stateBinder?.wrappedValue = self.switchView.state
+		self.onOffBinder?.wrappedValue = (self.switchView.state == .off ? false : true)
 	}
 }
 
@@ -84,18 +89,24 @@ public extension Switch {
 public extension Switch {
 
 	/// Bind the on/off switch state to a keypath.
-	func bindOnOffState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
-		self.onOffBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
-			self?.switchView.state = (newValue == false) ? .off : .on
-		})
+	func bindOnOffState(_ stateBinding: ValueBinder<Bool>) -> Self {
+		self.onOffBinder = stateBinding
+		stateBinding.register(self) { [weak self] newValue in
+			let newState: NSControl.StateValue = (newValue == false) ? .off : .on
+			self?.switchView.state = newState
+			self?.stateBinder?.wrappedValue = newState
+		}
+
 		return self
 	}
 
 	/// Bind the switch state to a keypath
-	func bindState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSControl.StateValue>) -> Self {
-		self.stateBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindState(_ stateBinding: ValueBinder<NSControl.StateValue>) -> Self {
+		self.stateBinder = stateBinding
+		stateBinding.register(self) { [weak self] newValue in
 			self?.switchView.state = newValue
-		})
+			self?.onOffBinder?.wrappedValue = newValue == .off ? false : true
+		}
 		return self
 	}
 }

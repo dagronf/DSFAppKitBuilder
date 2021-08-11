@@ -74,10 +74,10 @@ public extension Element {
 		hugging: NSLayoutConstraint.Priority? = nil,
 		compressionResistance resistance: NSLayoutConstraint.Priority? = nil) -> Self {
 		if let hugging = hugging {
-			self.nsView.setContentHuggingPriority(hugging, for: orientation)
+			self.view().setContentHuggingPriority(hugging, for: orientation)
 		}
 		if let resistance = resistance {
-			self.nsView.setContentCompressionResistancePriority(resistance, for: orientation)
+			self.view().setContentCompressionResistancePriority(resistance, for: orientation)
 		}
 		return self
 	}

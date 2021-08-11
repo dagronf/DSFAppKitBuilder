@@ -60,12 +60,12 @@ open class DSFAppKitBuilderView: NSView {
 	// The root element for the view
 	private var rootElement: Element? {
 		willSet {
-			self.rootElement?.nsView.removeFromSuperview()
+			self.rootElement?.view().removeFromSuperview()
 		}
 		didSet {
 			if let d = rootElement {
-				self.addSubview(d.nsView)
-				d.nsView.pinEdges(to: self)
+				self.addSubview(d.view())
+				d.view().pinEdges(to: self)
 			}
 		}
 	}

@@ -9,7 +9,9 @@ import AppKit
 import DSFAppKitBuilder
 
 class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
-	@objc dynamic var hidden = NSSet()
+	let hidden = ValueBinder(NSSet()) { newValue in
+		Swift.print("Hidden Items = \(newValue)")
+	}
 
 	lazy var body: Element =
 		Box("Split Testing") {
@@ -21,7 +23,7 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 						Segment("second")
 						Segment("third")
 					}
-					.bindSelectedSegments(self, keyPath: \SplitDSL.hidden)
+					.bindSelectedSegments(self.hidden)
 				}
 
 				SplitView {
@@ -29,7 +31,7 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 					SplitViewItem { self.split2 }
 					SplitViewItem { self.split3 }
 				}
-				.bindHiddenViews(self, keyPath: \SplitDSL.hidden)
+				.bindHiddenViews(self.hidden)
 				.verticalPriorities(hugging: 10, compressionResistance: 10)
 				.horizontalPriorities(hugging: 10, compressionResistance: 10)
 			}

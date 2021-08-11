@@ -10,7 +10,13 @@ import DSFAppKitBuilder
 
 class ZStackDSL: NSObject, DSFAppKitBuilderViewHandler {
 
-	@objc dynamic var fileURL: URL = Bundle.main.bundleURL
+	//@objc dynamic var fileURL: URL = Bundle.main.bundleURL
+
+	let fileURL = ValueBinder<URL>(Bundle.main.bundleURL)
+
+	override init() {
+		super.init()
+	}
 
 	lazy var body: Element =
 	VStack {
@@ -40,8 +46,32 @@ class ZStackDSL: NSObject, DSFAppKitBuilderViewHandler {
 		// Path control
 
 		HStack {
-			PathControl()
-				.bindURL(self, keyPath: \ZStackDSL.fileURL)
+			PathControlWithSelector(fileURL: self.fileURL)
+			Button(title: "Reset") { _ in
+				self.fileURL.wrappedValue = Bundle.main.bundleURL
+			}
+		}
+	}
+}
+
+
+
+class PathControlWithSelector: Element {
+
+	let fileURL: ValueBinder<URL>
+
+	public init(fileURL: ValueBinder<URL>) {
+		self.fileURL = fileURL
+		super.init()
+	}
+
+	override func view() -> NSView {
+		return self.body.view()
+	}
+
+	lazy var body: Element =
+		HStack {
+			PathControl(bindingURL: fileURL)
 				.horizontalPriorities(hugging: 10, compressionResistance: 10)
 			Button(title: "…", bezelStyle: .roundRect) { _ in
 				self.selectFile()
@@ -51,19 +81,18 @@ class ZStackDSL: NSObject, DSFAppKitBuilderViewHandler {
 		.border(width: 0.5, color: .separatorColor)
 		.cornerRadius(4)
 		.backgroundColor(.quaternaryLabelColor)
-	}
 
 	private func selectFile() {
 		let openPanel = NSOpenPanel()
-		openPanel.directoryURL = fileURL
+		openPanel.directoryURL = self.fileURL.wrappedValue
 		openPanel.canChooseFiles = true
 		openPanel.canChooseDirectories = true
 		openPanel.begin { [weak self] (result) -> Void in
+			guard let `self` = self else { return }
 			if result == NSApplication.ModalResponse.OK,
 				let url = openPanel.url {
-				self?.fileURL = url
+				self.fileURL.wrappedValue = url
 			}
 		}
 	}
-
 }

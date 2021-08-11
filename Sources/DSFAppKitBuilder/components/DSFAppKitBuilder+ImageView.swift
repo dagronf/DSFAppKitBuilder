@@ -55,8 +55,8 @@ public class ImageView: Control {
 
 	// Privates
 	private let imageView = NSImageView()
-	override var nsView: NSView { return self.imageView }
-	private lazy var imageBinder = Bindable<NSImage>()
+	public override func view() -> NSView { return self.imageView }
+	private var imageBinder: ValueBinder<NSImage>?
 }
 
 // MARK: - Modifiers
@@ -85,10 +85,11 @@ public extension ImageView {
 
 public extension ImageView {
 	/// Bind the image to a keypath
-	func bindImage<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSImage>) -> Self {
-		self.imageBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindImage(_ imageBinder: ValueBinder<NSImage>) -> Self {
+		self.imageBinder = imageBinder
+		imageBinder.register(self) { [weak self] newValue in
 			self?.imageView.image = newValue
-		})
+		}
 		return self
 	}
 }

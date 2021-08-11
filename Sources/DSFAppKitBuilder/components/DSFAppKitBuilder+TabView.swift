@@ -102,11 +102,15 @@ public class TabView: Control {
 		self.tabView.needsDisplay = true
 	}
 
+	deinit {
+		valueBinder?.deregister(self)
+	}
+
 	// Private
 	private let tabView = NSTabView()
-	override var nsView: NSView { return self.tabView }
+	public override func view() -> NSView { return self.tabView }
 
-	private lazy var valueBinder = Bindable<Int>()
+	private var valueBinder: ValueBinder<Int>?
 	private var changeBlock: ((Int) -> Void)?
 }
 
@@ -125,10 +129,11 @@ public extension TabView {
 
 public extension TabView {
 	/// Bind the selected segments to a keypath
-	func bindTabIndex<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Int>) -> Self {
-		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindTabIndex(_ tabIndexBinder: ValueBinder<Int>) -> Self {
+		self.valueBinder = tabIndexBinder
+		tabIndexBinder.register(self) { [weak self] newValue in
 			self?.tabView.selectTabViewItem(at: newValue)
-		})
+		}
 		return self
 	}
 }
@@ -143,7 +148,7 @@ extension TabView: NSTabViewDelegate {
 			self.changeBlock?(index)
 
 			// Tell the binder to update its value
-			self.valueBinder.setValue(index)
+			self.valueBinder?.wrappedValue = index
 		}
 	}
 }
@@ -199,9 +204,9 @@ private extension TabViewItem {
 			let container = NSView()
 			container.translatesAutoresizingMaskIntoConstraints = true
 			container.autoresizingMask = [.width, .height]
-			container.addSubview(self.content.nsView)
+			container.addSubview(self.content.view())
 
-			self.content.nsView.pinEdges(to: container)
+			self.content.view().pinEdges(to: container)
 
 			self.view = container
 		}

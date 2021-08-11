@@ -33,9 +33,14 @@ public class Control: Element {
 		super.init()
 	}
 
+
+	deinit {
+		isEnabledBinder?.deregister(self)
+	}
+
 	// Private
-	private lazy var isEnabledBinder = Bindable<Bool>()
-	private var control: NSControl { return nsView as! NSControl }
+	private var isEnabledBinder: ValueBinder<Bool>?
+	private var control: NSControl { return view() as! NSControl }
 }
 
 // MARK: - Modifiers
@@ -58,10 +63,11 @@ public extension Control {
 
 public extension Control {
 	/// Binding for isEnabled
-	func bindIsEnabled<TYPE: NSObject>(_ object: TYPE, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
-		self.isEnabledBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
+		enabledBinding.register(self) { [weak self] newValue in
 			self?.control.isEnabled = newValue
-		})
+		}
+		self.isEnabledBinder = enabledBinding
 		return self
 	}
 }

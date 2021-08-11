@@ -60,6 +60,11 @@ public class Segmented: Control {
 		)
 	}
 
+	deinit {
+		selectedSegmentsBinder?.deregister(self)
+		segmentedEnabledBinder?.deregister(self)
+	}
+
 	// The currently selected segments
 	var selectedSegments: NSSet {
 		let selected = (0 ..< self.segmented.segmentCount).filter { index in
@@ -69,14 +74,14 @@ public class Segmented: Control {
 	}
 
 	// Privates
-	override var nsView: NSView { return self.segmented }
+	public override func view() -> NSView { return self.segmented }
 	private let segmented = NSSegmentedControl()
 	private let content: [Segment]
 
 	private var actionCallback: ((NSSet) -> Void)?
 
-	private lazy var valueBinder = Bindable<NSSet>()
-	private lazy var segmentedEnabledBinder = Bindable<NSSet>()
+	private var selectedSegmentsBinder: ValueBinder<NSSet>?
+	private var segmentedEnabledBinder: ValueBinder<NSSet>?
 
 	internal init(
 		segmentStyle: NSSegmentedControl.Style? = nil,
@@ -137,26 +142,28 @@ public extension Segmented {
 		self.actionCallback?(self.selectedSegments)
 
 		// Tell the binder to update
-		self.valueBinder.setValue(self.selectedSegments)
+		self.selectedSegmentsBinder?.wrappedValue = self.selectedSegments
 	}
 }
 
 // MARK: - Bindings
 
 public extension Segmented {
-	/// Bind enabled state for each segment to a key path
-	func bindEnabledSegments<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSSet>) -> Self {
-		self.segmentedEnabledBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	/// Bind enabled state for each segment
+	func bindEnabledSegments(_ enabledSegmentsBinder: ValueBinder<NSSet>) -> Self {
+		self.segmentedEnabledBinder = enabledSegmentsBinder
+		enabledSegmentsBinder.register(self) { [weak self] newValue in
 			self?.enableSegments(from: newValue)
-		})
+		}
 		return self
 	}
 
 	/// Bind the selected segments to a keypath
-	func bindSelectedSegments<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSSet>) -> Self {
-		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindSelectedSegments(_ selectedSegmentsBinder: ValueBinder<NSSet>) -> Self {
+		self.selectedSegmentsBinder = selectedSegmentsBinder
+		selectedSegmentsBinder.register(self) { [weak self] newValue in
 			self?.selectSegments(from: newValue)
-		})
+		}
 		return self
 	}
 }

@@ -103,7 +103,7 @@ Button(title: "Press Me!") { [weak self] _ in
 
 ### Binders
 
-You can use the binders on each element to bind to a keypath variable allowing two-way communications between the view and the controller.
+You can use the binders on each element to bind to a variable allowing two-way communications between element(s) and the controller.
 
 Wrap all your view logic in its own object. Present the object to an instance of `DSFAppKitBuilderView` to display and manage the contents of your object.
 
@@ -111,19 +111,77 @@ Wrap all your view logic in its own object. Present the object to an instance of
 class MyExcitingViewContainer: NSObject, DSFAppKitBuilderViewHandler {
 
    // Bind the user name and the display name to fields
-   @objc dynamic var userName: String = ""
-   @objc dynamic var displayName: String = ""
+   let userName = ValueBinder<String>("")
+   let displayName = ValueBinder<String>("")
    	
    	// The body of the view
    lazy var body: Element =
       VStack {
          TextField()
             .placeholderText("User Name")
-            .bindText(self, keyPath: \MyExcitingViewContainer.userName)
+            .bindText(self.userName)
          TextField()
             .placeholderText("Display Name")
-            .bindText(self, keyPath: \MyExcitingViewContainer.displayName)
+            .bindText(self.displayName)
       }
+}
+```
+
+### Custom element types
+
+If you find that you use a particular grouping of elements over and over, you can create your own `Element` subclass which provides your custom layout as its own .
+
+For example, in a form you may use the label:textfield pattern multiple times.
+
+```
+-------------------------------------
+|      Label | Text Field           |
+-------------------------------------
+|      Label | Text Field           |
+-------------------------------------
+|      Label | Text Field           |
+-------------------------------------
+```
+
+Create a 'LabelTextPair' `Element` subclass that passes in the label text and a string ValueBinding…
+
+```swift
+/// An 'element' class which is a containerized eleement
+class LabelTextFieldPair: Element {
+   let label: String
+   let textValueBinder: ValueBinder<String>
+   init(label: String, value: ValueBinder<String>) {
+      self.label = label
+      self.textValueBinder = value
+   }
+
+   // Override the view() call of the `Element` base class to provide the element's body
+   override func view() -> NSView { return self.body.view() }
+
+   lazy var body: Element =
+   HStack(distribution: .fillProportionally) {
+      Label(self.label)
+         .font(NSFont.boldSystemFont(ofSize: NSFont.systemFontSize))
+         .alignment(.right)
+         .width(150)
+      TextField()
+         .bindText(updateOnEndEditingOnly: true, self.textValueBinder)
+         .horizontalPriorities(hugging: 10, compressionResistance: 10)
+   }
+}
+```
+
+Then use it in your code as you would a built-in element type!
+
+```swift
+let nameBinder = ValueBinder<String>("")
+let usernameBinder = ValueBinder<String>("")
+let nicknameBinder = ValueBinder<String>("")
+
+VStack {
+   LabelTextFieldPair(label: "Name", value: self.nameBinder)
+   LabelTextFieldPair(label: "Username", value: self.usernameBinder)
+   LabelTextFieldPair(label: "Nickname", value: self.nicknameBinder)
 }
 ```
 
@@ -180,6 +238,12 @@ The code is documented and will produce nice documentation for each element when
 ## Known bugs
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
+
+### 0.4.0
+
+**BREAKING**
+
+* Moved to using `ValueBinder` instead of `@objc dynamic var` to allow passing bindable dynamic values through to child elements.
 
 ### 0.3.1
 

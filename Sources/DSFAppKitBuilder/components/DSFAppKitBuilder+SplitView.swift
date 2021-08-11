@@ -72,17 +72,21 @@ public class SplitView: Control {
 			contents: builder())
 	}
 
+	deinit {
+		hiddenSplitBinder?.deregister(self)
+	}
+
 	// Private
 
 	private let splitItems: [SplitViewItem]
-	override var nsView: NSView { return self.splitView }
+	public override func view() -> NSView { return self.splitView }
 	private let controller = NSSplitViewController(nibName: nil, bundle: nil)
 	private lazy var splitView: NSSplitView = {
 		controller.loadView()
 		return controller.splitView
 	}()
 
-	private lazy var hiddenSplitBinder = Bindable<NSSet>()
+	private var hiddenSplitBinder: ValueBinder<NSSet>?
 
 	internal init(
 		isVertical: Bool = true,
@@ -118,13 +122,14 @@ public class SplitView: Control {
 public extension SplitView {
 
 	/// Bind the splitview item hidden status to a keypath set
-	func bindHiddenViews<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSSet>) -> Self {
-		self.hiddenSplitBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindHiddenViews(_ hiddenSplitBinder: ValueBinder<NSSet>) -> Self {
+		self.hiddenSplitBinder = hiddenSplitBinder
+		hiddenSplitBinder.register(self) { [weak self] newValue in
 			guard let `self` = self else { return }
 			self.controller.splitViewItems.enumerated().forEach { item in
 				item.1.isCollapsed = newValue.contains(item.0)
 			}
-		})
+		}
 		return self
 	}
 }
@@ -170,8 +175,8 @@ private extension SplitViewItem {
 		{
 			self.content = content
 			contentView.autoresizingMask = [.width, .height]
-			contentView.addSubview(content.nsView)
-			content.nsView.pinEdges(to: contentView)
+			contentView.addSubview(content.view())
+			content.view().pinEdges(to: contentView)
 
 			super.init(nibName: nil, bundle: nil)
 		}
@@ -182,7 +187,7 @@ private extension SplitViewItem {
 		}
 
 		override func loadView() {
-			self.view = self.content.nsView
+			self.view = self.content.view()
 		}
 	}
 }

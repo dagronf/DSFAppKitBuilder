@@ -1,5 +1,5 @@
 //
-//  Logging.swift
+//  Utilities.swift
 //
 //  Created by Darren Ford on 10/8/21
 //
@@ -26,11 +26,25 @@
 
 import Foundation
 
-internal class Logger {
-	@inline(__always)
-	internal static func Debug(_ str: String) {
-		if DSFAppKitBuilder.ShowDebuggingOutput {
-			Swift.print(str)
-		}
-	}
+/// Perform an immediate `transform` of a given `subject`. The `transform`
+/// function may just mutate the given `subject`, or replace it entirely.
+///
+/// ```
+/// let oneAndTwo = mutate([1]) {
+///     $0.append(2)
+/// }
+/// ```
+///
+/// - Parameters:
+///     - subject: The subject to transform.
+///     - transform: The transformation to perform.
+///
+/// - Throws: Any error that was thrown inside `transform`.
+///
+/// - Returns: A transformed `subject`.
+@discardableResult
+@inlinable internal func with<T>(_ subject: T, _ transform: (_ subject: inout T) throws -> Void) rethrows -> T {
+	var subject = subject
+	try transform(&subject)
+	return subject
 }

@@ -46,7 +46,7 @@ public class Stack: Element {
 		}
 
 		content.forEach {
-			stack.addArrangedSubview($0.nsView)
+			stack.addArrangedSubview($0.view())
 		}
 
 		self.stack.needsLayout = true
@@ -54,7 +54,7 @@ public class Stack: Element {
 	}
 
 	// Private
-	override var nsView: NSView { return self.stack }
+	public override func view() -> NSView { return self.stack }
 	private let stack = NSStackView()
 	private let content: [Element]
 }
@@ -83,10 +83,10 @@ public extension Stack {
 	/// Set the hugging priorites for the stack
 	func hugging(h: NSLayoutConstraint.Priority? = nil, v: NSLayoutConstraint.Priority? = nil) -> Self {
 		if let h = h {
-			self.nsView.setContentHuggingPriority(h, for: .horizontal)
+			self.view().setContentHuggingPriority(h, for: .horizontal)
 		}
 		if let v = v {
-			self.nsView.setContentHuggingPriority(v, for: .vertical)
+			self.view().setContentHuggingPriority(v, for: .vertical)
 		}
 		return self
 	}
@@ -94,10 +94,10 @@ public extension Stack {
 	/// Set the hugging priorites for the stack
 	func hugging(h: Float? = nil, v: Float? = nil) -> Self {
 		if let h = h {
-			self.nsView.setContentHuggingPriority(NSLayoutConstraint.Priority(h), for: .horizontal)
+			self.view().setContentHuggingPriority(NSLayoutConstraint.Priority(h), for: .horizontal)
 		}
 		if let v = v {
-			self.nsView.setContentHuggingPriority(NSLayoutConstraint.Priority(v), for: .vertical)
+			self.view().setContentHuggingPriority(NSLayoutConstraint.Priority(v), for: .vertical)
 		}
 		return self
 	}

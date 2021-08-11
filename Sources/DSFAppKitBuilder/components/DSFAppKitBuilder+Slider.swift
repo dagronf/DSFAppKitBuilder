@@ -57,10 +57,14 @@ public class Slider: Control {
 		self.slider.isVertical = isVertical
 	}
 
+	deinit {
+		valueBinder?.deregister(self)
+	}
+
 	// Private
 	private let slider = NSSlider()
-	override var nsView: NSView { return self.slider }
-	private lazy var valueBinder = Bindable<Double>()
+	public override func view() -> NSView { return self.slider }
+	private var valueBinder: ValueBinder<Double>?
 	private var actionCallback: ((Double) -> Void)? = nil
 }
 
@@ -92,7 +96,7 @@ public extension Slider {
 		self.actionCallback?(newValue)
 
 		// Tell the binder to update
-		self.valueBinder.setValue(self.slider.doubleValue)
+		self.valueBinder?.wrappedValue = self.slider.doubleValue
 	}
 }
 
@@ -100,10 +104,10 @@ public extension Slider {
 
 public extension Slider {
 	/// Bind the value for the slider to a key path
-	func bindValue<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Double>) -> Self {
-		self.valueBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindValue(_ valueBinder: ValueBinder<Double>) -> Self {
+		valueBinder.register(self) { [weak self] newValue in
 			self?.slider.doubleValue = newValue
-		})
+		}
 		return self
 	}
 }

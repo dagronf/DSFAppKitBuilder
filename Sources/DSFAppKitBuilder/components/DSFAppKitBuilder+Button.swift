@@ -65,17 +65,23 @@ public class Button: Control {
 		}
 	}
 
+	deinit {
+		onOffBinder?.deregister(self)
+		stateBinder?.deregister(self)
+		titleBinder?.deregister(self)
+		alternateTitleBinder?.deregister(self)
+	}
+
 	// Privates
 
 	fileprivate let button = NSButton()
-	override var nsView: NSView { return self.button }
+	public override func view() -> NSView { return self.button }
 	private var action: ((NSButton.StateValue) -> Void)?
 
-	// A cheaty -- bind to on/off only so you can link for enabling etc
-	private lazy var onOffBinder = Bindable<Bool>()
-	private lazy var stateBinder = Bindable<NSControl.StateValue>()
-	private lazy var titleBinder = Bindable<String>()
-	private lazy var alternateTitleBinder = Bindable<String>()
+	private var onOffBinder: ValueBinder<Bool>?
+	private var stateBinder: ValueBinder<NSControl.StateValue>?
+	private var titleBinder: ValueBinder<String>?
+	private var alternateTitleBinder: ValueBinder<String>?
 }
 
 // MARK: - Modifiers
@@ -148,8 +154,8 @@ public extension Button {
 		self.action?(item.state)
 
 		/// Tell the binders to update
-		self.onOffBinder.setValue(item.state == .off ? false : true)
-		self.stateBinder.setValue(item.state)
+		self.onOffBinder?.wrappedValue = (item.state == .off ? false : true)
+		self.stateBinder?.wrappedValue = item.state
 	}
 }
 
@@ -157,34 +163,38 @@ public extension Button {
 
 public extension Button {
 	/// Bind the title to a keypath
-	func bindTitle<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
-		self.titleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindTitle(_ titleBinder: ValueBinder<String>) -> Self {
+		self.titleBinder = titleBinder
+		titleBinder.register(self) { [weak self] newValue in
 			self?.button.title = newValue
-		})
+		}
 		return self
 	}
 
 	/// Bind the alternatetitle to a keypath
-	func bindAlternateTitle<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
-		self.alternateTitleBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindAlternateTitle(_ alternateTitleBinder: ValueBinder<String>) -> Self {
+		self.alternateTitleBinder = alternateTitleBinder
+		alternateTitleBinder.register(self) { [weak self] newValue in
 			self?.button.alternateTitle = newValue
-		})
+		}
 		return self
 	}
 
 	/// Bind the state to a keypath
-	func bindState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSControl.StateValue>) -> Self {
-		self.stateBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindState(_ stateBinder: ValueBinder<NSControl.StateValue>) -> Self {
+		self.stateBinder = stateBinder
+		stateBinder.register(self) { [weak self] newValue in
 			self?.button.state = newValue
-		})
+		}
 		return self
 	}
 
 	/// Bind on/off state to a keypath
-	func bindOnOffState<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
-		self.onOffBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindOnOffState(_ onOffBinder: ValueBinder<Bool>) -> Self {
+		self.onOffBinder = onOffBinder
+		onOffBinder.register(self) { [weak self] newValue in
 			self?.button.state = newValue ? .on : .off
-		})
+		}
 		return self
 	}
 }

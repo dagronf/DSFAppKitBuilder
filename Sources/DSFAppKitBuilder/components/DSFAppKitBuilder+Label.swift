@@ -57,14 +57,21 @@ public class Label: Control {
 		self.label.attributedStringValue = attributedLabel
 	}
 
+	deinit {
+		labelBinder?.deregister(self)
+		attributedLabelBinder?.deregister(self)
+		textColorBinder?.deregister(self)
+	}
+
 	// Privates
 	let label = NSTextField()
-	override var nsView: NSView { return self.label }
+	public override func view() -> NSView { return self.label }
 
-	private lazy var labelBinder = Bindable<String>()
-	private lazy var attributedLabelBinder = Bindable<NSAttributedString>()
+	private var labelBinder: ValueBinder<String>?
+	private var attributedLabelBinder: ValueBinder<NSAttributedString>?
+
+	private var textColorBinder: ValueBinder<NSColor>?
 	private lazy var textColorAnimator = NSColor.Animator()
-	private lazy var textColorBinder = Bindable<NSColor>()
 }
 
 // MARK: - Modifiers
@@ -134,29 +141,34 @@ public extension Label {
 // MARK: - Bindings
 
 public extension Label {
-	/// Bind the label to a keypath
-	func bindLabel<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, String>) -> Self {
-		self.labelBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	/// Bind to the bindable string value
+	/// - Parameters:
+	///   - textValue: The value binding for the text to display
+	/// - Returns: Self
+	func bindLabel(_ textValue: ValueBinder<String>) -> Self {
+		self.labelBinder = textValue
+		textValue.register(self) { [weak self] newValue in
 			self?.label.stringValue = newValue
-		})
+		}
 		return self
 	}
 
-	/// Bind the attributed label to a keypath
-	func bindAttributedLabel<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, NSAttributedString>) -> Self {
-		self.attributedLabelBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	/// Bind to the bindable attributestring value
+	/// - Parameters:
+	///   - textValue: The value binding for the text to display
+	/// - Returns: Self
+	func bindAttributedLabel(_ attributedValue: ValueBinder<NSAttributedString>) -> Self {
+		self.attributedLabelBinder = attributedValue
+		attributedValue.register(self) { [weak self] newValue in
 			self?.label.attributedStringValue = newValue
-		})
+		}
 		return self
 	}
 
-	/// Bind the text color of the text to a keypath
-	func bindTextColor<TYPE>(
-		_ object: NSObject,
-		keyPath: ReferenceWritableKeyPath<TYPE, NSColor>,
-		animated: Bool = false
-	) -> Self {
-		self.textColorBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	/// Bind the text color
+	func bindTextColor(_ colorBinder: ValueBinder<NSColor>, animated: Bool = false) -> Self {
+		self.textColorBinder = colorBinder
+		colorBinder.register(self) { [weak self] newValue in
 			guard let `self` = self else { return }
 			if animated {
 				self.textColorAnimator.animate(from: self.label.textColor ?? .clear, to: newValue) { [weak self] color in
@@ -166,7 +178,7 @@ public extension Label {
 			else {
 				self.label.textColor = newValue
 			}
-		})
+		}
 		return self
 	}
 }

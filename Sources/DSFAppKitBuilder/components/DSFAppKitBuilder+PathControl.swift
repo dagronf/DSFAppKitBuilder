@@ -28,20 +28,33 @@ import AppKit.NSPathControl
 
 /// An NSPathControl element
 public class PathControl: Control {
+
+	/// Create a path control displaying a constant URL value
 	public init(url: URL? = nil) {
 		super.init()
-
 		self.pathControl.translatesAutoresizingMaskIntoConstraints = false
 		self.pathControl.url = url
 	}
 
+	/// Create a path control with a binding to a URL
+	public init(bindingURL: ValueBinder<URL>) {
+		super.init()
+		self.pathControl.translatesAutoresizingMaskIntoConstraints = false
+		_ = self.bindURL(bindingURL)
+	}
+
+	deinit {
+		self.fileURLBinder?.deregister(self)
+	}
+
 	// Private
 	private let pathControl = NSPathControl()
-	override var nsView: NSView { return self.pathControl }
+	public override func view() -> NSView { return self.pathControl }
 	private var actionCallback: ((URL?) -> Void)?
 
 	// Bindables
-	private lazy var urlBinder = Bindable<URL>()
+	private var fileURLBinder: ValueBinder<URL>?
+
 }
 
 // MARK: - Actions
@@ -63,11 +76,12 @@ public extension PathControl {
 // MARK: - Bindings
 
 public extension PathControl {
-	/// Bind the displayed URL to a keypath
-	func bindURL<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, URL>) -> Self {
-		self.urlBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
-			self?.pathControl.url = newValue
-		})
+	/// Bind to the provided bindable url
+	func bindURL(_ fileURL: ValueBinder<URL>) -> Self {
+		self.fileURLBinder = fileURL
+		fileURL.register(self) { [weak self] newURL in
+			self?.pathControl.url = newURL
+		}
 		return self
 	}
 }

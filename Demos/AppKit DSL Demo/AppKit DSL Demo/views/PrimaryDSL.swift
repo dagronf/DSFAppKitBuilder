@@ -10,33 +10,25 @@ import DSFAppKitBuilder
 
 class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
-	@objc dynamic var progressValue: Double = 33.0
-	@objc dynamic var descriptionColor: NSColor = .textColor
+	let progressValue = ValueBinder<Double>(33.0)
+
+	let descriptionColor = ValueBinder<NSColor>(.textColor)
 
 
-	@objc dynamic var stepperStringValue: String = "0.0"
-	@objc dynamic var stepperValue: Double = 0.0 {
-		didSet {
-			self.stepperStringValue = "\(self.stepperValue)"
-		}
+	let stepperStringValue = ValueBinder<String>("0.0")
+	lazy var stepperValue = ValueBinder<Double>(0.0) { newValue in
+		self.stepperStringValue.wrappedValue = "\(newValue)"
 	}
 
-
-	@objc dynamic var sliderStringValue: String = "0.0"
-	@objc dynamic var sliderValue: Double = 50.0 {
-		didSet {
-			self.sliderStringValue = "\(self.sliderValue)"
-		}
+	let sliderStringValue = ValueBinder<String>("0.0")
+	lazy var sliderValue = ValueBinder<Double>(50.0) { newValue in
+		self.sliderStringValue.wrappedValue = "\(newValue)"
 	}
 
-	@objc dynamic var switchOn: Bool = false
-	@objc dynamic var switchState: NSControl.StateValue = .off {
-		didSet {
-			self.switchOn = (self.switchState == .on)
-		}
-	}
+	let switchOn = ValueBinder<Bool>(false)
+	let switchState = ValueBinder<NSControl.StateValue>(.off)
 
-	@objc dynamic var selectedSegments = NSSet(array: [0, 2])
+	let selectedSegments = ValueBinder(NSSet(array: [0, 2]))
 
 	// Definition
 
@@ -55,21 +47,21 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.minWidth(50)
 					Label("• Mount Everest is really really tall •")
 						.font(NSFont.systemFont(ofSize: 12))
-						.bindTextColor(self, keyPath: \PrimaryDSL.descriptionColor, animated: true)
+						.bindTextColor(self.descriptionColor, animated: true)
 						.lineBreakMode(.byTruncatingTail)
 						.allowsDefaultTighteningForTruncation(true)
 						.horizontalPriorities(hugging: .stackFiller, compressionResistance: .defaultLow)
 					ProgressBar()
-						.bindValue(self, keyPath: \PrimaryDSL.progressValue)
+						.bindValue(self.progressValue)
 				}
 				VDivider()
 				Button(title: "what?") { [weak self] _ in
 					guard let `self` = self else { return }
 
 					Swift.print("You pressed it!")
-					self.progressValue = Double.random(in: 0 ... 100)
-					self.descriptionColor = NSColor.randomRGB()
-					self.selectedSegments = NSSet(array: [1])
+					self.progressValue.wrappedValue = Double.random(in: 0 ... 100)
+					self.descriptionColor.wrappedValue = NSColor.randomRGB()
+					self.selectedSegments.wrappedValue = NSSet(array: [1])
 				}
 				.horizontalPriorities(hugging: .required)
 			}
@@ -97,24 +89,24 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					.alignment(.right)
 					.isBezeled(true)
 					.isSelectable(true)
-					.bindLabel(self, keyPath: \PrimaryDSL.stepperStringValue)
+					.bindLabel(self.stepperStringValue)
 					.width(50)
 				Stepper()
-					.bindValue(self, keyPath: \PrimaryDSL.stepperValue)
+					.bindValue(self.stepperValue)
 			}
 
 			HStack {
 				Switch(state: .on)
-					.bindState(self, keyPath: \PrimaryDSL.switchState)
+					.bindState(self.switchState)
 				Slider(range: 0 ... 100, value: 10)
-					.bindIsEnabled(self, keyPath: \PrimaryDSL.switchOn)
-					.bindValue(self, keyPath: \PrimaryDSL.sliderValue)
+					.bindIsEnabled(self.switchOn)
+					.bindValue(self.sliderValue)
 				Label()
-					.bindIsEnabled(self, keyPath: \PrimaryDSL.switchOn)
+					.bindIsEnabled(self.switchOn)
 					.alignment(.right)
 					.isBezeled(true)
 					.isSelectable(true)
-					.bindLabel(self, keyPath: \PrimaryDSL.sliderStringValue)
+					.bindLabel(self.sliderStringValue)
 					.width(50)
 			}
 
@@ -125,7 +117,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						Segment("Two")
 						Segment("Three")
 					}
-					.bindSelectedSegments(self, keyPath: \PrimaryDSL.selectedSegments)
+					.bindSelectedSegments(self.selectedSegments)
 					.width(200)
 					.toolTip("First segmented!")
 					Label("Select Many")

@@ -11,10 +11,15 @@ import DSFAppKitBuilder
 
 class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
-	@objc dynamic var radioSelection: Int = 1
-	@objc dynamic var firstName: String = "" {
-		didSet {
-			Swift.print("First name changed to '\(firstName)'")
+	let radioSelection = ValueBinder<Int>(1)
+
+	let firstName = ValueBinder<String>("")
+
+	override init() {
+		super.init()
+
+		firstName.register(self) { newValue in
+			Swift.print("First name changed to '\(newValue)'")
 		}
 	}
 
@@ -53,14 +58,14 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			RadioElement("second")
 			RadioElement("third")
 		}
-		.bindSelection(self, keyPath: \SecondaryDSL.radioSelection)
+		.bindSelection(self.radioSelection)
 		.onChange { which in
 			Swift.print("radio is now \(which)")
 		}
 
 		Button(title: "Reset radio")
 			.onChange { [weak self] _ in
-				self?.radioSelection = 0
+				self?.radioSelection.wrappedValue = 0
 			}
 
 		HDivider()
@@ -68,9 +73,10 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		HStack {
 			TextField()
 				.placeholderText("First Name")
-				.bindText(updateOnEndEditingOnly: true, self, keyPath: \SecondaryDSL.firstName)
+				.bindText(firstName)
 			Button(title: "Reset") { [weak self] _ in
-				self?.firstName = ""
+				guard let `self` = self else { return }
+				self.firstName.wrappedValue = ""
 			}
 		}
 

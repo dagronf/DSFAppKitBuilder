@@ -67,28 +67,33 @@ public class VisualEffectView: Element {
 			self.visualView.blendingMode = b
 		}
 
-		let contentView = content.nsView
+		let contentView = content.view()
 
 		self.visualView.addSubview(contentView)
 		contentView.pinEdges(to: self.visualView)
 	}
 
+	deinit {
+		isEmphasizedBinder?.deregister(self)
+	}
+
 	// Private
-	override var nsView: NSView { return self.visualView }
+	public override func view() -> NSView { return self.visualView }
 	private let visualView = NSVisualEffectView()
 	private let content: Element
 
-	private lazy var isEmphasizedBinder = Bindable<Bool>()
+	private var isEmphasizedBinder: ValueBinder<Bool>?
 }
 
 // MARK: Bindings
 
 public extension VisualEffectView {
 	/// Bind the emphasized state of the visual effect view to a keypath
-	func bindIsEmphasized<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
-		self.isEmphasizedBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindIsEmphasized(_ isEmphasizedBinder: ValueBinder<Bool>) -> Self {
+		self.isEmphasizedBinder = isEmphasizedBinder
+		isEmphasizedBinder.register(self) { [weak self] newValue in
 			self?.visualView.isEmphasized = newValue
-		})
+		}
 		return self
 	}
 }

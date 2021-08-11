@@ -68,13 +68,17 @@ public class ProgressBar: Element {
 		self.progress.stopAnimation(self)
 	}
 
+	deinit {
+		progressBinder?.deregister(self)
+	}
+
 	
 	// Private
 	
-	override var nsView: NSView { return self.progress }
+	public override func view() -> NSView { return self.progress }
 	
 	private let progress = NSProgressIndicator()
-	private lazy var progressBinder = Bindable<Double>()
+	private var progressBinder: ValueBinder<Double>?
 }
 
 // MARK: - Modifiers
@@ -94,10 +98,11 @@ public extension ProgressBar {
 
 public extension ProgressBar {
 	/// Bind the value of the progress bar to a keypath
-	func bindValue<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Double>) -> Self {
-		self.progressBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
+	func bindValue(_ valueBinder: ValueBinder<Double>) -> Self {
+		self.progressBinder = valueBinder
+		valueBinder.register(self) { [weak self] newValue in
 			self?.progress.doubleValue = newValue
-		})
+		}
 		return self
 	}
 }

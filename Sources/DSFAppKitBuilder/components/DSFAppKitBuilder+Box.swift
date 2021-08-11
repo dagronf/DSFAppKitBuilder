@@ -69,8 +69,8 @@ public class Box: Element {
 
 		// If we set the box's contentView to the nsView, the autolayout constraints gets all screwy
 		boxView.contentView = containerView
-		containerView.addSubview(content.nsView)
-		content.nsView.pinEdges(to: containerView)
+		containerView.addSubview(content.view())
+		content.view().pinEdges(to: containerView)
 
 		boxView.title = title
 		boxView.titlePosition = titlePosition
@@ -78,7 +78,7 @@ public class Box: Element {
 
 	// Private
 	private let boxView = NSBox()
-	override var nsView: NSView { return self.boxView }
+	public override func view() -> NSView { return self.boxView }
 	private let containerView = NSView()
 	private let content: Element
 }

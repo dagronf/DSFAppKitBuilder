@@ -27,7 +27,7 @@
 import AppKit.NSView
 
 /// The base element.
-public class Element: NSObject {
+open class Element: NSObject {
 
 	// Set to true in derived classes to receive a callback when the system theme changes
 	internal var receiveThemeNotifications = false {
@@ -36,32 +36,31 @@ public class Element: NSObject {
 		}
 	}
 
-	/// Return the AppKit NSView instance for this element
-	public func view() -> NSView { return self.nsView }
+	// Overridden in derived classes to return the root AppKit type for the element
+	open func view() -> NSView { fatalError() }
 
 	// Private
 
 	// Default constructor - should only be called from a derived class
-	internal override init() {
+	public override init() {
 		super.init()
-		self.nsView.wantsLayer = true
-		self.nsView.translatesAutoresizingMaskIntoConstraints = false
+		with(self.view()) {
+			$0.wantsLayer = true
+			$0.translatesAutoresizingMaskIntoConstraints = false
+		}
 	}
 
 	deinit {
 		self.receiveThemeNotifications = false
-		Logger.Debug("Element deinit")
+		Logger.Debug("Element [\(type(of: self))] deinit")
 	}
 
-	// Overridden in derived classes to return the root AppKit type for the element
-	var nsView: NSView { fatalError() }
-
 	// Returns the layer defined for the root AppKit element view type
-	var nsLayer: CALayer? { return self.nsView.layer }
+	var nsLayer: CALayer? { return self.view().layer }
 
 	// MARK: Binding
 
-	private lazy var isHiddenBinder = Bindable<Bool>()
+	private var isHiddenBinder: ValueBinder<Bool>?
 
 	// CGColor convertibles
 	private var _backgroundColor: NSColor?
@@ -103,7 +102,7 @@ extension Element {
 			guard let `self` = self else { return }
 
 			// Make sure we use the appearance of the view to handle drawing, or else it may not take effect
-			UsingEffectiveAppearance(of: self.nsView) {
+			UsingEffectiveAppearance(of: self.view()) {
 				self.onThemeChange()
 			}
 		}
@@ -139,7 +138,7 @@ extension Element {
 public extension Element {
 	/// Set the tooltip to be displayed for this control
 	func toolTip(_ tip: String) -> Self {
-		self.nsView.toolTip = tip
+		self.view().toolTip = tip
 		return self
 	}
 
@@ -168,7 +167,7 @@ public extension Element {
 
 	/// Block to call when the element is configured.  The block will be passed the embedded AppKit control
 	func additionalAppKitControlSettings<VIEWTYPE>(_ block: (VIEWTYPE) -> Void) -> Self {
-		block(self.nsView as! VIEWTYPE)
+		block(self.view() as! VIEWTYPE)
 		return self
 	}
 }
@@ -178,9 +177,11 @@ public extension Element {
 public extension Element {
 	/// Set the width of the element
 	func width(_ value: CGFloat, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		let c = NSLayoutConstraint(item: nsView, attribute: .width, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
-		if let p = priority { c.priority = p }
-		self.nsView.addConstraint(c)
+		with(self.view()) {
+			let c = NSLayoutConstraint(item: $0, attribute: .width, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
+			if let p = priority { c.priority = p }
+			$0.addConstraint(c)
+		}
 		return self
 	}
 
@@ -201,9 +202,11 @@ public extension Element {
 
 	/// Set the height of the element
 	func height(_ value: CGFloat, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		let c = NSLayoutConstraint(item: nsView, attribute: .height, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
-		if let p = priority { c.priority = p }
-		self.nsView.addConstraint(c)
+		with(self.view()) {
+			let c = NSLayoutConstraint(item: $0, attribute: .height, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
+			if let p = priority { c.priority = p }
+			$0.addConstraint(c)
+		}
 		return self
 	}
 
@@ -233,10 +236,11 @@ public extension Element {
 
 public extension Element {
 	/// Binding for showing or hiding the element
-	func bindIsHidden<TYPE>(_ object: NSObject, keyPath: ReferenceWritableKeyPath<TYPE, Bool>) -> Self {
-		self.isHiddenBinder.bind(object, keyPath: keyPath, onChange: { [weak self] newValue in
-			self?.nsView.isHidden = newValue
-		})
+	func bindIsHidden(_ isHiddenBinder: ValueBinder<Bool>) -> Self {
+		self.isHiddenBinder = isHiddenBinder
+		isHiddenBinder.register(self) { [weak self] newValue in
+			self?.view().isHidden = newValue
+		}
 		return self
 	}
 }

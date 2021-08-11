@@ -66,19 +66,21 @@ public class ZStack: Element {
 
 		layers.forEach { layer in
 			let element = layer.element
+			let v = element.view()
+
 			self.elements.append(element)
-			containerView.addSubview(element.nsView)
+			containerView.addSubview(v)
 			switch layer.layoutType {
 			case .pinEdges:
-				element.nsView.pinEdges(to: containerView, offset: edgeOffset)
+				v.pinEdges(to: containerView, offset: edgeOffset)
 			case .center:
-				element.nsView.center(in: containerView)
+				v.center(in: containerView)
 			}
 		}
 	}
 
 	// Private
-	override var nsView: NSView { return self.containerView }
+	public override func view() -> NSView { return self.containerView }
 	private let containerView = NSView()
 	private var elements: [Element] = []
 }
