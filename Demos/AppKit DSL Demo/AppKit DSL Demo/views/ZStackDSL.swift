@@ -78,7 +78,7 @@ class PathControlWithSelector: Element {
 			}
 		}
 		.edgeInsets(top: 2, left: 3, bottom: 2, right: 3)
-		.border(width: 0.5, color: .separatorColor)
+		.border(width: 0.5, color: .tertiaryLabelColor)
 		.cornerRadius(4)
 		.backgroundColor(.quaternaryLabelColor)
 
