@@ -51,6 +51,7 @@ open class Element: NSObject {
 	}
 
 	deinit {
+		self.isHiddenBinder?.detachAll()
 		self.receiveThemeNotifications = false
 		Logger.Debug("Element [\(type(of: self))] deinit")
 	}

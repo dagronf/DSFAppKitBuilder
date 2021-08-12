@@ -69,17 +69,27 @@ public class ValueBinder<TYPE: Any> {
 	///   - object: The registering object. Held weakly to detect when the registering object is deallocated and we should no longer call the change block
 	///   - changeBlock: The block to call when the value in the ValueBinder instance changes
 	public func register(_ object: AnyObject, _ changeBlock: @escaping (TYPE) -> Void) {
-		self.cleanup()
+		self.cleanupInactiveBindings()
 		bindings.append(Binding(object, changeBlock))
 
 		// Call with the initial value to initialize ourselves
 		changeBlock(wrappedValue)
 	}
 
-	/// Deregister an object
-	/// - Parameter object: The object to deregister
-	public func deregister(_ object: AnyObject) {
+	// Deregister a binding
+	// - Parameter object: The object to deregister
+	internal func deregister(_ object: AnyObject) {
 		bindings = bindings.filter { $0.isAlive && $0.object !== object }
+	}
+
+	// Deregister all bindings
+	func detachAll() {
+		if !bindings.isEmpty {
+			bindings.forEach { binding in
+				binding.deregister()
+			}
+			bindings = []
+		}
 	}
 
 	// Private
@@ -96,7 +106,7 @@ private extension ValueBinder {
 	}
 
 	// Remove any inactive bindings
-	func cleanup() {
+	func cleanupInactiveBindings() {
 		self.bindings = bindings.filter { $0.isAlive }
 	}
 }
@@ -117,6 +127,11 @@ extension ValueBinder {
 		init(_ object: AnyObject, _ changeBlock: @escaping (TYPE) -> Void) {
 			self.object = object
 			self.changeBlock = changeBlock
+		}
+
+		fileprivate func deregister() {
+			self.object = nil
+			self.changeBlock = nil
 		}
 
 		// Called when the wrapped value changes. Propagate the new value through the changeblock

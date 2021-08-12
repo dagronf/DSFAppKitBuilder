@@ -44,7 +44,7 @@ public class PathControl: Control {
 	}
 
 	deinit {
-		self.fileURLBinder?.deregister(self)
+		self.fileURLBinder?.detachAll()
 	}
 
 	// Private

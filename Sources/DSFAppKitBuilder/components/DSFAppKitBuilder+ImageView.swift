@@ -53,6 +53,10 @@ public class ImageView: Control {
 		}
 	}
 
+	deinit {
+		self.imageBinder?.detachAll()
+	}
+
 	// Privates
 	private let imageView = NSImageView()
 	public override func view() -> NSView { return self.imageView }

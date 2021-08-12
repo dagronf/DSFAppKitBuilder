@@ -63,7 +63,7 @@ public class ColorWell: Control {
 	}
 
 	deinit {
-		colorBinder?.deregister(self)
+		self.colorBinder?.detachAll()
 	}
 
 	// Privates

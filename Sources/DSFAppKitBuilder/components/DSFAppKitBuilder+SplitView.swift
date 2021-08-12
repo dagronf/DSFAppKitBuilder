@@ -73,7 +73,7 @@ public class SplitView: Control {
 	}
 
 	deinit {
-		hiddenSplitBinder?.deregister(self)
+		self.hiddenSplitBinder?.detachAll()
 	}
 
 	// Private

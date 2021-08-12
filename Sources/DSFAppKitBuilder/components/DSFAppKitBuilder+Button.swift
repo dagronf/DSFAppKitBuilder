@@ -66,10 +66,10 @@ public class Button: Control {
 	}
 
 	deinit {
-		onOffBinder?.deregister(self)
-		stateBinder?.deregister(self)
-		titleBinder?.deregister(self)
-		alternateTitleBinder?.deregister(self)
+		self.onOffBinder?.detachAll()
+		self.stateBinder?.detachAll()
+		self.titleBinder?.detachAll()
+		self.alternateTitleBinder?.detachAll()
 	}
 
 	// Privates

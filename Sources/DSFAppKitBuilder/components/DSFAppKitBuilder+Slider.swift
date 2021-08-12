@@ -58,7 +58,7 @@ public class Slider: Control {
 	}
 
 	deinit {
-		valueBinder?.deregister(self)
+		self.valueBinder?.detachAll()
 	}
 
 	// Private

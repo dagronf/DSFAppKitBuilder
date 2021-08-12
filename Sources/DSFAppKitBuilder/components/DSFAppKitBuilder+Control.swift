@@ -33,9 +33,8 @@ public class Control: Element {
 		super.init()
 	}
 
-
 	deinit {
-		isEnabledBinder?.deregister(self)
+		self.isEnabledBinder?.detachAll()
 	}
 
 	// Private

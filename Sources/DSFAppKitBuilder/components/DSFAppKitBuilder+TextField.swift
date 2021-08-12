@@ -54,7 +54,7 @@ public class TextField: Label {
 	}
 
 	deinit {
-		self.textValueBinder?.deregister(self)
+		self.textValueBinder?.detachAll()
 	}
 
 	// Privates

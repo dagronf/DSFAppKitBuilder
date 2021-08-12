@@ -69,7 +69,7 @@ public class ProgressBar: Element {
 	}
 
 	deinit {
-		progressBinder?.deregister(self)
+		self.progressBinder?.detachAll()
 	}
 
 	

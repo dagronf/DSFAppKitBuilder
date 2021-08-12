@@ -51,8 +51,8 @@ public class Switch: Control {
 	}
 
 	deinit {
-		stateBinder?.deregister(self)
-		onOffBinder?.deregister(self)
+		self.stateBinder?.detachAll()
+		self.onOffBinder?.detachAll()
 	}
 
 	// Private

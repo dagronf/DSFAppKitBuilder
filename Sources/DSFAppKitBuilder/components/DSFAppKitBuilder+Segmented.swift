@@ -61,8 +61,8 @@ public class Segmented: Control {
 	}
 
 	deinit {
-		selectedSegmentsBinder?.deregister(self)
-		segmentedEnabledBinder?.deregister(self)
+		self.selectedSegmentsBinder?.detachAll()
+		self.segmentedEnabledBinder?.detachAll()
 	}
 
 	// The currently selected segments

@@ -65,7 +65,7 @@ public class RadioGroup: Control {
 	}
 
 	deinit {
-		selectionBinder?.deregister(self)
+		self.selectionBinder?.detachAll()
 	}
 
 	// Private

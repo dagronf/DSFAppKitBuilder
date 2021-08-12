@@ -103,7 +103,7 @@ public class TabView: Control {
 	}
 
 	deinit {
-		tabIndexBinder?.deregister(self)
+		self.tabIndexBinder?.detachAll()
 	}
 
 	// Private

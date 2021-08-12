@@ -74,7 +74,7 @@ public class VisualEffectView: Element {
 	}
 
 	deinit {
-		isEmphasizedBinder?.deregister(self)
+		self.isEmphasizedBinder?.detachAll()
 	}
 
 	// Private

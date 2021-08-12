@@ -61,9 +61,9 @@ public class Label: Control {
 	}
 
 	deinit {
-		labelBinder?.deregister(self)
-		attributedLabelBinder?.deregister(self)
-		textColorBinder?.deregister(self)
+		self.labelBinder?.detachAll()
+		self.attributedLabelBinder?.detachAll()
+		self.textColorBinder?.detachAll()
 	}
 
 	// Privates
