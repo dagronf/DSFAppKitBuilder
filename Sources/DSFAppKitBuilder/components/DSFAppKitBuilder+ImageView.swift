@@ -88,7 +88,7 @@ public extension ImageView {
 // MARK: - Bindings
 
 public extension ImageView {
-	/// Bind the image to a keypath
+	/// Bind the image
 	func bindImage(_ imageBinder: ValueBinder<NSImage>) -> Self {
 		self.imageBinder = imageBinder
 		imageBinder.register(self) { [weak self] newValue in

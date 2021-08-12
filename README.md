@@ -213,6 +213,7 @@ TextField()
 | `ProgressBar`      | An `NSProgressIndicator` wrapper |
 | `RadioGroup`       | A grouped stack of buttons configured as a radio group |
 | `ScrollView`       | An `NSScrollView` wrapper |
+| `SecureTextField`  | An `NSSecureTextField` wrapper |
 | `Segmented`        | An `NSSegmentedControl` wrapper |
 | `Slider`           | An `NSSlider` wrapper |
 | `SplitView`        | An `NSSplitView` wrapper |
@@ -224,6 +225,31 @@ TextField()
 | `View`             | A wrapper for an `NSView` instance |
 | `VisualEffectView` | A wrapper for a `NSVisualEffectView` instance |
 | `ZStack`           | Layer multiple Elements on top of each other |
+
+## Avoiding Retain Cycles
+
+Any time a block is provided to either a `ValueBinder` or an `Element`, if the block captures `self` it is important to make sure that you capture `self` either `weak` or `unowned`.
+
+```swift
+let resetEnabled = ValueBinder<Bool>(false)
+
+/// The following binder captures self, which will mean that the element that it is bound to will leak
+lazy var badTextBinder = ValueBinder("The initial value") { newValue in
+	self.resetEnabled.wrappedValue = !newValue.isEmpty
+}
+
+/// The following binder captures self weakly, which means that self is no longer in a retain cycle
+lazy var goodTextBinder = ValueBinder("The initial value") { [weak self] newValue in
+	self?.resetEnabled.wrappedValue = !newValue.isEmpty
+}
+
+...
+
+TextField()
+  .bindText(self.badTextBinder)    // <- Text field will leak as self is captured in a retain cycle
+```
+
+If you believe you have a leak, you can set `DSFAppKitBuilder.ShowDebuggingOutput = true` to report element deinit calls in the debugger output pane.
 
 ## Integration
 
@@ -239,13 +265,26 @@ The code is documented and will produce nice documentation for each element when
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
 
-### 0.4.0
+### 4.1.0
+
+* Added secure text field
+* Cleanup the destruction of bindings
+
+### 4.0.2
+
+* Automatically call ValueBinder() callback (if specified) to set initial values.
+
+### 4.0.1
+
+* Fixed bug where slider value binding wasn't updating
+
+### 4.0.0
 
 **BREAKING**
 
 * Moved to using `ValueBinder` instead of `@objc dynamic var` to allow passing bindable dynamic values through to child elements.
 
-### 0.3.1
+### 3.0.1
 
 * Added `PathControl`
 

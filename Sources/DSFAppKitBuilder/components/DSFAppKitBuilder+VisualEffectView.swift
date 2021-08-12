@@ -88,7 +88,7 @@ public class VisualEffectView: Element {
 // MARK: Bindings
 
 public extension VisualEffectView {
-	/// Bind the emphasized state of the visual effect view to a keypath
+	/// Bind the emphasized state of the visual effect view
 	func bindIsEmphasized(_ isEmphasizedBinder: ValueBinder<Bool>) -> Self {
 		self.isEmphasizedBinder = isEmphasizedBinder
 		isEmphasizedBinder.register(self) { [weak self] newValue in

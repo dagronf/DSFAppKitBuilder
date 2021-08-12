@@ -38,7 +38,7 @@ import AppKit.NSSegmentedControl
 ///    Segment("Two")
 ///    Segment("Three")
 /// }
-/// .bindSelectedSegments(self, keyPath: \MyController.selectedSegments)
+/// .bindSelectedSegments(self.selectedSegments)
 /// .width(200)
 /// .toolTip("Which one")
 /// ```
@@ -158,7 +158,7 @@ public extension Segmented {
 		return self
 	}
 
-	/// Bind the selected segments to a keypath
+	/// Bind the selected segments
 	func bindSelectedSegments(_ selectedSegmentsBinder: ValueBinder<NSSet>) -> Self {
 		self.selectedSegmentsBinder = selectedSegmentsBinder
 		selectedSegmentsBinder.register(self) { [weak self] newValue in

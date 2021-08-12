@@ -32,7 +32,7 @@ import AppKit.NSProgressIndicator
 ///
 /// ```swift
 /// ProgressBar(range: 0...1)
-///    .bindValue(self, keyPath: \MyObject.progressValue)
+///    .bindValue(self.progressValue)
 /// ```
 public class ProgressBar: Element {
 
@@ -97,7 +97,7 @@ public extension ProgressBar {
 // MARK: - Bindings
 
 public extension ProgressBar {
-	/// Bind the value of the progress bar to a keypath
+	/// Bind the value of the progress bar
 	func bindValue(_ valueBinder: ValueBinder<Double>) -> Self {
 		self.progressBinder = valueBinder
 		valueBinder.register(self) { [weak self] newValue in

@@ -36,7 +36,7 @@ import AppKit
 ///    RadioElement("second")
 ///    RadioElement("third")
 /// }
-/// .bindSelection(self, keyPath: \MyObject.radioSelection)
+/// .bindSelection(self.radioSelection)
 /// .onChange { whichSelection in
 ///    Swift.print("radio is now \(whichSelection)")
 /// }
@@ -147,7 +147,7 @@ public extension RadioGroup {
 // MARK: - Bindings
 
 public extension RadioGroup {
-	/// Bind the selection to a keypath
+	/// Bind the selection
 	func bindSelection(_ selectionBinder: ValueBinder<Int>) -> Self {
 		self.selectionBinder = selectionBinder
 		selectionBinder.register(self) { [weak self] newValue in

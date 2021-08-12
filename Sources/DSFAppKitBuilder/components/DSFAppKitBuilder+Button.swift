@@ -162,7 +162,7 @@ public extension Button {
 // MARK: - Bindings
 
 public extension Button {
-	/// Bind the title to a keypath
+	/// Bind the title
 	func bindTitle(_ titleBinder: ValueBinder<String>) -> Self {
 		self.titleBinder = titleBinder
 		titleBinder.register(self) { [weak self] newValue in
@@ -171,7 +171,7 @@ public extension Button {
 		return self
 	}
 
-	/// Bind the alternatetitle to a keypath
+	/// Bind the alternatetitle
 	func bindAlternateTitle(_ alternateTitleBinder: ValueBinder<String>) -> Self {
 		self.alternateTitleBinder = alternateTitleBinder
 		alternateTitleBinder.register(self) { [weak self] newValue in
@@ -180,7 +180,7 @@ public extension Button {
 		return self
 	}
 
-	/// Bind the state to a keypath
+	/// Bind the state
 	func bindState(_ stateBinder: ValueBinder<NSControl.StateValue>) -> Self {
 		self.stateBinder = stateBinder
 		stateBinder.register(self) { [weak self] newValue in
@@ -189,7 +189,7 @@ public extension Button {
 		return self
 	}
 
-	/// Bind on/off state to a keypath
+	/// Bind on/off state
 	func bindOnOffState(_ onOffBinder: ValueBinder<Bool>) -> Self {
 		self.onOffBinder = onOffBinder
 		onOffBinder.register(self) { [weak self] newValue in

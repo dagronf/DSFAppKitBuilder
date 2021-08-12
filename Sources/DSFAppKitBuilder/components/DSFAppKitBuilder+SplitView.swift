@@ -121,7 +121,7 @@ public class SplitView: Control {
 
 public extension SplitView {
 
-	/// Bind the splitview item hidden status to a keypath set
+	/// Bind the splitview item hidden status
 	func bindHiddenViews(_ hiddenSplitBinder: ValueBinder<NSSet>) -> Self {
 		self.hiddenSplitBinder = hiddenSplitBinder
 		hiddenSplitBinder.register(self) { [weak self] newValue in

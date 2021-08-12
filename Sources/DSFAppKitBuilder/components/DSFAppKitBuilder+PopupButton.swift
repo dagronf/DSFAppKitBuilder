@@ -112,7 +112,7 @@ public extension PopupButton {
 // MARK: - Binding
 
 public extension PopupButton {
-	/// Bind the selection to a keypath
+	/// Bind the selection
 	func bindSelection(_ selectionBinder: ValueBinder<Int>) -> Self {
 		self.selectionBinder = selectionBinder
 		selectionBinder.register(self) { [weak self] newValue in

@@ -95,7 +95,7 @@ public extension ColorWell {
 // MARK: - Bindings
 
 public extension ColorWell {
-	/// Bind the color to a keypath
+	/// Bind the color
 	func bindColor(_ colorBinder: ValueBinder<NSColor>) -> Self {
 		self.colorBinder = colorBinder
 		colorBinder.register(self) { [weak self] newValue in

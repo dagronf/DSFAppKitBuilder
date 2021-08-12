@@ -32,7 +32,7 @@ import AppKit.NSStepper
 ///
 /// ```swift
 /// Stepper(range: 0 ... 100, value: 20)
-///    .bindValue(self, keyPath: \MyController.stepperValue)
+///    .bindValue(self.stepperValue)
 /// ```
 public class Stepper: Control {
 

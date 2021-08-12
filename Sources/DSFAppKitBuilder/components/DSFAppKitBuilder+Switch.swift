@@ -32,7 +32,7 @@ import AppKit
 ///
 /// ```swift
 /// Switch(state: .on)
-///    .bindState(self, keyPath: \MyController.switchState)
+///    .bindState(self.switchState)
 /// ```
 ///
 @available(macOS 10.15, *)
@@ -88,7 +88,7 @@ public extension Switch {
 @available(macOS 10.15, *)
 public extension Switch {
 
-	/// Bind the on/off switch state to a keypath.
+	/// Bind the on/off switch state.
 	func bindOnOffState(_ stateBinding: ValueBinder<Bool>) -> Self {
 		self.onOffBinder = stateBinding
 		stateBinding.register(self) { [weak self] newValue in
@@ -100,7 +100,7 @@ public extension Switch {
 		return self
 	}
 
-	/// Bind the switch state to a keypath
+	/// Bind the switch state
 	func bindState(_ stateBinding: ValueBinder<NSControl.StateValue>) -> Self {
 		self.stateBinder = stateBinding
 		stateBinding.register(self) { [weak self] newValue in

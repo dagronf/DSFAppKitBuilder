@@ -32,8 +32,8 @@ import AppKit.NSSlider
 ///
 /// ```swift
 /// Slider(range: 0 ... 100, value: 10)
-///    .bindIsEnabled(self, keyPath: \MyController.switchOn)
-///    .bindValue(self, keyPath: \MyController.sliderValue)
+///    .bindIsEnabled(self.switchOn)
+///    .bindValue(self.sliderValue)
 /// ```
 public class Slider: Control {
 	/// Createa slider element

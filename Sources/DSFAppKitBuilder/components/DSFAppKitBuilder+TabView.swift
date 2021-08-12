@@ -128,7 +128,7 @@ public extension TabView {
 // MARK: - Bindings
 
 public extension TabView {
-	/// Bind the selected segments to a keypath
+	/// Bind the selected segments
 	func bindTabIndex(_ tabIndexBinder: ValueBinder<Int>) -> Self {
 		self.tabIndexBinder = tabIndexBinder
 		tabIndexBinder.register(self) { [weak self] newValue in
