@@ -23,7 +23,13 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 	}
 
-	let EverestBackgroundColor = NSColor(named: "secondary-background-color")!
+	let EverestBackgroundColor: NSColor = {
+		if #available(macOS 10.13, *) {
+			return NSColor(named: "secondary-background-color")!
+		} else {
+			return .clear
+		}
+	}()
 
 	lazy var body: Element =
 	VStack(alignment: .leading) {

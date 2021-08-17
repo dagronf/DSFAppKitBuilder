@@ -53,6 +53,14 @@ public class Stack: Element {
 		self.stack.needsUpdateConstraints = true
 	}
 
+	public func append(element: Element) {
+		self.stack.addArrangedSubview(element.view())
+	}
+
+	public func removeAll() {
+		self.stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+	}
+
 	// Private
 	public override func view() -> NSView { return self.stack }
 	private let stack = NSStackView()

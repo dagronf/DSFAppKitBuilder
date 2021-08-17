@@ -103,13 +103,19 @@ public extension Button {
 	/// Set the image that appears on the button when it’s in an off state
 	func image(
 		_ image: NSImage,
-		imagePosition: NSControl.ImagePosition = .imageLeading,
+		imagePosition: NSControl.ImagePosition? = nil,
 		imageScaling: NSImageScaling? = nil,
-		imageHugsTitle: Bool? = nil
-	) -> Self {
+		imageHugsTitle: Bool? = nil) -> Self
+	{
 		self.button.image = image
-		self.button.imagePosition = imagePosition
-		if let i = imageHugsTitle { self.button.imageHugsTitle = i }
+		if let i = imagePosition {
+			self.button.imagePosition = i
+		}
+		if let i = imageHugsTitle {
+			if #available(macOS 10.12, *) {
+				self.button.imageHugsTitle = i
+			}
+		}
 		if let i = imageScaling { self.button.imageScaling = i }
 		return self
 	}

@@ -51,6 +51,21 @@ import AppKit
 /// ```
 ///
 public class TabView: Control {
+
+	/// Position wrapper
+	public enum Position: Int {
+		 case none = 0
+		 case top = 1
+		 case left = 2
+		 case bottom = 3
+		 case right = 4
+
+		@available(macOS 10.12, *)
+		var nsTabPosition: NSTabView.TabPosition? {
+			return NSTabView.TabPosition(rawValue: UInt(self.rawValue))
+		}
+	}
+
 	/// Create a tab view element
 	/// - Parameters:
 	///   - tabViewType: The tab type to display the tabs.
@@ -58,7 +73,7 @@ public class TabView: Control {
 	///   - builder: The builder for generating the tabviewitems
 	public convenience init(
 		tabViewType: NSTabView.TabType? = nil,
-		tabPosition: NSTabView.TabPosition? = nil,
+		tabPosition: TabView.Position? = nil,
 		selectedIndex: Int = 0,
 		@TabBuilder builder: () -> [TabViewItem]
 	) {
@@ -72,7 +87,7 @@ public class TabView: Control {
 
 	init(
 		tabViewType: NSTabView.TabType? = nil,
-		tabPosition: NSTabView.TabPosition? = nil,
+		tabPosition: TabView.Position? = nil,
 		selectedIndex: Int = 0,
 		contents: [TabViewItem]
 	) {
@@ -83,7 +98,11 @@ public class TabView: Control {
 		}
 
 		if let tabPos = tabPosition {
-			self.tabView.tabPosition = tabPos
+			if #available(macOS 10.12, *) {
+				self.tabView.tabPosition = tabPos.nsTabPosition ?? .top
+			} else {
+				// Fallback on earlier versions
+			}
 		}
 
 		contents.forEach { item in

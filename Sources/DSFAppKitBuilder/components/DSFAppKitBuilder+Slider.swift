@@ -36,16 +36,17 @@ import AppKit.NSSlider
 ///    .bindValue(self.sliderValue)
 /// ```
 public class Slider: Control {
-	/// Createa slider element
+	/// Create a slider element
 	/// - Parameters:
 	///   - range: The range of the slider
 	///   - value: The initial value for the slider
 	///   - isVertical: A bool indicating the orientation (horizontal or vertical) of the slider.
+	@available(macOS 10.12, *)
 	public init(
 		range: ClosedRange<Double> = 0...100,
 		value: Double = 20,
-		isVertical: Bool = false
-	) {
+		isVertical: Bool)
+	{
 		super.init()
 
 		self.slider.minValue = range.lowerBound
@@ -55,6 +56,24 @@ public class Slider: Control {
 		self.slider.target = self
 		self.slider.action = #selector(sliderDidChange(_:))
 		self.slider.isVertical = isVertical
+	}
+
+	/// Create a slider element
+	/// - Parameters:
+	///   - range: The range of the slider
+	///   - value: The initial value for the slider
+	public init(
+		range: ClosedRange<Double> = 0...100,
+		value: Double = 20)
+	{
+		super.init()
+
+		self.slider.minValue = range.lowerBound
+		self.slider.maxValue = range.upperBound
+		self.slider.doubleValue = value
+
+		self.slider.target = self
+		self.slider.action = #selector(sliderDidChange(_:))
 	}
 
 	deinit {

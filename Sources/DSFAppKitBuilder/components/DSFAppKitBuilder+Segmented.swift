@@ -104,7 +104,11 @@ public class Segmented: Control {
 				self.segmented.setLabel(l, forSegment: index)
 			}
 			if let i = content[index].textAlignment {
-				self.segmented.setAlignment(i, forSegment: index)
+				if #available(macOS 10.13, *) {
+					self.segmented.setAlignment(i, forSegment: index)
+				} else {
+					// Fallback on earlier versions
+				}
 			}
 			if let i = content[index].image {
 				self.segmented.setImage(i, forSegment: index)
@@ -113,7 +117,9 @@ public class Segmented: Control {
 				self.segmented.setImageScaling(i, forSegment: index)
 			}
 			if let i = content[index].toolTip {
-				self.segmented.setToolTip(i, forSegment: index)
+				if #available(macOSApplicationExtension 10.13, *) {
+					self.segmented.setToolTip(i, forSegment: index)
+				}
 			}
 		}
 	}

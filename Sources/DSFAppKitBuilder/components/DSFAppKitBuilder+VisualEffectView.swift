@@ -59,7 +59,9 @@ public class VisualEffectView: Element {
 
 		self.visualView.wantsLayer = true
 		self.visualView.translatesAutoresizingMaskIntoConstraints = false
-		self.visualView.isEmphasized = isEmphasized
+		if #available(macOS 10.12, *) {
+			self.visualView.isEmphasized = isEmphasized
+		}
 		if let m = material {
 			self.visualView.material = m
 		}
@@ -89,6 +91,7 @@ public class VisualEffectView: Element {
 
 public extension VisualEffectView {
 	/// Bind the emphasized state of the visual effect view
+	@available(macOS 10.12, *)
 	func bindIsEmphasized(_ isEmphasizedBinder: ValueBinder<Bool>) -> Self {
 		self.isEmphasizedBinder = isEmphasizedBinder
 		isEmphasizedBinder.register(self) { [weak self] newValue in
