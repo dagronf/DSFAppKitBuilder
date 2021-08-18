@@ -145,6 +145,18 @@ public extension Label {
 		self.label.formatter = formatter
 		return self
 	}
+
+	/// Set whether the label wraps text whose length that exceeds the label's frame.
+	func wraps(_ wraps: Bool) -> Self {
+		self.label.cell?.wraps = wraps
+		return self
+	}
+
+	/// Set whether the label truncates text that does not fit within the label's bounds.
+	func truncatesLastVisibleLine(_ truncates: Bool) -> Self {
+		self.label.cell?.truncatesLastVisibleLine = truncates
+		return self
+	}
 }
 
 // MARK: - Bindings
