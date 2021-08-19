@@ -60,6 +60,33 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 	}
 
+	lazy var demoWindow: Window =	Window(
+		title: "Wheeee!",
+		styleMask: [.titled, .closable, .miniaturizable, .resizable]) /*.fullSizeContentView])*/
+	{
+		VisualEffectView(
+			material: .menu,
+			blendingMode: .behindWindow, isEmphasized: true)
+		{
+			Group(edgeOffset: 20) {
+				VStack {
+					ImageView(NSImage(named: "slider-rabbit")!)
+						.scaling(.scaleProportionallyUpOrDown)
+						.minWidth(32).minHeight(32)
+						.horizontalPriorities(hugging: 10, compressionResistance: 10)
+						.verticalPriorities(hugging: 10, compressionResistance: 10)
+					Label("Rabbit!").font(NSFont.systemFont(ofSize: 32, weight: .heavy))
+					HStack {
+						Button(title: "1")
+						Button(title: "2")
+						Button(title: "3")
+					}
+				}
+			}
+		}
+	}
+
+
 	lazy var body: Element =
 	VStack(alignment: .leading) {
 
@@ -118,6 +145,11 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 			Label()
 				.bindValue(self.sliderValue, formatter: self.sliderFormatter)
+
+			Button(title: "Show Window") { [weak self] _ in
+				let r = NSRect(x: 100, y: 100, width: 200, height: 200)
+				self?.demoWindow.present(contentRect: r)
+			}
 		}
 
 		HDivider()

@@ -1,7 +1,7 @@
 //
 //  ElementBinder.swift
 //
-//  Created by Darren Ford on 27/7/21
+//  Created by Darren Ford on 19/8/21
 //
 //  MIT License
 //
@@ -47,4 +47,3 @@ public class ElementBinder {
 	/// Returns the element's frame
 	@inlinable public var bounds: CGRect? { return self.view?.bounds }
 }
-

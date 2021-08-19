@@ -36,8 +36,16 @@ open class Element: NSObject {
 		}
 	}
 
-	// Overridden in derived classes to return the root AppKit type for the element
+	/// Overridden in derived classes to return the root AppKit type for the element
 	open func view() -> NSView { fatalError() }
+
+	/// Overridden in derived classes to provide custom first responder behaviour
+	open func makeFirstResponder() {
+		let v = self.view()
+		if let w = v.window {
+			w.makeFirstResponder(v)
+		}
+	}
 
 	/// Return the bounds rect for the nsView control
 	@inlinable public var bounds: CGRect {
