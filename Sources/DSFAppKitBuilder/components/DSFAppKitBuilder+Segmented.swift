@@ -60,6 +60,11 @@ public class Segmented: Control {
 		)
 	}
 
+	deinit {
+		self.selectedSegmentsBinder?.deregister(self)
+		self.segmentedEnabledBinder?.deregister(self)
+	}
+
 	// The currently selected segments
 	var selectedSegments: NSSet {
 		let selected = (0 ..< self.segmented.segmentCount).filter { index in

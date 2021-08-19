@@ -76,6 +76,10 @@ public class Slider: Control {
 		self.slider.action = #selector(sliderDidChange(_:))
 	}
 
+	deinit {
+		self.valueBinder?.deregister(self)
+	}
+
 	// Private
 	private let slider = NSSlider()
 	public override func view() -> NSView { return self.slider }

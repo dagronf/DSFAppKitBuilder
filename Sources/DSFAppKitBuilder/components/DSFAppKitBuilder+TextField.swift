@@ -53,6 +53,10 @@ public class TextField: Label {
 		self.label.delegate = self
 	}
 
+	deinit {
+		self.textValueBinder?.deregister(self)
+	}
+
 	// Privates
 
 	// Block callbacks

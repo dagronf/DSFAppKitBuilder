@@ -67,6 +67,13 @@ public class Button: Control {
 		}
 	}
 
+	deinit {
+		self.onOffBinder?.deregister(self)
+		self.stateBinder?.deregister(self)
+		self.titleBinder?.deregister(self)
+		self.alternateTitleBinder?.deregister(self)
+	}
+
 	// Privates
 
 	fileprivate let button = NSButton()

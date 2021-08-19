@@ -62,6 +62,10 @@ public class ColorWell: Control {
 		}
 	}
 
+	deinit {
+		self.colorBinder?.deregister(self)
+	}
+
 	// Privates
 	private let colorWell = AlphaCompatibleColorWell()
 	public override func view() -> NSView { return self.colorWell }

@@ -144,6 +144,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				.bindElement(self.popoverLocator)
 
 			Label()
+				.font(NSFont.userFixedPitchFont(ofSize: 13))
 				.bindValue(self.sliderValue, formatter: self.sliderFormatter)
 
 			Button(title: "Show Window") { [weak self] _ in

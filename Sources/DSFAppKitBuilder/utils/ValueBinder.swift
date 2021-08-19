@@ -71,6 +71,9 @@ public class ValueBinder<TYPE: Any> {
 	///   - changeBlock: The block to call when the value in the ValueBinder instance changes
 	public func register(_ object: AnyObject, _ changeBlock: @escaping (TYPE) -> Void) {
 		self.cleanupInactiveBindings()
+
+		Logger.Debug("ValueBinder [\(type(of: object))] register")
+
 		bindings.append(Binding(object, changeBlock))
 
 		// Call with the initial value to initialize ourselves
@@ -79,7 +82,8 @@ public class ValueBinder<TYPE: Any> {
 
 	// Deregister a binding
 	// - Parameter object: The object to deregister
-	internal func deregister(_ object: AnyObject) {
+	public func deregister(_ object: AnyObject) {
+		Logger.Debug("ValueBinder [\(type(of: object))] deregister")
 		bindings = bindings.filter { $0.isAlive && $0.object !== object }
 	}
 

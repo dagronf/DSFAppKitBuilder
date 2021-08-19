@@ -34,6 +34,7 @@
 		2324632526C11A2800FF3158 /* ZStackDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZStackDSL.swift; sourceTree = "<group>"; };
 		232EC66026B223A30042C7F7 /* TabDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDSL.swift; sourceTree = "<group>"; };
 		232EC66226B223C40042C7F7 /* SplitDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitDSL.swift; sourceTree = "<group>"; };
+		23350DB226CDF4DA00A5CA09 /* AppKit-DSL-Demo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "AppKit-DSL-Demo-Info.plist"; sourceTree = SOURCE_ROOT; };
 		2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxDSL.swift; sourceTree = "<group>"; };
 		237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollerTestDSL.swift; sourceTree = "<group>"; };
 		23C6E90926AF971600FBF106 /* PrimaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDSL.swift; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 		2304027726AF7E5F002016FD /* AppKit DSL Demo */ = {
 			isa = PBXGroup;
 			children = (
+				23350DB226CDF4DA00A5CA09 /* AppKit-DSL-Demo-Info.plist */,
 				2304027826AF7E5F002016FD /* AppDelegate.swift */,
 				2304027A26AF7E5F002016FD /* ViewController.swift */,
 				2324632426C11A0300FF3158 /* views */,
@@ -329,6 +331,7 @@
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "AppKit-DSL-Demo-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -355,6 +358,7 @@
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "AppKit-DSL-Demo-Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;

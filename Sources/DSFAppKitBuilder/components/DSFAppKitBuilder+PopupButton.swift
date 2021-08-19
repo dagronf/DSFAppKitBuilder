@@ -57,6 +57,10 @@ public class PopupButton: Control {
 		)
 	}
 
+	deinit {
+		self.selectionBinder?.deregister(self)
+	}
+
 	// Private
 
 	public override func view() -> NSView { return self.popupButton }

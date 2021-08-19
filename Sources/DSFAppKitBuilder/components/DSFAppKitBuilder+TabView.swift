@@ -121,6 +121,10 @@ public class TabView: Control {
 		self.tabView.needsDisplay = true
 	}
 
+	deinit {
+		self.tabIndexBinder?.deregister(self)
+	}
+
 	// Private
 	private let tabView = NSTabView()
 	public override func view() -> NSView { return self.tabView }

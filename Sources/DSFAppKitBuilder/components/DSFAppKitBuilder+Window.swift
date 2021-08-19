@@ -39,8 +39,25 @@ public class Window: NSObject {
 		super.init()
 	}
 
+	deinit {
+		self.titleBinder?.deregister(self)
+	}
+
+	// private
+	var title: String
+	let builder: () -> Element
+
+	var content: Element?
+	var window: NSWindow?
+	var windowController: NSWindowController?
+	let styleMask: NSWindow.StyleMask
+
+	private var titleBinder: ValueBinder<String>?
+}
+
+public extension Window {
 	/// Present the window
-	public func present(contentRect: NSRect) {
+	func present(contentRect: NSRect) {
 		guard self.window == nil else {
 			self.window?.makeKeyAndOrderFront(self)
 			return
@@ -79,18 +96,6 @@ public class Window: NSObject {
 		self.window = nil
 		self.windowController = nil
 	}
-
-	// private
-	var title: String
-	let builder: () -> Element
-
-	var content: Element?
-	var window: NSWindow?
-	var windowController: NSWindowController?
-	let styleMask: NSWindow.StyleMask
-
-	private var titleBinder: ValueBinder<String>?
-
 }
 
 public extension Window {

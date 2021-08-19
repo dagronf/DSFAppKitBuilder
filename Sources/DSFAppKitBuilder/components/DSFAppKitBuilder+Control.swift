@@ -33,6 +33,10 @@ public class Control: Element {
 		super.init()
 	}
 
+	deinit {
+		self.isEnabledBinder?.deregister(self)
+	}
+
 	// Private
 	private var isEnabledBinder: ValueBinder<Bool>?
 	private var control: NSControl { return view() as! NSControl }

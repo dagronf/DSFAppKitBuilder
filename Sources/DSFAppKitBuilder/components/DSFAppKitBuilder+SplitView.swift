@@ -72,6 +72,10 @@ public class SplitView: Control {
 			contents: builder())
 	}
 
+	deinit {
+		self.hiddenSplitBinder?.deregister(self)
+	}
+
 	// Private
 
 	private let splitItems: [SplitViewItem]

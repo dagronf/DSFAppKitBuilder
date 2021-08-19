@@ -60,6 +60,13 @@ public class Label: Control {
 		self.label.attributedStringValue = attributedLabel
 	}
 
+	deinit {
+		self.labelBinder?.deregister(self)
+		self.attributedLabelBinder?.deregister(self)
+		self.doubleBinder?.deregister(self)
+		self.textColorBinder?.deregister(self)
+	}
+
 	// Privates
 	let label = NSTextField()
 	public override func view() -> NSView { return self.label }

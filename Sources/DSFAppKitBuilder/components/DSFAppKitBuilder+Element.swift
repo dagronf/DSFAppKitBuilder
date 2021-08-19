@@ -70,6 +70,7 @@ open class Element: NSObject {
 
 	deinit {
 		self.receiveThemeNotifications = false
+		self.isHiddenBinder?.deregister(self)
 		Logger.Debug("Element [\(type(of: self))] deinit")
 	}
 

@@ -64,6 +64,10 @@ public class RadioGroup: Control {
 		)
 	}
 
+	deinit {
+		self.selectionBinder?.deregister(self)
+	}
+
 	// Private
 
 	public override func view() -> NSView { return self.radioGroup }
