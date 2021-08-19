@@ -74,11 +74,7 @@ public class VisualEffectView: Element {
 		self.visualView.addSubview(contentView)
 		contentView.pinEdges(to: self.visualView)
 	}
-
-	deinit {
-		self.isEmphasizedBinder?.detachAll()
-	}
-
+	
 	// Private
 	public override func view() -> NSView { return self.visualView }
 	private let visualView = NSVisualEffectView()

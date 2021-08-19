@@ -60,18 +60,14 @@ public class Label: Control {
 		self.label.attributedStringValue = attributedLabel
 	}
 
-	deinit {
-		self.labelBinder?.detachAll()
-		self.attributedLabelBinder?.detachAll()
-		self.textColorBinder?.detachAll()
-	}
-
 	// Privates
 	let label = NSTextField()
 	public override func view() -> NSView { return self.label }
 
 	private var labelBinder: ValueBinder<String>?
 	private var attributedLabelBinder: ValueBinder<NSAttributedString>?
+
+	private var doubleBinder: ValueBinder<Double>?
 
 	private var textColorBinder: ValueBinder<NSColor>?
 	private lazy var textColorAnimator = NSColor.Animator()
@@ -170,6 +166,21 @@ public extension Label {
 		self.labelBinder = textValue
 		textValue.register(self) { [weak self] newValue in
 			self?.label.stringValue = newValue
+		}
+		return self
+	}
+
+	/// Bind to the bindable double value using a formatter for display
+	/// - Parameters:
+	///   - doubleBinder: The value binding for the text to display
+	///   - formatter: The formatter to use when displaying the value
+	/// - Returns: Self
+	func bindValue(_ doubleBinder: ValueBinder<Double>, formatter: NumberFormatter) -> Self {
+		self.doubleBinder = doubleBinder
+		self.label.formatter = formatter
+		doubleBinder.register(self) { [weak self] newValue in
+			guard let `self` = self else { return }
+			self.label.doubleValue = self.doubleBinder?.wrappedValue ?? 0
 		}
 		return self
 	}

@@ -62,6 +62,7 @@ public class ValueBinder<TYPE: Any> {
 
 	deinit {
 		Logger.Debug("ValueBinder [\(type(of: self))] deinit")
+		self.detachAll()
 	}
 
 	/// Register an object to be notified when the value changes

@@ -72,10 +72,6 @@ public class SplitView: Control {
 			contents: builder())
 	}
 
-	deinit {
-		self.hiddenSplitBinder?.detachAll()
-	}
-
 	// Private
 
 	private let splitItems: [SplitViewItem]

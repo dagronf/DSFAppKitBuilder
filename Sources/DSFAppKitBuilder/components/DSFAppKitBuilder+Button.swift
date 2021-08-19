@@ -37,6 +37,8 @@ import AppKit.NSButton
 /// ```
 public class Button: Control {
 
+	public typealias ButtonAction = (NSButton.StateValue) -> Void
+
 	/// Create a button
 	/// - Parameters:
 	///   - title: The button title
@@ -49,7 +51,7 @@ public class Button: Control {
 		type: NSButton.ButtonType = .momentaryLight,
 		bezelStyle: NSButton.BezelStyle = .rounded,
 		allowMixedState: Bool = false,
-		_ onChange: ((NSButton.StateValue) -> Void)? = nil
+		_ onChange: ButtonAction? = nil
 	) {
 		super.init()
 		self.button.title = title
@@ -65,18 +67,11 @@ public class Button: Control {
 		}
 	}
 
-	deinit {
-		self.onOffBinder?.detachAll()
-		self.stateBinder?.detachAll()
-		self.titleBinder?.detachAll()
-		self.alternateTitleBinder?.detachAll()
-	}
-
 	// Privates
 
 	fileprivate let button = NSButton()
 	public override func view() -> NSView { return self.button }
-	private var action: ((NSButton.StateValue) -> Void)?
+	private var action: ButtonAction?
 
 	private var onOffBinder: ValueBinder<Bool>?
 	private var stateBinder: ValueBinder<NSControl.StateValue>?
@@ -151,7 +146,7 @@ public extension Button {
 	/// Set a block to be called when the button state changes
 	///
 	/// Passes the new button state to the callback block
-	func onChange(_ onChange: @escaping ((NSButton.StateValue) -> Void)) -> Self {
+	func onChange(_ onChange: @escaping ButtonAction) -> Self {
 		self.action = onChange
 		return self
 	}

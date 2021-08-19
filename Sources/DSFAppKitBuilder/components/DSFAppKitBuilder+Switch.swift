@@ -50,11 +50,6 @@ public class Switch: Control {
 		self.switchView.action = #selector(self.switchDidChange(_:))
 	}
 
-	deinit {
-		self.stateBinder?.detachAll()
-		self.onOffBinder?.detachAll()
-	}
-
 	// Private
 
 	let switchView = NSSwitch()

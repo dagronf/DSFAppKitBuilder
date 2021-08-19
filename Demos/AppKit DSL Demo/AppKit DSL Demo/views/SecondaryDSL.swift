@@ -31,6 +31,35 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 	}()
 
+	let sliderValue = ValueBinder<Double>(25)
+	let sliderFormatter: NumberFormatter = {
+		let n = NumberFormatter()
+		n.maximumFractionDigits = 1
+		n.minimumFractionDigits = 1
+		return n
+	}()
+
+	let popoverLocator = ElementBinder()
+	lazy var popover: Popover = Popover {
+		Group(edgeOffset: 20) {
+			VStack {
+				Label("Update the slider value")
+					.font(NSFont.boldSystemFont(ofSize: 14))
+				HStack {
+					ImageView(NSImage(named: "slider-tortoise")!)
+						.scaling(.scaleProportionallyDown)
+						.size(width: 24, height: 24)
+					Slider(range: 0 ... 100, value: 0)
+						.minWidth(250)
+						.bindValue(self.sliderValue)
+					ImageView(NSImage(named: "slider-rabbit")!)
+						.scaling(.scaleProportionallyDown)
+						.size(width: 24, height: 24)
+				}
+			}
+		}
+	}
+
 	lazy var body: Element =
 	VStack(alignment: .leading) {
 
@@ -69,10 +98,27 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			Swift.print("radio is now \(which)")
 		}
 
-		Button(title: "Reset radio")
-			.onChange { [weak self] _ in
-				self?.radioSelection.wrappedValue = 0
-			}
+		HStack {
+			Button(title: "Reset radio")
+				.onChange { [weak self] state in
+					self?.radioSelection.wrappedValue = 0
+				}
+
+			Button(title: "Show Popup")
+				.onChange { [weak self] state in
+					guard let `self` = self,
+							let element = self.popoverLocator.element else {
+						return
+					}
+					self.popover.present(relativeTo: element.bounds,
+												of: element,
+												preferredEdge: .maxY)
+				}
+				.bindElement(self.popoverLocator)
+
+			Label()
+				.bindValue(self.sliderValue, formatter: self.sliderFormatter)
+		}
 
 		HDivider()
 
@@ -80,7 +126,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			TextField()
 				.placeholderText("First Name")
 				.bindText(firstName)
-			Button(title: "Reset") { [weak self] _ in
+			Button(title: "Reset") { [weak self] state in
 				guard let `self` = self else { return }
 				self.firstName.wrappedValue = ""
 			}

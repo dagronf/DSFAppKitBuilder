@@ -57,10 +57,6 @@ public class Stepper: Control {
 		self.stepper.action = #selector(stepperDidChange(_:))
 	}
 
-	deinit {
-		self.valueBinder?.detachAll()
-	}
-
 	// Private
 	private let stepper = NSStepper()
 	public override func view() -> NSView { return self.stepper }

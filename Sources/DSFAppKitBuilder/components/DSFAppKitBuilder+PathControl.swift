@@ -43,10 +43,6 @@ public class PathControl: Control {
 		_ = self.bindURL(bindingURL)
 	}
 
-	deinit {
-		self.fileURLBinder?.detachAll()
-	}
-
 	// Private
 	private let pathControl = NSPathControl()
 	public override func view() -> NSView { return self.pathControl }

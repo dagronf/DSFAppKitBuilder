@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder+Control.swift
+//  ElementBinder.swift
 //
 //  Created by Darren Ford on 27/7/21
 //
@@ -24,45 +24,27 @@
 //  SOFTWARE.
 //
 
-import AppKit.NSControl
+import AppKit.NSView
 
-/// A DSL Element that is a control (ie. it is interactive in some way, like a button)
-public class Control: Element {
-	// Block the initializer so can't be created outside the package
-	internal override init() {
-		super.init()
+/// Bind an element
+///
+/// Useful if you need to access the element's view from somewhere else in the
+/// view heirarchy, for example displaying a popover requires the element where
+/// the tail of the popover points to
+public class ElementBinder {
+	public weak var element: Element?
+
+	public init() { }
+
+	internal func bindElement(_ element: Element) {
+		self.element = element
 	}
 
-	// Private
-	private var isEnabledBinder: ValueBinder<Bool>?
-	private var control: NSControl { return view() as! NSControl }
+	/// Returns the element's view
+	@inlinable public var view: NSView? { return self.element?.view() }
+	/// Returns the element's bounds
+	@inlinable public var frame: CGRect? { return self.view?.frame }
+	/// Returns the element's frame
+	@inlinable public var bounds: CGRect? { return self.view?.bounds }
 }
 
-// MARK: - Modifiers
-
-public extension Control {
-	/// Set the enabled state for the control
-	func isEnabled(_ isEnabled: Bool) -> Self {
-		control.isEnabled = isEnabled
-		return self
-	}
-
-	/// Set the control size for the element
-	func controlSize(_ controlSize: NSControl.ControlSize) -> Self {
-		self.control.controlSize = controlSize
-		return self
-	}
-}
-
-// MARK: - Bindings
-
-public extension Control {
-	/// Binding for isEnabled
-	func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
-		enabledBinding.register(self) { [weak self] newValue in
-			self?.control.isEnabled = newValue
-		}
-		self.isEnabledBinder = enabledBinding
-		return self
-	}
-}

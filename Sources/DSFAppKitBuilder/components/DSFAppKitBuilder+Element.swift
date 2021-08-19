@@ -39,6 +39,16 @@ open class Element: NSObject {
 	// Overridden in derived classes to return the root AppKit type for the element
 	open func view() -> NSView { fatalError() }
 
+	/// Return the bounds rect for the nsView control
+	@inlinable public var bounds: CGRect {
+		return self.view().bounds
+	}
+
+	/// Return the frame rect for the nsView control
+	@inlinable public var frame: CGRect {
+		return self.view().frame
+	}
+
 	// Private
 
 	// Default constructor - should only be called from a derived class
@@ -51,7 +61,6 @@ open class Element: NSObject {
 	}
 
 	deinit {
-		self.isHiddenBinder?.detachAll()
 		self.receiveThemeNotifications = false
 		Logger.Debug("Element [\(type(of: self))] deinit")
 	}
@@ -242,6 +251,11 @@ public extension Element {
 		isHiddenBinder.register(self) { [weak self] newValue in
 			self?.view().isHidden = newValue
 		}
+		return self
+	}
+
+	func bindElement(_ elementBinder: ElementBinder) -> Self {
+		elementBinder.element = self
 		return self
 	}
 }

@@ -67,11 +67,6 @@ public class ProgressBar: Element {
 	public func stopAnimating() {
 		self.progress.stopAnimation(self)
 	}
-
-	deinit {
-		self.progressBinder?.detachAll()
-	}
-
 	
 	// Private
 	

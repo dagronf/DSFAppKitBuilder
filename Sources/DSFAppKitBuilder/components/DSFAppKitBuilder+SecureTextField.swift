@@ -50,10 +50,6 @@ public class SecureTextField: Control {
 		self.secureTextField.placeholderString = placeholderText
 	}
 
-	deinit {
-		self.secureTextBinder?.detachAll()
-	}
-
 	private let secureTextField = NSSecureTextField()
 	public override func view() -> NSView { return self.secureTextField }
 

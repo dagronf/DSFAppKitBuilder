@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder+Control.swift
+//  DSFAppKitBuilder+Group.swift
 //
 //  Created by Darren Ford on 27/7/21
 //
@@ -24,45 +24,35 @@
 //  SOFTWARE.
 //
 
-import AppKit.NSControl
+import AppKit.NSView
 
-/// A DSL Element that is a control (ie. it is interactive in some way, like a button)
-public class Control: Element {
-	// Block the initializer so can't be created outside the package
-	internal override init() {
+public class Group: Element {
+
+	/// Create a group instance
+	/// - Parameters:
+	///   - edgeOffset: The inset for the child eleemnt
+	///   - builder: The builder for generating the group's content
+	public init(
+		edgeOffset: CGFloat = 0,
+		builder: () -> Element)
+	{
+		let element = builder()
+
+		self.containedElement = element
 		super.init()
+
+		let childView = element.view()
+		self.containerView.addSubview(childView)
+		childView.pinEdges(to: containerView, offset: edgeOffset)
+	}
+
+	deinit {
+
 	}
 
 	// Private
-	private var isEnabledBinder: ValueBinder<Bool>?
-	private var control: NSControl { return view() as! NSControl }
-}
 
-// MARK: - Modifiers
-
-public extension Control {
-	/// Set the enabled state for the control
-	func isEnabled(_ isEnabled: Bool) -> Self {
-		control.isEnabled = isEnabled
-		return self
-	}
-
-	/// Set the control size for the element
-	func controlSize(_ controlSize: NSControl.ControlSize) -> Self {
-		self.control.controlSize = controlSize
-		return self
-	}
-}
-
-// MARK: - Bindings
-
-public extension Control {
-	/// Binding for isEnabled
-	func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
-		enabledBinding.register(self) { [weak self] newValue in
-			self?.control.isEnabled = newValue
-		}
-		self.isEnabledBinder = enabledBinding
-		return self
-	}
+	public override func view() -> NSView { return self.containerView }
+	private let containerView = NSView()
+	let containedElement: Element
 }

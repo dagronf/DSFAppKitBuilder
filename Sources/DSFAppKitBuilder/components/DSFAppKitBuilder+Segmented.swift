@@ -60,11 +60,6 @@ public class Segmented: Control {
 		)
 	}
 
-	deinit {
-		self.selectedSegmentsBinder?.detachAll()
-		self.segmentedEnabledBinder?.detachAll()
-	}
-
 	// The currently selected segments
 	var selectedSegments: NSSet {
 		let selected = (0 ..< self.segmented.segmentCount).filter { index in

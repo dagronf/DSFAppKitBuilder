@@ -44,7 +44,7 @@ public class CheckBox: Button {
 	public init(
 		_ title: String = "Checkbox",
 		allowMixedState: Bool = false,
-		_ action: ((NSButton.StateValue) -> Void)? = nil
+		_ action: ButtonAction? = nil
 	) {
 		super.init(
 			title: title,
