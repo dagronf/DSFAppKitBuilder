@@ -68,7 +68,7 @@ extension NSColor {
 		///   - to: Color to end on
 		///   - duration: The length (in seconds) of the animation
 		///   - progress: The block to call when an intermediate color is presented. Will be called on the main thread.
-		func animate(from: NSColor, to: NSColor, duration: CGFloat = 0.2, _ progress: @escaping (NSColor) -> Void) {
+		func animate(from: NSColor, to: NSColor, duration: Double = 0.2, _ progress: @escaping (NSColor) -> Void) {
 			self.animator.stop()
 			self.animator.color1 = from
 			self.animator.color2 = to

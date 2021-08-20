@@ -83,7 +83,7 @@ public class Segmented: Control {
 	private var selectedSegmentsBinder: ValueBinder<NSSet>?
 	private var segmentedEnabledBinder: ValueBinder<NSSet>?
 
-	internal init(
+	init(
 		segmentStyle: NSSegmentedControl.Style? = nil,
 		trackingMode: NSSegmentedControl.SwitchTracking? = nil,
 		content: [Segment]
@@ -117,7 +117,7 @@ public class Segmented: Control {
 				self.segmented.setImageScaling(i, forSegment: index)
 			}
 			if let i = content[index].toolTip {
-				if #available(macOSApplicationExtension 10.13, *) {
+				if #available(macOS 10.13, *) {
 					self.segmented.setToolTip(i, forSegment: index)
 				}
 			}
