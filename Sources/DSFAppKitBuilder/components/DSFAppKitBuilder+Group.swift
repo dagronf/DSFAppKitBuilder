@@ -26,16 +26,44 @@
 
 import AppKit.NSView
 
+/// A simple grouping wrapper allowing edge insets
+///
+/// Usage:
+///
+/// ```swift
+/// Group(edgeOffset: 20) {
+///    Label("This is exciting")
+/// }
+/// ```
 public class Group: Element {
+	/// Create a group instance
+	/// - Parameters:
+	///   - edgeInset: The inset value for all edges for the child eleemnt
+	///   - visualEffect: Use a NSVisualEffectView as the container view
+	///   - builder: The builder for generating the group's content
+	@inlinable public convenience init(
+		edgeInset: CGFloat = 0,
+		visualEffect: VisualEffect? = nil,
+		builder: () -> Element
+	) {
+		self.init(edgeInsets: NSEdgeInsets(edgeInset: edgeInset),
+					 visualEffect: visualEffect,
+					 builder: builder)
+	}
 
 	/// Create a group instance
 	/// - Parameters:
-	///   - edgeOffset: The inset for the child eleemnt
+	///   - edgeInsets: The insets for the child element
+	///   - visualEffect: Use a NSVisualEffectView as the container view
 	///   - builder: The builder for generating the group's content
 	public init(
-		edgeOffset: CGFloat = 0,
-		builder: () -> Element)
-	{
+		edgeInsets: NSEdgeInsets,
+		visualEffect: VisualEffect? = nil,
+		builder: () -> Element
+	) {
+		self.containerView = visualEffect?.makeView() ?? NSView()
+		self.containerView.translatesAutoresizingMaskIntoConstraints = false
+
 		let element = builder()
 
 		self.containedElement = element
@@ -43,16 +71,16 @@ public class Group: Element {
 
 		let childView = element.view()
 		self.containerView.addSubview(childView)
-		childView.pinEdges(to: containerView, offset: edgeOffset)
-	}
 
-	deinit {
-
+		childView.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor, constant: edgeInsets.left).isActive = true
+		childView.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor, constant: -edgeInsets.right).isActive = true
+		childView.topAnchor.constraint(equalTo: self.containerView.topAnchor, constant: edgeInsets.top).isActive = true
+		childView.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor, constant: -edgeInsets.bottom).isActive = true
 	}
 
 	// Private
 
-	public override func view() -> NSView { return self.containerView }
-	private let containerView = NSView()
-	let containedElement: Element
+	override public func view() -> NSView { return self.containerView }
+	private let containerView: NSView
+	private let containedElement: Element
 }

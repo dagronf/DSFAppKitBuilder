@@ -41,6 +41,21 @@ import AppKit
 /// See: [NSVisualEffectView](https://developer.apple.com/documentation/appkit/nsvisualeffectview)
 ///
 public class VisualEffectView: Element {
+	/// Create a visual effect view
+	/// - Parameters:
+	///   - effect: The effects to apply to the view
+	///   - builder: The builder to generate the content of the effect view
+	public convenience init(
+		effect: VisualEffect,
+		_ builder: () -> Element
+	) {
+		self.init(
+			material: effect.material,
+			blendingMode: effect.blendingMode,
+			isEmphasized: effect.isEmphasized,
+			builder
+		)
+	}
 
 	/// Create a visual effect view
 	/// - Parameters:
@@ -54,23 +69,19 @@ public class VisualEffectView: Element {
 		isEmphasized: Bool = false,
 		_ builder: () -> Element
 	) {
+		// Make the visual effect view
+		self.visualView = VisualEffect.MakeView(
+			material: material,
+			blendingMode: blendingMode,
+			isEmphasized: isEmphasized
+		)
+
+		// Build the content
 		self.content = builder()
+
 		super.init()
 
-		self.visualView.wantsLayer = true
-		self.visualView.translatesAutoresizingMaskIntoConstraints = false
-		if #available(macOS 10.12, *) {
-			self.visualView.isEmphasized = isEmphasized
-		}
-		if let m = material {
-			self.visualView.material = m
-		}
-		if let b = blendingMode {
-			self.visualView.blendingMode = b
-		}
-
-		let contentView = content.view()
-
+		let contentView = self.content.view()
 		self.visualView.addSubview(contentView)
 		contentView.pinEdges(to: self.visualView)
 	}
@@ -78,10 +89,10 @@ public class VisualEffectView: Element {
 	deinit {
 		self.isEmphasizedBinder?.deregister(self)
 	}
-	
+
 	// Private
-	public override func view() -> NSView { return self.visualView }
-	private let visualView = NSVisualEffectView()
+	override public func view() -> NSView { return self.visualView }
+	private let visualView: NSVisualEffectView
 	private let content: Element
 
 	private var isEmphasizedBinder: ValueBinder<Bool>?
@@ -98,5 +109,57 @@ public extension VisualEffectView {
 			self?.visualView.isEmphasized = newValue
 		}
 		return self
+	}
+}
+
+// MARK: VisualEffect definition
+
+/// A container for the visual effect settings for an NSVisualEffectView
+public struct VisualEffect {
+	let material: NSVisualEffectView.Material?
+	let blendingMode: NSVisualEffectView.BlendingMode?
+	let isEmphasized: Bool
+
+	/// Create
+	/// - Parameters:
+	///   - material: The material to use, or nil to use default
+	///   - blendingMode: The blending mode to use, or nil to use default
+	///   - isEmphasized: True if the view should be emphasized, or false otherwise
+	public init(
+		material: NSVisualEffectView.Material? = nil,
+		blendingMode: NSVisualEffectView.BlendingMode? = nil,
+		isEmphasized: Bool = false
+	) {
+		self.material = material
+		self.blendingMode = blendingMode
+		self.isEmphasized = isEmphasized
+	}
+}
+
+extension VisualEffect {
+	// Make a visual effect view from the stored settings
+	func makeView() -> NSVisualEffectView {
+		return VisualEffect.MakeView(
+			material: self.material,
+			blendingMode: self.blendingMode,
+			isEmphasized: self.isEmphasized
+		)
+	}
+
+	// Make a visual effect view using the provided settings
+	static func MakeView(
+		material: NSVisualEffectView.Material? = nil,
+		blendingMode: NSVisualEffectView.BlendingMode? = nil,
+		isEmphasized: Bool = false
+	) -> NSVisualEffectView {
+		let vview = NSVisualEffectView()
+		vview.wantsLayer = true
+		vview.translatesAutoresizingMaskIntoConstraints = false
+		material.withUnwrapped { vview.material = $0 }
+		blendingMode.withUnwrapped { vview.blendingMode = $0 }
+		if #available(macOS 10.12, *) {
+			vview.isEmphasized = isEmphasized
+		}
+		return vview
 	}
 }

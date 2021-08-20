@@ -65,3 +65,9 @@ extension Optional where Wrapped: Collection {
 		return self?.isEmpty ?? true
 	}
 }
+
+extension NSEdgeInsets {
+	@inlinable public init(edgeInset: CGFloat) {
+		self.init(top: edgeInset, left: edgeInset, bottom: edgeInset, right: edgeInset)
+	}
+}

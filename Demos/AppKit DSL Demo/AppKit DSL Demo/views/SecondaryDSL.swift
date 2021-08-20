@@ -41,7 +41,8 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	let popoverLocator = ElementBinder()
 	lazy var popover: Popover = Popover {
-		Group(edgeOffset: 20) {
+		Group(edgeInset: 20,
+				visualEffect: VisualEffect(material: .titlebar)) {
 			VStack {
 				Label("Update the slider value")
 					.font(NSFont.boldSystemFont(ofSize: 14))
@@ -69,7 +70,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			material: .menu,
 			blendingMode: .behindWindow, isEmphasized: true)
 		{
-			Group(edgeOffset: 20) {
+			Group(edgeInset: 20) {
 				VStack {
 					ImageView(NSImage(named: "slider-rabbit")!)
 						.scaling(.scaleProportionallyUpOrDown)
