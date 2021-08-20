@@ -71,3 +71,9 @@ extension NSEdgeInsets {
 		self.init(top: edgeInset, left: edgeInset, bottom: edgeInset, right: edgeInset)
 	}
 }
+
+extension Collection {
+	@inlinable public var isNotEmpty: Bool {
+		return !self.isEmpty
+	}
+}
