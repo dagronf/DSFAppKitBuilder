@@ -67,13 +67,18 @@ public class Box: Element {
 		self.content = content
 		super.init()
 
-		// If we set the box's contentView to the nsView, the autolayout constraints gets all screwy
+		containerView.autoresizingMask = [.width, .height]
+
 		boxView.contentView = containerView
 		containerView.addSubview(content.view())
 		content.view().pinEdges(to: containerView)
+		containerView.needsLayout = true
 
 		boxView.title = title
 		boxView.titlePosition = titlePosition
+
+		boxView.needsLayout = true
+		boxView.layoutSubtreeIfNeeded()
 	}
 
 	// Private
