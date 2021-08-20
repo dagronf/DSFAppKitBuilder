@@ -32,21 +32,29 @@ import AppKit.NSView
 /// view heirarchy, for example displaying a popover requires the element where
 /// to point the 'tail' of the popover.
 public class ElementBinder {
-	public weak var element: Element?
+	/// The element being bound.
+	///
+	/// This is weakly held so we don't potentially cause an ARC loop
+	public internal(set) weak var element: Element?
 
-	/// Create
+	/// Create an ElementBinder
 	public init() { }
-
-	/// Returns the element's view
-	@inlinable public var view: NSView? { return self.element?.view() }
-	/// Returns the element's bounds
-	@inlinable public var frame: CGRect? { return self.view?.frame }
-	/// Returns the element's frame
-	@inlinable public var bounds: CGRect? { return self.view?.bounds }
 }
 
-internal extension ElementBinder {
-	func bindElement(_ element: Element) {
-		self.element = element
+// MARK: - Functions
+
+public extension ElementBinder {
+	/// Returns the element's view
+	@inlinable var view: NSView? { return self.element?.view() }
+	/// Returns the element's bounds
+	@inlinable var frame: CGRect? { return self.view?.frame }
+	/// Returns the element's frame
+	@inlinable var bounds: CGRect? { return self.view?.bounds }
+
+	/// Make the element the first responder for the window (ie. give it focus) if it can be focussed
+	@inlinable func makeFirstResponder() {
+		if let view = self.view, let window = view.window {
+			window.makeFirstResponder(view)
+		}
 	}
 }
