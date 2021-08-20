@@ -28,25 +28,27 @@ import AppKit
 
 /// A wrapper for NSWindow
 public class Window: NSObject {
-
 	/// Create the window
 	/// - Parameters:
 	///   - title: The title to display for the window
 	///   - styleMask: The window’s style
 	///   - isMovableByWindowBackground: A Boolean value that indicates whether the window is movable by clicking and dragging anywhere in its background.
 	///   - frameAutosaveName: Sets the name AppKit uses to automatically save the window’s frame rectangle data in the defaults system.
+	///   - resetSavedPosition: Don't use the last saved window position/size when opening.
 	///   - builder: The builder used when creating the content of the popover
 	public init(
 		title: String,
 		styleMask: NSWindow.StyleMask,
 		isMovableByWindowBackground: Bool = false,
 		frameAutosaveName: NSWindow.FrameAutosaveName? = nil,
-		_ builder: @escaping () -> Element)
-	{
+		resetSavedPosition: Bool = false,
+		_ builder: @escaping () -> Element
+	) {
 		self.title = title
 		self.styleMask = styleMask
 		self.isMovableByWindowBackground = isMovableByWindowBackground
 		self.frameAutosaveName = frameAutosaveName
+		self.resetSavedPosition = resetSavedPosition
 		self.builder = builder
 		super.init()
 	}
@@ -65,6 +67,7 @@ public class Window: NSObject {
 	let styleMask: NSWindow.StyleMask
 	let isMovableByWindowBackground: Bool
 	let frameAutosaveName: NSWindow.FrameAutosaveName?
+	let resetSavedPosition: Bool
 
 	private var titleBinder: ValueBinder<String>?
 }
@@ -83,35 +86,30 @@ public extension Window {
 			backing: .buffered,
 			defer: true
 		)
-		window.isReleasedWhenClosed = true
-		window.isMovableByWindowBackground = isMovableByWindowBackground
-
-		self.frameAutosaveName.withUnwrapped { window.setFrameAutosaveName($0) }
-
 		self.window = window
+
+		window.title = self.title
+		window.isReleasedWhenClosed = true
+		window.isMovableByWindowBackground = self.isMovableByWindowBackground
+		window.autorecalculatesKeyViewLoop = true
+
+		self.setInitialWindowPosition()
 
 		let content = self.builder()
 		self.content = content
 
 		let controller = WindowController(window: window)
-
-		window.title = title
 		window.contentView = content.view()
-		window.autorecalculatesKeyViewLoop = true
+		window.contentView?.needsLayout = true
+		window.contentView?.needsDisplay = true
 
 		self.windowController = controller
 		controller.setupWindowListener { [weak self] in
-			self?.windowClosed()
+			self?.windowWillClose()
 		}
 
 		window.makeKeyAndOrderFront(self)
 		window.recalculateKeyViewLoop()
-	}
-
-	func windowClosed() {
-		self.content = nil
-		self.window = nil
-		self.windowController = nil
 	}
 }
 
@@ -129,6 +127,37 @@ public extension Window {
 	}
 }
 
+// MARK: - Window positioning
+
+private extension Window {
+	func setInitialWindowPosition() {
+		self.frameAutosaveName.withUnwrapped { value in
+			if resetSavedPosition {
+				self.window?.setFrameUsingName(value)
+			}
+			self.window?.setFrameAutosaveName(value)
+		}
+	}
+
+	func saveLastWindowPosition() {
+		if let f = self.frameAutosaveName, let w = self.window {
+			w.saveFrame(usingName: f)
+		}
+	}
+}
+
+// MARK: - Window close handling
+
+private extension Window {
+	func windowWillClose() {
+		self.saveLastWindowPosition()
+
+		self.content = nil
+		self.window = nil
+		self.windowController = nil
+	}
+}
+
 private class WindowController: NSWindowController {
 	func setupWindowListener(_ completion: @escaping () -> Void) {
 		NotificationCenter.default.addObserver(
@@ -140,4 +169,3 @@ private class WindowController: NSWindowController {
 		}
 	}
 }
-

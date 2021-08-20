@@ -61,7 +61,7 @@ extension Optional {
 
 extension Optional where Wrapped: Collection {
 	/// Returns true if the optional is empty AND the wrapped collection is also empty
-	var isNilOrEmpty: Bool {
+	@inlinable var isNilOrEmpty: Bool {
 		return self?.isEmpty ?? true
 	}
 }
