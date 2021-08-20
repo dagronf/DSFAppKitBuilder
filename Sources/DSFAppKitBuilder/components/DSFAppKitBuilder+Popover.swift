@@ -28,9 +28,13 @@ import AppKit
 
 /// Create and display a popover containing an Element
 public class Popover: NSObject {
-
-	public init(behaviour: NSPopover.Behavior = .transient,
-		  _ builder: @escaping () -> Element)
+	/// Create a popover with an Element as the content
+	/// - Parameters:
+	///   - behaviour: The popup behaviour
+	///   - builder: The builder used when creating the content of the popover
+	public init(
+		behaviour: NSPopover.Behavior = .transient,
+		_ builder: @escaping () -> Element)
 	{
 		self.behaviour = behaviour
 		self.builder = builder
@@ -49,17 +53,16 @@ public class Popover: NSObject {
 }
 
 public extension Popover {
-
-	/// Shows the popover anchored to the specified view.
+	/// Shows the popover anchored to the specified element.
 	/// - Parameters:
 	///   - relativeTo: The rectangle within positioningElement relative to which the popover should be positioned. Normally set to the bounds of positioningView. May be an empty rectangle, which will default to the bounds of positioningView.
-	///   - element: The element to anchor the popover to
+	///   - positioningElement: The element to anchor the popover to
 	///   - preferredEdge: The edge of positioningElement the popover should prefer to be anchored to.
-	func present(
+	func show(
 		relativeTo: CGRect,
 		of positioningElement: Element,
-		preferredEdge: NSRectEdge)
-	{
+		preferredEdge: NSRectEdge
+	) {
 		self.close()
 
 		let controller = NSViewController()
@@ -77,28 +80,27 @@ public extension Popover {
 		let view = built.view()
 		controller.view = view
 
-
 		popover.delegate = self
 
 		popover.show(
 			relativeTo: relativeTo,
 			of: positioningElement.view(),
-			preferredEdge: preferredEdge)
+			preferredEdge: preferredEdge
+		)
 	}
 }
 
-extension Popover {
+public extension Popover {
 	/// Close the popover
-	public func close() {
+	func close() {
 		self.popover?.performClose(self)
 	}
 }
 
 extension Popover: NSPopoverDelegate {
-	public func popoverWillClose(_ notification: Notification) {
+	public func popoverWillClose(_: Notification) {}
 
-	}
-	public func popoverDidClose(_ notification: Notification) {
+	public func popoverDidClose(_: Notification) {
 		self.element = nil
 		self.popover = nil
 	}

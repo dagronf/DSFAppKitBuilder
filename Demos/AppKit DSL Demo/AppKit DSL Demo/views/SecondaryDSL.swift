@@ -155,7 +155,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 									let element = self.popoverLocator.element else {
 								return
 							}
-							self.popover.present(relativeTo: element.bounds,
+							self.popover.show(relativeTo: element.bounds,
 														of: element,
 														preferredEdge: .maxY)
 						}
