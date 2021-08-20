@@ -27,6 +27,28 @@
 import AppKit
 
 /// A wrapper for NSWindow
+///
+/// Usage:
+///
+/// ```swift
+/// class MyController: NSObject, DSFAppKitBuilderViewHandler {
+///    lazy var myWindow: Window = Window(
+///       title: "My Window",
+///       styleMask: [.titled, .closable, .miniaturizable, .resizable], /*.fullSizeContentView])*/
+///       frameAutosaveName: "My-Window-frame")
+///    {
+///       Label("Label in a window")
+///    }
+///
+///    lazy var body: Element =
+///       VStack {
+///          Button("Open Window") { [weak self] _ in
+///             self?.myWindow.show(contentRect: ...)
+///          }
+///       }
+///    }
+/// }
+/// ```
 public class Window: NSObject {
 	/// Create the window
 	/// - Parameters:
@@ -34,21 +56,18 @@ public class Window: NSObject {
 	///   - styleMask: The window’s style
 	///   - isMovableByWindowBackground: A Boolean value that indicates whether the window is movable by clicking and dragging anywhere in its background.
 	///   - frameAutosaveName: Sets the name AppKit uses to automatically save the window’s frame rectangle data in the defaults system.
-	///   - resetSavedPosition: Don't use the last saved window position/size when opening.
 	///   - builder: The builder used when creating the content of the popover
 	public init(
 		title: String,
 		styleMask: NSWindow.StyleMask,
 		isMovableByWindowBackground: Bool = false,
 		frameAutosaveName: NSWindow.FrameAutosaveName? = nil,
-		resetSavedPosition: Bool = false,
 		_ builder: @escaping () -> Element
 	) {
 		self.title = title
 		self.styleMask = styleMask
 		self.isMovableByWindowBackground = isMovableByWindowBackground
 		self.frameAutosaveName = frameAutosaveName
-		self.resetSavedPosition = resetSavedPosition
 		self.builder = builder
 		super.init()
 	}
@@ -67,14 +86,17 @@ public class Window: NSObject {
 	let styleMask: NSWindow.StyleMask
 	let isMovableByWindowBackground: Bool
 	let frameAutosaveName: NSWindow.FrameAutosaveName?
-	let resetSavedPosition: Bool
 
 	private var titleBinder: ValueBinder<String>?
 }
 
 public extension Window {
 	/// Present the window
-	func present(contentRect: NSRect) {
+	/// - Parameters:
+	///   - contentRect: The initial rect for the window on the current screen
+	///   - useSavedPosition: If true, tries to use a previously saved position for restoring the view.
+	func show(contentRect: NSRect,
+				 useSavedPosition: Bool = true) {
 		guard self.window == nil else {
 			self.window?.makeKeyAndOrderFront(self)
 			return
@@ -93,7 +115,7 @@ public extension Window {
 		window.isMovableByWindowBackground = self.isMovableByWindowBackground
 		window.autorecalculatesKeyViewLoop = true
 
-		self.setInitialWindowPosition()
+		self.setInitialWindowPosition(useSavedPosition: useSavedPosition)
 
 		let content = self.builder()
 		self.content = content
@@ -130,9 +152,9 @@ public extension Window {
 // MARK: - Window positioning
 
 private extension Window {
-	func setInitialWindowPosition() {
+	func setInitialWindowPosition(useSavedPosition: Bool) {
 		self.frameAutosaveName.withUnwrapped { value in
-			if resetSavedPosition {
+			if useSavedPosition {
 				self.window?.setFrameUsingName(value)
 			}
 			self.window?.setFrameAutosaveName(value)

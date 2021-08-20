@@ -171,7 +171,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				HStack {
 					Button(title: "Show Window") { [weak self] _ in
 						let r = NSRect(x: 100, y: 100, width: 200, height: 200)
-						self?.demoWindow.present(contentRect: r)
+						self?.demoWindow.show(contentRect: r)
 					}
 				}
 			}

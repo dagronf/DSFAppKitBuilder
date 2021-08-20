@@ -27,6 +27,31 @@
 import AppKit
 
 /// Create and display a popover containing an Element
+///
+/// Usage:
+///
+/// ```swift
+/// class MyController: NSObject, DSFAppKitBuilderViewHandler {
+///    let popoverLocator = ElementBinder()  // To locate the element anchoring the popup
+///
+///    // The content of the popover
+///    lazy var popover: Popover = Popover {
+///       Label("This is the content of the popup")
+///    }
+///
+///    lazy var body: Element =
+///       Button("Show Popup") { [weak self] _ in
+///          guard let `self` = self,
+///                let where = self.popoverLocator.element else {
+///              return
+///          }
+///          self.popover.show(relativeTo: where.bounds,
+///                            of: where,
+///                            preferredEdge: .maxY)
+///       }
+///       .bindElement(self.popoverLocator)
+/// }
+/// ```
 public class Popover: NSObject {
 	/// Create a popover with an Element as the content
 	/// - Parameters:

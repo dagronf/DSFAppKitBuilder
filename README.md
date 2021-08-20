@@ -103,6 +103,8 @@ Button(title: "Press Me!") { [weak self] _ in
 
 ### Binders
 
+#### ValueBinder
+
 You can use the binders on each element to bind to a variable allowing two-way communications between element(s) and the controller.
 
 Wrap all your view logic in its own object. Present the object to an instance of `DSFAppKitBuilderView` to display and manage the contents of your object.
@@ -126,6 +128,35 @@ class MyExcitingViewContainer: NSObject, DSFAppKitBuilderViewHandler {
       }
 }
 ```
+
+#### ElementBinder
+
+Some elements (like Popovers) require additional information from the view hierarchy.  For example, a `Popover` needs to be told where to locate itself when it is displayed
+
+This is where `ElementBinder` comes in. Similar to `ValueBinder`, the `ElementBinder` allows you to keep a reference to an element for later use.
+
+```swift
+class MyController: NSObject, DSFAppKitBuilderViewHandler {
+   let popoverLocator = ElementBinder()
+   
+   lazy var popover: Popover = Popover {
+      Label("This is the content of the popup")
+   }
+
+   lazy var body: Element =
+      Button("Show Popup") { [weak self] _ in
+         guard let `self` = self,
+               let where = self.popoverLocator.element else {
+            return 
+         }
+         self.popover.show(relativeTo: where.bounds,
+                           of: where,
+                           preferredEdge: .maxY)
+      }
+      .bindElement(self.popoverLocator)  // Store a reference to the button for later use
+}
+```
+
 
 ### Custom element types
 
@@ -206,9 +237,11 @@ TextField()
 | `ColorWell`        | An `NSColorWell` wrapper |
 | `Divider`<br/>`HDivider/VDivider` | A divider element (a single line, either horizontal or vertical) |
 | `EmptyView`        | A spacer view |
+| `Group`            | A element that contains another element |
 | `ImageView`        | An `NSImageView` wrapper |
 | `Label`            | An `NSTextField` wrapper configured as a read-only label |
 | `PathControl`      | An `NSPathControl` wrapper |
+| `Popover`          | An `NSPopover` wrapper |
 | `PopupButton`      | An `NSPopupButton` wrapper |
 | `ProgressBar`      | An `NSProgressIndicator` wrapper |
 | `RadioGroup`       | A grouped stack of buttons configured as a radio group |
@@ -224,6 +257,7 @@ TextField()
 | `TextField`        | An `NSTextField` wrapper configured as an editable field |
 | `View`             | A wrapper for an `NSView` instance |
 | `VisualEffectView` | A wrapper for a `NSVisualEffectView` instance |
+| `Window`           | An `NSWindow` wrapper |
 | `ZStack`           | Layer multiple Elements on top of each other |
 
 ## Avoiding Retain Cycles
@@ -261,9 +295,24 @@ Add `https://github.com/dagronf/DSFAppKitBuilder` to your project.
 
 The code is documented and will produce nice documentation for each element when run through [`jazzy`](https://github.com/realm/jazzy) or similar documentation generator tools.
 
+### Using swift doc
+`> swift doc generate  --module-name DSFAppKitBuilder --output docs .`
+
+### Using jazzy
+`> jazzy`
+
 ## Known bugs
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
+
+### 4.3.0
+
+* Added preliminary `NSWindow` support
+* Added preliminary `NSPopover` support
+
+### 4.2.1
+
+* Added wraps and truncating support for `Label`
 
 ### 4.2.0
 
