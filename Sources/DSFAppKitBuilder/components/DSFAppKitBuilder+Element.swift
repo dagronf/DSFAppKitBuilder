@@ -263,6 +263,7 @@ public extension Element {
 		return self
 	}
 
+	/// Bind this element to an ElementBinder
 	func bindElement(_ elementBinder: ElementBinder) -> Self {
 		elementBinder.element = self
 		return self
