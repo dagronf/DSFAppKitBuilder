@@ -20,7 +20,7 @@ class ZStackDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	lazy var body: Element =
 	VStack {
-		ZStack(edgeOffset: 8) {
+		ZStack(edgeInset: 8) {
 			ZLayer {
 				ImageView(NSImage(named: "apple_logo_orig")!)
 					.horizontalPriorities(compressionResistance: 10)

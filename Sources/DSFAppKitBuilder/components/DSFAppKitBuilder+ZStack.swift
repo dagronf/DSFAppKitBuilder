@@ -59,7 +59,7 @@ import AppKit.NSView
 /// ```
 public class ZStack: Element {
 	/// Create a ZStack element using a ZLayerBuilder
-	public init(edgeOffset: CGFloat = 0, @ZLayersBuilder builder: () -> [ZLayer]) {
+	public init(edgeInset: CGFloat = 0, @ZLayersBuilder builder: () -> [ZLayer]) {
 		let layers = builder()
 
 		super.init()
@@ -72,9 +72,9 @@ public class ZStack: Element {
 			containerView.addSubview(v)
 			switch layer.layoutType {
 			case .pinEdges:
-				v.pinEdges(to: containerView, offset: edgeOffset)
+				v.pinEdges(to: containerView, edgeInset: edgeInset)
 			case .center:
-				v.center(in: containerView)
+				v.center(in: containerView, edgeInset: edgeInset)
 			}
 		}
 	}
@@ -89,26 +89,18 @@ public class ZStack: Element {
 
 /// Represents a Layer element within a ZStack
 public class ZLayer {
-	/// The type of layout to perform
-	public enum LayoutType {
-		/// Pin the element to the edges of the parent element
-		case pinEdges
-		/// Center the element within the parent element
-		case center
-	}
-
 	/// Create a new layer in a ZStack
 	/// - Parameters:
 	///   - layoutType: How the new zlayer lays out within the ZStack bounds
 	///   - builder: The element to add to the zlayer
-	public init(layoutType: LayoutType = .pinEdges, _ builder: () -> Element) {
+	public init(layoutType: EmbeddedLayoutType = .pinEdges, _ builder: () -> Element) {
 		self.layoutType = layoutType
 		self.element = builder()
 	}
 
 	// Private
 	fileprivate let element: Element
-	fileprivate let layoutType: LayoutType
+	fileprivate let layoutType: EmbeddedLayoutType
 }
 
 // MARK: - Result Builder for ZLayers

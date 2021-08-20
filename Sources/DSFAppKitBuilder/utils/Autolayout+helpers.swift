@@ -28,22 +28,33 @@ import AppKit
 
 extension NSView {
 	// Pin 'self' within 'other' view
-	internal func pinEdges(to other: NSView, offset: CGFloat = 0, animate: Bool = false) {
+	internal func pinEdges(to other: NSView, edgeInset: CGFloat = 0, animate: Bool = false) {
+		self.pinEdges(to: other, edgeInsets: NSEdgeInsets(edgeInset: edgeInset), animate: animate)
+	}
+
+	// Pin 'self' within 'other' view
+	internal func pinEdges(to other: NSView, edgeInsets: NSEdgeInsets, animate: Bool = false) {
 		let target = animate ? animator() : self
-		target.leadingAnchor.constraint(equalTo: other.leadingAnchor, constant: offset).isActive = true
-		target.trailingAnchor.constraint(equalTo: other.trailingAnchor, constant: -offset).isActive = true
-		target.topAnchor.constraint(equalTo: other.topAnchor, constant: offset).isActive = true
-		target.bottomAnchor.constraint(equalTo: other.bottomAnchor, constant: -offset).isActive = true
+		target.leadingAnchor.constraint(equalTo: other.leadingAnchor, constant: edgeInsets.left).isActive = true
+		target.trailingAnchor.constraint(equalTo: other.trailingAnchor, constant: -edgeInsets.right).isActive = true
+		target.topAnchor.constraint(equalTo: other.topAnchor, constant: edgeInsets.top).isActive = true
+		target.bottomAnchor.constraint(equalTo: other.bottomAnchor, constant: -edgeInsets.bottom).isActive = true
+	}
+
+	// Pin 'self' within 'other' view
+	@discardableResult
+	internal func center(in other: NSView, edgeInset: CGFloat = 0) -> [NSLayoutConstraint] {
+		return self.center(in: other, edgeInsets: NSEdgeInsets(edgeInset: edgeInset))
 	}
 
 	// Center 'self' within 'other' view
 	@discardableResult
-	internal func center(in other: NSView) -> [NSLayoutConstraint] {
+	internal func center(in other: NSView, edgeInsets: NSEdgeInsets) -> [NSLayoutConstraint] {
 		let constraints = [
-			NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .greaterThanOrEqual, toItem: other, attribute: .leading, multiplier: 1, constant: 0),
-			NSLayoutConstraint(item: self, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: other, attribute: .top, multiplier: 1, constant: 0),
-			NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .lessThanOrEqual, toItem: other, attribute: .trailing, multiplier: 1, constant: 0),
-			NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .lessThanOrEqual, toItem: other, attribute: .bottom, multiplier: 1, constant: 0),
+			NSLayoutConstraint(item: self, attribute: .leading, relatedBy: .greaterThanOrEqual, toItem: other, attribute: .leading, multiplier: 1, constant: edgeInsets.left),
+			NSLayoutConstraint(item: self, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: other, attribute: .top, multiplier: 1, constant: edgeInsets.top),
+			NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .lessThanOrEqual, toItem: other, attribute: .trailing, multiplier: 1, constant: edgeInsets.right),
+			NSLayoutConstraint(item: self, attribute: .bottom, relatedBy: .lessThanOrEqual, toItem: other, attribute: .bottom, multiplier: 1, constant: edgeInsets.bottom),
 
 			NSLayoutConstraint(item: self, attribute: .centerX, relatedBy: .equal, toItem: other, attribute: .centerX, multiplier: 1, constant: 0),
 			NSLayoutConstraint(item: self, attribute: .centerY, relatedBy: .equal, toItem: other, attribute: .centerY, multiplier: 1, constant: 0)

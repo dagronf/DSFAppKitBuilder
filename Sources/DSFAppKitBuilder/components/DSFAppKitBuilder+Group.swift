@@ -43,10 +43,12 @@ public class Group: Element {
 	///   - builder: The builder for generating the group's content
 	@inlinable public convenience init(
 		edgeInset: CGFloat = 0,
+		layoutType: EmbeddedLayoutType = .pinEdges,
 		visualEffect: VisualEffect? = nil,
 		builder: () -> Element
 	) {
 		self.init(edgeInsets: NSEdgeInsets(edgeInset: edgeInset),
+					 layoutType: layoutType,
 					 visualEffect: visualEffect,
 					 builder: builder)
 	}
@@ -58,6 +60,7 @@ public class Group: Element {
 	///   - builder: The builder for generating the group's content
 	public init(
 		edgeInsets: NSEdgeInsets,
+		layoutType: EmbeddedLayoutType = .pinEdges,
 		visualEffect: VisualEffect? = nil,
 		builder: () -> Element
 	) {
@@ -72,10 +75,12 @@ public class Group: Element {
 		let childView = element.view()
 		self.containerView.addSubview(childView)
 
-		childView.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor, constant: edgeInsets.left).isActive = true
-		childView.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor, constant: -edgeInsets.right).isActive = true
-		childView.topAnchor.constraint(equalTo: self.containerView.topAnchor, constant: edgeInsets.top).isActive = true
-		childView.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor, constant: -edgeInsets.bottom).isActive = true
+		if layoutType == .pinEdges {
+			childView.pinEdges(to: self.containerView, edgeInsets: edgeInsets)
+		}
+		else if layoutType == .center {
+			childView.center(in: self.containerView, edgeInsets: edgeInsets)
+		}
 	}
 
 	// Private
