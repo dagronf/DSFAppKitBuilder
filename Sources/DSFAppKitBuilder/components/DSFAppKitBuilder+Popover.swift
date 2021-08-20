@@ -67,6 +67,10 @@ public class Popover: NSObject {
 
 	deinit {
 		Logger.Debug("Popover [\(type(of: self))] deinit")
+		self.onPopoverShow = nil
+		self.onPopoverClose = nil
+		self.element = nil
+		self.popover = nil
 	}
 
 	// Private
@@ -75,6 +79,9 @@ public class Popover: NSObject {
 	let behaviour: NSPopover.Behavior
 	var element: Element?
 	var popover: NSPopover?
+
+	private var onPopoverShow: ((NSPopover) -> Void)?
+	private var onPopoverClose: ((NSPopover) -> Void)?
 }
 
 public extension Popover {
@@ -112,6 +119,8 @@ public extension Popover {
 			of: positioningElement.view(),
 			preferredEdge: preferredEdge
 		)
+
+		self.onPopoverShow?(popover)
 	}
 }
 
@@ -122,8 +131,29 @@ public extension Popover {
 	}
 }
 
+// MARK: - Actions
+
+public extension Popover {
+
+	/// Block to call when the window is first displayed
+	func onOpen(_ block: @escaping (NSPopover) -> Void) -> Self {
+		self.onPopoverShow = block
+		return self
+	}
+
+	/// Block to call when the window is going to close
+	func onClose(_ block: @escaping (NSPopover) -> Void) -> Self {
+		self.onPopoverClose = block
+		return self
+	}
+}
+
 extension Popover: NSPopoverDelegate {
-	public func popoverWillClose(_: Notification) {}
+	public func popoverWillClose(_: Notification) {
+		if let popover = self.popover {
+			self.onPopoverClose?(popover)
+		}
+	}
 
 	public func popoverDidClose(_: Notification) {
 		self.element = nil

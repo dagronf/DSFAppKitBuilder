@@ -41,6 +41,8 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		return n
 	}()
 
+	// Popover
+
 	let popoverLocator = ElementBinder()
 	lazy var popover: Popover = Popover {
 		Group(edgeInset: 20,
@@ -62,6 +64,14 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 		}
 	}
+	.onOpen { _ in
+		Swift.print("Popover opened...")
+	}
+	.onClose { _ in
+		Swift.print("Popover closing...")
+	}
+
+	// Window
 
 	let demoWindowFocusElement = ElementBinder()
 	lazy var demoWindow: Window =	Window(
@@ -102,6 +112,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		Swift.print("Window closing...")
 	}
 
+	// Body
 
 	lazy var body: Element =
 	VStack(alignment: .leading) {
