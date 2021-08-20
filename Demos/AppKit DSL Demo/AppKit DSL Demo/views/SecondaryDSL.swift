@@ -62,7 +62,8 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	lazy var demoWindow: Window =	Window(
 		title: "Wheeee!",
-		styleMask: [.titled, .closable, .miniaturizable, .resizable]) /*.fullSizeContentView])*/
+		styleMask: [.titled, .closable, .miniaturizable, .resizable], /*.fullSizeContentView])*/
+		frameAutosaveName: "demoMainWindow-frame")
 	{
 		VisualEffectView(
 			material: .menu,
@@ -77,9 +78,12 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.verticalPriorities(hugging: 10, compressionResistance: 10)
 					Label("Rabbit!").font(NSFont.systemFont(ofSize: 32, weight: .heavy))
 					HStack {
-						Button(title: "1")
-						Button(title: "2")
-						Button(title: "3")
+						Button(title: "00") { _ in self.sliderValue.wrappedValue = 0 }
+						Button(title: "20") { _ in self.sliderValue.wrappedValue = 20 }
+						Button(title: "40") { _ in self.sliderValue.wrappedValue = 40 }
+						Button(title: "60") { _ in self.sliderValue.wrappedValue = 60 }
+						Button(title: "80") { _ in self.sliderValue.wrappedValue = 80 }
+						Button(title: "100") { _ in self.sliderValue.wrappedValue = 100 }
 					}
 				}
 			}

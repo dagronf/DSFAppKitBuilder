@@ -34,6 +34,7 @@ public class Window: NSObject {
 	///   - title: The title to display for the window
 	///   - styleMask: The window’s style
 	///   - isMovableByWindowBackground: A Boolean value that indicates whether the window is movable by clicking and dragging anywhere in its background.
+	///   - frameAutosaveName: Sets the name AppKit uses to automatically save the window’s frame rectangle data in the defaults system.
 	///   - builder: The builder used when creating the content of the popover
 	public init(
 		title: String,
