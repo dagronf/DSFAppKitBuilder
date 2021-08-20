@@ -30,11 +30,22 @@ import AppKit
 public class Window: NSObject {
 
 	/// Create the window
-	public init(title: String,
-					styleMask: NSWindow.StyleMask,
-					_ builder: @escaping () -> Element) {
+	/// - Parameters:
+	///   - title: The title to display for the window
+	///   - styleMask: The window’s style
+	///   - isMovableByWindowBackground: A Boolean value that indicates whether the window is movable by clicking and dragging anywhere in its background.
+	///   - builder: The builder used when creating the content of the popover
+	public init(
+		title: String,
+		styleMask: NSWindow.StyleMask,
+		isMovableByWindowBackground: Bool = false,
+		frameAutosaveName: NSWindow.FrameAutosaveName? = nil,
+		_ builder: @escaping () -> Element)
+	{
 		self.title = title
 		self.styleMask = styleMask
+		self.isMovableByWindowBackground = isMovableByWindowBackground
+		self.frameAutosaveName = frameAutosaveName
 		self.builder = builder
 		super.init()
 	}
@@ -51,6 +62,8 @@ public class Window: NSObject {
 	var window: NSWindow?
 	var windowController: NSWindowController?
 	let styleMask: NSWindow.StyleMask
+	let isMovableByWindowBackground: Bool
+	let frameAutosaveName: NSWindow.FrameAutosaveName?
 
 	private var titleBinder: ValueBinder<String>?
 }
@@ -70,6 +83,9 @@ public extension Window {
 			defer: true
 		)
 		window.isReleasedWhenClosed = true
+		window.isMovableByWindowBackground = isMovableByWindowBackground
+
+		self.frameAutosaveName.withUnwrapped { window.setFrameAutosaveName($0) }
 
 		self.window = window
 

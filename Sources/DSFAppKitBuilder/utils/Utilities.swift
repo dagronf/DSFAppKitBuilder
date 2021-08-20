@@ -48,3 +48,20 @@ import Foundation
 	try transform(&subject)
 	return subject
 }
+
+extension Optional {
+	/// Perform a block ONLY if we can be unwrapped
+	/// - Parameter block: The block to be called with the unwrapped element
+	@inlinable func withUnwrapped(_ block: (Wrapped) throws -> Void) rethrows {
+		if let value = self {
+			try block(value)
+		}
+	}
+}
+
+extension Optional where Wrapped: Collection {
+	/// Returns true if the optional is empty AND the wrapped collection is also empty
+	var isNilOrEmpty: Bool {
+		return self?.isEmpty ?? true
+	}
+}
