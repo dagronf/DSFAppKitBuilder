@@ -26,19 +26,16 @@
 
 import AppKit.NSView
 
-/// Bind an element
+/// Bind an element to a local variable.
 ///
 /// Useful if you need to access the element's view from somewhere else in the
 /// view heirarchy, for example displaying a popover requires the element where
-/// the tail of the popover points to
+/// to point the 'tail' of the popover.
 public class ElementBinder {
 	public weak var element: Element?
 
+	/// Create
 	public init() { }
-
-	internal func bindElement(_ element: Element) {
-		self.element = element
-	}
 
 	/// Returns the element's view
 	@inlinable public var view: NSView? { return self.element?.view() }
@@ -46,4 +43,10 @@ public class ElementBinder {
 	@inlinable public var frame: CGRect? { return self.view?.frame }
 	/// Returns the element's frame
 	@inlinable public var bounds: CGRect? { return self.view?.bounds }
+}
+
+internal extension ElementBinder {
+	func bindElement(_ element: Element) {
+		self.element = element
+	}
 }

@@ -33,6 +33,9 @@ public class View: Element {
 	public init(containedView: NSView) {
 		self.containedView = containedView
 		super.init()
+
+		containedView.needsLayout = true
+		containedView.layoutSubtreeIfNeeded()
 	}
 
 	// Private

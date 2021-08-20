@@ -101,6 +101,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					.horizontalPriorities(hugging: 100, compressionResistance: 100)
 				Label("Mount Everest (Nepali: सगरमाथा, romanized: Sagarmāthā; Tibetan: Chomolungma ཇོ་མོ་གླང་མ) is Earth's highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas.")
 					.lineBreakMode(.byTruncatingTail)
+					.wraps(true)
 					.horizontalPriorities(hugging: 100, compressionResistance: 100)
 			}
 			.horizontalPriorities(hugging: .defaultLow)
@@ -130,28 +131,8 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				.onChange { [weak self] state in
 					self?.radioSelection.wrappedValue = 0
 				}
-
-			Button(title: "Show Popup")
-				.onChange { [weak self] state in
-					guard let `self` = self,
-							let element = self.popoverLocator.element else {
-						return
-					}
-					self.popover.present(relativeTo: element.bounds,
-												of: element,
-												preferredEdge: .maxY)
-				}
-				.bindElement(self.popoverLocator)
-
-			Label()
-				.font(NSFont.userFixedPitchFont(ofSize: 13))
-				.bindValue(self.sliderValue, formatter: self.sliderFormatter)
-
-			Button(title: "Show Window") { [weak self] _ in
-				let r = NSRect(x: 100, y: 100, width: 200, height: 200)
-				self?.demoWindow.present(contentRect: r)
-			}
 		}
+		.verticalPriorities(hugging: 999, compressionResistance: 999)
 
 		HDivider()
 
@@ -165,24 +146,40 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 		}
 
-		Box("Fishy") {
-			VStack {
-				Label("This is test")
-					.horizontalPriorities(hugging: 10)
-				TextField()
-					.placeholderText("Noodles")
-					.horizontalPriorities(hugging: 10)
-				EmptyView()
-					.verticalPriorities(hugging: 10, compressionResistance: 10)
-					.horizontalPriorities(hugging: 10, compressionResistance: 10)
+		Box("Popups and windows") {
+			VStack(alignment: .leading) {
+				HStack {
+					Button(title: "Show Popup")
+						.onChange { [weak self] state in
+							guard let `self` = self,
+									let element = self.popoverLocator.element else {
+								return
+							}
+							self.popover.present(relativeTo: element.bounds,
+														of: element,
+														preferredEdge: .maxY)
+						}
+						.bindElement(self.popoverLocator)
+					Label()
+						.font(NSFont.userFixedPitchFont(ofSize: 13))
+						.bindValue(self.sliderValue, formatter: self.sliderFormatter)
+				}
+				HStack {
+					Button(title: "Show Window") { [weak self] _ in
+						let r = NSRect(x: 100, y: 100, width: 200, height: 200)
+						self?.demoWindow.present(contentRect: r)
+					}
+				}
 			}
 			.edgeInsets(8)
 			.hugging(h: 10)
+			.horizontalPriorities(hugging: 10, compressionResistance: 10)
+			.verticalPriorities(hugging: 10, compressionResistance: 10)
 		}
 		.verticalPriorities(hugging: 100)
 		.horizontalPriorities(hugging: 100)
 
-		//EmptyView()
+		EmptyView()
 	}
 	.horizontalPriorities(hugging: .defaultLow)
 }

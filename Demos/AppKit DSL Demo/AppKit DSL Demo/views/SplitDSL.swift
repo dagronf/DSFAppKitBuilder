@@ -15,7 +15,7 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	lazy var body: Element =
 		Box("Split Testing") {
-			VStack {
+			VStack(distribution: .fillProportionally) {
 				HStack(alignment: .centerY) {
 					Label("Click a segment to turn off the split item")
 					Segmented(trackingMode: .selectAny) {
