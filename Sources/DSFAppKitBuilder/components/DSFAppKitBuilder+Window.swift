@@ -50,6 +50,10 @@ import AppKit
 /// }
 /// ```
 public class Window: NSObject {
+
+	/// The contained NSWindow object
+	public private(set) var window: NSWindow?
+
 	/// Create the window
 	/// - Parameters:
 	///   - title: The title to display for the window
@@ -74,6 +78,8 @@ public class Window: NSObject {
 
 	deinit {
 		self.titleBinder?.deregister(self)
+		self.onWindowCreate = nil
+		self.onWindowClose = nil
 	}
 
 	// private
@@ -81,13 +87,15 @@ public class Window: NSObject {
 	let builder: () -> Element
 
 	var content: Element?
-	var window: NSWindow?
 	var windowController: NSWindowController?
 	let styleMask: NSWindow.StyleMask
 	let isMovableByWindowBackground: Bool
 	let frameAutosaveName: NSWindow.FrameAutosaveName?
 
 	private var titleBinder: ValueBinder<String>?
+
+	private var onWindowCreate: ((NSWindow) -> Void)?
+	private var onWindowClose: ((NSWindow) -> Void)?
 }
 
 public extension Window {
@@ -132,8 +140,64 @@ public extension Window {
 
 		window.makeKeyAndOrderFront(self)
 		window.recalculateKeyViewLoop()
+
+		/// Call the callback if it has been set
+		self.onWindowCreate?(window)
 	}
 }
+
+// MARK: - Functions
+
+public extension Window {
+	/// Minimise a window to the dock
+	@inlinable func minimise() {
+		self.window?.miniaturize(self)
+	}
+
+	/// Deminiaturize a window from the dock
+	@inlinable func deminiaturize() {
+		self.window?.deminiaturize(self)
+	}
+
+	/// Simulates the user clicking the zoom box by momentarily highlighting the button and then zooming the window.
+	@inlinable func zoom() {
+		self.window?.performZoom(self)
+	}
+
+	/// Make the window the key window
+	@inlinable func makeKey(andOrderFront orderFront: Bool = false) {
+		if orderFront {
+			self.window?.makeKeyAndOrderFront(self)
+		}
+		else {
+			self.window?.makeKey()
+		}
+	}
+
+	/// Close the window if it is open
+	func close() {
+		self.window?.performClose(self)
+	}
+}
+
+// MARK: - Actions
+
+public extension Window {
+
+	/// Block to call when the window is first displayed
+	func onOpen(_ block: @escaping (NSWindow) -> Void) -> Self {
+		self.onWindowCreate = block
+		return self
+	}
+
+	/// Block to call when the window is going to close
+	func onClose(_ block: @escaping (NSWindow) -> Void) -> Self {
+		self.onWindowClose = block
+		return self
+	}
+}
+
+// MARK: - Bindings
 
 public extension Window {
 	/// Bind the title to a text ValueBinder
@@ -173,6 +237,10 @@ private extension Window {
 private extension Window {
 	func windowWillClose() {
 		self.saveLastWindowPosition()
+
+		if let w = self.window {
+			self.onWindowClose?(w)
+		}
 
 		self.content = nil
 		self.window = nil

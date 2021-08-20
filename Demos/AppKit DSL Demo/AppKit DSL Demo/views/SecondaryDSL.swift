@@ -31,7 +31,9 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 	}()
 
-	let sliderValue = ValueBinder<Double>(25)
+	let sliderValue = ValueBinder<Double>(25) { newValue in
+		Swift.print("Slider value is now \(newValue)")
+	}
 	let sliderFormatter: NumberFormatter = {
 		let n = NumberFormatter()
 		n.maximumFractionDigits = 1
@@ -61,6 +63,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 	}
 
+	let demoWindowFocusElement = ElementBinder()
 	lazy var demoWindow: Window =	Window(
 		title: "Wheeee!",
 		styleMask: [.titled, .closable, .miniaturizable, .resizable], /*.fullSizeContentView])*/
@@ -83,12 +86,20 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						Button(title: "20") { _ in self.sliderValue.wrappedValue = 20 }
 						Button(title: "40") { _ in self.sliderValue.wrappedValue = 40 }
 						Button(title: "60") { _ in self.sliderValue.wrappedValue = 60 }
+							.bindElement(self.demoWindowFocusElement)
 						Button(title: "80") { _ in self.sliderValue.wrappedValue = 80 }
 						Button(title: "100") { _ in self.sliderValue.wrappedValue = 100 }
 					}
 				}
 			}
 		}
+	}
+	.onOpen { [weak self] window in
+		Swift.print("Window opened, focussing on button '60'...")
+		self?.demoWindowFocusElement.makeFirstResponder()
+	}
+	.onClose { window in
+		Swift.print("Window closing...")
 	}
 
 
