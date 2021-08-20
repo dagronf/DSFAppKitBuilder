@@ -26,14 +26,14 @@
 
 import Foundation
 
+// MARK: - ValueBinder
+
 /// A wrapped value binder for sharing dynamic values between elements
 public class ValueBinder<TYPE: Any> {
-
 	/// The wrapped value to be bound against
 	public var wrappedValue: TYPE {
 		didSet {
-			self.changeCallback?(self.wrappedValue)
-			self.notifyBinders()
+			self.valueDidChange()
 		}
 	}
 
@@ -54,71 +54,83 @@ public class ValueBinder<TYPE: Any> {
 	/// ```
 	public init(_ value: TYPE, _ changeCallback: ((TYPE) -> Void)? = nil) {
 		self.wrappedValue = value
-		self.changeCallback = changeCallback
 
-		// Initially call the callback to set any initial value through to anything that needs to know the initial value
-		self.changeCallback?(value)
+		// If a callback is requested, then set ourselves up as a binding too
+		if let callback = changeCallback {
+			self.register(self, callback)
+		}
 	}
 
 	deinit {
-		Logger.Debug("ValueBinder [\(type(of: self))] deinit")
-		self.detachAll()
-	}
-
-	/// Register an object to be notified when the value changes
-	/// - Parameters:
-	///   - object: The registering object. Held weakly to detect when the registering object is deallocated and we should no longer call the change block
-	///   - changeBlock: The block to call when the value in the ValueBinder instance changes
-	public func register(_ object: AnyObject, _ changeBlock: @escaping (TYPE) -> Void) {
-		self.cleanupInactiveBindings()
-
-		Logger.Debug("ValueBinder [\(type(of: object))] register")
-
-		bindings.append(Binding(object, changeBlock))
-
-		// Call with the initial value to initialize ourselves
-		changeBlock(wrappedValue)
-	}
-
-	// Deregister a binding
-	// - Parameter object: The object to deregister
-	public func deregister(_ object: AnyObject) {
-		Logger.Debug("ValueBinder [\(type(of: object))] deregister")
-		bindings = bindings.filter { $0.isAlive && $0.object !== object }
-	}
-
-	// Deregister all bindings
-	func detachAll() {
-		if !bindings.isEmpty {
-			bindings.forEach { binding in
-				binding.deregister()
-			}
-			bindings = []
-		}
+#if DEBUG
+		Logger.Debug("ValueBinder<\(type(of: self.wrappedValue))> [\(type(of: self))] deinit")
+#endif
+		self.deregisterAll()
 	}
 
 	// Private
 	private var bindings = [Binding]()
-	private let changeCallback: ((TYPE) -> Void)?
 }
 
+// MARK: - Register/Deregister
+
+public extension ValueBinder {
+	/// Register an object to be notified when the value changes
+	/// - Parameters:
+	///   - object: The registering object. Held weakly to detect when the registering object is deallocated and we should no longer call the change block
+	///   - changeBlock: The block to call when the value in the ValueBinder instance changes
+	func register(_ object: AnyObject, _ changeBlock: @escaping (TYPE) -> Void) {
+#if DEBUG
+		Logger.Debug("ValueBinder<\(type(of: self.wrappedValue))> [\(type(of: object))] register...")
+#endif
+
+		// First a little housekeeping...
+		self.cleanupInactiveBindings()
+
+		// Add the binding
+		self.bindings.append(Binding(object, changeBlock))
+
+		// Call with the initial value to initialize the binding object's state
+		changeBlock(self.wrappedValue)
+	}
+
+	// Deregister a binding
+	// - Parameter object: The object to deregister
+	func deregister(_ object: AnyObject) {
+#if DEBUG
+		Logger.Debug("ValueBinder<\(type(of: self.wrappedValue))> [\(type(of: object))] ...deregistered!")
+#endif
+		self.bindings = self.bindings.filter { $0.isAlive && $0.object !== object }
+	}
+
+	// Deregister all bindings
+	func deregisterAll() {
+		self.bindings.forEach { $0.deregister() }
+		self.bindings = []
+	}
+}
+
+// MARK: - Value handling
+
 private extension ValueBinder {
-	/// Set the value of the bound.
-	func notifyBinders() {
+
+	// Called when the wrappedValue is updated
+	func valueDidChange() {
+		let value = self.wrappedValue
 		self.bindings.forEach { binding in
-			binding.didChange(wrappedValue)
+			binding.didChange(value)
 		}
 	}
 
 	// Remove any inactive bindings
 	func cleanupInactiveBindings() {
-		self.bindings = bindings.filter { $0.isAlive }
+		self.bindings = self.bindings.filter { $0.isAlive }
 	}
 }
 
-extension ValueBinder {
+private extension ValueBinder {
 	// A binding object that stores an object and a callback for a valuebinder
-	internal class Binding {
+	class Binding {
 		// Is the registering object still alive?
 		@inlinable var isAlive: Bool { return object != nil }
 
@@ -134,6 +146,7 @@ extension ValueBinder {
 			self.changeBlock = changeBlock
 		}
 
+		// Deregister this binder to stop it receiving change notifications
 		fileprivate func deregister() {
 			self.object = nil
 			self.changeBlock = nil
@@ -145,8 +158,7 @@ extension ValueBinder {
 				callback(value)
 			}
 			else {
-				self.object = nil
-				self.changeBlock = nil
+				self.deregister()
 			}
 		}
 	}
