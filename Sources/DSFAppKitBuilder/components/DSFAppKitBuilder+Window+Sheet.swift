@@ -30,7 +30,7 @@ import AppKit
 public class Sheet: Window {
 	public typealias CompletionBlock = (() -> Void)
 
-	convenience public init(
+	public convenience init(
 		title: String,
 		contentRect: NSRect,
 		styleMask: NSWindow.StyleMask,
@@ -38,7 +38,6 @@ public class Sheet: Window {
 		useSavedPosition: Bool = true,
 		_ builder: () -> Element
 	) {
-
 		self.init(
 			title: title,
 			contentRect: contentRect,
@@ -47,7 +46,8 @@ public class Sheet: Window {
 			frameAutosaveName: frameAutosaveName,
 			useSavedPosition: useSavedPosition,
 			presentOnScreen: false,
-			builder)
+			builder
+		)
 	}
 
 	internal weak var parent: Window?
@@ -72,11 +72,35 @@ public extension Sheet {
 		self.completion = nil
 	}
 
-
 	/// Bind this element to an ElementBinder
 	func bindSheet(_ sheetBinder: SheetBinder) -> Self {
 		sheetBinder.sheet = self
 		return self
 	}
+}
 
+// MARK: - Sheet binding
+
+public class SheetBinder: CustomDebugStringConvertible {
+
+	/// The window being bound.
+	///
+	/// This is weakly held so we don't potentially cause an ARC loop
+	public internal(set) weak var sheet: Sheet?
+
+	public var debugDescription: String {
+		return "ShsetBinder<\(String(describing: sheet))>"
+	}
+
+	/// Create an ElementBinder
+	public init() { }
+
+	/// Dismiss the sheet if it is currently being displayed
+	public func dismiss() {
+		self.sheet?.dismiss()
+	}
+
+	deinit {
+		self.sheet = nil
+	}
 }

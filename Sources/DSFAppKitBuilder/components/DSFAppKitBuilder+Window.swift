@@ -207,6 +207,10 @@ public extension Window {
 
 	/// Close the window if it is open
 	func close() {
+		// If there's a sheet being displayed, close the sheet
+		if let sheet = self.activeSheet {
+			sheet.dismiss()
+		}
 		self.window?.performClose(self)
 	}
 }
@@ -346,5 +350,31 @@ private class WindowController: NSWindowController {
 		) { _ in
 			completion()
 		}
+	}
+}
+
+// MARK: - Window binding
+
+public class WindowBinder: CustomDebugStringConvertible {
+
+	/// The window being bound.
+	///
+	/// This is weakly held so we don't potentially cause an ARC loop
+	public internal(set) weak var window: Window?
+
+	public var debugDescription: String {
+		return "WindowBinder<\(String(describing: window))>"
+	}
+
+	/// Create an ElementBinder
+	public init() { }
+
+	/// Close the window if it is currently shown
+	public func close() {
+		self.window?.close()
+	}
+
+	deinit {
+		self.window = nil
 	}
 }

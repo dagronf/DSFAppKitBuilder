@@ -94,7 +94,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			.onOpen { _ in
 				Swift.print("Sheet did open...")
 			}
-			.onClose { [weak self] _ in
+			.onClose { _ in
 				Swift.print("Sheet will close...")
 			}
 			.bindSheet(sheetBinder)
