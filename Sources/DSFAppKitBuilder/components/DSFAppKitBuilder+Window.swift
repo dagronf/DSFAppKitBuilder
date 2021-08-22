@@ -32,18 +32,26 @@ import AppKit
 ///
 /// ```swift
 /// class MyController: NSObject, DSFAppKitBuilderViewHandler {
-///    lazy var myWindow: Window = Window(
-///       title: "My Window",
-///       styleMask: [.titled, .closable, .miniaturizable, .resizable], /*.fullSizeContentView])*/
-///       frameAutosaveName: "My-Window-frame")
-///    {
-///       Label("Label in a window")
-///    }
+///    var currentWindow: Window?
+///    func createWindow() -> Window {
+///       return Window(
+///          title: "My Window",
+///          contentRect: NSRect(x: 100, y: 100, width: 200, height: 200)
+///          styleMask: [.titled, .closable, .miniaturizable, .resizable],
+///          frameAutosaveName: "My.Window.Frame")
+///       {
+///          Label("Label in a window")
+///       }
+///       .onClose
+///       {
+///          self?.currentWindow = nil
+///       }
 ///
-///    lazy var body: Element =
-///       VStack {
-///          Button("Open Window") { [weak self] _ in
-///             self?.myWindow.show(contentRect: ...)
+///       lazy var body: Element =
+///          VStack {
+///             Button("Open Window") { [weak self] _ in
+///                self?.currentWindow = self?.createWindow()
+///             }
 ///          }
 ///       }
 ///    }
@@ -51,32 +59,72 @@ import AppKit
 /// ```
 public class Window: NSObject {
 
+	public typealias CompletionBlock = (() -> Void)
+
 	/// The contained NSWindow object
 	public private(set) var window: NSWindow?
 
 	/// Create the window
 	/// - Parameters:
 	///   - title: The title to display for the window
+	///   - contentRect: The initial rect for the window on the current screen
 	///   - styleMask: The window’s style
 	///   - isMovableByWindowBackground: A Boolean value that indicates whether the window is movable by clicking and dragging anywhere in its background.
 	///   - frameAutosaveName: Sets the name AppKit uses to automatically save the window’s frame rectangle data in the defaults system.
+	///   - useSavedPosition: If true, tries to use a previously saved position for restoring the view.
 	///   - builder: The builder used when creating the content of the popover
-	public init(
+	convenience public init(
 		title: String,
+		contentRect: NSRect,
 		styleMask: NSWindow.StyleMask,
 		isMovableByWindowBackground: Bool = false,
 		frameAutosaveName: NSWindow.FrameAutosaveName? = nil,
-		_ builder: @escaping () -> Element
+		useSavedPosition: Bool = true,
+		_ builder: () -> Element
+	) {
+		self.init(title: title,
+					 contentRect: contentRect,
+					 styleMask: styleMask,
+					 isMovableByWindowBackground: isMovableByWindowBackground,
+					 frameAutosaveName: frameAutosaveName,
+					 useSavedPosition: useSavedPosition,
+					 presentOnScreen: true,
+					 builder)
+	}
+
+	/// Create the window
+	/// - Parameters:
+	///   - title: The title to display for the window
+	///   - contentRect: The initial rect for the window on the current screen
+	///   - styleMask: The window’s style
+	///   - isMovableByWindowBackground: A Boolean value that indicates whether the window is movable by clicking and dragging anywhere in its background.
+	///   - frameAutosaveName: Sets the name AppKit uses to automatically save the window’s frame rectangle data in the defaults system.
+	///   - useSavedPosition: If true, tries to use a previously saved position for restoring the view.
+	///   - builder: The builder used when creating the content of the popover
+	internal init(
+		title: String,
+		contentRect: NSRect,
+		styleMask: NSWindow.StyleMask,
+		isMovableByWindowBackground: Bool = false,
+		frameAutosaveName: NSWindow.FrameAutosaveName? = nil,
+		useSavedPosition: Bool = true,
+		presentOnScreen: Bool = true,
+		_ builder: () -> Element
 	) {
 		self.title = title
 		self.styleMask = styleMask
 		self.isMovableByWindowBackground = isMovableByWindowBackground
 		self.frameAutosaveName = frameAutosaveName
-		self.builder = builder
 		super.init()
+
+		let content = builder()
+		self.content = content
+
+		self.show(contentRect: contentRect, useSavedPosition: useSavedPosition, presentOnScreen: presentOnScreen)
 	}
 
 	deinit {
+		Logger.Debug("Window[\(type(of: self))] deinit")
 		self.titleBinder?.deregister(self)
 		self.onWindowCreate = nil
 		self.onWindowClose = nil
@@ -84,8 +132,6 @@ public class Window: NSObject {
 
 	// private
 	var title: String
-	let builder: () -> Element
-
 	var content: Element?
 	var windowController: NSWindowController?
 	let styleMask: NSWindow.StyleMask
@@ -96,54 +142,39 @@ public class Window: NSObject {
 
 	private var onWindowCreate: ((NSWindow) -> Void)?
 	private var onWindowClose: ((NSWindow) -> Void)?
+
+	private var activeSheet: Sheet? = nil
+	private var sheetCompletionHandler: ((NSApplication.ModalResponse) -> Void)?
 }
 
 public extension Window {
-	/// Present the window
-	/// - Parameters:
-	///   - contentRect: The initial rect for the window on the current screen
-	///   - useSavedPosition: If true, tries to use a previously saved position for restoring the view.
-	func show(contentRect: NSRect,
-				 useSavedPosition: Bool = true) {
-		guard self.window == nil else {
-			self.window?.makeKeyAndOrderFront(self)
-			return
-		}
-
-		let window = NSWindow(
-			contentRect: contentRect,
-			styleMask: self.styleMask,
-			backing: .buffered,
-			defer: true
-		)
-		self.window = window
-
-		window.title = self.title
-		window.isReleasedWhenClosed = true
-		window.isMovableByWindowBackground = self.isMovableByWindowBackground
-		window.autorecalculatesKeyViewLoop = true
-
-		self.setInitialWindowPosition(useSavedPosition: useSavedPosition)
-
-		let content = self.builder()
-		self.content = content
-
-		let controller = WindowController(window: window)
-		window.contentView = content.view()
-		window.contentView?.needsLayout = true
-		window.contentView?.needsDisplay = true
-
-		self.windowController = controller
-		controller.setupWindowListener { [weak self] in
-			self?.windowWillClose()
-		}
-
-		window.makeKeyAndOrderFront(self)
-		window.recalculateKeyViewLoop()
-
-		/// Call the callback if it has been set
-		self.onWindowCreate?(window)
+	override var debugDescription: String {
+		return "[Window: \(self.title)]"
 	}
+}
+
+public extension Window {
+
+	/// Present the sheet modal for a parent window
+	/// - Parameters:
+	///   - sheet: The sheet to present
+	///   - contentRect: The initial size of the sheet being displayed
+	///   - completionBlock: The block to call when the sheet is dismissed
+
+	func presentModal(_ sheet: Sheet) {
+		guard let w = self.window,
+				let s = sheet.window else {
+					return
+				}
+
+		self.activeSheet = sheet
+		sheet.parent = self
+
+		w.beginSheet(s) { [weak self] _ in
+			self?.activeSheet = nil
+		}
+	}
+
 }
 
 // MARK: - Functions
@@ -183,7 +214,6 @@ public extension Window {
 // MARK: - Actions
 
 public extension Window {
-
 	/// Block to call when the window is first displayed
 	func onOpen(_ block: @escaping (NSWindow) -> Void) -> Self {
 		self.onWindowCreate = block
@@ -211,6 +241,63 @@ public extension Window {
 		}
 		return self
 	}
+
+	/// Bind this element to an ElementBinder
+	func bindWindow(_ windowBinder: WindowBinder) -> Self {
+		windowBinder.window = self
+		return self
+	}
+}
+
+internal extension Window {
+
+	/// Present the window
+	/// - Parameters:
+	///   - contentRect: The initial rect for the window on the current screen
+	///   - useSavedPosition: If true, tries to use a previously saved position for restoring the view.
+	///   - presentOnScreen: If true, present the window on screen.  If false, create the window but don't display it
+	func show(contentRect: NSRect,
+				 useSavedPosition: Bool,
+				 presentOnScreen: Bool)
+	{
+		guard let content = self.content else {
+			fatalError()
+		}
+		
+		let window = NSWindow(
+			contentRect: contentRect,
+			styleMask: self.styleMask,
+			backing: .buffered,
+			defer: true
+		)
+		self.window = window
+
+		window.title = self.title
+		window.isReleasedWhenClosed = true
+		window.isMovableByWindowBackground = self.isMovableByWindowBackground
+		window.autorecalculatesKeyViewLoop = true
+
+		self.setInitialWindowPosition(useSavedPosition: useSavedPosition)
+
+		let controller = WindowController(window: window)
+		window.contentView = content.view()
+		window.contentView?.needsLayout = true
+		window.contentView?.needsDisplay = true
+
+		self.windowController = controller
+		controller.setupWindowListener { [weak self] in
+			self?.windowWillClose()
+		}
+
+		window.recalculateKeyViewLoop()
+
+		if presentOnScreen {
+			window.makeKeyAndOrderFront(self)
+		}
+
+		/// Call the callback if it has been set
+		self.onWindowCreate?(window)
+	}
 }
 
 // MARK: - Window positioning
@@ -234,7 +321,7 @@ private extension Window {
 
 // MARK: - Window close handling
 
-private extension Window {
+extension Window {
 	func windowWillClose() {
 		self.saveLastWindowPosition()
 
@@ -245,6 +332,8 @@ private extension Window {
 		self.content = nil
 		self.window = nil
 		self.windowController = nil
+
+		self.sheetCompletionHandler = nil
 	}
 }
 

@@ -31,14 +31,23 @@ import AppKit.NSView
 /// Useful if you need to access the element's view from somewhere else in the
 /// view heirarchy, for example displaying a popover requires the element where
 /// to point the 'tail' of the popover.
-public class ElementBinder {
+public class ElementBinder: CustomDebugStringConvertible {
+
 	/// The element being bound.
 	///
 	/// This is weakly held so we don't potentially cause an ARC loop
 	public internal(set) weak var element: Element?
 
+	public var debugDescription: String {
+		return "ElementBinder<\(String(describing: element))>"
+	}
+
 	/// Create an ElementBinder
 	public init() { }
+
+	deinit {
+		self.element = nil
+	}
 }
 
 // MARK: - Functions
@@ -56,5 +65,50 @@ public extension ElementBinder {
 		if let view = self.view, let window = view.window {
 			window.makeFirstResponder(view)
 		}
+	}
+}
+
+
+
+public class WindowBinder: CustomDebugStringConvertible {
+
+	/// The window being bound.
+	///
+	/// This is weakly held so we don't potentially cause an ARC loop
+	public internal(set) weak var window: Window?
+
+	public var debugDescription: String {
+		return "WindowBinder<\(String(describing: window))>"
+	}
+
+	/// Create an ElementBinder
+	public init() { }
+
+	deinit {
+		self.window = nil
+	}
+}
+
+
+public class SheetBinder: CustomDebugStringConvertible {
+
+	/// The window being bound.
+	///
+	/// This is weakly held so we don't potentially cause an ARC loop
+	public internal(set) weak var sheet: Sheet?
+
+	public var debugDescription: String {
+		return "ShsetBinder<\(String(describing: sheet))>"
+	}
+
+	/// Create an ElementBinder
+	public init() { }
+
+	public func dismiss() {
+		self.sheet?.dismiss()
+	}
+
+	deinit {
+		self.sheet = nil
 	}
 }

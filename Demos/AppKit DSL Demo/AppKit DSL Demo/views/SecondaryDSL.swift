@@ -71,45 +71,101 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		Swift.print("Popover closing...")
 	}
 
-	// Window
+	// Sheet definition
+	let sheetBinder = SheetBinder()
+	func createSheet() -> Sheet {
 
+		return Sheet(
+			title: "Sheet",
+			contentRect: NSRect(x: 0, y: 0, width: 500, height: 200),
+			styleMask: [.resizable],
+			frameAutosaveName: "sheetie") {
+				Group(edgeInset: 20) {
+					VStack {
+						Label("First!")
+						EmptyView()
+						Button(title: "Dismiss") { [weak self] _ in
+							guard let `self` = self else { return }
+							self.sheetBinder.dismiss()
+						}
+					}
+				}
+			}
+			.onOpen { _ in
+				Swift.print("Sheet did open...")
+			}
+			.onClose { [weak self] _ in
+				Swift.print("Sheet will close...")
+			}
+			.bindSheet(sheetBinder)
+	}
+
+	// Window definition
+
+	let demoWindowElement = WindowBinder()
 	let demoWindowFocusElement = ElementBinder()
-	lazy var demoWindow: Window =	Window(
-		title: "Wheeee!",
-		styleMask: [.titled, .closable, .miniaturizable, .resizable], /*.fullSizeContentView])*/
-		frameAutosaveName: "demoMainWindow-frame")
-	{
-		VisualEffectView(
-			material: .menu,
-			blendingMode: .behindWindow, isEmphasized: true)
+	var currentWindow: Window?
+
+	func createWindow() -> Window {
+		return Window(
+			title: "Wheeee!",
+			contentRect: NSRect(x: 100, y: 100, width: 200, height: 200),
+			styleMask: [.titled, .closable, .miniaturizable, .resizable], /*.fullSizeContentView])*/
+			frameAutosaveName: "demoMainWindow-frame")
 		{
-			Group(edgeInset: 20) {
-				VStack {
-					ImageView(NSImage(named: "slider-rabbit")!)
-						.scaling(.scaleProportionallyUpOrDown)
-						.minWidth(32).minHeight(32)
-						.horizontalPriorities(hugging: 10, compressionResistance: 10)
-						.verticalPriorities(hugging: 10, compressionResistance: 10)
-					Label("Rabbit!").font(NSFont.systemFont(ofSize: 32, weight: .heavy))
-					HStack {
-						Button(title: "00") { _ in self.sliderValue.wrappedValue = 0 }
-						Button(title: "20") { _ in self.sliderValue.wrappedValue = 20 }
-						Button(title: "40") { _ in self.sliderValue.wrappedValue = 40 }
-						Button(title: "60") { _ in self.sliderValue.wrappedValue = 60 }
-							.bindElement(self.demoWindowFocusElement)
-						Button(title: "80") { _ in self.sliderValue.wrappedValue = 80 }
-						Button(title: "100") { _ in self.sliderValue.wrappedValue = 100 }
+			VisualEffectView(
+				material: .menu,
+				blendingMode: .behindWindow, isEmphasized: true)
+			{
+				Group(edgeInset: 20) {
+					VStack {
+						ImageView(NSImage(named: "slider-rabbit")!)
+							.scaling(.scaleProportionallyUpOrDown)
+							.minWidth(32).minHeight(32)
+							.horizontalPriorities(hugging: 10, compressionResistance: 10)
+							.verticalPriorities(hugging: 10, compressionResistance: 10)
+						Label("Rabbit!").font(NSFont.systemFont(ofSize: 32, weight: .heavy))
+						HStack {
+							Button(title: "00") { [weak self] _ in self?.sliderValue.wrappedValue = 0 }
+							Button(title: "20") { [weak self] _ in self?.sliderValue.wrappedValue = 20 }
+							Button(title: "40") { [weak self] _ in self?.sliderValue.wrappedValue = 40 }
+							Button(title: "60") { [weak self] _ in self?.sliderValue.wrappedValue = 60 }
+								.bindElement(self.demoWindowFocusElement)
+							Button(title: "80") { [weak self] _ in self?.sliderValue.wrappedValue = 80 }
+							Button(title: "100") { [weak self] _ in self?.sliderValue.wrappedValue = 100 }
+							Button(title: "Show sheet") { [weak self] _ in
+								guard let `self` = self else { return }
+
+								self.demoWindowElement.window?.presentModal(self.createSheet())
+
+//								guard let `self` = self,
+//										let parent = self.demoWindowElement.window else { return }
+//								self.currentSheet = self.createSheet()
+//								self.currentSheet?.presentModal(
+//									in: parent, contentRect: NSRect(x: 0, y: 0, width: 500, height: 200))
+//								{ [weak self] in
+//									Swift.print("Sheet did close")
+//									self?.currentSheet = nil
+//								}
+//
+//								self.demoWindowElement.window?.presentModal(createSheet())
+
+
+							}
+						}
 					}
 				}
 			}
 		}
-	}
-	.onOpen { [weak self] window in
-		Swift.print("Window opened, focussing on button '60'...")
-		self?.demoWindowFocusElement.makeFirstResponder()
-	}
-	.onClose { window in
-		Swift.print("Window closing...")
+		.bindWindow(demoWindowElement)
+		.onOpen { [weak self] window in
+			Swift.print("Window opened, focussing on button '60'...")
+			self?.demoWindowFocusElement.makeFirstResponder()
+		}
+		.onClose { [weak self] window in
+			Swift.print("Window closing...")
+			self?.currentWindow = nil
+		}
 	}
 
 	// Body
@@ -193,8 +249,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				}
 				HStack {
 					Button(title: "Show Window") { [weak self] _ in
-						let r = NSRect(x: 100, y: 100, width: 200, height: 200)
-						self?.demoWindow.show(contentRect: r)
+						self?.currentWindow = self?.createWindow()
 					}
 				}
 			}

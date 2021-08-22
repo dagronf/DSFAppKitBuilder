@@ -68,6 +68,7 @@ public class Button: Control {
 	}
 
 	deinit {
+		self.action = nil
 		self.onOffBinder?.deregister(self)
 		self.stateBinder?.deregister(self)
 		self.titleBinder?.deregister(self)
@@ -84,6 +85,12 @@ public class Button: Control {
 	private var stateBinder: ValueBinder<NSControl.StateValue>?
 	private var titleBinder: ValueBinder<String>?
 	private var alternateTitleBinder: ValueBinder<String>?
+}
+
+extension Button {
+	public override var debugDescription: String {
+		return "Button[title='\(self.button.title)'"
+	}
 }
 
 // MARK: - Modifiers

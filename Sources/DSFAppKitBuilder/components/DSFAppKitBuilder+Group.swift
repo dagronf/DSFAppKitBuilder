@@ -83,6 +83,10 @@ public class Group: Element {
 		}
 	}
 
+	deinit {
+		Swift.print("ehhehehehehe")
+	}
+
 	// Private
 
 	override public func view() -> NSView { return self.containerView }
