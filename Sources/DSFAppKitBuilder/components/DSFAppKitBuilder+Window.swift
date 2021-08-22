@@ -42,8 +42,7 @@ import AppKit
 ///       {
 ///          Label("Label in a window")
 ///       }
-///       .onClose
-///       {
+///       .onClose { [weak self] _ in
 ///          self?.currentWindow = nil
 ///       }
 ///
@@ -140,11 +139,11 @@ public class Window: NSObject {
 
 	private var titleBinder: ValueBinder<String>?
 
-	private var onWindowCreate: ((NSWindow) -> Void)?
-	private var onWindowClose: ((NSWindow) -> Void)?
+	private var onWindowCreate: ((Window) -> Void)?
+	private var onWindowClose: ((Window) -> Void)?
 
 	private var activeSheet: Sheet? = nil
-	private var sheetCompletionHandler: ((NSApplication.ModalResponse) -> Void)?
+	private var sheetCompletionHandler: Sheet.CompletionBlock?
 }
 
 public extension Window {
@@ -161,17 +160,25 @@ public extension Window {
 	///   - contentRect: The initial size of the sheet being displayed
 	///   - completionBlock: The block to call when the sheet is dismissed
 
-	func presentModal(_ sheet: Sheet) {
+	func presentModal(_ sheet: Sheet,
+							_ completionBlock: Sheet.CompletionBlock? = nil) {
 		guard let w = self.window,
 				let s = sheet.window else {
 					return
 				}
 
 		self.activeSheet = sheet
+		self.sheetCompletionHandler = completionBlock
 		sheet.parent = self
 
-		w.beginSheet(s) { [weak self] _ in
-			self?.activeSheet = nil
+		w.beginSheet(s) { [weak self] result in
+			guard let `self` = self else { return }
+			if let s = self.sheetCompletionHandler {
+				s(result)
+			}
+
+			self.activeSheet = nil
+			self.sheetCompletionHandler = nil
 		}
 	}
 
@@ -209,7 +216,8 @@ public extension Window {
 	func close() {
 		// If there's a sheet being displayed, close the sheet
 		if let sheet = self.activeSheet {
-			sheet.dismiss()
+			sheet.dismiss(result: NSApplication.ModalResponse.cancel)
+			self.activeSheet = nil
 		}
 		self.window?.performClose(self)
 	}
@@ -219,13 +227,13 @@ public extension Window {
 
 public extension Window {
 	/// Block to call when the window is first displayed
-	func onOpen(_ block: @escaping (NSWindow) -> Void) -> Self {
+	func onOpen(_ block: @escaping (Window) -> Void) -> Self {
 		self.onWindowCreate = block
 		return self
 	}
 
 	/// Block to call when the window is going to close
-	func onClose(_ block: @escaping (NSWindow) -> Void) -> Self {
+	func onClose(_ block: @escaping (Window) -> Void) -> Self {
 		self.onWindowClose = block
 		return self
 	}
@@ -300,7 +308,7 @@ internal extension Window {
 		}
 
 		/// Call the callback if it has been set
-		self.onWindowCreate?(window)
+		self.onWindowCreate?(self)
 	}
 }
 
@@ -329,9 +337,7 @@ extension Window {
 	func windowWillClose() {
 		self.saveLastWindowPosition()
 
-		if let w = self.window {
-			self.onWindowClose?(w)
-		}
+		self.onWindowClose?(self)
 
 		self.content = nil
 		self.window = nil

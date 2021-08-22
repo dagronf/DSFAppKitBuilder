@@ -86,7 +86,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						EmptyView()
 						Button(title: "Dismiss") { [weak self] _ in
 							guard let `self` = self else { return }
-							self.sheetBinder.dismiss()
+							self.sheetBinder.dismiss(result: .OK)
 						}
 					}
 				}
@@ -135,22 +135,9 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 							Button(title: "100") { [weak self] _ in self?.sliderValue.wrappedValue = 100 }
 							Button(title: "Show sheet") { [weak self] _ in
 								guard let `self` = self else { return }
-
-								self.demoWindowElement.window?.presentModal(self.createSheet())
-
-//								guard let `self` = self,
-//										let parent = self.demoWindowElement.window else { return }
-//								self.currentSheet = self.createSheet()
-//								self.currentSheet?.presentModal(
-//									in: parent, contentRect: NSRect(x: 0, y: 0, width: 500, height: 200))
-//								{ [weak self] in
-//									Swift.print("Sheet did close")
-//									self?.currentSheet = nil
-//								}
-//
-//								self.demoWindowElement.window?.presentModal(createSheet())
-
-
+								self.demoWindowElement.window?.presentModal(self.createSheet()) { result in
+									Swift.print("Sheet result is \(result)")
+								}
 							}
 						}
 					}

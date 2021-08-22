@@ -28,7 +28,8 @@ import AppKit
 
 /// A sheet
 public class Sheet: Window {
-	public typealias CompletionBlock = (() -> Void)
+	public typealias ReturnType = NSApplication.ModalResponse
+	public typealias CompletionBlock = ((Sheet.ReturnType) -> Void)
 
 	public convenience init(
 		title: String,
@@ -58,20 +59,24 @@ public class Sheet: Window {
 
 public extension Sheet {
 	/// Dismiss the sheet if it is currently displaying
-	func dismiss() {
+	func dismiss(result: Sheet.ReturnType) {
 		if let parent = self.parent?.window,
 			let sheetWindow = self.window
 		{
-			parent.endSheet(sheetWindow)
+			parent.endSheet(sheetWindow, returnCode: result)
 			self.close()
 			self.windowWillClose()
-			self.completion?()
+			self.completion?(result)
 		}
 
 		self.parent = nil
 		self.completion = nil
 	}
+}
 
+// MARK: - Bindings
+
+public extension Sheet {
 	/// Bind this element to an ElementBinder
 	func bindSheet(_ sheetBinder: SheetBinder) -> Self {
 		sheetBinder.sheet = self
@@ -82,22 +87,21 @@ public extension Sheet {
 // MARK: - Sheet binding
 
 public class SheetBinder: CustomDebugStringConvertible {
-
 	/// The window being bound.
 	///
 	/// This is weakly held so we don't potentially cause an ARC loop
 	public internal(set) weak var sheet: Sheet?
 
 	public var debugDescription: String {
-		return "ShsetBinder<\(String(describing: sheet))>"
+		return "ShsetBinder<\(String(describing: self.sheet))>"
 	}
 
 	/// Create an ElementBinder
-	public init() { }
+	public init() {}
 
 	/// Dismiss the sheet if it is currently being displayed
-	public func dismiss() {
-		self.sheet?.dismiss()
+	public func dismiss(result: Sheet.ReturnType) {
+		self.sheet?.dismiss(result: result)
 	}
 
 	deinit {
