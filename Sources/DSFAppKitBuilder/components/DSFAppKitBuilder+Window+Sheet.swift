@@ -83,28 +83,3 @@ public extension Sheet {
 		return self
 	}
 }
-
-// MARK: - Sheet binding
-
-public class SheetBinder: CustomDebugStringConvertible {
-	/// The window being bound.
-	///
-	/// This is weakly held so we don't potentially cause an ARC loop
-	public internal(set) weak var sheet: Sheet?
-
-	public var debugDescription: String {
-		return "ShsetBinder<\(String(describing: self.sheet))>"
-	}
-
-	/// Create an ElementBinder
-	public init() {}
-
-	/// Dismiss the sheet if it is currently being displayed
-	public func dismiss(result: Sheet.ReturnType) {
-		self.sheet?.dismiss(result: result)
-	}
-
-	deinit {
-		self.sheet = nil
-	}
-}

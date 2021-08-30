@@ -130,12 +130,12 @@ public class Window: NSObject {
 	}
 
 	// private
-	var title: String
-	var content: Element?
-	var windowController: NSWindowController?
-	let styleMask: NSWindow.StyleMask
-	let isMovableByWindowBackground: Bool
-	let frameAutosaveName: NSWindow.FrameAutosaveName?
+	private var title: String
+	private var content: Element?
+	private var windowController: NSWindowController?
+	private let styleMask: NSWindow.StyleMask
+	private let isMovableByWindowBackground: Bool
+	private let frameAutosaveName: NSWindow.FrameAutosaveName?
 
 	private var titleBinder: ValueBinder<String>?
 
@@ -159,7 +159,6 @@ public extension Window {
 	///   - sheet: The sheet to present
 	///   - contentRect: The initial size of the sheet being displayed
 	///   - completionBlock: The block to call when the sheet is dismissed
-
 	func presentModal(_ sheet: Sheet,
 							_ completionBlock: Sheet.CompletionBlock? = nil) {
 		guard let w = self.window,
@@ -356,31 +355,5 @@ private class WindowController: NSWindowController {
 		) { _ in
 			completion()
 		}
-	}
-}
-
-// MARK: - Window binding
-
-public class WindowBinder: CustomDebugStringConvertible {
-
-	/// The window being bound.
-	///
-	/// This is weakly held so we don't potentially cause an ARC loop
-	public internal(set) weak var window: Window?
-
-	public var debugDescription: String {
-		return "WindowBinder<\(String(describing: window))>"
-	}
-
-	/// Create an ElementBinder
-	public init() { }
-
-	/// Close the window if it is currently shown
-	public func close() {
-		self.window?.close()
-	}
-
-	deinit {
-		self.window = nil
 	}
 }
