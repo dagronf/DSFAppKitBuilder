@@ -107,7 +107,7 @@ public class ZLayer {
 
 #if swift(<5.3)
 @_functionBuilder
-public enum ZLayerBuilder {
+public enum ZLayersBuilder {
 	static func buildBlock() -> [ZLayer] { [] }
 }
 #else

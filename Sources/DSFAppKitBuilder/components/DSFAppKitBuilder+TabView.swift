@@ -237,7 +237,7 @@ private extension TabViewItem {
 #if swift(<5.3)
 @_functionBuilder
 public enum TabBuilder {
-	static func buildBlock() -> [Tab] { [] }
+	static func buildBlock() -> [TabViewItem] { [] }
 }
 #else
 @resultBuilder
