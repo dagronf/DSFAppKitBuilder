@@ -37,8 +37,8 @@ class MainTabs: NSObject, DSFAppKitBuilderViewHandler {
 	let tabTest = TabDSL()
 	let splitTest = SplitDSL()
 	let boxText = BoxDSL()
-
 	let zStack = ZStackDSL()
+	let windowView = WindowPopoverSheetDSL()
 
 	lazy var body: Element =
 	TabView(selectedIndex: 0) {
@@ -49,5 +49,6 @@ class MainTabs: NSObject, DSFAppKitBuilderViewHandler {
 		TabViewItem("Split") { self.splitTest.body }
 		TabViewItem("Box") { self.boxText.body }
 		TabViewItem("ZStack") { self.zStack.body }
+		TabViewItem("Window") { self.windowView.body }
 	}
 }
