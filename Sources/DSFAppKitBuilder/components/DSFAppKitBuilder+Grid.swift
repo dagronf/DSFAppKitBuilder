@@ -26,26 +26,44 @@
 
 import AppKit.NSView
 
-
-
+/// A wrapper for NSGridView. Only available in macOS 10.12 and above
+///
+/// Usage:
+///
+/// ```swift
+/// Grid {
+///    GridRow(bottomPadding: 5) {
+///       Label("Braille Translation:")
+///       PopupButton {
+///          MenuItem(title: "English (Unified)")
+///          MenuItem(title: "United States")
+///       }
+///    }
+///    GridRow {
+///       Grid.EmptyCell()
+///       CheckBox("Show Contracted Braille")
+///    }
+///    GridRow(bottomPadding: 5) {
+///       Grid.EmptyCell()
+///       CheckBox("Show Eight Dot Braille")
+///    }
+/// }
+/// ```
 @available(macOS 10.12, *)
 public class Grid: Element {
+	/// An empty cell element for grid cells that contain no element content
+	public static func EmptyCell() -> Element {
+		return Grid.EmptyCellInstance
+	}
+
+	/// Create a Grid
+	/// - Parameter builder: The builder for the rows for the grid
 	public init(@GridRowBuilder builder: () -> [GridRow]) {
 		self.rows = builder()
-
 		super.init()
 
-		// maximum number of cells in any row
-		let maxRowCellCount = rows.reduce(0) { result, row in
-			return max(result, row.rowCells.count)
-		}
-
-		rows.enumerated().forEach { row in
+		self.rows.enumerated().forEach { row in
 			let currentRowCells = row.1.rowCells
-			if currentRowCells.count != maxRowCellCount {
-				fatalError("Mismatched cell count in row \(row.0) - expecting \(maxRowCellCount), received \(currentRowCells.count)")
-			}
-
 			let rowCellViews = currentRowCells.map { $0.view() }
 			self.gridView.addRow(with: rowCellViews)
 			let rowItem = self.gridView.row(at: row.0)
@@ -54,7 +72,6 @@ public class Grid: Element {
 			rowItem.rowAlignment = row.1.rowAlignment
 
 			// Merge the cells that were specified
-
 			row.1.mergedCells.forEach { range in
 				rowItem.mergeCells(in: NSRange(range))
 			}
@@ -66,29 +83,40 @@ public class Grid: Element {
 	}
 
 	// Private
-	public override func view() -> NSView { return self.gridView }
-
-	public override func childElements() -> [Element] {
+	override public func view() -> NSView { return self.gridView }
+	override public func childElements() -> [Element] {
 		return self.rows
 			.map { $0.rowCells }
 			.reduce([]) { partialResult, elements in
-				return partialResult + elements
+				partialResult + elements
 			}
 	}
 
 	private let gridView = NSGridView()
-
 	private var hiddenRowsBinder: ValueBinder<NSSet>?
 	private var hiddenColumnsBinder: ValueBinder<NSSet>?
-
 	private var rows: [GridRow] = []
+
+	// Empty View placeholder
+	private static let EmptyCellInstance = EmptyCellObject()
+	private class EmptyCellObject: Element {
+		override public func view() -> NSView {
+			return NSGridCell.emptyContentView
+		}
+	}
 }
 
 @available(macOS 10.12, *)
 public extension Grid {
-
 	// Columns
 
+	/// Set the formatting for an entire column
+	/// - Parameters:
+	///   - xPlacement: The xPlacement
+	///   - leadingPadding: The padding to apply to the leading side of the column
+	///   - trailingPadding: The padding to apply to the trailing side of the column
+	///   - col: The column to apply the formatting to
+	/// - Returns: self
 	func columnFormatting(
 		xPlacement: NSGridCell.Placement? = nil,
 		leadingPadding: CGFloat? = nil,
@@ -137,8 +165,8 @@ public extension Grid {
 		yPlacement: NSGridCell.Placement = .inherited,
 		rowAlignment: NSGridRow.Alignment = .inherited,
 		atRowIndex row: Int,
-		columnIndex column: Int) -> Self
-	{
+		columnIndex column: Int
+	) -> Self {
 		let cell = self.gridView.cell(atColumnIndex: column, rowIndex: row)
 		cell.xPlacement = xPlacement
 		cell.yPlacement = yPlacement
@@ -146,10 +174,17 @@ public extension Grid {
 		return self
 	}
 
+	/// Add custom constraints to a cell
+	/// - Parameters:
+	///   - row: the cell's row
+	///   - column: the cell's column
+	///   - constraintBuilder: A block which returns an array of constraints to add
+	/// - Returns: self
 	func addingCellContraints(
 		atRowIndex row: Int,
 		columnIndex column: Int,
-		_ constraintBuilder: () -> [NSLayoutConstraint]) -> Self {
+		_ constraintBuilder: () -> [NSLayoutConstraint]
+	) -> Self {
 		let cell = self.gridView.cell(atColumnIndex: column, rowIndex: row)
 		let additionalConstraints = constraintBuilder()
 		if additionalConstraints.count > 0 {
@@ -193,7 +228,10 @@ public extension Grid {
 @available(macOS 10.12, *)
 public extension Grid {
 	/// Set the content hugging priorites for the grid
-	func contentHuggingPriority(h: NSLayoutConstraint.Priority? = nil, v: NSLayoutConstraint.Priority? = nil) -> Self {
+	func contentHuggingPriority(
+		h: NSLayoutConstraint.Priority? = nil,
+		v: NSLayoutConstraint.Priority? = nil
+	) -> Self {
 		if let h = h {
 			self.view().setContentHuggingPriority(h, for: .horizontal)
 		}
@@ -214,6 +252,7 @@ public extension Grid {
 
 // MARK: - Grid Row
 
+/// A row for the grid
 @available(macOS 10.12, *)
 public class GridRow {
 	/// Create a new row for the grid
@@ -227,8 +266,8 @@ public class GridRow {
 		bottomPadding: CGFloat = 0,
 		rowAlignment: NSGridRow.Alignment = .inherited,
 		mergeCells: [ClosedRange<Int>] = [],
-		@ElementBuilder builder: () -> [Element])
-	{
+		@ElementBuilder builder: () -> [Element]
+	) {
 		self.rowCells = builder()
 		self.topPadding = topPadding
 		self.bottomPadding = bottomPadding
@@ -246,7 +285,6 @@ public class GridRow {
 	fileprivate let mergedCells: [ClosedRange<Int>]
 	fileprivate let rowCells: [Element]
 }
-
 
 // MARK: - Result Builder for Grid Rows
 
