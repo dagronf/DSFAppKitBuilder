@@ -237,6 +237,7 @@ TextField()
 | `ColorWell`        | An `NSColorWell` wrapper |
 | `Divider`<br/>`HDivider/VDivider` | A divider element (a single line, either horizontal or vertical) |
 | `EmptyView`        | A spacer view |
+| `Grid`             | An `NSGridView` wrapper |
 | `Group`            | A element that contains another element |
 | `ImageView`        | An `NSImageView` wrapper |
 | `Label`            | An `NSTextField` wrapper configured as a read-only label |
@@ -304,6 +305,14 @@ The code is documented and will produce nice documentation for each element when
 ## Known bugs
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
+
+### 5.1.0
+
+* Added `NSGridView` support
+
+### 5.0.0
+
+* Some work on windows/sheets and popovers
 
 ### 4.3.0
 
