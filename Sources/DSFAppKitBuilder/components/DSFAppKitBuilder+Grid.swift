@@ -67,6 +67,15 @@ public class Grid: Element {
 
 	// Private
 	public override func view() -> NSView { return self.gridView }
+
+	public override func childElements() -> [Element] {
+		return self.rows
+			.map { $0.rowCells }
+			.reduce([]) { partialResult, elements in
+				return partialResult + elements
+			}
+	}
+
 	private let gridView = NSGridView()
 
 	private var hiddenRowsBinder: ValueBinder<NSSet>?
@@ -124,22 +133,17 @@ public extension Grid {
 	///   - row: The row of the cell to modify
 	///   - column: The column of the cell to modify
 	func cellFormatting(
-		xPlacement: NSGridCell.Placement? = nil,
-		yPlacement: NSGridCell.Placement? = nil,
-		rowAlignment: NSGridRow.Alignment? = nil,
+		xPlacement: NSGridCell.Placement = .inherited,
+		yPlacement: NSGridCell.Placement = .inherited,
+		rowAlignment: NSGridRow.Alignment = .inherited,
 		atRowIndex row: Int,
-		columnIndex column: Int)
+		columnIndex column: Int) -> Self
 	{
 		let cell = self.gridView.cell(atColumnIndex: column, rowIndex: row)
-		if let x = xPlacement {
-			cell.xPlacement = x
-		}
-		if let y = yPlacement {
-			cell.yPlacement = y
-		}
-		if let r = rowAlignment {
-			cell.rowAlignment = r
-		}
+		cell.xPlacement = xPlacement
+		cell.yPlacement = yPlacement
+		cell.rowAlignment = rowAlignment
+		return self
 	}
 
 	func addingCellContraints(
@@ -230,6 +234,10 @@ public class GridRow {
 		self.bottomPadding = bottomPadding
 		self.rowAlignment = rowAlignment
 		self.mergedCells = mergeCells
+	}
+
+	deinit {
+		Logger.Debug("Element [\(type(of: self))] deinit")
 	}
 
 	fileprivate let topPadding: CGFloat

@@ -45,7 +45,7 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 				HDivider()
 
 				HStack(alignment: .lastBaseline) {
-					CheckBox()
+					CheckBox("")
 					Label("Show")
 					PopupButton {
 						MenuItem(title: "window tab")
@@ -54,7 +54,7 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 					TextField("Window Name")
 				}
 				HStack(alignment: .lastBaseline) {
-					CheckBox()
+					CheckBox("")
 					PopupButton {
 						MenuItem(title: "Show")
 						MenuItem(title: "Hide")
@@ -70,7 +70,7 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 				}
 
 				HStack(alignment: .lastBaseline) {
-					CheckBox()
+					CheckBox("")
 					PopupButton {
 						MenuItem(title: "Show")
 						MenuItem(title: "Hide")
@@ -88,7 +88,7 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 				}
 
 				HStack(alignment: .lastBaseline) {
-					CheckBox()
+					CheckBox("")
 					PopupButton {
 						MenuItem(title: "Show")
 						MenuItem(title: "Hide")

@@ -92,6 +92,8 @@ public class VisualEffectView: Element {
 
 	// Private
 	override public func view() -> NSView { return self.visualView }
+	public override func childElements() -> [Element] { return [self.content] }
+
 	private let visualView: NSVisualEffectView
 	private let content: Element
 

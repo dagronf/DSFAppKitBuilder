@@ -80,6 +80,11 @@ public class SplitView: Control {
 
 	private let splitItems: [SplitViewItem]
 	public override func view() -> NSView { return self.splitView }
+	public override func childElements() -> [Element] {
+		return self.splitItems
+			.map { $0.viewController.content }
+	}
+
 	private let controller = NSSplitViewController(nibName: nil, bundle: nil)
 	private lazy var splitView: NSSplitView = {
 		controller.loadView()

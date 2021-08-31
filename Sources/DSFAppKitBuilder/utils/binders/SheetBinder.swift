@@ -46,6 +46,9 @@ public class SheetBinder: CustomDebugStringConvertible {
 	}
 
 	deinit {
+#if DEBUG
+		Logger.Debug("SheetBinder [\(String(describing: sheet))] deinit")
+#endif
 		self.sheet = nil
 	}
 }

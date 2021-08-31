@@ -105,3 +105,32 @@ public extension Switch {
 		return self
 	}
 }
+
+
+///// If we're running on 10.15+, use a Switch.  If not, fallback to using a checkbox
+//public class SafeSwitch: Element {
+//
+//	let onOffBinder: ValueBinder<Bool>
+//	let stateBinder: ValueBinder<NSControl.StateValue>
+//
+//	public init(onOffBinder: ValueBinder<Bool>,
+//					onOffBinder: ValueBinder<Bool>) {
+//		self.onOffBinder = onOffBinder
+//		super.init()
+//	}
+//
+//	public override func view() -> NSView {
+//		return self.body.view()
+//	}
+//
+//	lazy var body: Element = {
+//		if #available(macOS 10.15, *) {
+//			return Switch()
+//				.bindOnOffState(self.onOffBinder)
+//		}
+//		else {
+//			return CheckBox("")
+//				.bindOnOffState(self.onOffBinder)
+//		}
+//	}()
+//}

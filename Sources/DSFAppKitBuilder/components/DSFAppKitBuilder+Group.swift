@@ -84,12 +84,15 @@ public class Group: Element {
 	}
 
 	deinit {
-		Swift.print("ehhehehehehe")
+		
 	}
 
 	// Private
 
 	override public func view() -> NSView { return self.containerView }
+	override public func childElements() -> [Element] {
+		return [containedElement]
+	}
 	private let containerView: NSView
 	private let containedElement: Element
 }

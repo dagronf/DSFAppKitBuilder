@@ -90,6 +90,7 @@ public class ScrollView: Element {
 	private let scrollView = NSScrollView()
 	private let documentContent: Element
 	public override func view() -> NSView { return self.scrollView }
+	public override func childElements() -> [Element] { return [self.documentContent] } 
 }
 
 // MARK: - Modifiers

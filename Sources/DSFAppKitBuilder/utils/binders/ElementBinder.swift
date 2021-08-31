@@ -46,6 +46,9 @@ public class ElementBinder: CustomDebugStringConvertible {
 	public init() { }
 
 	deinit {
+#if DEBUG
+		Logger.Debug("ElementBinder [\(String(describing: element))] deinit")
+#endif
 		self.element = nil
 	}
 }

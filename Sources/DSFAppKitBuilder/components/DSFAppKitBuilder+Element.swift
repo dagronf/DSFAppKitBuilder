@@ -28,16 +28,12 @@ import AppKit.NSView
 
 /// The base element.
 open class Element: NSObject {
-
 	// Set to true in derived classes to receive a callback when the system theme changes
 	internal var receiveThemeNotifications = false {
 		willSet {
 			self.updateReceiveThemeNotifications(to: newValue)
 		}
 	}
-
-	/// Overridden in derived classes to return the root AppKit type for the element
-	open func view() -> NSView { fatalError() }
 
 	/// Overridden in derived classes to provide custom first responder behaviour
 	open func makeFirstResponder() {
@@ -60,7 +56,7 @@ open class Element: NSObject {
 	// Private
 
 	// Default constructor - should only be called from a derived class
-	public override init() {
+	override public init() {
 		super.init()
 		with(self.view()) {
 			$0.wantsLayer = true
@@ -73,6 +69,12 @@ open class Element: NSObject {
 		self.isHiddenBinder?.deregister(self)
 		Logger.Debug("Element [\(type(of: self))] deinit")
 	}
+
+	/// Overridden in derived classes to return the root AppKit type for the element
+	open func view() -> NSView { fatalError() }
+
+	/// Overridden in derived classes to return the child elements of this element
+	open func childElements() -> [Element] { return [] }
 
 	// Returns the layer defined for the root AppKit element view type
 	var nsLayer: CALayer? { return self.view().layer }
@@ -89,7 +91,6 @@ open class Element: NSObject {
 // MARK: - Dark mode handling
 
 extension Element {
-
 	// Called when the element is setting the 'receiveThemeNotifications' value
 	private func updateReceiveThemeNotifications(to newValue: Bool) {
 		if newValue == self.receiveThemeNotifications {
@@ -111,7 +112,8 @@ extension Element {
 			ThemeNotificationCenter.removeObserver(
 				self,
 				name: NSNotification.Name.ThemeChangedNotification,
-				object: nil)
+				object: nil
+			)
 		}
 	}
 
@@ -163,16 +165,16 @@ public extension Element {
 
 	/// Set the background color
 	func backgroundColor(_ color: NSColor) -> Self {
-		self.receiveThemeNotifications = true   // Background color uses CGColor, so we have to update manually
-		_backgroundColor = color
+		self.receiveThemeNotifications = true // Background color uses CGColor, so we have to update manually
+		self._backgroundColor = color
 		self.nsLayer?.backgroundColor = color.cgColor
 		return self
 	}
 
 	/// Set the border width and color for the element
 	func border(width: CGFloat, color: NSColor) -> Self {
-		self.receiveThemeNotifications = true   // Border color uses CGColor, so we have to update manually
-		_borderColor = color
+		self.receiveThemeNotifications = true // Border color uses CGColor, so we have to update manually
+		self._borderColor = color
 		self.nsLayer?.borderColor = color.cgColor
 		self.nsLayer?.borderWidth = width
 		return self
@@ -181,6 +183,16 @@ public extension Element {
 	/// Set the corner radius for the element
 	func cornerRadius(_ amount: CGFloat) -> Self {
 		self.nsLayer?.cornerRadius = amount
+		return self
+	}
+
+	/// Apply a block function recursively over the element and all of its children
+	@discardableResult
+	func applyRecursively( _ block: (Element) -> Void) -> Self {
+		block(self)
+		self.childElements().forEach { element in
+			element.applyRecursively(block)
+		}
 		return self
 	}
 
@@ -248,7 +260,6 @@ public extension Element {
 	func size(width: CGFloat, height: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		return self.width(width, priority: priority).height(height, priority: priority)
 	}
-
 }
 
 // MARK: - Binding

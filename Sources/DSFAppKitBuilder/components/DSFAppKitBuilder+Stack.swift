@@ -63,6 +63,8 @@ public class Stack: Element {
 
 	// Private
 	public override func view() -> NSView { return self.stack }
+	public override func childElements() -> [Element] { return self.content }
+
 	private let stack = NSStackView()
 	private let content: [Element]
 }
