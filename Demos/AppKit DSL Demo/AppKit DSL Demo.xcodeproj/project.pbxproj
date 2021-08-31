@@ -21,6 +21,7 @@
 		2351367C26B3DAAE0026EAA1 /* BoxDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */; };
 		237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */; };
 		23C6E90A26AF971600FBF106 /* PrimaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C6E90926AF971600FBF106 /* PrimaryDSL.swift */; };
+		23EBC53626DDA0CC001A861E /* GridDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC53526DDA0CC001A861E /* GridDSL.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxDSL.swift; sourceTree = "<group>"; };
 		237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollerTestDSL.swift; sourceTree = "<group>"; };
 		23C6E90926AF971600FBF106 /* PrimaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDSL.swift; sourceTree = "<group>"; };
+		23EBC53526DDA0CC001A861E /* GridDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridDSL.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				232EC66226B223C40042C7F7 /* SplitDSL.swift */,
 				2324632526C11A2800FF3158 /* ZStackDSL.swift */,
 				23063A6026DC69DE00AC7715 /* WindowPopoverSheetDSL.swift */,
+				23EBC53526DDA0CC001A861E /* GridDSL.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 				23C6E90A26AF971600FBF106 /* PrimaryDSL.swift in Sources */,
 				2304027926AF7E5F002016FD /* AppDelegate.swift in Sources */,
 				2351367C26B3DAAE0026EAA1 /* BoxDSL.swift in Sources */,
+				23EBC53626DDA0CC001A861E /* GridDSL.swift in Sources */,
 				237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */,
 				2324632626C11A2800FF3158 /* ZStackDSL.swift in Sources */,
 			);
@@ -343,6 +347,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.swiftdsl.AppKit-DSL-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -370,6 +375,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.swiftdsl.AppKit-DSL-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";

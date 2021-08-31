@@ -65,3 +65,10 @@ extension NSView {
 	}
 
 }
+
+extension NSLayoutConstraint.Priority {
+	@inlinable static func ValueOrNil(_ value: Float?) -> NSLayoutConstraint.Priority? {
+		guard let v = value else { return nil }
+		return NSLayoutConstraint.Priority(rawValue: v)
+	}
+}

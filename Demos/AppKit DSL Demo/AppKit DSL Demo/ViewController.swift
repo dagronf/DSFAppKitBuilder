@@ -39,6 +39,7 @@ class MainTabs: NSObject, DSFAppKitBuilderViewHandler {
 	let boxText = BoxDSL()
 	let zStack = ZStackDSL()
 	let windowView = WindowPopoverSheetDSL()
+	let gridView = GridDSL()
 
 	lazy var body: Element =
 	TabView(selectedIndex: 0) {
@@ -50,5 +51,6 @@ class MainTabs: NSObject, DSFAppKitBuilderViewHandler {
 		TabViewItem("Box") { self.boxText.body }
 		TabViewItem("ZStack") { self.zStack.body }
 		TabViewItem("Window") { self.windowView.body }
+		TabViewItem("Grid") { self.gridView.body }
 	}
 }
