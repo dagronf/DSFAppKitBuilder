@@ -13,6 +13,13 @@ class GridDSL: NSObject, DSFAppKitBuilderViewHandler {
 	let showTextStyleBinder = ElementBinder()
 	let showAlertBinder = ElementBinder()
 
+	let showContractedBraille = ValueBinder(false) { newValue in
+		Swift.print("Show Contracted Braille is now \(newValue)")
+	}
+	let showEightDotBraille = ValueBinder(true) { newValue in
+		Swift.print("Show Eight Dot Braille is now \(newValue)")
+	}
+
 	lazy var body: Element =
 		Group(layoutType: .center) {
 			Grid {
@@ -26,10 +33,12 @@ class GridDSL: NSObject, DSFAppKitBuilderViewHandler {
 				GridRow {
 					Grid.EmptyCell()
 					CheckBox("Show Contracted Braille")
+						.bindOnOffState(self.showContractedBraille)
 				}
 				GridRow(bottomPadding: 5) {
 					Grid.EmptyCell()
 					CheckBox("Show Eight Dot Braille")
+						.bindOnOffState(self.showEightDotBraille)
 				}
 				GridRow {
 					Label("Status Cells:")

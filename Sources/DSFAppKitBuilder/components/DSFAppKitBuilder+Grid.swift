@@ -227,7 +227,7 @@ public extension Grid {
 
 @available(macOS 10.12, *)
 public extension Grid {
-	/// Set the content hugging priorites for the grid
+	/// Sets the priority with which a view resists being made larger than its intrinsic size.
 	func contentHuggingPriority(
 		h: NSLayoutConstraint.Priority? = nil,
 		v: NSLayoutConstraint.Priority? = nil
@@ -241,8 +241,8 @@ public extension Grid {
 		return self
 	}
 
-	/// Set the content hugging priorites for the grid
-	func contentHuggingPriority(h: Float? = nil, v: Float? = nil) -> Self {
+	/// Sets the priority with which a view resists being made larger than its intrinsic size.
+	@inlinable func contentHuggingPriority(h: Float? = nil, v: Float? = nil) -> Self {
 		return self.contentHuggingPriority(
 			h: NSLayoutConstraint.Priority.ValueOrNil(h),
 			v: NSLayoutConstraint.Priority.ValueOrNil(v)
@@ -260,6 +260,7 @@ public class GridRow {
 	///   - topPadding: Extra padding for the top of the row
 	///   - bottomPadding: Extra padding for the bottom of the row
 	///   - rowAlignment: The vertical alignment of items in the row. Defaults to .inherited
+	///   - mergeCells: An array of cell ranges to merge within the row
 	///   - builder: The builder for the row elements
 	public init(
 		topPadding: CGFloat = 0,
