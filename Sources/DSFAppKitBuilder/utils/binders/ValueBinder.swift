@@ -37,6 +37,11 @@ public class ValueBinder<TYPE: Any> {
 		}
 	}
 
+	/// Combine Publisher
+	lazy var publisher: ValuePublisher<TYPE?> = {
+		ValuePublisher<TYPE?>()
+	}()
+
 	/// Create a bound value
 	///
 	/// - Parameters:
@@ -110,23 +115,7 @@ public extension ValueBinder {
 	}
 }
 
-// MARK: - Value handling
-
-private extension ValueBinder {
-
-	// Called when the wrappedValue is updated
-	func valueDidChange() {
-		let value = self.wrappedValue
-		self.bindings.forEach { binding in
-			binding.didChange(value)
-		}
-	}
-
-	// Remove any inactive bindings
-	func cleanupInactiveBindings() {
-		self.bindings = self.bindings.filter { $0.isAlive }
-	}
-}
+// MARK: - Value Binding
 
 private extension ValueBinder {
 	// A binding object that stores an object and a callback for a valuebinder
@@ -159,6 +148,93 @@ private extension ValueBinder {
 			}
 			else {
 				self.deregister()
+			}
+		}
+	}
+}
+
+// MARK: - Value handling
+
+private extension ValueBinder {
+	// Called when the wrappedValue is updated
+	func valueDidChange() {
+		let value = self.wrappedValue
+		self.bindings.forEach { binding in
+			binding.didChange(value)
+		}
+
+		// Update the publisher value for combine. Does nothing for < 10.15
+		if self.publisher.isPublishing {
+			self.publisher.updatePublishedValue(self.wrappedValue)
+		}
+	}
+
+	// Remove any inactive bindings
+	func cleanupInactiveBindings() {
+		self.bindings = self.bindings.filter { $0.isAlive }
+	}
+}
+
+// MARK: - Combine Publishing
+
+#if canImport(Combine)
+import Combine
+#endif
+
+public extension ValueBinder {
+	/// A Combine publisher for the ValueBinder. Only available in 10.15+
+	///
+	/// Usage:
+	///
+	/// ```swift
+	/// import Combine
+	/// ...
+	/// var passwordCancellable: AnyCancellable?
+	/// var password = ValueBinder("")
+	/// ...
+	/// self.passwordCancellable = self.password.publishedValue.sink(receiveValue: { currentValue in
+	///    if let c = currentValue {
+	///       print("password is now \(c)")
+	///    }
+	///    else {
+	///       print("password is empty")
+	///    }
+	/// })
+	@available(macOS 10.15, *)
+	var publishedValue: CurrentValueSubject<TYPE??, Never> {
+		return self.publisher.publishedValue
+	}
+
+	/// A ValueBinder publisher wrapper class
+	class ValuePublisher<TYPE: Any> {
+
+		deinit {
+			if isPublishing {
+				Logger.Debug("ValuePublisher<\(type(of: self))> deinit...")
+			}
+		}
+
+		/// Is the current ValuePublisher currently publishing values?
+		public private(set) var isPublishing: Bool = false
+
+		/// A Combine publisher for the ValueBinder's wrapped value
+		@available(macOS 10.15, *)
+		public var publishedValue: CurrentValueSubject<TYPE?, Never> {
+			return self.observableCurrentObject as! CurrentValueSubject<TYPE?, Never>
+		}
+
+		private lazy var observableCurrentObject: AnyObject? = {
+			if #available(macOS 10.15, *) {
+				self.isPublishing = true
+				return CurrentValueSubject<TYPE?, Never>(nil)
+			}
+			return nil
+		}()
+
+		// Update the publisher value for combine. Does nothing for < 10.15
+		fileprivate func updatePublishedValue(_ newValue: TYPE?) {
+			if #available(macOS 10.15, *) {
+				self.publishedValue.value = newValue
 			}
 		}
 	}
