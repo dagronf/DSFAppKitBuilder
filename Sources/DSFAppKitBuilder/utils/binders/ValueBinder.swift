@@ -1,5 +1,5 @@
 //
-//  Bind.swift
+//  ValueBinder.swift
 //
 //  Created by Darren Ford on 10/8/21
 //
@@ -29,11 +29,24 @@ import Foundation
 // MARK: - ValueBinder
 
 /// A wrapped value binder for sharing dynamic values between elements
-public class ValueBinder<TYPE: Any> {
+public class ValueBinder<TYPE: Any>: NSObject {
 	/// The wrapped value to be bound against
 	public var wrappedValue: TYPE {
 		didSet {
 			self.valueDidChange()
+		}
+	}
+
+	// Called when the wrappedValue is updated
+	open func valueDidChange() {
+		let value = self.wrappedValue
+		self.bindings.forEach { binding in
+			binding.didChange(value)
+		}
+
+		// Update the publisher value for combine. Does nothing for < 10.15
+		if self.publisher.isPublishing {
+			self.publisher.updatePublishedValue(self.wrappedValue)
 		}
 	}
 
@@ -59,6 +72,7 @@ public class ValueBinder<TYPE: Any> {
 	/// ```
 	public init(_ value: TYPE, _ changeCallback: ((TYPE) -> Void)? = nil) {
 		self.wrappedValue = value
+		super.init()
 
 		// If a callback is requested, then set ourselves up as a binding too
 		if let callback = changeCallback {
@@ -67,9 +81,9 @@ public class ValueBinder<TYPE: Any> {
 	}
 
 	deinit {
-#if DEBUG
+		#if DEBUG
 		Logger.Debug("ValueBinder<\(type(of: self.wrappedValue))> [\(type(of: self))] deinit")
-#endif
+		#endif
 		self.deregisterAll()
 	}
 
@@ -85,9 +99,9 @@ public extension ValueBinder {
 	///   - object: The registering object. Held weakly to detect when the registering object is deallocated and we should no longer call the change block
 	///   - changeBlock: The block to call when the value in the ValueBinder instance changes
 	func register(_ object: AnyObject, _ changeBlock: @escaping (TYPE) -> Void) {
-#if DEBUG
+		#if DEBUG
 		Logger.Debug("ValueBinder<\(type(of: self.wrappedValue))> [\(type(of: object))] register...")
-#endif
+		#endif
 
 		// First a little housekeeping...
 		self.cleanupInactiveBindings()
@@ -102,9 +116,9 @@ public extension ValueBinder {
 	// Deregister a binding
 	// - Parameter object: The object to deregister
 	func deregister(_ object: AnyObject) {
-#if DEBUG
+		#if DEBUG
 		Logger.Debug("ValueBinder<\(type(of: self.wrappedValue))> [\(type(of: object))] ...deregistered!")
-#endif
+		#endif
 		self.bindings = self.bindings.filter { $0.isAlive && $0.object !== object }
 	}
 
@@ -156,19 +170,6 @@ private extension ValueBinder {
 // MARK: - Value handling
 
 private extension ValueBinder {
-	// Called when the wrappedValue is updated
-	func valueDidChange() {
-		let value = self.wrappedValue
-		self.bindings.forEach { binding in
-			binding.didChange(value)
-		}
-
-		// Update the publisher value for combine. Does nothing for < 10.15
-		if self.publisher.isPublishing {
-			self.publisher.updatePublishedValue(self.wrappedValue)
-		}
-	}
-
 	// Remove any inactive bindings
 	func cleanupInactiveBindings() {
 		self.bindings = self.bindings.filter { $0.isAlive }
@@ -207,7 +208,6 @@ public extension ValueBinder {
 
 	/// A ValueBinder publisher wrapper class
 	class ValuePublisher<TYPE: Any> {
-
 		deinit {
 			if isPublishing {
 				Logger.Debug("ValuePublisher<\(type(of: self))> deinit...")
