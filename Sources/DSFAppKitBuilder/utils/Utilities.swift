@@ -77,3 +77,8 @@ extension Collection {
 		return !self.isEmpty
 	}
 }
+
+extension NSSet {
+	@inlinable var isEmpty: Bool { return self.count == 0 }
+	@inlinable var isNotEmpty: Bool { return self.count > 0 }
+}
