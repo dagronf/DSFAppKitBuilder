@@ -28,6 +28,52 @@ import Foundation
 
 /// A read-only key-path binder
 public class KeyPathBinder<TYPE: Any>: KeyPathBinderCore<TYPE> {
+	/// Create a readonly keypath value binder
+	///
+	/// - Parameters:
+	///   - value: The initial value for the binding
+	///   - changeCallback: (optional) A callback block to call when the value changes
+	///
+	/// Example usage:
+	/// ```swift
+	/// let firstNameBinder = ValueBinder("") { newValue in
+	///    Swift.print("firstName changed to '\(newValue)'")
+	/// }
+	/// let ageBinder = ValueBinder(21) { newValue in
+	///    Swift.print("age changed to '\(newValue)'")
+	/// }
+	/// ```
+	override public init(
+		_ value: TYPE,
+		_ changeCallback: ((TYPE) -> Void)? = nil
+	) {
+		super.init(value, changeCallback)
+	}
+
+	/// Create and listen to changes in an object and keypath. Read only.
+	///
+	/// - Parameters:
+	///   - value: The initial value for the binding
+	///   - observable: The object to observe
+	///   - keyPath: The keypath to observe within the object
+	///   - changeCallback: (optional) A callback block to call when the value changes
+	public init<TARGET>(
+		_ value: TYPE,
+		observable: NSObject,
+		keyPath: KeyPath<TARGET, TYPE>,
+		_ changeCallback: ((TYPE) -> Void)? = nil
+	) {
+		super.init(value, changeCallback)
+
+		self.wrappedValue = value
+
+		// If a callback is requested, then set ourselves up as a binding too
+		if let callback = changeCallback {
+			self.register(self, callback)
+		}
+
+		self.listen(observable: observable, keyPath: keyPath)
+	}
 
 	/// Listen to changes in an object and keypath. Read only.
 	///
@@ -35,7 +81,6 @@ public class KeyPathBinder<TYPE: Any>: KeyPathBinderCore<TYPE> {
 	///   - observable: The object to observe
 	///   - keyPath: The keypath to observe within the object
 	public func listen<TARGET>(observable: NSObject, keyPath: KeyPath<TARGET, TYPE>) {
-
 		// Unbind if we are already bound.
 		self.unbind()
 
@@ -59,12 +104,58 @@ public class KeyPathBinder<TYPE: Any>: KeyPathBinderCore<TYPE> {
 
 /// A ValueBinder that can sync with a observable keypath
 public class WritableKeyPathBinder<TYPE: Any>: KeyPathBinderCore<TYPE> {
+	/// Create a read/write keypath value binder
+	///
+	/// - Parameters:
+	///   - value: The initial value for the binding
+	///   - changeCallback: (optional) A callback block to call when the value changes
+	///
+	/// Example usage:
+	/// ```swift
+	/// let firstNameBinder = ValueBinder("") { newValue in
+	///    Swift.print("firstName changed to '\(newValue)'")
+	/// }
+	/// let ageBinder = ValueBinder(21) { newValue in
+	///    Swift.print("age changed to '\(newValue)'")
+	/// }
+	/// ```
+	override public init(
+		_ value: TYPE,
+		_ changeCallback: ((TYPE) -> Void)? = nil
+	) {
+		super.init(value, changeCallback)
+	}
+
+	/// Create and sync to changes in an object and keypath (read/write).
+	///
+	/// - Parameters:
+	///   - value: The initial value for the binding
+	///   - observable: The object to observe
+	///   - keyPath: The keypath to observe within the object
+	///   - changeCallback: (optional) A callback block to call when the value changes
+	public init<TARGET>(
+		_ value: TYPE,
+		observable: NSObject,
+		keyPath: ReferenceWritableKeyPath<TARGET, TYPE>,
+		_ changeCallback: ((TYPE) -> Void)? = nil
+	) {
+		super.init(value, changeCallback)
+
+		self.wrappedValue = value
+
+		// If a callback is requested, then set ourselves up as a binding too
+		if let callback = changeCallback {
+			self.register(self, callback)
+		}
+
+		self.bind(observable: observable, keyPath: keyPath)
+	}
+
 	/// Two-way bind an object and keypath
 	/// - Parameters:
 	///   - observable: The object to observe
 	///   - keyPath: The keypath to observe within the object
 	public func bind<TARGET>(observable: NSObject, keyPath: ReferenceWritableKeyPath<TARGET, TYPE>) {
-
 		// Unbind if we are already bound.
 		self.unbind()
 
@@ -81,15 +172,14 @@ public class WritableKeyPathBinder<TYPE: Any>: KeyPathBinderCore<TYPE> {
 	}
 }
 
-
 /////
-
 
 public class KeyPathBinderCore<TYPE: Any>: ValueBinder<TYPE> {
 	/// Disconnect the keypath binding
 	public func unbind() {
 		if let observer = self.bindValueObserver,
-			let keyPath = self.bindStringKeyPath {
+		   let keyPath = self.bindStringKeyPath
+		{
 			observer.removeObserver(self, forKeyPath: keyPath)
 			self.bindValueObserver = nil
 			self.bindStringKeyPath = nil
@@ -101,42 +191,42 @@ public class KeyPathBinderCore<TYPE: Any>: ValueBinder<TYPE> {
 	}
 
 	/// Called when the keypath is updated
-	public override func observeValue(
+	override public func observeValue(
 		forKeyPath keyPath: String?,
 		of object: Any?,
 		change: [NSKeyValueChangeKey: Any]?,
-		context: UnsafeMutableRawPointer?)
-	{
+		context: UnsafeMutableRawPointer?
+	) {
 		if let kp = self.bindStringKeyPath,
-			kp == keyPath,
-			let newVal = change?[.newKey] as? TYPE
+		   kp == keyPath,
+		   let newVal = change?[.newKey] as? TYPE
 		{
 			self.isUpdatingFromBinding = true
 			self.wrappedValue = newVal
 			self.isUpdatingFromBinding = false
 		}
-		else
-		{
+		else {
 			super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
 		}
 	}
 
-	/// Called when the ValueBinder value changed
-	public override func valueDidChange() {
+	/// Called when the ValueBinder value changed. Push our wrapped value back into the object/keypath
+	override public func valueDidChange() {
 		super.valueDidChange()
 
-		if !isUpdatingFromBinding {
-			isUpdatingFromBinding = true
+		if !self.isUpdatingFromBinding {
+			self.isUpdatingFromBinding = true
 			if let obs = self.bindValueObserver,
-				let kp = self.bindStringKeyPath {
+			   let kp = self.bindStringKeyPath
+			{
 				obs.setValue(self.wrappedValue, forKeyPath: kp)
 			}
-			isUpdatingFromBinding = false
+			self.isUpdatingFromBinding = false
 		}
 	}
 
 	// If value binding to a key path
 	fileprivate(set) weak var bindValueObserver: NSObject?
 	fileprivate var bindStringKeyPath: String?
-	fileprivate var isUpdatingFromBinding: Bool = false
+	fileprivate var isUpdatingFromBinding = false
 }
