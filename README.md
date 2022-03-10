@@ -216,6 +216,8 @@ VStack {
 }
 ```
 
+You can see this in action in the 'Simple AppKitBuilder Test' demo.
+
 ### Autolayout helpers
 
 * Set the hugging and compression resistance on each element

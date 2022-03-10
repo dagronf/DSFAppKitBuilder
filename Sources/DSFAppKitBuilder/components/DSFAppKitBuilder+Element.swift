@@ -158,12 +158,14 @@ extension Element {
 
 public extension Element {
 	/// Set the tooltip to be displayed for this control
+	@discardableResult
 	func toolTip(_ tip: String) -> Self {
 		self.view().toolTip = tip
 		return self
 	}
 
 	/// Set the background color
+	@discardableResult
 	func backgroundColor(_ color: NSColor) -> Self {
 		self.receiveThemeNotifications = true // Background color uses CGColor, so we have to update manually
 		self._backgroundColor = color
@@ -172,6 +174,7 @@ public extension Element {
 	}
 
 	/// Set the border width and color for the element
+	@discardableResult
 	func border(width: CGFloat, color: NSColor) -> Self {
 		self.receiveThemeNotifications = true // Border color uses CGColor, so we have to update manually
 		self._borderColor = color
@@ -181,6 +184,7 @@ public extension Element {
 	}
 
 	/// Set the corner radius for the element
+	@discardableResult
 	func cornerRadius(_ amount: CGFloat) -> Self {
 		self.nsLayer?.cornerRadius = amount
 		return self
@@ -196,7 +200,8 @@ public extension Element {
 		return self
 	}
 
-	/// Block to call when the element is configured.  The block will be passed the embedded AppKit control
+	/// Provide a block to call _after_ the element is created and the embedded AppKit control is initially available.
+	@discardableResult
 	func additionalAppKitControlSettings<VIEWTYPE>(_ block: (VIEWTYPE) -> Void) -> Self {
 		block(self.view() as! VIEWTYPE)
 		return self
@@ -206,7 +211,23 @@ public extension Element {
 // MARK: - Dimensions
 
 public extension Element {
+	/// Set a size for the element
+	/// - Parameters:
+	///   - width: The width for the element
+	///   - height: The height for the element
+	///   - priority: The priority to apply to both the width and the height
+	/// - Returns: Self
+	@discardableResult
+	func size(width: CGFloat, height: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+		return self.width(width, priority: priority).height(height, priority: priority)
+	}
+}
+
+// MARK: Width setting
+
+public extension Element {
 	/// Set the width of the element
+	@discardableResult
 	func width(_ value: CGFloat, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		with(self.view()) {
 			let c = NSLayoutConstraint(item: $0, attribute: .width, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
@@ -217,21 +238,29 @@ public extension Element {
 	}
 
 	/// Set the width of the element
+	@discardableResult
 	func width(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		return self.width(value, relation: .equal, priority: priority)
 	}
 
 	/// Set the minimum width of the element
+	@discardableResult
 	func minWidth(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		return self.width(value, relation: .greaterThanOrEqual, priority: priority)
 	}
 
 	/// Set the maximum width of the element
+	@discardableResult
 	func maxWidth(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		return self.width(value, relation: .lessThanOrEqual, priority: priority)
 	}
+}
 
+// MARK: Height setting
+
+public extension Element {
 	/// Set the height of the element
+	@discardableResult
 	func height(_ value: CGFloat, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		with(self.view()) {
 			let c = NSLayoutConstraint(item: $0, attribute: .height, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
@@ -242,23 +271,21 @@ public extension Element {
 	}
 
 	/// Set the height of the element
+	@discardableResult
 	func height(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		return self.height(value, relation: .equal, priority: priority)
 	}
 
 	/// Set the minimum height of the element
+	@discardableResult
 	func minHeight(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		return self.height(value, relation: .greaterThanOrEqual, priority: priority)
 	}
 
 	/// Set the maximum height of the element
+	@discardableResult
 	func maxHeight(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		return self.height(value, relation: .lessThanOrEqual, priority: priority)
-	}
-
-	/// Set a size for the element
-	func size(width: CGFloat, height: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		return self.width(width, priority: priority).height(height, priority: priority)
 	}
 }
 
@@ -266,6 +293,7 @@ public extension Element {
 
 public extension Element {
 	/// Binding for showing or hiding the element
+	@discardableResult
 	func bindIsHidden(_ isHiddenBinder: ValueBinder<Bool>) -> Self {
 		self.isHiddenBinder = isHiddenBinder
 		isHiddenBinder.register(self) { [weak self] newValue in
@@ -275,6 +303,7 @@ public extension Element {
 	}
 
 	/// Bind this element to an ElementBinder
+	@discardableResult
 	func bindElement(_ elementBinder: ElementBinder) -> Self {
 		elementBinder.element = self
 		return self
