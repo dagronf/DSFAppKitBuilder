@@ -35,9 +35,10 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 				.verticalPriorities(hugging: 10, compressionResistance: 10)
 				.horizontalPriorities(hugging: 10, compressionResistance: 10)
 			}
+			.hugging(h: 10, v: 10)
 			.verticalPriorities(hugging: 10, compressionResistance: 10)
 			.horizontalPriorities(hugging: 10, compressionResistance: 10)
-			.hugging(h: 10, v: 10)
+			.contentHugging(h: 10, v: 10)
 		}
 		.horizontalPriorities(hugging: 10, compressionResistance: 10)
 
@@ -47,20 +48,25 @@ class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 			Label("item2").horizontalPriorities(hugging: 1)
 			EmptyView()
 		}
-		.hugging(h: 10)
+		.hugging(h: 10, v: 10)
+		.contentHugging(h: 10)
 		.backgroundColor(.systemRed)
 	lazy var split2: Element =
 		VStack {
 			Label("second")
+				.horizontalPriorities(hugging: 10)
 			EmptyView()
 		}
-		.hugging(h: 10)
+		.hugging(h: 10, v: 10)
+		.contentHugging(h: 10)
 		.backgroundColor(.systemGreen)
 	lazy var split3: Element =
 		VStack {
 			Label("third")
+				.horizontalPriorities(hugging: 10)
 			EmptyView()
 		}
-		.hugging(h: 10)
+		.hugging(h: 10, v: 10)
+		.contentHugging(h: 10)
 		.backgroundColor(.systemBlue)
 }

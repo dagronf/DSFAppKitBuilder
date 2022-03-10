@@ -55,7 +55,7 @@ class WindowPopoverSheetDSL: NSObject, DSFAppKitBuilderViewHandler {
 				EmptyView()
 			}
 			.edgeInsets(8)
-			.hugging(h: 10)
+			.contentHugging(h: 10)
 			.horizontalPriorities(hugging: 10, compressionResistance: 10)
 			.verticalPriorities(hugging: 10, compressionResistance: 10)
 		}

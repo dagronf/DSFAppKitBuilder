@@ -91,7 +91,7 @@ public extension Stack {
 	}
 
 	/// Set the hugging priorites for the stack
-	func hugging(h: NSLayoutConstraint.Priority? = nil, v: NSLayoutConstraint.Priority? = nil) -> Self {
+	func contentHugging(h: NSLayoutConstraint.Priority? = nil, v: NSLayoutConstraint.Priority? = nil) -> Self {
 		if let h = h {
 			self.view().setContentHuggingPriority(h, for: .horizontal)
 		}
@@ -102,12 +102,17 @@ public extension Stack {
 	}
 
 	/// Set the hugging priorites for the stack
+	func contentHugging(h: Float? = nil, v: Float? = nil) -> Self {
+		return self.contentHugging(h: .ValueOrNil(h), v: .ValueOrNil(v))
+	}
+
+	/// Sets the Auto Layout priority for the stack view to minimize its size, for a specified user interface axis.
 	func hugging(h: Float? = nil, v: Float? = nil) -> Self {
-		if let h = h {
-			self.view().setContentHuggingPriority(NSLayoutConstraint.Priority(h), for: .horizontal)
+		if let h = NSLayoutConstraint.Priority.ValueOrNil(h) {
+			self.stack.setHuggingPriority(h, for: .horizontal)
 		}
-		if let v = v {
-			self.view().setContentHuggingPriority(NSLayoutConstraint.Priority(v), for: .vertical)
+		if let v = NSLayoutConstraint.Priority.ValueOrNil(v) {
+			self.stack.setHuggingPriority(v, for: .vertical)
 		}
 		return self
 	}

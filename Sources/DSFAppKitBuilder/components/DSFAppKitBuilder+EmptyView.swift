@@ -29,13 +29,17 @@ import AppKit.NSView
 /// An empty 'spacer' view.
 public class EmptyView: Element {
 
-	/// Create an empty (spacer) view
-	public override init() {
-		super.init()
-	}
-
 	// Private
 
-	private let emptyView = NSView()
+	private let emptyView: NSView = {
+		let v = NSView()
+		v.translatesAutoresizingMaskIntoConstraints = false
+		v.setContentHuggingPriority(.defaultLow, for: .horizontal)
+		v.setContentHuggingPriority(.defaultLow, for: .vertical)
+		v.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+		v.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+		return v
+	}()
+
 	public override func view() -> NSView { return emptyView }
 }

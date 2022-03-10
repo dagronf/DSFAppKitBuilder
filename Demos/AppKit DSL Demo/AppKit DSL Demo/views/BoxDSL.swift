@@ -25,7 +25,7 @@ class BoxDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.horizontalPriorities(hugging: 100, compressionResistance: 100)
 				}
 				.edgeInsets(8)
-				.hugging(h: 10)
+				.contentHugging(h: 10)
 			}
 			.verticalPriorities(hugging: 100)
 			.horizontalPriorities(hugging: 100)
@@ -47,7 +47,7 @@ class BoxDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.horizontalPriorities(hugging: 10, compressionResistance: 10)
 				}
 				.edgeInsets(8)
-				.hugging(h: 10)
+				.contentHugging(h: 10)
 			}
 			.verticalPriorities(hugging: 100)
 			.horizontalPriorities(hugging: 100)
@@ -74,7 +74,7 @@ class BoxDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.horizontalPriorities(hugging: 10, compressionResistance: 10)
 				}
 				.edgeInsets(8)
-				.hugging(h: 10)
+				.contentHugging(h: 10)
 			}
 			.verticalPriorities(hugging: 100)
 			.horizontalPriorities(hugging: 100)
@@ -91,7 +91,7 @@ class BoxDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.horizontalPriorities(hugging: 10, compressionResistance: 10)
 				}
 				.edgeInsets(8)
-				.hugging(h: 10)
+				.contentHugging(h: 10)
 			}
 			.verticalPriorities(hugging: 100)
 			.horizontalPriorities(hugging: 100)
