@@ -7,6 +7,7 @@
 
 import AppKit
 import DSFAppKitBuilder
+import DSFMenuBuilder
 
 class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
@@ -80,10 +81,10 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					.lineBreakMode(.byTruncatingHead)
 					.horizontalPriorities(hugging: .defaultLow)
 				PopupButton {
-					MenuItem(title: "Cats")
-					MenuItem(title: "Dogs")
-					MenuItem.Divider()
-					MenuItem(title: "Caterpillar")
+					MenuItem("Cats")
+					MenuItem("Dogs")
+					Separator()
+					MenuItem("Caterpillar")
 				}
 				.onChange { popupIndex in
 					Swift.print("popup changed - now \(popupIndex)")

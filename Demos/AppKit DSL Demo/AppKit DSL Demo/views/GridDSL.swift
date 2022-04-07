@@ -7,6 +7,7 @@
 
 import AppKit
 import DSFAppKitBuilder
+import DSFMenuBuilder
 
 class GridDSL: NSObject, DSFAppKitBuilderViewHandler {
 
@@ -26,8 +27,8 @@ class GridDSL: NSObject, DSFAppKitBuilderViewHandler {
 				GridRow(bottomPadding: 5) {
 					Label("Braille Translation:")
 					PopupButton {
-						MenuItem(title: "English (Unified)")
-						MenuItem(title: "United States")
+						MenuItem("English (Unified)")
+						MenuItem("United States")
 					}
 				}
 				GridRow {

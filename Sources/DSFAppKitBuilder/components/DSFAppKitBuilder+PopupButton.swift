@@ -26,16 +26,18 @@
 
 import AppKit.NSPopUpButton
 
+import DSFMenuBuilder
+
 /// Wrapper for NSPopupButton
 ///
 /// Usage:
 ///
 /// ```swift
 /// PopupButton {
-///    MenuItem(title: "Weekly")
-///    MenuItem(title: "Monthly")
-///    MenuItem.Divider()
-///    MenuItem(title: "Yearly")
+///    MenuItem("Weekly")
+///    MenuItem("Monthly")
+///    Separator()
+///    MenuItem("Yearly")
 /// }
 /// .onChange { popupIndex in
 ///    // do something when the selection changes
@@ -49,7 +51,7 @@ public class PopupButton: Control {
 	///   - builder: The result builder for the popup buttons menu content
 	public convenience init(
 		pullsDown: Bool = false,
-		@MenuBuilder builder: () -> [MenuItem]
+		@MenuBuilder builder: () -> [AnyMenuItem]
 	) {
 		self.init(
 			pullsDown: pullsDown,
@@ -65,25 +67,24 @@ public class PopupButton: Control {
 
 	public override func view() -> NSView { return self.popupButton }
 	private let popupButton = NSPopUpButton()
-	private let content: [MenuItem]
+	private let content: [AnyMenuItem]
 
 	private var selectionBinder: ValueBinder<Int>?
 	private var selectionChangeBlock: ((Int) -> Void)?
 
 	internal init(
 		pullsDown: Bool = false,
-		content: [MenuItem]
+		content: [AnyMenuItem]
 	) {
 		self.content = content
 		super.init()
 
 		self.popupButton.pullsDown = pullsDown
-		let menu = NSMenu()
-		content.forEach {
-			$0.menuItem.target = self
-			$0.menuItem.action = #selector(selectionChanged(_:))
-			menu.addItem($0.menuItem)
-		}
+
+		self.popupButton.target = self
+		self.popupButton.action = #selector(selectionChanged(_:))
+
+		let menu = Menu(content: content).menu
 		self.popupButton.menu = menu
 	}
 }

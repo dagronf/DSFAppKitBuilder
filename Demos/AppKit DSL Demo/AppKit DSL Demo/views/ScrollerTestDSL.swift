@@ -8,26 +8,33 @@
 import AppKit
 
 import DSFAppKitBuilder
+import DSFMenuBuilder
 
 class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
+
+	let playsound = ValueBinder<Int>(0) { newValue in
+		Swift.print("playsound is now \(newValue)")
+	}
+
 	lazy var body: Element =
 		ScrollView(borderType: .lineBorder, fitHorizontally: true) {
 			VStack(spacing: 16, alignment: .leading) {
 				HStack(alignment: .lastBaseline) {
 					CheckBox("Play sound")
 					PopupButton {
-						MenuItem(title: "Purr")
-						MenuItem(title: "Sosumi")
+						MenuItem("Purr")
+						MenuItem("Sosumi")
 					}
+					.bindSelection(playsound)
 					.horizontalPriorities(hugging: 100)
 				}
 
 				HStack(alignment: .lastBaseline) {
 					CheckBox("Speak announcement using")
 					PopupButton {
-						MenuItem(title: "Daniel")
-						MenuItem(title: "Catherine")
-						MenuItem(title: "Fiona")
+						MenuItem("Daniel")
+						MenuItem("Catherine")
+						MenuItem("Fiona")
 					}
 					.horizontalPriorities(hugging: 100)
 				}
@@ -48,7 +55,7 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 					CheckBox("")
 					Label("Show")
 					PopupButton {
-						MenuItem(title: "window tab")
+						MenuItem("window tab")
 					}
 					Label("named")
 					TextField("Window Name")
@@ -56,15 +63,15 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 				HStack(alignment: .lastBaseline) {
 					CheckBox("")
 					PopupButton {
-						MenuItem(title: "Show")
-						MenuItem(title: "Hide")
+						MenuItem("Show")
+						MenuItem("Hide")
 					}
 					.horizontalPriorities(compressionResistance: 100)
 					Label("navigator")
 					PopupButton {
-						MenuItem(title: "Current")
-						MenuItem(title: "Files")
-						MenuItem(title: "Changes")
+						MenuItem("Current")
+						MenuItem("Files")
+						MenuItem("Changes")
 					}
 					EmptyView()
 				}
@@ -72,16 +79,16 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 				HStack(alignment: .lastBaseline) {
 					CheckBox("")
 					PopupButton {
-						MenuItem(title: "Show")
-						MenuItem(title: "Hide")
-						MenuItem(title: "If no output, hide")
+						MenuItem("Show")
+						MenuItem("Hide")
+						MenuItem("If no output, hide")
 					}
 					.horizontalPriorities(compressionResistance: 100)
 					.minWidth(100)
 					Label("debugger with")
 					PopupButton {
-						MenuItem(title: "Current Views")
-						MenuItem(title: "Variable Console Views")
+						MenuItem("Current Views")
+						MenuItem("Variable Console Views")
 					}
 					.horizontalPriorities(compressionResistance: 100)
 					EmptyView()
@@ -90,8 +97,8 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 				HStack(alignment: .lastBaseline) {
 					CheckBox("")
 					PopupButton {
-						MenuItem(title: "Show")
-						MenuItem(title: "Hide")
+						MenuItem("Show")
+						MenuItem("Hide")
 					}
 					Label("inspectors")
 					EmptyView()
@@ -119,8 +126,8 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 				.state(toolbar_enable.wrappedValue ? .on : .off)
 				.bindOnOffState(self.toolbar_enable)
 			PopupButton {
-				MenuItem(title: "Show")
-				MenuItem(title: "Hide")
+				MenuItem("Show")
+				MenuItem("Hide")
 			}
 			.bindIsEnabled(self.toolbar_enable)
 			.bindSelection(self.toolbar_show_state)
@@ -136,17 +143,17 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 			CheckBox()
 				.bindOnOffState(self.currentEditor_enable)
 			PopupButton {
-				MenuItem(title: "Show")
-				MenuItem(title: "Hide")
+				MenuItem("Show")
+				MenuItem("Hide")
 			}
 			.bindIsEnabled(self.currentEditor_enable)
 			PopupButton {
-				MenuItem(title: "Current Editor")
+				MenuItem("Current Editor")
 			}
 			.bindIsEnabled(self.currentEditor_enable)
 			Label("in")
 			PopupButton {
-				MenuItem(title: "Focused Editor")
+				MenuItem("Focused Editor")
 			}
 			.bindIsEnabled(self.currentEditor_enable)
 			EmptyView()
