@@ -45,7 +45,7 @@ import DSFMenuBuilder
 /// ```
 public class PopupButton: Control {
 
-	/// Create a PopupButton instance
+	/// Create a PopupButton instance, using DSFMenuBuilder to build the popup button menu content
 	/// - Parameters:
 	///   - pullsDown: A Boolean value indicating whether the button displays a pull-down or pop-up menu.
 	///   - builder: The result builder for the popup buttons menu content

@@ -244,7 +244,7 @@ TextField()
 | `ImageView`        | An `NSImageView` wrapper |
 | `Label`            | An `NSTextField` wrapper configured as a read-only label |
 | `PathControl`      | An `NSPathControl` wrapper |
-| `Popover`          | An `NSPopover` wrapper |
+| `Popover`          | An `NSPopover` wrapper, uses `DSFMenuBuilder` to generate content |
 | `PopupButton`      | An `NSPopupButton` wrapper |
 | `ProgressBar`      | An `NSProgressIndicator` wrapper |
 | `RadioGroup`       | A grouped stack of buttons configured as a radio group |
@@ -307,6 +307,10 @@ The code is documented and will produce nice documentation for each element when
 ## Known bugs
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
+
+### 6.0.0
+
+* Changed to use DSFMenuBuilder
 
 ### 5.1.0
 
