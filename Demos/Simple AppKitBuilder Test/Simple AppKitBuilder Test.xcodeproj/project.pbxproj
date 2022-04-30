@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		23B9B6EF26C3A696003635E0 /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 23B9B6EE26C3A696003635E0 /* DSFAppKitBuilder */; };
+		2319F3DA281CB39000E5FC16 /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 2319F3D9281CB39000E5FC16 /* DSFAppKitBuilder */; };
 		23CA5E7226B677E300BF552F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CA5E7126B677E300BF552F /* AppDelegate.swift */; };
 		23CA5E7426B677E300BF552F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CA5E7326B677E300BF552F /* ViewController.swift */; };
 		23CA5E7626B677E500BF552F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23CA5E7526B677E500BF552F /* Assets.xcassets */; };
@@ -15,8 +15,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2319F3CF281CB04300E5FC16 /* DSFMenuBuilder */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DSFMenuBuilder; path = "/Users/dford/Library/Developer/Xcode/DerivedData/Simple_AppKitBuilder_Test-gdwefeunseelkuaevywtzncbkyjk/SourcePackages/checkouts/DSFMenuBuilder"; sourceTree = "<absolute>"; };
+		2319F3D8281CB38200E5FC16 /* DSFAppKitBuilder */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DSFAppKitBuilder; path = ../..; sourceTree = "<group>"; };
 		2381584D26DC5B33008F13C8 /* Simple-AppKitBuilder-Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Simple-AppKitBuilder-Test-Info.plist"; sourceTree = SOURCE_ROOT; };
-		23B9B6EC26C3A68E003635E0 /* DSFAppKitBuilder */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DSFAppKitBuilder; path = ../..; sourceTree = "<group>"; };
 		23CA5E6E26B677E300BF552F /* Simple AppKitBuilder Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Simple AppKitBuilder Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		23CA5E7126B677E300BF552F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23CA5E7326B677E300BF552F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -29,7 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23B9B6EF26C3A696003635E0 /* DSFAppKitBuilder in Frameworks */,
+				2319F3DA281CB39000E5FC16 /* DSFAppKitBuilder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -39,6 +40,7 @@
 		23B9B6ED26C3A696003635E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2319F3CF281CB04300E5FC16 /* DSFMenuBuilder */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -46,7 +48,7 @@
 		23CA5E6526B677E300BF552F = {
 			isa = PBXGroup;
 			children = (
-				23B9B6EC26C3A68E003635E0 /* DSFAppKitBuilder */,
+				2319F3D8281CB38200E5FC16 /* DSFAppKitBuilder */,
 				23CA5E7026B677E300BF552F /* Simple AppKitBuilder Test */,
 				23CA5E6F26B677E300BF552F /* Products */,
 				23B9B6ED26C3A696003635E0 /* Frameworks */,
@@ -90,7 +92,7 @@
 			);
 			name = "Simple AppKitBuilder Test";
 			packageProductDependencies = (
-				23B9B6EE26C3A696003635E0 /* DSFAppKitBuilder */,
+				2319F3D9281CB39000E5FC16 /* DSFAppKitBuilder */,
 			);
 			productName = "Simple AppKitBuilder Test";
 			productReference = 23CA5E6E26B677E300BF552F /* Simple AppKitBuilder Test.app */;
@@ -360,7 +362,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		23B9B6EE26C3A696003635E0 /* DSFAppKitBuilder */ = {
+		2319F3D9281CB39000E5FC16 /* DSFAppKitBuilder */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DSFAppKitBuilder;
 		};

@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DSFMenuBuilder",
+        "repositoryURL": "https://github.com/dagronf/DSFMenuBuilder",
+        "state": {
+          "branch": null,
+          "revision": "5690d98c48900c502b9e95de7b74d18ee80e2efd",
+          "version": "1.0.2"
+        }
+      },
+      {
+        "package": "DSFPagerControl",
+        "repositoryURL": "https://github.com/dagronf/DSFPagerControl",
+        "state": {
+          "branch": null,
+          "revision": "1d5ec4d6272be5d037fe1642793833b58d6a1c3f",
+          "version": "1.2.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
