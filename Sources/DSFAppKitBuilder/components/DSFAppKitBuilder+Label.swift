@@ -54,10 +54,31 @@ public class Label: Control {
 	/// Create a label control
 	/// - Parameter attributedLabel: An attributed string to use as the label
 	public init(_ attributedLabel: NSAttributedString) {
+		super.init()
 		self.label.isEditable = false
 		self.label.drawsBackground = false
 		self.label.isBezeled = false
 		self.label.attributedStringValue = attributedLabel
+	}
+
+	/// Create a label control
+	/// - Parameter stringBinder: A string binder containing the display value
+	public init(_ stringBinder: ValueBinder<String>) {
+		super.init()
+		self.label.isEditable = false
+		self.label.drawsBackground = false
+		self.label.isBezeled = false
+		_ = self.bindLabel(stringBinder)
+	}
+
+	/// Create a label control
+	/// - Parameter stringBinder: An NSAttributedString binder containing the display value
+	public init(_ attributedStringBinder: ValueBinder<NSAttributedString>) {
+		super.init()
+		self.label.isEditable = false
+		self.label.drawsBackground = false
+		self.label.isBezeled = false
+		_ = self.bindAttributedLabel(attributedStringBinder)
 	}
 
 	deinit {

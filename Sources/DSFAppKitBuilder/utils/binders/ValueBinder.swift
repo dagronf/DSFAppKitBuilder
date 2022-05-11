@@ -113,6 +113,13 @@ public extension ValueBinder {
 		changeBlock(self.wrappedValue)
 	}
 
+	/// Register a change callback block for when the value of this binding changes
+	/// - Parameters:
+	///   - changeBlock: The block to call when the value in the ValueBinder instance changes
+	@inlinable func register(_ changeBlock: @escaping (TYPE) -> Void) {
+		self.register(self, changeBlock)
+	}
+
 	// Deregister a binding
 	// - Parameter object: The object to deregister
 	func deregister(_ object: AnyObject) {

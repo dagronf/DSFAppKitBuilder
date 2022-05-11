@@ -38,7 +38,7 @@ import AppKit.NSTextField
 ///    .bindText(self.userName)
 /// ```
 public class TextField: Label {
-/// Create a text field element
+	/// Create a text field element
 	/// - Parameters:
 	///   - label: The initial text for the text field
 	///   - placeholderText: The placeholder text to use for the text field
@@ -51,6 +51,22 @@ public class TextField: Label {
 		self.label.isBezeled = true
 		self.label.placeholderString = placeholderText
 		self.label.delegate = self
+	}
+
+	/// Create a text field element
+	/// - Parameters:
+	///   - text: A value binder for the label content
+	///   - placeholderText: The placeholder text to use for the text field
+	public init(
+		_ text: ValueBinder<String>,
+		_ placeholderText: String? = nil)
+	{
+		super.init(nil)
+		self.label.isEditable = true
+		self.label.isBezeled = true
+		self.label.placeholderString = placeholderText
+		self.label.delegate = self
+		_ = self.bindText(text)
 	}
 
 	deinit {

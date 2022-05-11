@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "Defaults",
+        "repositoryURL": "https://github.com/sindresorhus/Defaults",
+        "state": {
+          "branch": "main",
+          "revision": "3535f3d088113cf24705014eec6a17f0fd73237f",
+          "version": null
+        }
+      },
+      {
         "package": "DSFMenuBuilder",
         "repositoryURL": "https://github.com/dagronf/DSFMenuBuilder",
         "state": {

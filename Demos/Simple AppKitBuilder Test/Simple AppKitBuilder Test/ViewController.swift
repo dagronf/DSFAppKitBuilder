@@ -35,6 +35,8 @@ class AppKitLayoutDemoContainer: NSObject, DSFAppKitBuilderViewHandler {
 	}
 }
 
+// A custom Element
+
 class IdentityElement: Element {
 	let identityDescription: String
 	let lineBreakMode: NSLineBreakMode

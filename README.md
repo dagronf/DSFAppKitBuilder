@@ -35,9 +35,13 @@ Here's an AppKit layout that is made a lot simpler with DSFAppKitBuilder
 2. Name is font size 24, which truncates if the view gets too small horizontally
 3. Description is font size 12, grey, and truncates if the view gets too small horizontally
 
+This library provides a custom view controller `DSFAppKitBuilderViewController` which you can inherit from
+when building your own custom views.
+
 ```swift
-class IdentityContainer: NSObject, DSFAppKitBuilderViewHandler {
-   lazy var body: Element =
+class IdentityViewController: DSFAppKitBuilderViewController {
+   // Build the view's body
+   override var viewBody: Element {
       HStack(spacing: 4) {
          ImageView()
             .image(NSImage(named: "apple_logo_orig")!)               // The image
@@ -54,18 +58,6 @@ class IdentityContainer: NSObject, DSFAppKitBuilderViewHandler {
                .horizontalPriorities(compressionResistance: 100)     // Allow the text field to compress
          }
       }
-}
-```
-
-To display the builder content, assign the container to an instance of `DSFAppKitBuilderView`
-
-```swift
-class ViewController: NSViewController {
-   @IBOutlet weak var mainView: DSFAppKitBuilderView!
-   let identity = IdentityContainer()
-   override func viewDidLoad() {
-      super.viewDidLoad()
-      mainView.builder = self.identity  // Set our builder as the view's builder
    }
 }
 ```
@@ -77,6 +69,127 @@ And the result is...
 </p>
 
 You can find this demo in the `Demos/Simple AppKitBuilder Test` folder.
+
+## Generating your view
+
+There are a number of methods for building and managing your view
+
+### DSFAppKitBuilderViewController
+
+The `DSFAppKitBuilderViewController` is a custom NSViewController derived class which automatically
+handles building and displaying your view.
+
+Just override `var viewBody: Element { ... }` in your subclass and you're ready to go!
+
+### DSFAppKitBuilderViewHandler protocol
+
+The `DSFAppKitBuilderViewHandler` is a little lower level, allowing you to contain your view components
+within composable objects.
+
+```swift
+class AppKitLayoutDemoContainer: NSObject, DSFAppKitBuilderViewHandler {
+   lazy var body: Element =
+      HStack(spacing: 4) {
+         ImageView()
+            .image(NSImage(named: "apple_logo_orig")!)           // The image
+            .size(width: 42, height: 42, priority: .required)    // fixed size
+         VStack(spacing: 2, alignment: .leading) {
+            Label("Apple Computer")                              // The label with title 'Name'
+               .font(NSFont.systemFont(ofSize: 24))              // Font size 12
+               .lineBreakMode(.byTruncatingTail)                 // Truncate line
+               .horizontalPriorities(compressionResistance: 100) // Allow the text field to compress
+            Label(identityDescription)                           // The description label
+               .font(NSFont.systemFont(ofSize: 12))              // Font size 12
+               .textColor(.placeholderTextColor)                 // Grey text
+               .lineBreakMode(lineBreakMode)                     // Line break mode
+               .horizontalPriorities(compressionResistance: 250) // Allow the text field to wrap
+         }
+         .edgeInsets(6)
+      }
+      .edgeInsets(8)
+      .border(width: 0.75, color: .textColor)
+      .backgroundColor(.quaternaryLabelColor)
+      .cornerRadius(4)
+}
+```
+
+To display the builder content, assign the container to an instance of `DSFAppKitBuilderView`
+
+```swift
+class ViewController: NSViewController {
+   @IBOutlet weak var mainView: DSFAppKitBuilderView!
+   let identityContainer = AppKitLayoutDemoContainer()
+   override func viewDidLoad() {
+      super.viewDidLoad()
+      mainView.builder = self.identityContainer  // Set our builder as the view's builder
+   }
+}
+```
+
+### Composing your own element types
+
+If you find that you use a particular grouping of elements over and over, you can create your own `Element` subclass which provides your custom layout as its own .
+
+For example, in a form you may use the label:textfield pattern multiple times.
+
+```
+-------------------------------------
+|      Label | Text Field           |
+-------------------------------------
+|      Label | Text Field           |
+-------------------------------------
+|      Label | Text Field           |
+-------------------------------------
+```
+
+Create a 'LabelTextPair' `Element` subclass that passes in the label text and a string ValueBinding…
+
+```swift
+/// An 'element' class which is a containerized eleement
+class LabelTextFieldPair: Element {
+   let label: String
+   let textValueBinder: ValueBinder<String>
+   init(label: String, value: ValueBinder<String>) {
+      self.label = label
+      self.textValueBinder = value
+   }
+
+   // Override the view() call of the `Element` base class to provide the element's body
+   override func view() -> NSView { return self.body.view() }
+
+   lazy var body: Element =
+      HStack(distribution: .fillProportionally) {
+         Label(self.label)
+            .font(NSFont.boldSystemFont(ofSize: NSFont.systemFontSize))
+            .alignment(.right)
+            .width(150)
+         TextField()
+            .bindText(updateOnEndEditingOnly: true, self.textValueBinder)
+            .horizontalPriorities(hugging: 10, compressionResistance: 10)
+      }
+}
+```
+
+Then use it in your code as you would a built-in element type!
+
+```swift
+let nameBinder = ValueBinder<String>("")
+let usernameBinder = ValueBinder<String>("")
+let nicknameBinder = ValueBinder<String>("")
+
+VStack {
+   LabelTextFieldPair(label: "Name", value: self.nameBinder)
+   LabelTextFieldPair(label: "Username", value: self.usernameBinder)
+   LabelTextFieldPair(label: "Nickname", value: self.nicknameBinder)
+}
+```
+
+### Basic read-only view
+
+
+
+
+You can see this in action in the 'Simple AppKitBuilder Test' demo.
 
 ## Behaviours
 
@@ -156,67 +269,6 @@ class MyController: NSObject, DSFAppKitBuilderViewHandler {
       .bindElement(self.popoverLocator)  // Store a reference to the button for later use
 }
 ```
-
-
-### Custom element types
-
-If you find that you use a particular grouping of elements over and over, you can create your own `Element` subclass which provides your custom layout as its own .
-
-For example, in a form you may use the label:textfield pattern multiple times.
-
-```
--------------------------------------
-|      Label | Text Field           |
--------------------------------------
-|      Label | Text Field           |
--------------------------------------
-|      Label | Text Field           |
--------------------------------------
-```
-
-Create a 'LabelTextPair' `Element` subclass that passes in the label text and a string ValueBinding…
-
-```swift
-/// An 'element' class which is a containerized eleement
-class LabelTextFieldPair: Element {
-   let label: String
-   let textValueBinder: ValueBinder<String>
-   init(label: String, value: ValueBinder<String>) {
-      self.label = label
-      self.textValueBinder = value
-   }
-
-   // Override the view() call of the `Element` base class to provide the element's body
-   override func view() -> NSView { return self.body.view() }
-
-   lazy var body: Element =
-   HStack(distribution: .fillProportionally) {
-      Label(self.label)
-         .font(NSFont.boldSystemFont(ofSize: NSFont.systemFontSize))
-         .alignment(.right)
-         .width(150)
-      TextField()
-         .bindText(updateOnEndEditingOnly: true, self.textValueBinder)
-         .horizontalPriorities(hugging: 10, compressionResistance: 10)
-   }
-}
-```
-
-Then use it in your code as you would a built-in element type!
-
-```swift
-let nameBinder = ValueBinder<String>("")
-let usernameBinder = ValueBinder<String>("")
-let nicknameBinder = ValueBinder<String>("")
-
-VStack {
-   LabelTextFieldPair(label: "Name", value: self.nameBinder)
-   LabelTextFieldPair(label: "Username", value: self.usernameBinder)
-   LabelTextFieldPair(label: "Nickname", value: self.nicknameBinder)
-}
-```
-
-You can see this in action in the 'Simple AppKitBuilder Test' demo.
 
 ### Autolayout helpers
 
@@ -307,6 +359,11 @@ The code is documented and will produce nice documentation for each element when
 ## Known bugs
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
+
+### 6.1.0
+
+* Added `DSFAppKitBuilderViewController`.
+* Fixed some demo issues.
 
 ### 6.0.0
 
