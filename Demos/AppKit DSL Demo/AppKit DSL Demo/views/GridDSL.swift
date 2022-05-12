@@ -14,11 +14,19 @@ class GridDSL: NSObject, DSFAppKitBuilderViewHandler {
 	let showTextStyleBinder = ElementBinder()
 	let showAlertBinder = ElementBinder()
 
-	let showContractedBraille = ValueBinder(false) { newValue in
-		Swift.print("Show Contracted Braille is now \(newValue)")
-	}
-	let showEightDotBraille = ValueBinder(true) { newValue in
-		Swift.print("Show Eight Dot Braille is now \(newValue)")
+	let showContractedBraille = ValueBinder(false)
+	let showEightDotBraille = ValueBinder(false)
+
+	override init() {
+		super.init()
+
+		self.showContractedBraille.register { newValue in
+			Swift.print("Show Contracted Braille is now \(newValue)")
+		}
+
+		self.showEightDotBraille.register { newValue in
+			Swift.print("Show Eight Dot Braille is now \(newValue)")
+		}
 	}
 
 	lazy var body: Element =
@@ -58,18 +66,21 @@ class GridDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 			.columnFormatting(xPlacement: .trailing, trailingPadding: 5, atColumn: 0)
 			.cellFormatting(xPlacement: .none, atRowIndex: 5, columnIndex: 0)
-
 			.addingCellContraints(atRowIndex: 5, columnIndex: 0) { [weak self] in
-				guard let `self` = self,
-						let showTextStyle = self.showTextStyleBinder.view,
-						let showAlert = self.showAlertBinder.view else { return [] }
+				guard
+					let `self` = self,
+					let showTextStyle = self.showTextStyleBinder.view,
+					let showAlert = self.showAlertBinder.view
+				else {
+					return []
+				}
 				return [showAlert.centerXAnchor.constraint(equalTo: showTextStyle.leadingAnchor)]
 			}
 
 			.applyRecursively { element in
 				_ = element
-					.border(width: 0.5, color: NSColor.gridColor)
-					.backgroundColor(NSColor.textColor.withAlphaComponent(0.1))
+					.border(width: 0.5, color: NSColor.systemRed)
+//					.backgroundColor(NSColor.textColor.withAlphaComponent(0.1))
 			}
 		}
 }
