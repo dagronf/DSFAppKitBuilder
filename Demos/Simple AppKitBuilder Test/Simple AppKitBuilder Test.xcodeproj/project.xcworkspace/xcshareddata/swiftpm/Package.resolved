@@ -2,12 +2,12 @@
   "object": {
     "pins": [
       {
-        "package": "DSFMenuBuilder",
-        "repositoryURL": "https://github.com/dagronf/DSFMenuBuilder",
+        "package": "DSFAppearanceManager",
+        "repositoryURL": "https://github.com/dagronf/DSFAppearanceManager",
         "state": {
           "branch": null,
-          "revision": "5690d98c48900c502b9e95de7b74d18ee80e2efd",
-          "version": "1.0.2"
+          "revision": "628176ce8f4bf8165d97e440b5fb59eb676b1779",
+          "version": "2.1.1"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFPagerControl",
         "state": {
           "branch": null,
-          "revision": "1d5ec4d6272be5d037fe1642793833b58d6a1c3f",
-          "version": "1.2.1"
+          "revision": "db57797628a7f56b3f8fc3d4fd9468aca2482667",
+          "version": "2.0.0"
         }
       }
     ]

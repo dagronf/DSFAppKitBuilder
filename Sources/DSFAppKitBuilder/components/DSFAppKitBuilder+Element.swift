@@ -26,6 +26,8 @@
 
 import AppKit.NSView
 
+import DSFAppearanceManager
+
 /// The base element.
 open class Element: NSObject {
 	// Set to true in derived classes to receive a callback when the system theme changes
@@ -90,7 +92,7 @@ open class Element: NSObject {
 
 // MARK: - Dark mode handling
 
-extension Element {
+extension Element: DSFAppearanceCacheNotifiable {
 	// Called when the element is setting the 'receiveThemeNotifications' value
 	private func updateReceiveThemeNotifications(to newValue: Bool) {
 		if newValue == self.receiveThemeNotifications {
@@ -100,32 +102,21 @@ extension Element {
 
 		if newValue == true {
 			// Start listening for theme changes
-			ThemeNotificationCenter.addObserver(
-				self,
-				selector: #selector(self.themeChange),
-				name: NSNotification.Name.ThemeChangedNotification,
-				object: nil
-			)
+			DSFAppearanceCache.shared.register(self)
 		}
 		else {
 			// Stop listening
-			ThemeNotificationCenter.removeObserver(
-				self,
-				name: NSNotification.Name.ThemeChangedNotification,
-				object: nil
-			)
+			DSFAppearanceCache.shared.deregister(self)
 		}
 	}
 
-	// Called when the system theme has changed AND the element has called
-	@objc private func themeChange() {
-		DispatchQueue.main.async { [weak self] in
-			guard let `self` = self else { return }
+	public func appearanceDidChange() {
+		// Protocol guarantees that this will be called on the main thread
+		assert(Thread.isMainThread)
 
-			// Make sure we use the appearance of the view to handle drawing, or else it may not take effect
-			UsingEffectiveAppearance(of: self.view()) {
-				self.onThemeChange()
-			}
+		// Make sure we use the appearance of the view to handle drawing, or else it may not take effect
+		UsingEffectiveAppearance(of: self.view()) { _ in
+			self.onThemeChange()
 		}
 	}
 

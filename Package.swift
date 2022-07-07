@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         // A pager control for the page control
-        .package(url: "https://github.com/dagronf/DSFPagerControl", from: "1.0.0"),
+        .package(url: "https://github.com/dagronf/DSFPagerControl", from: "2.0.0"),
 		  .package(url: "https://github.com/dagronf/DSFMenuBuilder", from: "1.0.0"),
     ],
     targets: [

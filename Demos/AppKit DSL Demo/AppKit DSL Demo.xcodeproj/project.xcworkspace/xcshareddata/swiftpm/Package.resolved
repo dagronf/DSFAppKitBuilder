@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "DSFAppearanceManager",
+        "repositoryURL": "https://github.com/dagronf/DSFAppearanceManager",
+        "state": {
+          "branch": null,
+          "revision": "628176ce8f4bf8165d97e440b5fb59eb676b1779",
+          "version": "2.1.1"
+        }
+      },
+      {
         "package": "DSFMenuBuilder",
         "repositoryURL": "https://github.com/dagronf/DSFMenuBuilder",
         "state": {
@@ -24,8 +33,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFPagerControl",
         "state": {
           "branch": null,
-          "revision": "1d5ec4d6272be5d037fe1642793833b58d6a1c3f",
-          "version": "1.2.1"
+          "revision": "db57797628a7f56b3f8fc3d4fd9468aca2482667",
+          "version": "2.0.0"
         }
       }
     ]
