@@ -25,6 +25,7 @@
 //
 
 import AppKit
+import DSFValueBinders
 
 /// A view that adds translucency and vibrancy effects to the views in your interface.
 ///
@@ -107,7 +108,7 @@ public extension VisualEffectView {
 	@available(macOS 10.12, *)
 	func bindIsEmphasized(_ isEmphasizedBinder: ValueBinder<Bool>) -> Self {
 		self.isEmphasizedBinder = isEmphasizedBinder
-		isEmphasizedBinder.register(self) { [weak self] newValue in
+		isEmphasizedBinder.register { [weak self] newValue in
 			self?.visualView.isEmphasized = newValue
 		}
 		return self

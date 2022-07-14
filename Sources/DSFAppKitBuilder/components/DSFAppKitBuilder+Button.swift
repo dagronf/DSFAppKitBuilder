@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSButton
+import DSFValueBinders
 
 /// An NSButton wrapper
 ///
@@ -180,7 +181,7 @@ public extension Button {
 	/// Bind the title
 	func bindTitle(_ titleBinder: ValueBinder<String>) -> Self {
 		self.titleBinder = titleBinder
-		titleBinder.register(self) { [weak self] newValue in
+		titleBinder.register { [weak self] newValue in
 			self?.button.title = newValue
 		}
 		return self
@@ -189,7 +190,7 @@ public extension Button {
 	/// Bind the alternatetitle
 	func bindAlternateTitle(_ alternateTitleBinder: ValueBinder<String>) -> Self {
 		self.alternateTitleBinder = alternateTitleBinder
-		alternateTitleBinder.register(self) { [weak self] newValue in
+		alternateTitleBinder.register { [weak self] newValue in
 			self?.button.alternateTitle = newValue
 		}
 		return self
@@ -198,7 +199,7 @@ public extension Button {
 	/// Bind the state
 	func bindState(_ stateBinder: ValueBinder<NSControl.StateValue>) -> Self {
 		self.stateBinder = stateBinder
-		stateBinder.register(self) { [weak self] newValue in
+		stateBinder.register { [weak self] newValue in
 			self?.button.state = newValue
 		}
 		return self
@@ -207,7 +208,7 @@ public extension Button {
 	/// Bind on/off state
 	func bindOnOffState(_ onOffBinder: ValueBinder<Bool>) -> Self {
 		self.onOffBinder = onOffBinder
-		onOffBinder.register(self) { [weak self] newValue in
+		onOffBinder.register { [weak self] newValue in
 			self?.button.state = newValue ? .on : .off
 		}
 		return self

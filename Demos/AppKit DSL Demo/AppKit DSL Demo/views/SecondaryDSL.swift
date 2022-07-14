@@ -8,6 +8,7 @@
 import AppKit
 
 import DSFAppKitBuilder
+import DSFValueBinders
 
 class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
@@ -18,7 +19,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 	override init() {
 		super.init()
 
-		firstName.register(self) { newValue in
+		firstName.register { newValue in
 			Swift.print("First name changed to '\(newValue)'")
 		}
 	}

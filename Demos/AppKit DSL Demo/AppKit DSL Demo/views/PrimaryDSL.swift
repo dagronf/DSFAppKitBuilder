@@ -8,6 +8,7 @@
 import AppKit
 import DSFAppKitBuilder
 import DSFMenuBuilder
+import DSFValueBinders
 
 class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 

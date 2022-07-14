@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSTextField
+import DSFValueBinders
 
 /// An editable text element
 ///
@@ -136,7 +137,7 @@ public extension TextField {
 	func bindText(updateOnEndEditingOnly: Bool = false, _ textValue: ValueBinder<String>) -> Self {
 		self.updateOnEndEditingOnly = updateOnEndEditingOnly
 		self.textValueBinder = textValue
-		textValue.register(self) { [weak self] newValue in
+		textValue.register { [weak self] newValue in
 			self?.label.stringValue = newValue
 		}
 		return self
@@ -148,7 +149,7 @@ public extension TextField {
 	/// - Returns: Self
 	func bindHasText(_ hasTextBinder: ValueBinder<Bool>) -> Self {
 		self.hasTextBinder = hasTextBinder
-		hasTextBinder.register(self) { _ in
+		hasTextBinder.register { _ in
 			// Nothing to do
 		}
 		return self

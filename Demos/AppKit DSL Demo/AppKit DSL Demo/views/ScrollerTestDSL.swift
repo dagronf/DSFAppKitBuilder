@@ -9,6 +9,7 @@ import AppKit
 
 import DSFAppKitBuilder
 import DSFMenuBuilder
+import DSFValueBinders
 
 class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 

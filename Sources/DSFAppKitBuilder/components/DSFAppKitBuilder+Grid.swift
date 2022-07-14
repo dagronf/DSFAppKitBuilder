@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSView
+import DSFValueBinders
 
 /// A wrapper for NSGridView. Only available in macOS 10.12 and above
 ///
@@ -201,7 +202,7 @@ public extension Grid {
 	/// A binding for hiding or showing rows within the grid
 	func bindHiddenRows(_ hiddenRowsBinder: ValueBinder<NSSet>) -> Self {
 		self.hiddenRowsBinder = hiddenRowsBinder
-		hiddenRowsBinder.register(self) { [weak self] newValue in
+		hiddenRowsBinder.register { [weak self] newValue in
 			guard let `self` = self else { return }
 			(0 ..< self.gridView.numberOfRows).forEach { rowIndex in
 				self.gridView.row(at: rowIndex).isHidden = newValue.contains(rowIndex)
@@ -213,7 +214,7 @@ public extension Grid {
 	/// A binding for hiding or showing columns within the grid
 	func bindHiddenColumns(_ hiddenColumnsBinder: ValueBinder<NSSet>) -> Self {
 		self.hiddenColumnsBinder = hiddenColumnsBinder
-		hiddenColumnsBinder.register(self) { [weak self] newValue in
+		hiddenColumnsBinder.register { [weak self] newValue in
 			guard let `self` = self else { return }
 			(0 ..< self.gridView.numberOfColumns).forEach { colIndex in
 				self.gridView.column(at: colIndex).isHidden = newValue.contains(colIndex)

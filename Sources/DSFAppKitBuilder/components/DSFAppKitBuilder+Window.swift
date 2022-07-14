@@ -25,6 +25,7 @@
 //
 
 import AppKit
+import DSFValueBinders
 
 /// A wrapper for NSWindow
 ///
@@ -247,7 +248,7 @@ public extension Window {
 	/// - Returns: Self
 	func bindTitle(_ textValue: ValueBinder<String>) -> Self {
 		self.titleBinder = textValue
-		textValue.register(self) { [weak self] newValue in
+		textValue.register { [weak self] newValue in
 			self?.window?.title = newValue
 		}
 		return self

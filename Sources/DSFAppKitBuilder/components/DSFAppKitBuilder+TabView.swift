@@ -25,6 +25,7 @@
 //
 
 import AppKit
+import DSFValueBinders
 
 /// A Tab View control
 ///
@@ -150,7 +151,7 @@ public extension TabView {
 	/// Bind the selected segments
 	func bindTabIndex(_ tabIndexBinder: ValueBinder<Int>) -> Self {
 		self.tabIndexBinder = tabIndexBinder
-		tabIndexBinder.register(self) { [weak self] newValue in
+		tabIndexBinder.register { [weak self] newValue in
 			self?.tabView.selectTabViewItem(at: newValue)
 		}
 		return self

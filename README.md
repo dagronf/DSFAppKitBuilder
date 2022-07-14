@@ -186,9 +186,6 @@ VStack {
 
 ### Basic read-only view
 
-
-
-
 You can see this in action in the 'Simple AppKitBuilder Test' demo.
 
 ## Behaviours
@@ -196,6 +193,8 @@ You can see this in action in the 'Simple AppKitBuilder Test' demo.
 ### Modifiers
 
 Modifiers allow you to change the default behaviour of an element.
+
+**Note:** Unlike SwiftUI modifiers, these modifiers return the original modified object, NOT a copy.
 
 ```swift
 Label("Name")
@@ -218,9 +217,22 @@ Button(title: "Press Me!") { [weak self] _ in
 
 #### ValueBinder
 
-You can use the binders on each element to bind to a variable allowing two-way communications between element(s) and the controller.
+A ValueBinder is a shared value container that allows a value to be shared amongst objects, and be notified if and when the value changes.
+This is similar to the `@Binding` object in SwiftUI.
 
-Wrap all your view logic in its own object. Present the object to an instance of `DSFAppKitBuilderView` to display and manage the contents of your object.
+You will need to import `DSFValueBinders` to use a ValueBinder within your own code (it will be available to you via `DSFAppKitBuilder`)
+
+```swift
+import DSFAppKitBuilder
+import DSFValueBinders
+```
+
+You can use the binders on an element to bind to a variable creating a two-way communication between element(s) and the controller.
+
+For example, the following code holds the `userName` and `displayName` as member properties in a container class.
+
+* If the code changes `userName` (eg. `userName.wrappedValue = "fish"`) the UI will automatically update with the new value
+* If the user changes the value within the `TextField` on-screen, the ValueBinder will automatically reflect the changes
 
 ```swift
 class MyExcitingViewContainer: NSObject, DSFAppKitBuilderViewHandler {
@@ -229,7 +241,7 @@ class MyExcitingViewContainer: NSObject, DSFAppKitBuilderViewHandler {
    let userName = ValueBinder<String>("")
    let displayName = ValueBinder<String>("")
    	
-   	// The body of the view
+   // The body of the view
    lazy var body: Element =
       VStack {
          TextField()
@@ -258,13 +270,17 @@ class MyController: NSObject, DSFAppKitBuilderViewHandler {
 
    lazy var body: Element =
       Button("Show Popup") { [weak self] _ in
-         guard let `self` = self,
-               let where = self.popoverLocator.element else {
+         guard 
+            let `self` = self,
+            let element = self.popoverLocator.element 
+         else {
             return 
          }
-         self.popover.show(relativeTo: where.bounds,
-                           of: where,
-                           preferredEdge: .maxY)
+         self.popover.show(
+            relativeTo: element.bounds,
+            of: element,
+            preferredEdge: .maxY
+         )
       }
       .bindElement(self.popoverLocator)  // Store a reference to the button for later use
 }

@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSControl
+import DSFValueBinders
 
 /// A DSL Element that is a control (ie. it is interactive in some way, like a button)
 public class Control: Element {
@@ -63,7 +64,7 @@ public extension Control {
 public extension Control {
 	/// Binding for isEnabled
 	func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
-		enabledBinding.register(self) { [weak self] newValue in
+		enabledBinding.register { [weak self] newValue in
 			self?.control.isEnabled = newValue
 		}
 		self.isEnabledBinder = enabledBinding

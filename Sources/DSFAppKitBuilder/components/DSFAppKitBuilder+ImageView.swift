@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSImageView
+import DSFValueBinders
 
 /// An image view
 ///
@@ -91,7 +92,7 @@ public extension ImageView {
 	/// Bind the image
 	func bindImage(_ imageBinder: ValueBinder<NSImage>) -> Self {
 		self.imageBinder = imageBinder
-		imageBinder.register(self) { [weak self] newValue in
+		imageBinder.register { [weak self] newValue in
 			self?.imageView.image = newValue
 		}
 		return self

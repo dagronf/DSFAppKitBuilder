@@ -7,6 +7,7 @@
 
 import AppKit
 import DSFAppKitBuilder
+import DSFValueBinders
 
 class SplitDSL: NSObject, DSFAppKitBuilderViewHandler {
 	let hidden = ValueBinder(NSSet()) { newValue in

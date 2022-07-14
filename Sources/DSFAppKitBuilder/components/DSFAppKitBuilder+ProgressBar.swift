@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSProgressIndicator
+import DSFValueBinders
 
 /// Wrapper for NSProgressIndicator
 ///
@@ -99,7 +100,7 @@ public extension ProgressBar {
 	/// Bind the value of the progress bar
 	func bindValue(_ valueBinder: ValueBinder<Double>) -> Self {
 		self.progressBinder = valueBinder
-		valueBinder.register(self) { [weak self] newValue in
+		valueBinder.register { [weak self] newValue in
 			self?.progress.doubleValue = newValue
 		}
 		return self

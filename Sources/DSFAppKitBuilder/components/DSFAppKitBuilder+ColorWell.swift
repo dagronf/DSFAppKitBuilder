@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSColorWell
+import DSFValueBinders
 
 /// A color well
 ///
@@ -98,7 +99,7 @@ public extension ColorWell {
 	/// Bind the color
 	func bindColor(_ colorBinder: ValueBinder<NSColor>) -> Self {
 		self.colorBinder = colorBinder
-		colorBinder.register(self) { [weak self] newValue in
+		colorBinder.register { [weak self] newValue in
 			self?.colorWell.color = newValue
 		}
 		return self

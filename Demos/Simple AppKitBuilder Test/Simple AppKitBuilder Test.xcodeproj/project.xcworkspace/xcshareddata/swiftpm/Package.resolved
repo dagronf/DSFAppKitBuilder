@@ -11,12 +11,30 @@
         }
       },
       {
+        "package": "DSFMenuBuilder",
+        "repositoryURL": "https://github.com/dagronf/DSFMenuBuilder",
+        "state": {
+          "branch": null,
+          "revision": "5690d98c48900c502b9e95de7b74d18ee80e2efd",
+          "version": "1.0.2"
+        }
+      },
+      {
         "package": "DSFPagerControl",
         "repositoryURL": "https://github.com/dagronf/DSFPagerControl",
         "state": {
           "branch": null,
           "revision": "db57797628a7f56b3f8fc3d4fd9468aca2482667",
           "version": "2.0.0"
+        }
+      },
+      {
+        "package": "DSFValueBinders",
+        "repositoryURL": "https://github.com/dagronf/DSFValueBinders",
+        "state": {
+          "branch": null,
+          "revision": "9fd515ab7dea3cb9e298c4bb6287c03e5b1cbc0d",
+          "version": "0.7.0"
         }
       }
     ]

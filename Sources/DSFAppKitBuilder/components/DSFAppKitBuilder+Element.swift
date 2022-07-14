@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSView
+import DSFValueBinders
 
 import DSFAppearanceManager
 
@@ -126,7 +127,7 @@ extension Element: DSFAppearanceCacheNotifiable {
 	/// The `Element` must have called `enableThemeChangeNotification()` to receive this call.
 	///
 	/// You must always call `super.onThemeChange()` from within your override.
-	open func onThemeChange() {
+	public func onThemeChange() {
 		assert(Thread.isMainThread)
 
 		// Any setting that uses cgColor to provide the color will not automatically be updated
@@ -287,7 +288,7 @@ public extension Element {
 	@discardableResult
 	func bindIsHidden(_ isHiddenBinder: ValueBinder<Bool>) -> Self {
 		self.isHiddenBinder = isHiddenBinder
-		isHiddenBinder.register(self) { [weak self] newValue in
+		isHiddenBinder.register { [weak self] newValue in
 			self?.view().isHidden = newValue
 		}
 		return self

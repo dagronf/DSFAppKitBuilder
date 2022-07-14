@@ -25,6 +25,7 @@
 //
 
 import AppKit
+import DSFValueBinders
 
 /// A switch element
 ///
@@ -86,7 +87,7 @@ public extension Switch {
 	/// Bind the on/off switch state.
 	func bindOnOffState(_ stateBinding: ValueBinder<Bool>) -> Self {
 		self.onOffBinder = stateBinding
-		stateBinding.register(self) { [weak self] newValue in
+		stateBinding.register { [weak self] newValue in
 			let newState: NSControl.StateValue = (newValue == false) ? .off : .on
 			self?.switchView.state = newState
 			self?.stateBinder?.wrappedValue = newState
@@ -98,7 +99,7 @@ public extension Switch {
 	/// Bind the switch state
 	func bindState(_ stateBinding: ValueBinder<NSControl.StateValue>) -> Self {
 		self.stateBinder = stateBinding
-		stateBinding.register(self) { [weak self] newValue in
+		stateBinding.register { [weak self] newValue in
 			self?.switchView.state = newValue
 			self?.onOffBinder?.wrappedValue = newValue == .off ? false : true
 		}

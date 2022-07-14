@@ -7,12 +7,15 @@
 
 import AppKit
 import DSFAppKitBuilder
+import DSFValueBinders
 
 class ZStackDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	//@objc dynamic var fileURL: URL = Bundle.main.bundleURL
 
-	let fileURL = ValueBinder<URL>(Bundle.main.bundleURL)
+	let fileURL = ValueBinder<URL>(Bundle.main.bundleURL) { newValue in
+		Swift.print("file url is now '\(newValue)'")
+	}
 
 	override init() {
 		super.init()
@@ -36,7 +39,9 @@ class ZStackDSL: NSObject, DSFAppKitBuilderViewHandler {
 				}
 			}
 			ZLayer(layoutType: .center) {
-				Button(title: "Do it!", bezelStyle: .regularSquare)
+				Button(title: "Do it!", bezelStyle: .regularSquare) { _ in
+					Swift.print("Clicked 'Do it!'")
+				}
 					.font(NSFont.boldSystemFont(ofSize: 24))
 			}
 		}

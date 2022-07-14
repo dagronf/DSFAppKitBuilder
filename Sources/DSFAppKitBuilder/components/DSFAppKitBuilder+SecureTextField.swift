@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSSecureTextField
+import DSFValueBinders
 
 /// A wrapper for NSSecureTextField
 ///
@@ -104,7 +105,7 @@ public extension SecureTextField {
 	/// - Returns: Self
 	func bindSecureText(_ secureTextBinder: ValueBinder<String>) -> Self {
 		self.secureTextBinder = secureTextBinder
-		secureTextBinder.register(self) { [weak self] newValue in
+		secureTextBinder.register { [weak self] newValue in
 			self?.secureTextField.stringValue = newValue
 		}
 		return self

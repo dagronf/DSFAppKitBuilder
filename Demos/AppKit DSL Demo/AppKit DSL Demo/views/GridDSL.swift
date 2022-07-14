@@ -8,6 +8,7 @@
 import AppKit
 import DSFAppKitBuilder
 import DSFMenuBuilder
+import DSFValueBinders
 
 class GridDSL: NSObject, DSFAppKitBuilderViewHandler {
 
@@ -19,7 +20,6 @@ class GridDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	override init() {
 		super.init()
-
 		self.showContractedBraille.register { newValue in
 			Swift.print("Show Contracted Braille is now \(newValue)")
 		}

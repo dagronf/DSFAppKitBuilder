@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSPathControl
+import DSFValueBinders
 
 /// An NSPathControl element
 public class PathControl: Control {
@@ -79,7 +80,7 @@ public extension PathControl {
 	/// Bind to the provided bindable url
 	func bindURL(_ fileURL: ValueBinder<URL>) -> Self {
 		self.fileURLBinder = fileURL
-		fileURL.register(self) { [weak self] newURL in
+		fileURL.register { [weak self] newURL in
 			self?.pathControl.url = newURL
 		}
 		return self

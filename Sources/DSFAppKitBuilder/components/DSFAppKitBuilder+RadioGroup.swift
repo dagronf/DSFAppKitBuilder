@@ -25,6 +25,7 @@
 //
 
 import AppKit
+import DSFValueBinders
 
 /// A group of managed radio buttons
 ///
@@ -150,7 +151,7 @@ public extension RadioGroup {
 	/// Bind the selection
 	func bindSelection(_ selectionBinder: ValueBinder<Int>) -> Self {
 		self.selectionBinder = selectionBinder
-		selectionBinder.register(self) { [weak self] newValue in
+		selectionBinder.register { [weak self] newValue in
 			guard let `self` = self else { return }
 			self.selectRadioWithTag(newValue)
 			self.actionCallback?(newValue)

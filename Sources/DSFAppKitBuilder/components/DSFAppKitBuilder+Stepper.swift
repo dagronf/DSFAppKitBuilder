@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSStepper
+import DSFValueBinders
 
 /// Wrapper for NSStepper
 ///
@@ -95,7 +96,7 @@ public extension Stepper {
 	/// Bind the stepper value
 	func bindValue(_ value: ValueBinder<Double>) -> Self {
 		self.valueBinder = value
-		value.register(self) { [weak self] newValue in
+		value.register { [weak self] newValue in
 			self?.stepper.doubleValue = newValue
 		}
 

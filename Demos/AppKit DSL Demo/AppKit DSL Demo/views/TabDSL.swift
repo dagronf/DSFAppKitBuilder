@@ -7,6 +7,7 @@
 
 import AppKit
 import DSFAppKitBuilder
+import DSFValueBinders
 
 class TabDSL: NSObject, DSFAppKitBuilderViewHandler {
 	let selectedTab = ValueBinder<Int>(1) { newValue in

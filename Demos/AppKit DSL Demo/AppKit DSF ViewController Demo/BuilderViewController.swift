@@ -7,6 +7,7 @@
 
 import AppKit
 import DSFAppKitBuilder
+import DSFValueBinders
 import Defaults
 
 extension Defaults.Keys {

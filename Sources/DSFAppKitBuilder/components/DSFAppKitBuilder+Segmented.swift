@@ -25,6 +25,7 @@
 //
 
 import AppKit.NSSegmentedControl
+import DSFValueBinders
 
 // MARK: - Segmented control
 
@@ -158,7 +159,7 @@ public extension Segmented {
 	/// Bind enabled state for each segment
 	func bindEnabledSegments(_ enabledSegmentsBinder: ValueBinder<NSSet>) -> Self {
 		self.segmentedEnabledBinder = enabledSegmentsBinder
-		enabledSegmentsBinder.register(self) { [weak self] newValue in
+		enabledSegmentsBinder.register { [weak self] newValue in
 			self?.enableSegments(from: newValue)
 		}
 		return self
@@ -167,7 +168,7 @@ public extension Segmented {
 	/// Bind the selected segments
 	func bindSelectedSegments(_ selectedSegmentsBinder: ValueBinder<NSSet>) -> Self {
 		self.selectedSegmentsBinder = selectedSegmentsBinder
-		selectedSegmentsBinder.register(self) { [weak self] newValue in
+		selectedSegmentsBinder.register { [weak self] newValue in
 			self?.selectSegments(from: newValue)
 		}
 		return self

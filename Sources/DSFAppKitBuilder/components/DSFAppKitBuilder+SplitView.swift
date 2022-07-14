@@ -25,6 +25,7 @@
 //
 
 import AppKit
+import DSFValueBinders
 
 /// Wrapper for NSSplitView
 ///
@@ -129,7 +130,7 @@ public extension SplitView {
 	/// Bind the splitview item hidden status
 	func bindHiddenViews(_ hiddenSplitBinder: ValueBinder<NSSet>) -> Self {
 		self.hiddenSplitBinder = hiddenSplitBinder
-		hiddenSplitBinder.register(self) { [weak self] newValue in
+		hiddenSplitBinder.register { [weak self] newValue in
 			guard let `self` = self else { return }
 			self.controller.splitViewItems.enumerated().forEach { item in
 				item.1.isCollapsed = newValue.contains(item.0)

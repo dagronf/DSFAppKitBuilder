@@ -26,6 +26,7 @@
 
 import Foundation
 import AppKit.NSTextField
+import DSFValueBinders
 
 /// A read-only text control
 ///
@@ -192,7 +193,7 @@ public extension Label {
 	/// - Returns: Self
 	func bindLabel(_ textValue: ValueBinder<String>) -> Self {
 		self.labelBinder = textValue
-		textValue.register(self) { [weak self] newValue in
+		textValue.register { [weak self] newValue in
 			self?.label.stringValue = newValue
 		}
 		return self
@@ -206,7 +207,7 @@ public extension Label {
 	func bindValue(_ doubleBinder: ValueBinder<Double>, formatter: NumberFormatter) -> Self {
 		self.doubleBinder = doubleBinder
 		self.label.formatter = formatter
-		doubleBinder.register(self) { [weak self] newValue in
+		doubleBinder.register { [weak self] newValue in
 			guard let `self` = self else { return }
 			self.label.doubleValue = self.doubleBinder?.wrappedValue ?? 0
 		}
@@ -219,7 +220,7 @@ public extension Label {
 	/// - Returns: Self
 	func bindAttributedLabel(_ attributedValue: ValueBinder<NSAttributedString>) -> Self {
 		self.attributedLabelBinder = attributedValue
-		attributedValue.register(self) { [weak self] newValue in
+		attributedValue.register { [weak self] newValue in
 			self?.label.attributedStringValue = newValue
 		}
 		return self
@@ -228,7 +229,7 @@ public extension Label {
 	/// Bind the text color
 	func bindTextColor(_ colorBinder: ValueBinder<NSColor>, animated: Bool = false) -> Self {
 		self.textColorBinder = colorBinder
-		colorBinder.register(self) { [weak self] newValue in
+		colorBinder.register { [weak self] newValue in
 			guard let `self` = self else { return }
 			if animated {
 				self.textColorAnimator.animate(from: self.label.textColor ?? .clear, to: newValue) { [weak self] color in

@@ -27,6 +27,7 @@
 import AppKit.NSPopUpButton
 
 import DSFMenuBuilder
+import DSFValueBinders
 
 /// Wrapper for NSPopupButton
 ///
@@ -116,7 +117,7 @@ public extension PopupButton {
 	/// Bind the selection
 	func bindSelection(_ selectionBinder: ValueBinder<Int>) -> Self {
 		self.selectionBinder = selectionBinder
-		selectionBinder.register(self) { [weak self] newValue in
+		selectionBinder.register { [weak self] newValue in
 			self?.popupButton.selectItem(at: newValue)
 		}
 		return self
