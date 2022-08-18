@@ -155,6 +155,64 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						Swift.print("Color - \(color)")
 					}
 			}
+
+			HStack {
+				Button<AccentColorButton>(title: "Multicolor", type: .momentaryChange)
+					.size(width: 18, height: 18)
+					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .white }
+					.onChange { state in
+						Swift.print("Color multicolor!")
+					}
+				Button<AccentColorButton>(title: "Blue", type: .momentaryChange)
+					.size(width: 18, height: 18)
+					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemBlue }
+					.onChange { state in
+						Swift.print("Color blue!")
+					}
+				Button<AccentColorButton>(title: "Purple", type: .momentaryChange)
+					.size(width: 18, height: 18)
+					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemPurple }
+					.onChange { state in
+						Swift.print("Color purple!")
+					}
+				Button<AccentColorButton>(title: "Pink", type: .momentaryChange)
+					.size(width: 18, height: 18)
+					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemPink }
+					.onChange { state in
+						Swift.print("Color pink!")
+					}
+				Button<AccentColorButton>(title: "Red", type: .momentaryChange)
+					.size(width: 18, height: 18)
+					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemRed }
+					.onChange { state in
+						Swift.print("Color red!")
+					}
+				Button<AccentColorButton>(title: "Orange", type: .momentaryChange)
+					.size(width: 18, height: 18)
+					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemOrange }
+					.onChange { state in
+						Swift.print("Color orange!")
+					}
+				Button<AccentColorButton>(title: "Yellow", type: .momentaryChange)
+					.size(width: 18, height: 18)
+					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemYellow }
+					.onChange { state in
+						Swift.print("Color yellow!")
+					}
+				Button<AccentColorButton>(title: "Green", type: .momentaryChange)
+					.size(width: 18, height: 18)
+					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemGreen }
+					.onChange { state in
+						Swift.print("Color green!")
+					}
+				Button<AccentColorButton>(title: "Graphite", type: .momentaryChange)
+					.size(width: 18, height: 18)
+					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemGray }
+					.onChange { state in
+						Swift.print("Color graphite!")
+					}
+			}
+			EmptyView()
 		}
 }
 
@@ -182,4 +240,29 @@ class SafeSwitch: Element {
 				.bindOnOffState(self.onOffBinder)
 		}
 	}()
+}
+
+
+@IBDesignable
+class AccentColorButton: NSButton {
+
+	var fillColor: NSColor = .systemGray
+
+	override init(frame frameRect: NSRect) {
+		super.init(frame: frameRect)
+		self.translatesAutoresizingMaskIntoConstraints = false
+		self.isBordered = false
+	}
+
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		self.translatesAutoresizingMaskIntoConstraints = false
+		self.isBordered = false
+	}
+
+	override func draw(_ dirtyRect: NSRect) {
+		self.fillColor.setFill()
+		let pth = NSBezierPath(ovalIn: self.bounds)
+		pth.fill()
+	}
 }

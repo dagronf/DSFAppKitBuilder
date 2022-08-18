@@ -27,16 +27,32 @@
 import AppKit.NSButton
 import DSFValueBinders
 
-/// An NSButton wrapper
+/// An NSButton wrapper.
+///
+/// You can supply a custom NSButton overload via the template parameter
 ///
 /// Usage:
+///
+/// The standard NSButton
 ///
 /// ```swift
 /// Button(title: "Title") { [weak self] newState in
 ///    // button action code
 /// }
 /// ```
-public class Button: Control {
+///
+/// A custom NSButton class type
+///
+/// ```swift
+/// Button<AccentColorButton>(title: "Title") { [weak self] newState in
+///    // button action code
+/// }
+/// .additionalAppKitControlSettings { (item: AccentColorButton) in
+///     // configure custom AccentControlButton settings...
+/// }
+/// ```
+///
+public class Button<ButtonType: NSButton>: Control {
 
 	public typealias ButtonAction = (NSButton.StateValue) -> Void
 
@@ -78,7 +94,7 @@ public class Button: Control {
 
 	// Privates
 
-	fileprivate let button = NSButton()
+	fileprivate let button = ButtonType()
 	public override func view() -> NSView { return self.button }
 	private var action: ButtonAction?
 
@@ -86,11 +102,17 @@ public class Button: Control {
 	private var stateBinder: ValueBinder<NSControl.StateValue>?
 	private var titleBinder: ValueBinder<String>?
 	private var alternateTitleBinder: ValueBinder<String>?
-}
 
-extension Button {
 	public override var debugDescription: String {
 		return "Button[title='\(self.button.title)'"
+	}
+
+	@objc private func performAction(_ item: NSButton) {
+		self.action?(item.state)
+
+		/// Tell the binders to update
+		self.onOffBinder?.wrappedValue = (item.state == .off ? false : true)
+		self.stateBinder?.wrappedValue = item.state
 	}
 }
 
@@ -153,6 +175,15 @@ public extension Button {
 		self.button.font = font
 		return self
 	}
+
+	/// Set the bezel color for the button.
+	///
+	/// Note: Not all button types support bezel colors.
+	@available(macOS 10.12.2, *)
+	func bezelColor(_ color: NSColor) -> Self {
+		self.button.bezelColor = color
+		return self
+	}
 }
 
 // MARK: - Actions
@@ -166,13 +197,7 @@ public extension Button {
 		return self
 	}
 
-	@objc private func performAction(_ item: NSButton) {
-		self.action?(item.state)
 
-		/// Tell the binders to update
-		self.onOffBinder?.wrappedValue = (item.state == .off ? false : true)
-		self.stateBinder?.wrappedValue = item.state
-	}
 }
 
 // MARK: - Bindings

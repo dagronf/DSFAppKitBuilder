@@ -35,7 +35,7 @@ import AppKit.NSButton
 ///    // button action code
 /// }
 /// ```
-public class CheckBox: Button {
+public class CheckBox<CheckboxType: NSButton>: Button<CheckboxType> {
 	/// Create a CheckBox
 	/// - Parameters:
 	///   - title: The title to display
