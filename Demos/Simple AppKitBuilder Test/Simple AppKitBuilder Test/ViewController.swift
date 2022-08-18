@@ -55,18 +55,25 @@ class IdentityElement: Element {
 	lazy var body: Element =
 	HStack(spacing: 4) {
 		ImageView()
-			.image(NSImage(named: "apple_logo_orig")!)           // The image
-			.size(width: 42, height: 42, priority: .required)    // fixed size
-		VStack(spacing: 2, alignment: .leading) {
-			Label("Apple Computer")                              // The label with title 'Name'
-				.font(NSFont.systemFont(ofSize: 24))              // Font size 12
-				.lineBreakMode(.byTruncatingTail)                 // Truncate line
-				.horizontalPriorities(compressionResistance: 100) // Allow the text field to compress
+			.image(NSImage(named: "apple_logo_orig")!)              // The image
+			.size(width: 42, height: 42, priority: .required)       // fixed size
+		VStack(spacing: 4, alignment: .leading) {
+			Group(edgeInsets: NSEdgeInsets(top: 4, left: 8, bottom: 4, right: 8)) {
+				Label("Apple Computer")                              // The label with title 'Name'
+					.font(NSFont.systemFont(ofSize: 24))              // Font size 12
+					.lineBreakMode(.byTruncatingTail)                 // Truncate line
+					.horizontalPriorities(compressionResistance: 100) // Allow the text field to compress
+					.shadow(radius: 1, offset: CGSize(width: 0, height: 1.5), color: .systemGray, opacity: 1)
+			}
+			.backgroundColor(.textBackgroundColor)
+			.cornerRadius(8)
+			.shadow()
 			Label(identityDescription)                           // The description label
 				.font(NSFont.systemFont(ofSize: 12))              // Font size 12
 				.textColor(.placeholderTextColor)                 // Grey text
 				.lineBreakMode(lineBreakMode)                     // Line break mode
 				.horizontalPriorities(compressionResistance: 250) // Allow the text field to wrap
+
 		}
 		.edgeInsets(6)
 	}

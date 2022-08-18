@@ -49,6 +49,14 @@ import Foundation
 	return subject
 }
 
+@discardableResult
+@inlinable func using<T, R>(_ value: T?, _ block: (T) -> R) -> R? {
+	if let value = value {
+		return block(value)
+	}
+	return nil
+}
+
 extension Optional {
 	/// Perform a block ONLY if we can be unwrapped
 	/// - Parameter block: The block to be called with the unwrapped element

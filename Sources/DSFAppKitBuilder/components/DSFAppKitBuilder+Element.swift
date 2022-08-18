@@ -182,9 +182,49 @@ public extension Element {
 		return self
 	}
 
+	/// Add a shadow to the element
+	/// - Parameters:
+	///   - radius: The blur radius used to create the shadow
+	///   - offset: The offset (in points) of the layer’s shadow
+	///   - color: The color of the layer’s shadow
+	///   - opacity: The opacity of the layer’s shadow
+	/// - Returns: Self
+	@discardableResult
+	func shadow(
+		radius: CGFloat = 3,
+		offset: CGSize = CGSize(width: 0, height: -3),
+		color: NSColor = .shadowColor,
+		opacity: CGFloat = 0.5
+	) -> Self {
+		using(self.nsLayer) {
+			$0.shadowRadius = radius
+			$0.shadowOffset = offset
+			$0.shadowColor = color.cgColor
+			$0.shadowOpacity = Float(opacity)
+			$0.masksToBounds = false
+		}
+		return self
+	}
+
+	/// Add a shadow to the element
+	/// - Parameters:
+	///   - shadow: A shadow object describing the shadow
+	/// - Returns: Self
+	@discardableResult
+	@inlinable func shadow(_ shadow: Shadow) -> Self {
+		self.shadow(
+			radius: shadow.radius,
+			offset: shadow.offset,
+			color: shadow.color,
+			opacity: shadow.opacity
+		)
+	}
+}
+
+public extension Element {
 	/// Apply a block function recursively over the element and all of its children
 	@discardableResult
-	func applyRecursively( _ block: (Element) -> Void) -> Self {
+	func applyRecursively(_ block: (Element) -> Void) -> Self {
 		block(self)
 		self.childElements().forEach { element in
 			element.applyRecursively(block)
