@@ -1,7 +1,7 @@
 //
 //  DSFAppKitBuilder+Group.swift
 //
-//  Created by Darren Ford on 27/7/21
+//  Copyright © 2022 Darren Ford. All rights reserved.
 //
 //  MIT License
 //
@@ -58,16 +58,28 @@ public class Group: Element {
 	///   - edgeInsets: The insets for the child element
 	///   - visualEffect: Use a NSVisualEffectView as the container view
 	///   - builder: The builder for generating the group's content
-	public init(
+	public convenience init(
 		edgeInsets: NSEdgeInsets,
 		layoutType: EmbeddedLayoutType = .pinEdges,
 		visualEffect: VisualEffect? = nil,
 		builder: () -> Element
 	) {
+		self.init(
+			edgeInsets: edgeInsets,
+			layoutType: layoutType,
+			visualEffect: visualEffect,
+			element: builder()
+		)
+	}
+
+	public init(
+		edgeInsets: NSEdgeInsets,
+		layoutType: EmbeddedLayoutType = .pinEdges,
+		visualEffect: VisualEffect? = nil,
+		element: Element
+	) {
 		self.containerView = visualEffect?.makeView() ?? NSView()
 		self.containerView.translatesAutoresizingMaskIntoConstraints = false
-
-		let element = builder()
 
 		self.containedElement = element
 		super.init()

@@ -228,6 +228,27 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						Swift.print("Color graphite!")
 					}
 			}
+
+			HDivider()
+
+			Label("Grouping buttons with a radio group")
+				.font(NSFont.systemFont(ofSize: 16, weight: .medium))
+
+			IfTrue(false) {
+				Label("This should not show")
+			}
+
+			IfTrue(true) {
+				Group(edgeInset: 8) {
+					VStack {
+						Label("This should show 🥰")
+						ImageView(NSImage(named: "filter-icon")!)
+					}
+				}
+				.cornerRadius(8)
+				.border(width: 0.5, color: .red)
+			}
+
 			EmptyView()
 		}
 }
