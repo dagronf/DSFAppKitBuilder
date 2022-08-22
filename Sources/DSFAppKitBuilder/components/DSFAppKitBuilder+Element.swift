@@ -31,6 +31,10 @@ import DSFAppearanceManager
 
 /// The base element.
 open class Element: NSObject {
+
+	/// A unique identifier for the element
+	public let id = UUID()
+
 	// Set to true in derived classes to receive a callback when the system theme changes
 	internal var receiveThemeNotifications = false {
 		willSet {

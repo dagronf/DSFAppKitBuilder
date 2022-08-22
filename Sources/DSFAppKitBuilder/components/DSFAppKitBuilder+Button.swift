@@ -53,7 +53,7 @@ import DSFValueBinders
 /// ```
 ///
 public class Button<ButtonType: NSButton>: Control {
-
+	/// The button's action type
 	public typealias ButtonAction = (NSButton.StateValue) -> Void
 
 	/// Create a button
@@ -90,25 +90,32 @@ public class Button<ButtonType: NSButton>: Control {
 		self.stateBinder?.deregister(self)
 		self.titleBinder?.deregister(self)
 		self.alternateTitleBinder?.deregister(self)
+		self.groupBinder?.deregister(self)
 	}
 
 	// Privates
 
 	fileprivate let button = ButtonType()
-	public override func view() -> NSView { return self.button }
+	override public func view() -> NSView { return self.button }
 	private var action: ButtonAction?
 
 	private var onOffBinder: ValueBinder<Bool>?
 	private var stateBinder: ValueBinder<NSControl.StateValue>?
 	private var titleBinder: ValueBinder<String>?
 	private var alternateTitleBinder: ValueBinder<String>?
+	private var groupBinder: ValueBinder<RadioBinding>?
 
-	public override var debugDescription: String {
+	override public var debugDescription: String {
 		return "Button[title='\(self.button.title)'"
 	}
 
 	@objc private func performAction(_ item: NSButton) {
 		self.action?(item.state)
+
+		if let group = self.groupBinder {
+			group.wrappedValue.selectedID = self.id
+			group.valueDidChange()
+		}
 
 		/// Tell the binders to update
 		self.onOffBinder?.wrappedValue = (item.state == .off ? false : true)
@@ -137,8 +144,8 @@ public extension Button {
 		_ image: NSImage,
 		imagePosition: NSControl.ImagePosition? = nil,
 		imageScaling: NSImageScaling? = nil,
-		imageHugsTitle: Bool? = nil) -> Self
-	{
+		imageHugsTitle: Bool? = nil
+	) -> Self {
 		self.button.image = image
 		if let i = imagePosition {
 			self.button.imagePosition = i
@@ -196,8 +203,6 @@ public extension Button {
 		self.action = onChange
 		return self
 	}
-
-
 }
 
 // MARK: - Bindings
@@ -235,6 +240,52 @@ public extension Button {
 		self.onOffBinder = onOffBinder
 		onOffBinder.register { [weak self] newValue in
 			self?.button.state = newValue ? .on : .off
+		}
+		return self
+	}
+}
+
+// MARK: - Radio grouping
+
+/// A binder object for combining multiple button elements into a radio grouping
+/// (ie. only a single selection at any one time)
+///
+/// let colorBinder = ValueBinder(RadioBinding())
+public class RadioBinding {
+	// The buttons in the radio grouping
+	internal var radioButtons: [Element] = []
+
+	// The currently selected index of the button within the group
+	public private(set) var selectedIndex: Int = -1
+
+	// The id for the currently selected item within the group
+	public internal(set) var selectedID: UUID? {
+		didSet {
+			self.selectedIndex = self.radioButtons.firstIndex { $0.id == selectedID } ?? -1
+		}
+	}
+
+	/// Default initializer
+	public init() { }
+}
+
+public extension Button {
+	/// Link buttons together into a radio group style button collection, with only one 'on' at any time
+	/// - Parameters:
+	///   - groupBinder: The binding object
+	///   - initialSelection: If true, sets this button to be initially selected
+	/// - Returns: self
+	func bindRadioGroup(_ groupBinder: ValueBinder<RadioBinding>, initialSelection: Bool = false) -> Self {
+		self.groupBinder = groupBinder
+		groupBinder.wrappedValue.radioButtons.append(self)
+		groupBinder.register { [weak self] newValue in
+			guard let `self` = self else { return }
+			self.button.state = (newValue.selectedID == self.id) ? .on : .off
+		}
+
+		if initialSelection {
+			groupBinder.wrappedValue.selectedID = self.id
+			groupBinder.valueDidChange()
 		}
 		return self
 	}

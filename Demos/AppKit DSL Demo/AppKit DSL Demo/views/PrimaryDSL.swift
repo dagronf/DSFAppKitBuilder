@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import DSFAppearanceManager
 import DSFAppKitBuilder
 import DSFMenuBuilder
 import DSFValueBinders
@@ -38,6 +39,11 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		n.minimumFractionDigits = 1
 		return n
 	}()
+
+	// A binding to tie buttons together into a radio-style grouping
+	let selectedColor = ValueBinder(RadioBinding()) { newValue in
+		Swift.print("Selected radio button = \(newValue.selectedIndex) (\(String(describing: newValue.selectedID))")
+	}
 
 	// Definition
 
@@ -148,6 +154,11 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				}
 			}
 
+			HDivider()
+
+			Label("Color Well")
+				.font(NSFont.systemFont(ofSize: 16, weight: .medium))
+
 			HStack {
 				ColorWell(showsAlpha: true)
 					.size(width: 60, height: 40)
@@ -156,57 +167,62 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					}
 			}
 
+			HDivider()
+
+			Label("Grouping buttons with a radio group")
+				.font(NSFont.systemFont(ofSize: 16, weight: .medium))
+
 			HStack {
-				Button<AccentColorButton>(title: "Multicolor", type: .momentaryChange)
-					.size(width: 18, height: 18)
+				Button<AccentColorButton>(title: "", type: .momentaryChange)
+					.bindRadioGroup(self.selectedColor)
 					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .white }
 					.onChange { state in
 						Swift.print("Color multicolor!")
 					}
-				Button<AccentColorButton>(title: "Blue", type: .momentaryChange)
-					.size(width: 18, height: 18)
+				Button<AccentColorButton>(title: "", type: .momentaryChange)
+					.bindRadioGroup(self.selectedColor)
 					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemBlue }
 					.onChange { state in
 						Swift.print("Color blue!")
 					}
-				Button<AccentColorButton>(title: "Purple", type: .momentaryChange)
-					.size(width: 18, height: 18)
+				Button<AccentColorButton>(title: "", type: .momentaryChange)
+					.bindRadioGroup(self.selectedColor, initialSelection: true)
 					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemPurple }
 					.onChange { state in
 						Swift.print("Color purple!")
 					}
-				Button<AccentColorButton>(title: "Pink", type: .momentaryChange)
-					.size(width: 18, height: 18)
+				Button<AccentColorButton>(title: "", type: .momentaryChange)
+					.bindRadioGroup(self.selectedColor)
 					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemPink }
 					.onChange { state in
 						Swift.print("Color pink!")
 					}
-				Button<AccentColorButton>(title: "Red", type: .momentaryChange)
-					.size(width: 18, height: 18)
+				Button<AccentColorButton>(title: "", type: .momentaryChange)
+					.bindRadioGroup(self.selectedColor)
 					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemRed }
 					.onChange { state in
 						Swift.print("Color red!")
 					}
-				Button<AccentColorButton>(title: "Orange", type: .momentaryChange)
-					.size(width: 18, height: 18)
+				Button<AccentColorButton>(title: "", type: .momentaryChange)
+					.bindRadioGroup(self.selectedColor)
 					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemOrange }
 					.onChange { state in
 						Swift.print("Color orange!")
 					}
-				Button<AccentColorButton>(title: "Yellow", type: .momentaryChange)
-					.size(width: 18, height: 18)
+				Button<AccentColorButton>(title: "", type: .momentaryChange)
+					.bindRadioGroup(self.selectedColor)
 					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemYellow }
 					.onChange { state in
 						Swift.print("Color yellow!")
 					}
-				Button<AccentColorButton>(title: "Green", type: .momentaryChange)
-					.size(width: 18, height: 18)
+				Button<AccentColorButton>(title: "", type: .momentaryChange)
+					.bindRadioGroup(self.selectedColor)
 					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemGreen }
 					.onChange { state in
 						Swift.print("Color green!")
 					}
-				Button<AccentColorButton>(title: "Graphite", type: .momentaryChange)
-					.size(width: 18, height: 18)
+				Button<AccentColorButton>(title: "", type: .momentaryChange)
+					.bindRadioGroup(self.selectedColor)
 					.additionalAppKitControlSettings { (item: AccentColorButton) in item.fillColor = .systemGray }
 					.onChange { state in
 						Swift.print("Color graphite!")
@@ -240,29 +256,4 @@ class SafeSwitch: Element {
 				.bindOnOffState(self.onOffBinder)
 		}
 	}()
-}
-
-
-@IBDesignable
-class AccentColorButton: NSButton {
-
-	var fillColor: NSColor = .systemGray
-
-	override init(frame frameRect: NSRect) {
-		super.init(frame: frameRect)
-		self.translatesAutoresizingMaskIntoConstraints = false
-		self.isBordered = false
-	}
-
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
-		self.translatesAutoresizingMaskIntoConstraints = false
-		self.isBordered = false
-	}
-
-	override func draw(_ dirtyRect: NSRect) {
-		self.fillColor.setFill()
-		let pth = NSBezierPath(ovalIn: self.bounds)
-		pth.fill()
-	}
 }

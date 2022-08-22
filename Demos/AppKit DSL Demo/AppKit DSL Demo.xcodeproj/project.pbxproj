@@ -16,6 +16,7 @@
 		2314B32B26AFB816003BAA0C /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 2314B32A26AFB816003BAA0C /* DSFAppKitBuilder */; };
 		2314B32D26AFD71C003BAA0C /* SecondaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */; };
 		2324632626C11A2800FF3158 /* ZStackDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2324632526C11A2800FF3158 /* ZStackDSL.swift */; };
+		2327F3BC28B34CB000875739 /* AccentColorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2327F3BB28B34CB000875739 /* AccentColorButton.swift */; };
 		232EC66126B223A30042C7F7 /* TabDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232EC66026B223A30042C7F7 /* TabDSL.swift */; };
 		232EC66326B223C40042C7F7 /* SplitDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232EC66226B223C40042C7F7 /* SplitDSL.swift */; };
 		2351367C26B3DAAE0026EAA1 /* BoxDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */; };
@@ -42,6 +43,7 @@
 		2314B32926AFB80D003BAA0C /* DSFAppKitBuilder */ = {isa = PBXFileReference; lastKnownFileType = folder; name = DSFAppKitBuilder; path = ../..; sourceTree = "<group>"; };
 		2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryDSL.swift; sourceTree = "<group>"; };
 		2324632526C11A2800FF3158 /* ZStackDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZStackDSL.swift; sourceTree = "<group>"; };
+		2327F3BB28B34CB000875739 /* AccentColorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentColorButton.swift; sourceTree = "<group>"; };
 		232EC66026B223A30042C7F7 /* TabDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDSL.swift; sourceTree = "<group>"; };
 		232EC66226B223C40042C7F7 /* SplitDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitDSL.swift; sourceTree = "<group>"; };
 		23350DB226CDF4DA00A5CA09 /* AppKit-DSL-Demo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "AppKit-DSL-Demo-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -109,6 +111,7 @@
 				2304027C26AF7E60002016FD /* Assets.xcassets */,
 				2304027E26AF7E60002016FD /* Main.storyboard */,
 				2304028A26AF7EFB002016FD /* Utilities.swift */,
+				2327F3BB28B34CB000875739 /* AccentColorButton.swift */,
 			);
 			path = "AppKit DSL Demo";
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 			files = (
 				232EC66326B223C40042C7F7 /* SplitDSL.swift in Sources */,
 				2304028B26AF7EFB002016FD /* Utilities.swift in Sources */,
+				2327F3BC28B34CB000875739 /* AccentColorButton.swift in Sources */,
 				2314B32D26AFD71C003BAA0C /* SecondaryDSL.swift in Sources */,
 				23063A6126DC69DE00AC7715 /* WindowPopoverSheetDSL.swift in Sources */,
 				232EC66126B223A30042C7F7 /* TabDSL.swift in Sources */,
@@ -441,7 +445,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.swiftdsl.AppKit-DSL-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -470,7 +474,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.dagronf.swiftdsl.AppKit-DSL-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";

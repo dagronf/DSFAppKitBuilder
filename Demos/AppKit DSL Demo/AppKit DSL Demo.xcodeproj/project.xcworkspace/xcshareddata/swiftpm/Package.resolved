@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/sindresorhus/Defaults",
         "state": {
           "branch": "main",
-          "revision": "3535f3d088113cf24705014eec6a17f0fd73237f",
+          "revision": "981ccb0a01c54abbe3c12ccb8226108527bbf115",
           "version": null
         }
       },
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFMenuBuilder",
         "state": {
           "branch": null,
-          "revision": "5690d98c48900c502b9e95de7b74d18ee80e2efd",
-          "version": "1.0.2"
+          "revision": "93bec4ea89bb5c64ea361f63967000cb7d7331e8",
+          "version": "1.0.3"
         }
       },
       {
