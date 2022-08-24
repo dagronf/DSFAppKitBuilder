@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFAppearanceManager",
         "state": {
           "branch": null,
-          "revision": "628176ce8f4bf8165d97e440b5fb59eb676b1779",
-          "version": "2.1.1"
+          "revision": "c1578428cc17060e2e0375b4b1334815c579ad8e",
+          "version": "3.0.1"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFPagerControl",
         "state": {
           "branch": null,
-          "revision": "db57797628a7f56b3f8fc3d4fd9468aca2482667",
-          "version": "2.0.0"
+          "revision": "de6a60005796da835c8081398209e459a6e8fe1e",
+          "version": "2.1.0"
         }
       },
       {

@@ -120,8 +120,8 @@ extension Element: DSFAppearanceCacheNotifiable {
 		assert(Thread.isMainThread)
 
 		// Make sure we use the appearance of the view to handle drawing, or else it may not take effect
-		UsingEffectiveAppearance(of: self.view()) { _ in
-			self.onThemeChange()
+		self.view().usingEffectiveAppearance { [weak self] in
+			self?.onThemeChange()
 		}
 	}
 
