@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/sindresorhus/Defaults",
         "state": {
           "branch": "main",
-          "revision": "981ccb0a01c54abbe3c12ccb8226108527bbf115",
+          "revision": "be7e30ba366a7a10e198671505dbe6b4e07b76bc",
           "version": null
         }
       },
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFAppearanceManager",
         "state": {
           "branch": null,
-          "revision": "c1578428cc17060e2e0375b4b1334815c579ad8e",
-          "version": "3.0.1"
+          "revision": "676cfd4e6aaa3cf6422990734c22544373db5c1a",
+          "version": "3.3.0"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFMenuBuilder",
         "state": {
           "branch": null,
-          "revision": "93bec4ea89bb5c64ea361f63967000cb7d7331e8",
-          "version": "1.0.3"
+          "revision": "ee63826ab3833a763fa9629c20e00f9f1f6f6407",
+          "version": "1.2.0"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFPagerControl",
         "state": {
           "branch": null,
-          "revision": "de6a60005796da835c8081398209e459a6e8fe1e",
-          "version": "2.1.0"
+          "revision": "9fce788ab0d05d51999f39a03121f759a025c7f0",
+          "version": "2.2.0"
         }
       },
       {

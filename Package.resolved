@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFAppearanceManager",
         "state": {
           "branch": null,
-          "revision": "c1578428cc17060e2e0375b4b1334815c579ad8e",
-          "version": "3.0.1"
+          "revision": "676cfd4e6aaa3cf6422990734c22544373db5c1a",
+          "version": "3.3.0"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFMenuBuilder",
         "state": {
           "branch": null,
-          "revision": "5690d98c48900c502b9e95de7b74d18ee80e2efd",
-          "version": "1.0.2"
+          "revision": "ee63826ab3833a763fa9629c20e00f9f1f6f6407",
+          "version": "1.2.0"
         }
       },
       {
