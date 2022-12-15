@@ -209,7 +209,7 @@ public class Segment {
 
 // MARK: - Result Builder for Segments
 
-#if swift(<5.3)
+#if swift(<5.4)
 @_functionBuilder
 public enum SegmentBuilder {
 	static func buildBlock() -> [Segment] { [] }

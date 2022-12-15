@@ -105,7 +105,7 @@ public class ZLayer {
 
 // MARK: - Result Builder for ZLayers
 
-#if swift(<5.3)
+#if swift(<5.4)
 @_functionBuilder
 public enum ZLayersBuilder {
 	static func buildBlock() -> [ZLayer] { [] }

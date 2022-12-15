@@ -348,7 +348,7 @@ public extension Element {
 
 // MARK: - Result Builder for stacks
 
-#if swift(<5.3)
+#if swift(<5.4)
 @_functionBuilder
 public enum ElementBuilder {
 	static func buildBlock() -> [Element] { [] }

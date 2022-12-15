@@ -290,7 +290,7 @@ public class GridRow {
 
 // MARK: - Result Builder for Grid Rows
 
-#if swift(<5.3)
+#if swift(<5.4)
 @available(macOS 10.12, *)
 @_functionBuilder
 public enum GridRowBuilder {

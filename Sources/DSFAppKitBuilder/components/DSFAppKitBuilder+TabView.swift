@@ -235,7 +235,7 @@ private extension TabViewItem {
 
 // MARK: - Result Builders for Tab Views
 
-#if swift(<5.3)
+#if swift(<5.4)
 @_functionBuilder
 public enum TabBuilder {
 	static func buildBlock() -> [TabViewItem] { [] }
