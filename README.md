@@ -305,6 +305,7 @@ TextField()
 | `Button`           | An `NSButton` wrapper   |
 | `CheckBox`         | An `NSButton` wrapper configured to display as a checkbox |
 | `ColorWell`        | An `NSColorWell` wrapper |
+| `ComboBox`         | An `NSComboBox` wrapper |
 | `Divider`<br/>`HDivider/VDivider` | A divider element (a single line, either horizontal or vertical) |
 | `EmptyView`        | A spacer view |
 | `Grid`             | An `NSGridView` wrapper |

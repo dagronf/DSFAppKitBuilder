@@ -45,6 +45,18 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		Swift.print("Selected radio button = \(newValue.selectedIndex) (\(String(describing: newValue.selectedID))")
 	}
 
+	let comboboxContent = ValueBinder<[String]>(
+		["red", "green", "blue", "yellow", "cyan", "magenta", "black"]
+	)
+
+	var comboboxText = ValueBinder<String>("") { newValue in
+		Swift.print("Combo text is = \(newValue)")
+	}
+
+	var comboboxSelection = ValueBinder<Int>(-1) { newValue in
+		Swift.print("Combo selection is = \(newValue)")
+	}
+
 	// Definition
 
 	lazy var body: Element =
@@ -97,6 +109,25 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					Swift.print("popup changed - now \(popupIndex)")
 				}
 				.selectItem(at: 1)
+
+				VDivider()
+
+				Label("And in a combo box ->")
+
+				ComboBox(content: comboboxContent, completes: true, initialSelection: 1)
+					.bindText(comboboxText)
+					.bindSelection(comboboxSelection)
+					.width(100)
+					.onEndEditing { newValue in
+						Swift.print("ComboBox onEndEditing with value '\(newValue)'")
+					}
+					.onSelectionChange { newSelection in
+						Swift.print("ComboBox onSelectionChange with value '\(newSelection)'")
+					}
+
+				Button(title: "Randomize") { [unowned self] _ in
+					self.comboboxContent.wrappedValue = self.comboboxContent.wrappedValue.shuffled()
+				}
 			}
 
 			HStack {
