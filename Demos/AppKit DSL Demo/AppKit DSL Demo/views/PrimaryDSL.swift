@@ -95,38 +95,41 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 			HDivider()
 
-			HStack {
-				Label("Select something interesting")
-					.lineBreakMode(.byTruncatingHead)
-					.horizontalPriorities(hugging: .defaultLow)
-				PopupButton {
-					MenuItem("Cats")
-					MenuItem("Dogs")
-					Separator()
-					MenuItem("Caterpillar")
-				}
-				.onChange { popupIndex in
-					Swift.print("popup changed - now \(popupIndex)")
-				}
-				.selectItem(at: 1)
-
-				VDivider()
-
-				Label("And in a combo box ->")
-
-				ComboBox(content: comboboxContent, completes: true, initialSelection: 1)
-					.bindText(comboboxText)
-					.bindSelection(comboboxSelection)
-					.width(100)
-					.onEndEditing { newValue in
-						Swift.print("ComboBox onEndEditing with value '\(newValue)'")
+			VStack {
+				HStack {
+					Label("Select something interesting")
+						.lineBreakMode(.byTruncatingHead)
+						.horizontalPriorities(hugging: .defaultLow)
+					PopupButton {
+						MenuItem("Cats")
+						MenuItem("Dogs")
+						Separator()
+						MenuItem("Caterpillar")
 					}
-					.onSelectionChange { newSelection in
-						Swift.print("ComboBox onSelectionChange with value '\(newSelection)'")
+					.onChange { popupIndex in
+						Swift.print("popup changed - now \(popupIndex)")
 					}
+					.selectItem(at: 1)
 
-				Button(title: "Randomize") { [unowned self] _ in
-					self.comboboxContent.wrappedValue = self.comboboxContent.wrappedValue.shuffled()
+				}
+
+				HStack {
+					Label("And in a combo box ->")
+
+					ComboBox(content: comboboxContent, completes: true, initialSelection: 1)
+						.bindText(comboboxText)
+						.bindSelection(comboboxSelection)
+						.width(100)
+						.onEndEditing { newValue in
+							Swift.print("ComboBox onEndEditing with value '\(newValue)'")
+						}
+						.onSelectionChange { newSelection in
+							Swift.print("ComboBox onSelectionChange with value '\(newSelection)'")
+						}
+
+					Button(title: "Randomize") { [unowned self] _ in
+						self.comboboxContent.wrappedValue = self.comboboxContent.wrappedValue.shuffled()
+					}
 				}
 			}
 

@@ -86,13 +86,13 @@ public class ComboBox: Control {
 		self.onSelectionChange = nil
 	}
 
-	public override func view() -> NSView { return self.combo }
+	override public func view() -> NSView { return self.combo }
 	fileprivate let combo = NSComboBox()
 	fileprivate let content: ValueBinder<[String]>
 
 	// Text Content binding
 	private var textValueBinder: ValueBinder<String>?
-	private var updateOnEndEditingOnly: Bool = false
+	private var updateOnEndEditingOnly = false
 
 	// Selection binding
 	private var selectionBinder: ValueBinder<Int>?
@@ -104,10 +104,10 @@ public class ComboBox: Control {
 	private var onSelectionChange: ((Int) -> Void)?
 }
 
-extension ComboBox {
-	fileprivate func asyncSetup(initialSelection: Int, initialText: String?) {
+private extension ComboBox {
+	func asyncSetup(initialSelection: Int, initialText: String?) {
 		// For some reason, these calls need to occur on the next run loop to take effect
-		let validRange = (0 ..< content.wrappedValue.count)
+		let validRange = (0 ..< self.content.wrappedValue.count)
 
 		if validRange.contains(initialSelection) {
 			self.combo.selectItem(at: initialSelection)
@@ -118,7 +118,7 @@ extension ComboBox {
 		}
 		else {
 			if validRange.contains(initialSelection) {
-				self.combo.stringValue = content.wrappedValue[initialSelection]
+				self.combo.stringValue = self.content.wrappedValue[initialSelection]
 			}
 		}
 	}
@@ -126,13 +126,13 @@ extension ComboBox {
 
 // MARK: - Bindings
 
-extension ComboBox {
+public extension ComboBox {
 	/// Bind the text content of the combobox to the value binder
 	/// - Parameters:
 	///   - updateOnEndEditingOnly: Only update the text when the field has ended editing (eg. when the user presses return or tabs away)
 	///   - textValue: The value binder
 	/// - Returns: Self
-	public func bindText(updateOnEndEditingOnly: Bool = false, _ textValue: ValueBinder<String>) -> Self {
+	func bindText(updateOnEndEditingOnly: Bool = false, _ textValue: ValueBinder<String>) -> Self {
 		self.updateOnEndEditingOnly = updateOnEndEditingOnly
 		self.textValueBinder = textValue
 		textValue.register { [weak self] newValue in
@@ -145,7 +145,7 @@ extension ComboBox {
 	/// - Parameters:
 	///   - selectionBinder: The selection binder
 	/// - Returns: Self
-	public func bindSelection(_ selectionBinder: ValueBinder<Int>) -> Self {
+	func bindSelection(_ selectionBinder: ValueBinder<Int>) -> Self {
 		self.selectionBinder = selectionBinder
 		selectionBinder.register { [weak self] newValue in
 			guard let `self` = self else { return }
@@ -159,11 +159,11 @@ extension ComboBox {
 
 // MARK: - Actions
 
-extension ComboBox {
+public extension ComboBox {
 	/// Set a callback for when the combo box ends editing
 	/// - Parameter block: The block to call
 	/// - Returns: Self
-	public func onEndEditing(_ block: @escaping (String) -> Void) -> Self {
+	func onEndEditing(_ block: @escaping (String) -> Void) -> Self {
 		self.onEndEditing = block
 		return self
 	}
@@ -171,7 +171,7 @@ extension ComboBox {
 	/// Set a callback for when the combo box ends editing
 	/// - Parameter block: The block to call
 	/// - Returns: Self
-	public func onSelectionChange(_ block: @escaping (Int) -> Void) -> Self {
+	func onSelectionChange(_ block: @escaping (Int) -> Void) -> Self {
 		self.onSelectionChange = block
 		return self
 	}
@@ -179,11 +179,11 @@ extension ComboBox {
 
 extension ComboBox: NSTextFieldDelegate {
 	public func controlTextDidBeginEditing(_: Notification) {
-		//self.didBeginEditing?(self.label)
+		// self.didBeginEditing?(self.label)
 	}
 
 	public func controlTextDidChange(_: Notification) {
-		if !updateOnEndEditingOnly {
+		if !self.updateOnEndEditingOnly {
 			self.textValueBinder?.wrappedValue = self.combo.stringValue
 		}
 	}
