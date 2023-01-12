@@ -32,6 +32,14 @@ public protocol DSFAppKitBuilderViewHandler: NSObjectProtocol {
 	var body: Element { get }
 }
 
+@available(macOS 10.15, *)
+public extension DSFAppKitBuilderViewHandler {
+	/// Generate a SwiftUI preview encapsulating a DSFAppKitBuilderViewHandler object
+	func Preview() -> DSFAppKitBuilderViewHandlerPreview {
+		return DSFAppKitBuilderViewHandlerPreview(self)
+	}
+}
+
 /// Displays a DSFAppKitBuilder Element in a view
 open class DSFAppKitBuilderView: NSView {
 

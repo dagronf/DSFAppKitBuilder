@@ -29,6 +29,7 @@
 		237E74D2282C61710069846A /* BuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E74D1282C61710069846A /* BuilderViewController.swift */; };
 		237E74D7282C73040069846A /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 237E74D6282C73040069846A /* Defaults */; };
 		23C6E90A26AF971600FBF106 /* PrimaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C6E90926AF971600FBF106 /* PrimaryDSL.swift */; };
+		23E66E68296F94110025AFB0 /* SwiftUIPreviewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66E67296F94110025AFB0 /* SwiftUIPreviewDemo.swift */; };
 		23EBC53626DDA0CC001A861E /* GridDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC53526DDA0CC001A861E /* GridDSL.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		237E74CB282C5B7F0069846A /* AppKit_DSF_ViewController_Demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AppKit_DSF_ViewController_Demo.entitlements; sourceTree = "<group>"; };
 		237E74D1282C61710069846A /* BuilderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuilderViewController.swift; sourceTree = "<group>"; };
 		23C6E90926AF971600FBF106 /* PrimaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDSL.swift; sourceTree = "<group>"; };
+		23E66E67296F94110025AFB0 /* SwiftUIPreviewDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUIPreviewDemo.swift; sourceTree = "<group>"; };
 		23EBC53526DDA0CC001A861E /* GridDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridDSL.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,6 +147,7 @@
 				237E74C2282C5B7E0069846A /* AppDelegate.swift */,
 				237E74C4282C5B7E0069846A /* ViewController.swift */,
 				237E74D1282C61710069846A /* BuilderViewController.swift */,
+				23E66E67296F94110025AFB0 /* SwiftUIPreviewDemo.swift */,
 				237E74C6282C5B7F0069846A /* Assets.xcassets */,
 				237E74C8282C5B7F0069846A /* Main.storyboard */,
 				237E74CB282C5B7F0069846A /* AppKit_DSF_ViewController_Demo.entitlements */,
@@ -283,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				237E74C5282C5B7E0069846A /* ViewController.swift in Sources */,
+				23E66E68296F94110025AFB0 /* SwiftUIPreviewDemo.swift in Sources */,
 				237E74D2282C61710069846A /* BuilderViewController.swift in Sources */,
 				237E74C3282C5B7E0069846A /* AppDelegate.swift in Sources */,
 			);
