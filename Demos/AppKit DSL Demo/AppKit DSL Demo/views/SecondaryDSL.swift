@@ -13,8 +13,20 @@ import DSFValueBinders
 class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	let radioSelection = ValueBinder<Int>(1)
-
 	let firstName = ValueBinder<String>("")
+
+	let dateSelection1 = ValueBinder(Date()) { newValue in
+		Swift.print("dateSelection1 is now \(newValue)")
+	}
+	let dateSelection2 = ValueBinder(Date().addingTimeInterval(-3600)) { newValue in
+		Swift.print("dateSelection2 is now \(newValue)")
+	}
+	let dateTimeRangeSelection = ValueBinder(DatePicker.Range()) { newValue in
+		Swift.print("dateTimeRangeSelection is now \(newValue)")
+	}
+	let dateSelectionMinMax = ValueBinder(Date()) { newValue in
+		Swift.print("dateSelectionMinMax is now \(newValue)")
+	}
 
 	override init() {
 		super.init()
@@ -90,6 +102,43 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			Button(title: "Reset") { [weak self] state in
 				guard let `self` = self else { return }
 				self.firstName.wrappedValue = ""
+			}
+		}
+
+		HDivider()
+
+		Group(layoutType: .center) {
+			VStack {
+				HStack {
+					DatePicker(date: dateSelection1)
+					Button(title: "Now") { [weak self] _ in
+						self?.dateSelection1.wrappedValue = Date()
+					}
+				}
+				HStack {
+					DatePicker(date: dateSelection2)
+						.locale(Locale(identifier: "GMT"))
+					Button(title: "Now") { [weak self] _ in
+						self?.dateSelection2.wrappedValue = Date()
+					}
+				}
+				HStack {
+					DatePicker(
+						range: dateTimeRangeSelection,
+						style: .clockAndCalendar
+					)
+					Button(title: "Now") { [weak self] _ in
+						self?.dateTimeRangeSelection.wrappedValue = DatePicker.Range()
+					}
+				}
+				Label("Only allow selecting dates from the current time onwards")
+				HStack {
+					DatePicker(date: dateSelectionMinMax)
+						.range(min: Date())
+					Button(title: "Now") { [weak self] _ in
+						self?.dateSelectionMinMax.wrappedValue = Date()
+					}
+				}
 			}
 		}
 
