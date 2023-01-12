@@ -70,6 +70,52 @@ And the result is...
 
 You can find this demo in the `Demos/Simple AppKitBuilder Test` folder.
 
+## NOTES
+
+### This is NOT SwiftUI for AppKit!
+
+This library is about _building_ appkit views. The view is built _once_ when the view object is constructed and the 
+structure of the constructed view hierarchy never changes beyond that point. 
+
+The difference with SwiftUI is that it rebuilds the view heirarchy constantly whenever it detects a change, allowing the
+view to radically change its hierarchy over its lifetime.
+
+You can dynamically change views within an DSFAppKitBuilder view by binding to `isHidden` (for showing or hiding a subview),
+along with binding to `isEnabled` to enable and disable controls.
+
+For example, a view with the body
+
+```
+lazy var body: Element =
+   VStack {
+      Label("Apple")
+      if some_condition {
+         Label("label1: *some_condition* is true")
+      }
+      else {
+         Label("label2: *some_condition* is false")
+      }
+   }
+}
+```
+
+will only display one of label1 or label2 for its lifetime.
+
+If you need to be able to turn off/on subviews then bind to the `isHidden` property to conditionally show/hide
+
+```
+let showBinder = ValueBinder(false)
+lazy var body: Element =
+   VStack {
+      Label("Apple")
+      Label("label1: *some_condition* is true")
+      .bindIsHidden(showBinder)
+      Label("label2: *some_condition* is false")
+		.bindIsHidden(showBinder.toggled())
+   }
+}
+```
+
 ## Generating your view
 
 There are a number of methods for building and managing your view

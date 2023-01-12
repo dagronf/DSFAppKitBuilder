@@ -201,3 +201,32 @@ public extension RadioBuilder {
 		settings
 	}
 }
+
+// Result builders extensions for handling conditionals within the DSL (eg. if statements)
+
+@available(macOS 10.15, *)
+public extension RadioBuilder {
+	static func buildEither(first component: [some RadioElement]) -> [some RadioElement] {
+		component
+	}
+
+	static func buildEither(second component: [some RadioElement]) -> [some RadioElement] {
+		component
+	}
+
+	static func buildOptional(_ component: [some RadioElement]?) -> [some RadioElement] {
+		component ?? []
+	}
+
+	static func buildBlock(_ components: [RadioElement]...) -> [some RadioElement] {
+		components.flatMap { $0 }
+	}
+
+	static func buildExpression(_ expression: some RadioElement) -> [some RadioElement] {
+		[expression]
+	}
+
+	static func buildExpression(_ expression: Void) -> [some RadioElement] {
+		[RadioElement]()
+	}
+}

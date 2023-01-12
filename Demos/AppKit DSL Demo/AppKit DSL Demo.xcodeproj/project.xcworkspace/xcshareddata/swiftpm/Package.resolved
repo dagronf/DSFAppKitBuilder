@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFValueBinders",
         "state": {
           "branch": null,
-          "revision": "dc09e2a5b2b52f349d5b6f4d76caf4dc9338901f",
-          "version": "0.7.2"
+          "revision": "4f51617cf1b6947760e965438245a239531ebf0c",
+          "version": "0.8.0"
         }
       }
     ]

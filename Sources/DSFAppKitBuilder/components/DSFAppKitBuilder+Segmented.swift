@@ -228,6 +228,35 @@ public extension SegmentBuilder {
 	}
 }
 
+// Result builders extensions for handling conditionals within the DSL (eg. if statements)
+
+@available(macOS 10.15, *)
+public extension SegmentBuilder {
+	static func buildEither(first component: [some Segment]) -> [some Segment] {
+		component
+	}
+
+	static func buildEither(second component: [some Segment]) -> [some Segment] {
+		component
+	}
+
+	static func buildOptional(_ component: [some Segment]?) -> [some Segment] {
+		component ?? []
+	}
+
+	static func buildBlock(_ components: [Segment]...) -> [some Segment] {
+		components.flatMap { $0 }
+	}
+
+	static func buildExpression(_ expression: some Segment) -> [some Segment] {
+		[expression]
+	}
+
+	static func buildExpression(_ expression: Void) -> [some Segment] {
+		[Segment]()
+	}
+}
+
 // MARK: - Private
 
 private extension Segmented {

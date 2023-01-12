@@ -20,6 +20,8 @@ class BuilderViewController: DSFAppKitBuilderViewController {
 	let firstNameBinder = ValueBinder<String>(Defaults[.firstName])
 	let lastNameBinder = ValueBinder<String>(Defaults[.lastName])
 
+	let toggleBinder = ValueBinder(false)
+
 	// The full name ("<firstname> <lastname>") of the user
 	// (THIS METHOD OF USER NAMING IS FLAWED. NEVER USE IN PRODUCTION CODE. Purely for demo purposes)
 	let fullNameBinder = ValueBinder<String>("")
@@ -62,7 +64,19 @@ class BuilderViewController: DSFAppKitBuilderViewController {
 				.columnFormatting(xPlacement: .trailing, atColumn: 0)
 			}
 
+			VStack {
+				Label("Apple")
+				Label("label1: *some_condition* is true")
+				.bindIsHidden(toggleBinder)
+				Label("label2: *some_condition* is false")
+				.bindIsHidden(toggleBinder.toggled())
+				Button(title: "toggle") { [weak self] _ in
+					self?.toggleBinder.wrappedValue.toggle()
+				}
+			}
+
 			EmptyView()
+
 			
 			HStack() {
 				EmptyView()

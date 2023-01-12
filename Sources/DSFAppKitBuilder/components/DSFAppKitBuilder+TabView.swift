@@ -253,3 +253,32 @@ public extension TabBuilder {
 		settings
 	}
 }
+
+// Result builders extensions for handling conditionals within the DSL (eg. if statements)
+
+@available(macOS 10.15, *)
+public extension TabBuilder {
+	static func buildEither(first component: [some TabViewItem]) -> [some TabViewItem] {
+		component
+	}
+
+	static func buildEither(second component: [some TabViewItem]) -> [some TabViewItem] {
+		component
+	}
+
+	static func buildOptional(_ component: [some TabViewItem]?) -> [some TabViewItem] {
+		component ?? []
+	}
+
+	static func buildBlock(_ components: [TabViewItem]...) -> [some TabViewItem] {
+		components.flatMap { $0 }
+	}
+
+	static func buildExpression(_ expression: some TabViewItem) -> [some TabViewItem] {
+		[expression]
+	}
+
+	static func buildExpression(_ expression: Void) -> [some TabViewItem] {
+		[TabViewItem]()
+	}
+}
