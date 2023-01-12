@@ -365,32 +365,3 @@ public extension ElementBuilder {
 		settings
 	}
 }
-
-// Result builders extensions for handling conditionals within the DSL (eg. if statements)
-
-@available(macOS 10.15, *)
-public extension ElementBuilder {
-	static func buildEither(first component: [some Element]) -> [some Element] {
-		 component
-	}
-
-	static func buildEither(second component: [some Element]) -> [some Element] {
-		 component
-	}
-
-	static func buildOptional(_ component: [some Element]?) -> [some Element] {
-		 component ?? []
-	}
-
-	static func buildBlock(_ components: [Element]...) -> [some Element] {
-		 components.flatMap { $0 }
-	}
-
-	static func buildExpression(_ expression: some Element) -> [some Element] {
-		 [expression]
-	}
-
-	static func buildExpression(_ expression: Void) -> [some Element] {
-		 [Element]()
-	}
-}

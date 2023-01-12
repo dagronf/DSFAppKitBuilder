@@ -122,33 +122,3 @@ public extension ZLayersBuilder {
 		settings
 	}
 }
-
-// Result builders extensions for handling conditionals within the DSL (eg. if statements)
-
-@available(macOS 10.15, *)
-public extension ZLayersBuilder {
-	static func buildEither(first component: [some ZLayer]) -> [some ZLayer] {
-		component
-	}
-	
-	static func buildEither(second component: [some ZLayer]) -> [some ZLayer] {
-		component
-	}
-	
-	static func buildOptional(_ component: [some ZLayer]?) -> [some ZLayer] {
-		component ?? []
-	}
-	
-	static func buildBlock(_ components: [ZLayer]...) -> [some ZLayer] {
-		// TODO: this crashes - not sure why
-		components.flatMap { $0 }
-	}
-	
-	static func buildExpression(_ expression: some ZLayer) -> [some ZLayer] {
-		[expression]
-	}
-	
-	static func buildExpression(_ expression: Void) -> [some ZLayer] {
-		[ZLayer]()
-	}
-}

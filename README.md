@@ -83,24 +83,6 @@ view to radically change its hierarchy over its lifetime.
 You can dynamically change views within an DSFAppKitBuilder view by binding to `isHidden` (for showing or hiding a subview),
 along with binding to `isEnabled` to enable and disable controls.
 
-For example, a view with the body
-
-```
-lazy var body: Element =
-   VStack {
-      Label("Apple")
-      if some_condition {
-         Label("label1: *some_condition* is true")
-      }
-      else {
-         Label("label2: *some_condition* is false")
-      }
-   }
-}
-```
-
-will only display one of label1 or label2 for its lifetime.
-
 If you need to be able to turn off/on subviews then bind to the `isHidden` property to conditionally show/hide
 
 ```
@@ -109,9 +91,9 @@ lazy var body: Element =
    VStack {
       Label("Apple")
       Label("label1: *some_condition* is true")
-      .bindIsHidden(showBinder)
+         .bindIsHidden(showBinder)
       Label("label2: *some_condition* is false")
-		.bindIsHidden(showBinder.toggled())
+         .bindIsHidden(showBinder.toggled())
    }
 }
 ```
