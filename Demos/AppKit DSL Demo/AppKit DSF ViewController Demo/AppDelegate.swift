@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  AppKit DSF ViewController Demo
 //
-//  Created by Darren Ford on 12/5/2022.
+//  Copyright © 2023 Darren Ford. All rights reserved.
 //
 
 import Cocoa

@@ -1,6 +1,8 @@
 //
 //  DSFAppKitBuilder+View+SwiftUI.swift
 //
+//  Copyright © 2023 Darren Ford. All rights reserved.
+//
 //  MIT License
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy

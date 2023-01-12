@@ -1,7 +1,7 @@
 //
 //  DSFAppKitBuilder+DatePicker.swift
 //
-//  Created by Darren Ford on 27/7/21
+//  Copyright © 2023 Darren Ford. All rights reserved.
 //
 //  MIT License
 //
@@ -111,6 +111,8 @@ public class DatePicker: Control {
 	private var bindMaxDate: ValueBinder<Date>?
 }
 
+// MARK: Bindings
+
 public extension DatePicker {
 	/// Bind the minimum selectable date
 	func bindMinDate(_ valueBinder: ValueBinder<Date>) -> Self {
@@ -130,6 +132,8 @@ public extension DatePicker {
 		return self
 	}
 }
+
+// MARK: Modifiers
 
 public extension DatePicker {
 	/// The text color
