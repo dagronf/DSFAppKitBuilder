@@ -44,6 +44,8 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 	}()
 
+	let numberValueBinder = ValueBinder(125.0)
+
 	// Body
 
 	lazy var body: Element =
@@ -142,7 +144,29 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 		}
 
+		HDivider()
+
+		Group(layoutType: .center) {
+			HStack {
+				HStack {
+					Label()
+						.alignment(.right)
+						.isBezeled(true)
+						.isSelectable(true)
+						.bindLabel(self.numberValueBinder.intValue().stringValue())
+						.width(50)
+					Stepper(range: -10000...10000)
+						.bindValue(self.numberValueBinder)
+					VDivider()
+					Label("")
+						.bindLabel(self.numberValueBinder.intValue().asWords())
+				}
+			}
+			.width(400)
+		}
+
 		EmptyView()
+			.verticalPriorities(hugging: 10, compressionResistance: 10)
 	}
 	.horizontalPriorities(hugging: .defaultLow)
 }
