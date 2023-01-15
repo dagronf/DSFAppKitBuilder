@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "DSFComboButton",
+        "repositoryURL": "https://github.com/dagronf/DSFComboButton",
+        "state": {
+          "branch": null,
+          "revision": "33a5a0845ce0ac94bda31375c13aa8563c0ad4b0",
+          "version": "0.4.3"
+        }
+      },
+      {
         "package": "DSFMenuBuilder",
         "repositoryURL": "https://github.com/dagronf/DSFMenuBuilder",
         "state": {

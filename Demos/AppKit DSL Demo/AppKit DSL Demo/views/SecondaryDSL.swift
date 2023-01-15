@@ -9,6 +9,7 @@ import AppKit
 
 import DSFAppKitBuilder
 import DSFValueBinders
+import DSFMenuBuilder
 
 class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
@@ -45,6 +46,20 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 	}()
 
 	let numberValueBinder = ValueBinder(125.0)
+
+	private lazy var menu1: NSMenu = NSMenu {
+		MenuItem("first")
+			.enabled { [weak self] in true }
+			.onAction { [weak self] in Swift.print("Menu selected - first") }
+		MenuItem("second")
+			.enabled { [weak self] in true }
+			.onAction { [weak self] in Swift.print("Menu selected - second") }
+		MenuItem("third")
+			.enabled { [weak self] in true }
+			.onAction { [weak self] in Swift.print("Menu selected - third") }
+	}
+
+	private var menu2Count = 0
 
 	// Body
 
@@ -163,6 +178,57 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				}
 			}
 			.width(400)
+		}
+
+		HDivider()
+
+		Group(layoutType: .center) {
+			HStack {
+				ComboButton(
+					style: .split,
+					"Split (fixed menu)",
+					image: NSImage(named: "status-bar-icon"),
+					menu: menu1
+				) {
+					Swift.print("Split Button pressed!")
+				}
+
+				ComboButton(style: .unified, "Unified (dynamic menu)", menu: nil) {
+					Swift.print("Unified Button pressed!")
+				}
+				.generateMenu { [weak self] in
+					guard let `self` = self else { return nil }
+					let count = self.menu2Count
+					self.menu2Count += 1
+					return NSMenu {
+						MenuItem("first \(count)")
+							.enabled { [weak self] in true }
+							.onAction { [weak self] in Swift.print("Unified menu selected - first \(count)") }
+						MenuItem("second \(count)")
+							.enabled { [weak self] in true }
+							.onAction { [weak self] in Swift.print("Unified menu selected - second \(count)") }
+						MenuItem("third \(count)")
+							.enabled { [weak self] in true }
+							.onAction { [weak self] in Swift.print("Unified menu selected - third \(count)") }
+					}
+				}
+
+				ComboButton(
+					style: .split,
+					"Rabbit",
+					image: NSImage(named: "slider-rabbit"),
+					menu: nil
+				) {
+					Swift.print("Unified Button pressed!")
+				}
+				.generateMenu { [weak self] in
+					NSMenu {
+						MenuItem("Do Rabbit")
+							.enabled { [weak self] in true }
+							.onAction { [weak self] in Swift.print("Rabbit be did!") }
+					}
+				}
+			}
 		}
 
 		EmptyView()
