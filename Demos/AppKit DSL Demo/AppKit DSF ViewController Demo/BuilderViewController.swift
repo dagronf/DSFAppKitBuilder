@@ -63,20 +63,6 @@ class BuilderViewController: DSFAppKitBuilderViewController {
 				}
 				.columnFormatting(xPlacement: .trailing, atColumn: 0)
 			}
-
-			VStack {
-				Label("Apple")
-				Label("label1: *some_condition* is true")
-				.bindIsHidden(toggleBinder)
-				Label("label2: *some_condition* is false")
-				.bindIsHidden(toggleBinder.toggled())
-				Button(title: "toggle") { [weak self] _ in
-					self?.toggleBinder.wrappedValue.toggle()
-				}
-			}
-
-			EmptyView()
-
 			
 			HStack() {
 				EmptyView()

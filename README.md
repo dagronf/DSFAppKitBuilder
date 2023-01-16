@@ -334,7 +334,8 @@ TextField()
 | `CheckBox`         | An `NSButton` wrapper configured to display as a checkbox |
 | `ColorWell`        | An `NSColorWell` wrapper |
 | `ComboBox`         | An `NSComboBox` wrapper |
-| `DatePicker`         | An `NSDatePicker` wrapper |
+| `ComboButton`      | An `NSComboButton` wrapper, falling back to [`DSFComboButton`](https://github.com/dagronf/DSFComboButton) on systems earlier than macOS 13 (Ventura) |
+| `DatePicker`       | An `NSDatePicker` wrapper |
 | `Divider`<br/>`HDivider/VDivider` | A divider element (a single line, either horizontal or vertical) |
 | `EmptyView`        | A spacer view |
 | `Grid`             | An `NSGridView` wrapper |

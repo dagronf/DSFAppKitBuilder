@@ -23,6 +23,9 @@ import AppKit
 import DSFValueBinders
 import DSFComboButton
 
+/// An NSComboButton that uses DSFComboButton for macOS < 13
+
+@available(macOS 10.13, *)
 public class ComboButton: Control {
 
 	public init(
@@ -46,10 +49,6 @@ public class ComboButton: Control {
 		self.comboButton.menuWrapper.delegate = self
 	}
 
-	@objc func buttonAction(_ sender: Any) {
-		self.action?()
-	}
-
 	deinit {
 		self.titleBinder = nil
 	}
@@ -71,6 +70,12 @@ public class ComboButton: Control {
 	private var imageBinder: ValueBinder<NSImage?>?
 
 	private var menuBuilder: (() -> NSMenu?)?
+}
+
+extension ComboButton {
+	@objc func buttonAction(_ sender: Any) {
+		self.action?()
+	}
 }
 
 public extension ComboButton {
@@ -149,3 +154,45 @@ extension DSFComboButton: ComboButtonWrapper {
 		set { self.style = newValue }
 	}
 }
+
+
+#if DEBUG && canImport(SwiftUI)
+import DSFMenuBuilder
+private let menu1: NSMenu = NSMenu {
+	MenuItem("one")
+		.onAction { Swift.print("one") }
+}
+private let menu2: NSMenu = NSMenu {
+	MenuItem("two")
+		.onAction { Swift.print("two") }
+}
+
+import SwiftUI
+@available(macOS 10.15, *)
+struct ComboButtonPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.VStack {
+			HStack {
+				VStack(alignment: .leading) {
+					Label("Default")
+					ComboButton(style: .split, "Split Style", menu: menu1)
+					ComboButton(style: .unified, "Unified Style", menu: menu2)
+				}
+				VStack {
+					Label("Disabled") //.font(.headline)
+					ComboButton(style: .split, "Split Style", menu: nil)
+						.isEnabled(false)
+					ComboButton(style: .unified, "Unified Style", menu: nil)
+						.isEnabled(false)
+					ComboButton(style: .unified, "Unified Style", menu: nil)
+						.bindIsHidden(ValueBinder<Bool>(true))
+				}
+			}
+			.Preview()
+		}
+		.padding()
+		.frame(width: 400)
+	}
+}
+#endif
+

@@ -34,10 +34,10 @@ public class EmptyView: Element {
 	private let emptyView: NSView = {
 		let v = NSView()
 		v.translatesAutoresizingMaskIntoConstraints = false
-		v.setContentHuggingPriority(.defaultLow, for: .horizontal)
-		v.setContentHuggingPriority(.defaultLow, for: .vertical)
-		v.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-		v.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+		v.setContentHuggingPriority(.init(1), for: .horizontal)
+		v.setContentHuggingPriority(.init(1), for: .vertical)
+		v.setContentCompressionResistancePriority(.init(1), for: .horizontal)
+		v.setContentCompressionResistancePriority(.init(1), for: .vertical)
 		return v
 	}()
 

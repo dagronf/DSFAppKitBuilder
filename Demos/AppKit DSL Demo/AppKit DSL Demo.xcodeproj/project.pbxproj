@@ -19,6 +19,7 @@
 		2327F3BC28B34CB000875739 /* AccentColorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2327F3BB28B34CB000875739 /* AccentColorButton.swift */; };
 		232EC66126B223A30042C7F7 /* TabDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232EC66026B223A30042C7F7 /* TabDSL.swift */; };
 		232EC66326B223C40042C7F7 /* SplitDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232EC66226B223C40042C7F7 /* SplitDSL.swift */; };
+		234AEF332974E58B00758E6A /* TertiaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AEF322974E58A00758E6A /* TertiaryDSL.swift */; };
 		2351367C26B3DAAE0026EAA1 /* BoxDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */; };
 		237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */; };
 		237E74C3282C5B7E0069846A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E74C2282C5B7E0069846A /* AppDelegate.swift */; };
@@ -48,6 +49,7 @@
 		232EC66026B223A30042C7F7 /* TabDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabDSL.swift; sourceTree = "<group>"; };
 		232EC66226B223C40042C7F7 /* SplitDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitDSL.swift; sourceTree = "<group>"; };
 		23350DB226CDF4DA00A5CA09 /* AppKit-DSL-Demo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "AppKit-DSL-Demo-Info.plist"; sourceTree = SOURCE_ROOT; };
+		234AEF322974E58A00758E6A /* TertiaryDSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TertiaryDSL.swift; sourceTree = "<group>"; };
 		2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxDSL.swift; sourceTree = "<group>"; };
 		237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollerTestDSL.swift; sourceTree = "<group>"; };
 		237E74C0282C5B7E0069846A /* AppKit DSF ViewController Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppKit DSF ViewController Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +132,7 @@
 			children = (
 				23C6E90926AF971600FBF106 /* PrimaryDSL.swift */,
 				2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */,
+				234AEF322974E58A00758E6A /* TertiaryDSL.swift */,
 				232EC66026B223A30042C7F7 /* TabDSL.swift */,
 				2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */,
 				237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */,
@@ -278,6 +281,7 @@
 				23EBC53626DDA0CC001A861E /* GridDSL.swift in Sources */,
 				237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */,
 				2324632626C11A2800FF3158 /* ZStackDSL.swift in Sources */,
+				234AEF332974E58B00758E6A /* TertiaryDSL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -582,8 +586,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/Defaults";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

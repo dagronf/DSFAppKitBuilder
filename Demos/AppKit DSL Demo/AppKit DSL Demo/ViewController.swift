@@ -33,6 +33,7 @@ class MainTabs: NSObject, DSFAppKitBuilderViewHandler {
 
 	let primaryLayout = PrimaryDSL()
 	let secondaryLayout = SecondaryDSL()
+	let tertiaryLayout = TertiaryDSL()
 	let scrollTest = ScrollerTestDSL()
 	let tabTest = TabDSL()
 	let splitTest = SplitDSL()
@@ -45,6 +46,7 @@ class MainTabs: NSObject, DSFAppKitBuilderViewHandler {
 	TabView(selectedIndex: 0) {
 		TabViewItem("Demo 1") { self.primaryLayout.body }
 		TabViewItem("Demo 2") { self.secondaryLayout.body }
+		TabViewItem("Demo 3") { self.tertiaryLayout.body }
 		TabViewItem("Scroll") { self.scrollTest.body }
 		TabViewItem("Tab") { self.tabTest.body }
 		TabViewItem("Split") { self.splitTest.body }

@@ -5,9 +5,9 @@
         "package": "Defaults",
         "repositoryURL": "https://github.com/sindresorhus/Defaults",
         "state": {
-          "branch": "main",
-          "revision": "be7e30ba366a7a10e198671505dbe6b4e07b76bc",
-          "version": null
+          "branch": null,
+          "revision": "63d93f97ad545c8bceb125a8a36175ea705f7cf5",
+          "version": "5.0.0"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFComboButton",
         "state": {
           "branch": null,
-          "revision": "33a5a0845ce0ac94bda31375c13aa8563c0ad4b0",
-          "version": "0.4.3"
+          "revision": "d1bae4b7f1778f4492d263caa95bd978753835a2",
+          "version": "0.4.4"
         }
       },
       {

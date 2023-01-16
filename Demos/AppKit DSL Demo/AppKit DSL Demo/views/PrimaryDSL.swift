@@ -60,6 +60,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 	// Definition
 
 	lazy var body: Element =
+	Group(edgeInset: 16) {
 		VStack {
 			HStack(spacing: 8) {
 				ImageView(NSImage(named: "filter-icon")!)
@@ -84,7 +85,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				VDivider()
 				Button(title: "what?") { [weak self] _ in
 					guard let `self` = self else { return }
-
+					
 					Swift.print("You pressed it!")
 					self.progressValue.wrappedValue = Double.random(in: 0 ... 100)
 					self.descriptionColor.wrappedValue = NSColor.randomRGB()
@@ -92,9 +93,9 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				}
 				.horizontalPriorities(hugging: .required)
 			}
-
+			
 			HDivider()
-
+			
 			VStack {
 				HStack {
 					Label("Select something interesting")
@@ -110,12 +111,12 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						Swift.print("popup changed - now \(popupIndex)")
 					}
 					.selectItem(at: 1)
-
+					
 				}
-
+				
 				HStack {
 					Label("And in a combo box ->")
-
+					
 					ComboBox(content: comboboxContent, completes: true, initialSelection: 1)
 						.bindText(comboboxText)
 						.bindSelection(comboboxSelection)
@@ -126,13 +127,13 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.onSelectionChange { newSelection in
 							Swift.print("ComboBox onSelectionChange with value '\(newSelection)'")
 						}
-
+					
 					Button(title: "Randomize") { [unowned self] _ in
 						self.comboboxContent.wrappedValue = self.comboboxContent.wrappedValue.shuffled()
 					}
 				}
 			}
-
+			
 			HStack {
 				Label()
 					.alignment(.right)
@@ -143,7 +144,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				Stepper()
 					.bindValue(self.stepperValue)
 			}
-
+			
 			HStack {
 				SafeSwitch(onOffBinder: self.switchOn)
 				Slider(range: 0 ... 100, value: 10)
@@ -158,7 +159,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					.bindLabel(self.sliderStringValue)
 					.width(50)
 			}
-
+			
 			HStack {
 				VStack {
 					Segmented(trackingMode: .selectAny) {
@@ -172,7 +173,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					Label("Select Many")
 						.font(NSFont.systemFont(ofSize: 9))
 				}
-
+				
 				VStack {
 					Segmented(trackingMode: .selectOne) {
 						Segment("One", toolTip: "This is the first")
@@ -187,12 +188,12 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.font(NSFont.systemFont(ofSize: 9))
 				}
 			}
-
+			
 			HDivider()
-
+			
 			Label("Color Well")
 				.font(NSFont.systemFont(ofSize: 16, weight: .medium))
-
+			
 			HStack {
 				ColorWell(showsAlpha: true)
 					.size(width: 60, height: 40)
@@ -200,12 +201,12 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						Swift.print("Color - \(color)")
 					}
 			}
-
+			
 			HDivider()
-
+			
 			Label("Grouping buttons with a radio group")
 				.font(NSFont.systemFont(ofSize: 16, weight: .medium))
-
+			
 			HStack {
 				Button<AccentColorButton>(title: "", type: .momentaryChange)
 					.bindRadioGroup(self.selectedColor)
@@ -262,16 +263,16 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						Swift.print("Color graphite!")
 					}
 			}
-
+			
 			HDivider()
-
+			
 			Label("Grouping buttons with a radio group")
 				.font(NSFont.systemFont(ofSize: 16, weight: .medium))
-
+			
 			IfTrue(false) {
 				Label("This should not show")
 			}
-
+			
 			IfTrue(true) {
 				Group(edgeInset: 8) {
 					VStack {
@@ -282,9 +283,10 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				.cornerRadius(8)
 				.border(width: 0.5, color: .red)
 			}
-
+			
 			EmptyView()
 		}
+	}
 }
 
 /// If we're running on 10.15+, use a Switch.  If not, fallback to using a checkbox
