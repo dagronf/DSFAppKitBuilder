@@ -26,6 +26,12 @@ class TertiaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		Swift.print("dateSelectionMinMax is now \(newValue)")
 	}
 
+	let toggleState1 = ValueBinder(Toggle.State.on)
+	let toggleState2 = ValueBinder(Toggle.State.off)
+	let toggleColor = ValueBinder<NSColor>(NSColor.systemBlue)
+	let toggleColorEnabled = ValueBinder(Toggle.State.on)
+	let toggleColorEnabled2 = ValueBinder(Toggle.State.on)
+
 	override init() {
 		super.init()
 	}
@@ -34,6 +40,37 @@ class TertiaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	lazy var body: Element =
 		VStack(alignment: .leading) {
+			HStack(spacing: 4) {
+				Toggle(state: toggleState1)
+					.size(width: 100, height: 50)
+				Toggle(state: toggleState2, showLabels: true)
+					.size(width: 100, height: 50)
+
+				VDivider()
+
+				Toggle(state: toggleState2, showLabels: true)
+					.bindColor(toggleColor)
+					.bindIsEnabled(toggleColorEnabled.boolValue())
+					.size(width: 200, height: 100)
+				VStack {
+					HStack {
+						ColorWell(showsAlpha: true)
+							.bindColor(toggleColor)
+							.bindIsEnabled(toggleColorEnabled2.boolValue())
+							.size(width: 60, height: 40)
+						Toggle(state: toggleColorEnabled2)
+							.size(width: 40, height: 20)
+					}
+					HStack {
+						Label("Enable Button")
+						Toggle(state: toggleColorEnabled)
+							.size(width: 40, height: 20)
+					}
+				}
+			}
+
+			HDivider()
+
 			HStack {
 				DatePicker(date: dateSelection1)
 				Button(title: "Now") { [weak self] _ in

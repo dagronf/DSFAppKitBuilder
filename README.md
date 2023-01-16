@@ -357,6 +357,7 @@ TextField()
 | `Switch`<br/>(10.15+) | An `NSSwitch` wrapper |
 | `TabView`          | An `NSTabView` wrapper |
 | `TextField`        | An `NSTextField` wrapper configured as an editable field |
+| `Toggle`           | A scalable toggle button (uses [DSFToggleButton](https://github.com/dagronf/DSFToggleButton)) |
 | `View`             | A wrapper for any `NSView` instance |
 | `VisualEffectView` | A wrapper for a `NSVisualEffectView` instance |
 | `Window`           | An `NSWindow` wrapper |
@@ -408,6 +409,10 @@ The code is documented and will produce nice documentation for each element when
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
 
 ## Releases
+
+### 9.1.0
+
+* Added scalable toggle button [DSFToggleButton](https://github.com/dagronf/DSFToggleButton)
 
 ### 9.0.0
 

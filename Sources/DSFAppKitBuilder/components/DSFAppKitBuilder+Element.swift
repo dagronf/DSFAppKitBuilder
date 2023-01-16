@@ -128,10 +128,9 @@ extension Element: DSFAppearanceCacheNotifiable {
 	/// Called when the system's theme has changed. Guaranteed to be called on the main thread.
 	///
 	/// Override this in inherited classes if you need to tweak appearances for display mode.
-	/// The `Element` must have called `enableThemeChangeNotification()` to receive this call.
 	///
-	/// You must always call `super.onThemeChange()` from within your override.
-	public func onThemeChange() {
+	/// You must always first call `super.onThemeChange()` from within your override.
+	@objc public func onThemeChange() {
 		assert(Thread.isMainThread)
 
 		// Any setting that uses cgColor to provide the color will not automatically be updated

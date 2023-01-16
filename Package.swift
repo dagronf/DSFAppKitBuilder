@@ -16,12 +16,20 @@ let package = Package(
 		.package(url: "https://github.com/dagronf/DSFPagerControl", from: "2.2.0"),
 		.package(url: "https://github.com/dagronf/DSFMenuBuilder", from: "1.2.1"),
 		.package(url: "https://github.com/dagronf/DSFValueBinders", from: "0.8.3"),
-		.package(url: "https://github.com/dagronf/DSFComboButton", from: "1.0.0")
+		.package(url: "https://github.com/dagronf/DSFComboButton", from: "1.0.0"),
+		.package(url: "https://github.com/dagronf/DSFToggleButton", from: "7.0.0")
 	],
 	targets: [
 		.target(
 			name: "DSFAppKitBuilder",
-			dependencies: ["DSFMenuBuilder", "DSFPagerControl", "DSFValueBinders", "DSFComboButton"]),
+			dependencies: [
+				"DSFMenuBuilder",
+				"DSFPagerControl",
+				"DSFValueBinders",
+				"DSFComboButton",
+				"DSFToggleButton"
+			]
+		),
 		.testTarget(
 			name: "DSFAppKitBuilderTests",
 			dependencies: ["DSFAppKitBuilder"]),
