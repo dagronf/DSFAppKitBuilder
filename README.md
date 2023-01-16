@@ -4,7 +4,7 @@ A SwiftUI-style DSL for generating AppKit user interfaces.
 
 <p align="center">
     <img src="https://img.shields.io/github/v/tag/dagronf/DSFAppKitBuilder" />
-    <img src="https://img.shields.io/badge/macOS-10.11+-red" />
+    <img src="https://img.shields.io/badge/macOS-10.13+-red" />
     <img src="https://img.shields.io/badge/Swift-5.1-orange.svg" />
     <a href="https://swift.org/package-manager">
         <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" /></a>
@@ -406,6 +406,27 @@ The code is documented and will produce nice documentation for each element when
 ## Known bugs
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
+
+## Releases
+
+### 9.0.0
+
+* Dropped support for macOS 10.11 and macOS 10.12. To support macOS 10.12/10.11 stick with version 8.9.0.
+* Moved to Swift 5.4 and above (Xcode 12.5 and later)
+
+### 8.9.0
+
+* Added `NSComboButton` support
+
+### 8.8.0
+
+* Added `NSDatePicker` support
+
+### 8.7.0
+
+* Added `NSComboBox` support
+
+...
 
 ### 6.1.0
 

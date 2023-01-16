@@ -10,7 +10,6 @@ import DSFAppKitBuilder
 import DSFMenuBuilder
 import DSFValueBinders
 
-@available(macOS 10.12, *)
 class GridDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	let showTextStyleBinder = ElementBinder()

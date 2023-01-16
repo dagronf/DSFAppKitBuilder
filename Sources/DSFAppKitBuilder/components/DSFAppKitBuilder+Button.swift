@@ -151,9 +151,7 @@ public extension Button {
 			self.button.imagePosition = i
 		}
 		if let i = imageHugsTitle {
-			if #available(macOS 10.12, *) {
-				self.button.imageHugsTitle = i
-			}
+			self.button.imageHugsTitle = i
 		}
 		if let i = imageScaling { self.button.imageScaling = i }
 		return self
@@ -186,7 +184,6 @@ public extension Button {
 	/// Set the bezel color for the button.
 	///
 	/// Note: Not all button types support bezel colors.
-	@available(macOS 10.12.2, *)
 	func bezelColor(_ color: NSColor) -> Self {
 		self.button.bezelColor = color
 		return self

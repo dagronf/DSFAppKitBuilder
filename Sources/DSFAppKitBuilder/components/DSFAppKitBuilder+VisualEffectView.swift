@@ -45,15 +45,18 @@ public class VisualEffectView: Element {
 	/// Create a visual effect view
 	/// - Parameters:
 	///   - effect: The effects to apply to the view
+	///   - padding: Inset padding for child content
 	///   - builder: The builder to generate the content of the effect view
 	public convenience init(
 		effect: VisualEffect,
+		padding: CGFloat? = nil,
 		_ builder: () -> Element
 	) {
 		self.init(
 			material: effect.material,
 			blendingMode: effect.blendingMode,
 			isEmphasized: effect.isEmphasized,
+			padding: padding,
 			builder
 		)
 	}
@@ -68,6 +71,7 @@ public class VisualEffectView: Element {
 		material: NSVisualEffectView.Material? = nil,
 		blendingMode: NSVisualEffectView.BlendingMode? = nil,
 		isEmphasized: Bool = false,
+		padding: CGFloat? = nil,
 		_ builder: () -> Element
 	) {
 		// Make the visual effect view
@@ -84,7 +88,9 @@ public class VisualEffectView: Element {
 
 		let contentView = self.content.view()
 		self.visualView.addSubview(contentView)
-		contentView.pinEdges(to: self.visualView)
+
+		let inset = padding ?? 0
+		contentView.pinEdges(to: self.visualView, edgeInset: inset)
 	}
 
 	deinit {
@@ -105,7 +111,6 @@ public class VisualEffectView: Element {
 
 public extension VisualEffectView {
 	/// Bind the emphasized state of the visual effect view
-	@available(macOS 10.12, *)
 	func bindIsEmphasized(_ isEmphasizedBinder: ValueBinder<Bool>) -> Self {
 		self.isEmphasizedBinder = isEmphasizedBinder
 		isEmphasizedBinder.register { [weak self] newValue in
@@ -160,9 +165,7 @@ extension VisualEffect {
 		vview.translatesAutoresizingMaskIntoConstraints = false
 		material.withUnwrapped { vview.material = $0 }
 		blendingMode.withUnwrapped { vview.blendingMode = $0 }
-		if #available(macOS 10.12, *) {
-			vview.isEmphasized = isEmphasized
-		}
+		vview.isEmphasized = isEmphasized
 		return vview
 	}
 }

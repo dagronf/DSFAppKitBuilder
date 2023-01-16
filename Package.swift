@@ -1,11 +1,11 @@
-// swift-tools-version:5.3
+// swift-tools-version: 5.4
 
 import PackageDescription
 
 let package = Package(
 	name: "DSFAppKitBuilder",
 	platforms: [
-		.macOS(.v10_11)
+		.macOS(.v10_13)
 	],
 	products: [
 		.library(name: "DSFAppKitBuilder", targets: ["DSFAppKitBuilder"]),

@@ -42,7 +42,6 @@ public class Slider: Control {
 	///   - range: The range of the slider
 	///   - value: The initial value for the slider
 	///   - isVertical: A bool indicating the orientation (horizontal or vertical) of the slider.
-	@available(macOS 10.12, *)
 	public init(
 		range: ClosedRange<Double> = 0...100,
 		value: Double = 20,

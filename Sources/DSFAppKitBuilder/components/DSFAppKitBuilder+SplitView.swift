@@ -200,17 +200,10 @@ private extension SplitViewItem {
 
 // MARK: - Result Builder for SplitViewItems
 
-#if swift(<5.4)
-@_functionBuilder
-public enum SplitViewBuilder {
-	static func buildBlock() -> [SplitViewItem] { [] }
-}
-#else
 @resultBuilder
 public enum SplitViewBuilder {
 	static func buildBlock() -> [SplitViewItem] { [] }
 }
-#endif
 
 /// A resultBuilder to build menus
 public extension SplitViewBuilder {

@@ -105,11 +105,7 @@ public class Segmented: Control {
 				self.segmented.setLabel(l, forSegment: index)
 			}
 			if let i = content[index].textAlignment {
-				if #available(macOS 10.13, *) {
-					self.segmented.setAlignment(i, forSegment: index)
-				} else {
-					// Fallback on earlier versions
-				}
+				self.segmented.setAlignment(i, forSegment: index)
 			}
 			if let i = content[index].image {
 				self.segmented.setImage(i, forSegment: index)
@@ -118,9 +114,7 @@ public class Segmented: Control {
 				self.segmented.setImageScaling(i, forSegment: index)
 			}
 			if let i = content[index].toolTip {
-				if #available(macOS 10.13, *) {
-					self.segmented.setToolTip(i, forSegment: index)
-				}
+				self.segmented.setToolTip(i, forSegment: index)
 			}
 		}
 	}
@@ -209,17 +203,10 @@ public class Segment {
 
 // MARK: - Result Builder for Segments
 
-#if swift(<5.4)
-@_functionBuilder
-public enum SegmentBuilder {
-	static func buildBlock() -> [Segment] { [] }
-}
-#else
 @resultBuilder
 public enum SegmentBuilder {
 	static func buildBlock() -> [Segment] { [] }
 }
-#endif
 
 /// A resultBuilder to build menus
 public extension SegmentBuilder {

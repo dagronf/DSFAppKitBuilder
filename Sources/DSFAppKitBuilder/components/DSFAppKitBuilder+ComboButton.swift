@@ -24,8 +24,6 @@ import DSFValueBinders
 import DSFComboButton
 
 /// An NSComboButton that uses DSFComboButton for macOS < 13
-
-@available(macOS 10.13, *)
 public class ComboButton: Control {
 
 	public init(
@@ -129,7 +127,6 @@ protocol ComboButtonWrapper: NSView {
 	var styleWrapper: DSFComboButton.Style { get set }
 }
 
-
 @available(macOS 13.0, *)
 extension NSComboButton: ComboButtonWrapper {
 	var styleWrapper: DSFComboButton.Style {
@@ -141,7 +138,6 @@ extension NSComboButton: ComboButtonWrapper {
 		get { self.menu }
 		set { self.menu = newValue }
 	}
-
 }
 
 extension DSFComboButton: ComboButtonWrapper {

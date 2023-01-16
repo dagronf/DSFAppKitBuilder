@@ -244,6 +244,30 @@ public extension Element {
 	}
 }
 
+// MARK: - Edge insets
+
+public extension Element {
+	/// Wrap this element in a Group
+	/// - Parameters:
+	///   - padding: The inset to apply for child elements
+	/// - Returns: Group
+	func padding(_ value: CGFloat) -> Group {
+		Group(edgeInset: value) { self }
+	}
+
+	/// Wrap the current element in a VisualEffectView
+	/// - Parameters:
+	///   - effect: The effect to apply to the wrapper view
+	///   - padding: The edge inset to apply for child elements
+	/// - Returns: VisualEffectView
+	func visualEffect(
+		_ effect: VisualEffect,
+		padding: CGFloat? = nil
+	) -> VisualEffectView {
+		VisualEffectView(effect: effect, padding: padding) { self }
+	}
+}
+
 // MARK: - Dimensions
 
 public extension Element {
@@ -348,17 +372,10 @@ public extension Element {
 
 // MARK: - Result Builder for stacks
 
-#if swift(<5.4)
-@_functionBuilder
-public enum ElementBuilder {
-	static func buildBlock() -> [Element] { [] }
-}
-#else
 @resultBuilder
 public enum ElementBuilder {
 	static func buildBlock() -> [Element] { [] }
 }
-#endif
 
 public extension ElementBuilder {
 	static func buildBlock(_ settings: Element...) -> [Element] {

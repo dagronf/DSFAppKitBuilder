@@ -38,13 +38,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 	}
 
-	let EverestBackgroundColor: NSColor = {
-		if #available(macOS 10.13, *) {
-			return NSColor(named: "secondary-background-color")!
-		} else {
-			return .clear
-		}
-	}()
+	let EverestBackgroundColor = NSColor(named: "secondary-background-color")!
 
 	let numberValueBinder = ValueBinder(125.0)
 
@@ -77,7 +71,6 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 	// Body
 
 	lazy var body: Element =
-	Group(edgeInset: 16) {
 		VStack(alignment: .leading, distribution: .fillProportionally) {
 
 			HStack(spacing: 8) {
@@ -220,10 +213,11 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				.controlSize(.small)
 				.horizontalPriorities(hugging: 999)
 			}
+			.visualEffect(.init(material: .sidebar), padding: 12)
+			.border(width: 0.5, color: NSColor.textColor)
 
 			HDivider()
 			EmptyView()
 		}
-	}
-	.horizontalPriorities(hugging: .defaultLow)
+		.padding(16)
 }

@@ -33,7 +33,6 @@ class TertiaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 	// body
 
 	lazy var body: Element =
-	Group(edgeInset: 16) {
 		VStack(alignment: .leading) {
 			HStack {
 				DatePicker(date: dateSelection1)
@@ -68,5 +67,5 @@ class TertiaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			EmptyView()
 				.verticalPriorities(hugging: 10, compressionResistance: 10)
 		}
-	}
+		.padding(16)
 }

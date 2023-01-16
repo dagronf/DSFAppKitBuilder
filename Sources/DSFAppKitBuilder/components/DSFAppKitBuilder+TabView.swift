@@ -61,7 +61,6 @@ public class TabView: Control {
 		 case bottom = 3
 		 case right = 4
 
-		@available(macOS 10.12, *)
 		var nsTabPosition: NSTabView.TabPosition? {
 			return NSTabView.TabPosition(rawValue: UInt(self.rawValue))
 		}
@@ -99,11 +98,7 @@ public class TabView: Control {
 		}
 
 		if let tabPos = tabPosition {
-			if #available(macOS 10.12, *) {
-				self.tabView.tabPosition = tabPos.nsTabPosition ?? .top
-			} else {
-				// Fallback on earlier versions
-			}
+			self.tabView.tabPosition = tabPos.nsTabPosition ?? .top
 		}
 
 		contents.forEach { item in
@@ -235,17 +230,10 @@ private extension TabViewItem {
 
 // MARK: - Result Builders for Tab Views
 
-#if swift(<5.4)
-@_functionBuilder
-public enum TabBuilder {
-	static func buildBlock() -> [TabViewItem] { [] }
-}
-#else
 @resultBuilder
 public enum TabBuilder {
 	static func buildBlock() -> [TabViewItem] { [] }
 }
-#endif
 
 /// A resultBuilder to build menus
 public extension TabBuilder {

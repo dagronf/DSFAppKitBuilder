@@ -50,7 +50,6 @@ import DSFValueBinders
 ///    }
 /// }
 /// ```
-@available(macOS 10.12, *)
 public class Grid: Element {
 	/// An empty cell element for grid cells that contain no element content
 	public static func EmptyCell() -> Element {
@@ -107,7 +106,6 @@ public class Grid: Element {
 	}
 }
 
-@available(macOS 10.12, *)
 public extension Grid {
 	// Columns
 
@@ -152,7 +150,6 @@ public extension Grid {
 
 // MARK: - Cell Options
 
-@available(macOS 10.12, *)
 public extension Grid {
 	/// Format a cell within the grid
 	/// - Parameters:
@@ -197,7 +194,6 @@ public extension Grid {
 
 // MARK: - Bindings
 
-@available(macOS 10.12, *)
 public extension Grid {
 	/// A binding for hiding or showing rows within the grid
 	func bindHiddenRows(_ hiddenRowsBinder: ValueBinder<NSSet>) -> Self {
@@ -226,7 +222,6 @@ public extension Grid {
 
 // MARK: - Grid Content Priorities
 
-@available(macOS 10.12, *)
 public extension Grid {
 	/// Sets the priority with which a view resists being made larger than its intrinsic size.
 	func contentHuggingPriority(
@@ -254,7 +249,6 @@ public extension Grid {
 // MARK: - Grid Row
 
 /// A row for the grid
-@available(macOS 10.12, *)
 public class GridRow {
 	/// Create a new row for the grid
 	/// - Parameters:
@@ -290,21 +284,11 @@ public class GridRow {
 
 // MARK: - Result Builder for Grid Rows
 
-#if swift(<5.4)
-@available(macOS 10.12, *)
-@_functionBuilder
-public enum GridRowBuilder {
-	static func buildBlock() -> [GridRow] { [] }
-}
-#else
-@available(macOS 10.12, *)
 @resultBuilder
 public enum GridRowBuilder {
 	static func buildBlock() -> [GridRow] { [] }
 }
-#endif
 
-@available(macOS 10.12, *)
 public extension GridRowBuilder {
 	static func buildBlock(_ settings: GridRow...) -> [GridRow] {
 		settings

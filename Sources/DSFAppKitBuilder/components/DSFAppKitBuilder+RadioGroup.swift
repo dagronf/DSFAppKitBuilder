@@ -183,17 +183,10 @@ public class RadioElement {
 
 // MARK: - Result builder for RadioElements
 
-#if swift(<5.4)
-@_functionBuilder
-public enum RadioBuilder {
-	static func buildBlock() -> [RadioElement] { [] }
-}
-#else
 @resultBuilder
 public enum RadioBuilder {
 	static func buildBlock() -> [RadioElement] { [] }
 }
-#endif
 
 /// A resultBuilder to build menus
 public extension RadioBuilder {
