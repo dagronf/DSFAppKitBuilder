@@ -36,6 +36,7 @@ public class Control: Element {
 
 	deinit {
 		self.isEnabledBinder?.deregister(self)
+		self.fontBinder?.deregister(self)
 	}
 
 	@objc open func onControlSizeChange(_ controlSize: NSControl.ControlSize) {
@@ -44,6 +45,7 @@ public class Control: Element {
 
 	// Private
 	private var isEnabledBinder: ValueBinder<Bool>?
+	private var fontBinder: ValueBinder<NSFont?>?
 	private var control: NSControl { return view() as! NSControl }
 }
 
@@ -57,9 +59,21 @@ public extension Control {
 	}
 
 	/// Set the control size for the element
-	@objc func controlSize(_ controlSize: NSControl.ControlSize) -> Self {
+	func controlSize(_ controlSize: NSControl.ControlSize) -> Self {
 		self.control.controlSize = controlSize
 		self.onControlSizeChange(controlSize)
+		return self
+	}
+
+	/// The font used to draw text in the receiver’s cell.
+	func font(_ font: NSFont?) -> Self {
+		self.control.font = font
+		return self
+	}
+
+	/// The font used to draw text in the receiver’s cell.
+	func font(_ font: AKBFont) -> Self {
+		self.control.font = font.font
 		return self
 	}
 }
@@ -73,6 +87,15 @@ public extension Control {
 			self?.control.isEnabled = newValue
 		}
 		self.isEnabledBinder = enabledBinding
+		return self
+	}
+
+	/// Binding for the control's font
+	func bindFont(_ fontBinding: ValueBinder<NSFont?>) -> Self {
+		fontBinding.register { [weak self] newValue in
+			self?.control.font = newValue
+		}
+		self.fontBinder = fontBinding
 		return self
 	}
 }

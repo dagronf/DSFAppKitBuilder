@@ -65,12 +65,6 @@ public class SecureTextField: Control {
 // MARK: - Modifiers
 
 public extension SecureTextField {
-	/// The font used to draw text in the receiver’s cell.
-	func font(_ font: NSFont? = nil) -> Self {
-		self.secureTextField.font = font
-		return self
-	}
-
 	/// The color of the text field’s content.
 	func textColor(_ textColor: NSColor? = nil) -> Self {
 		self.secureTextField.textColor = textColor

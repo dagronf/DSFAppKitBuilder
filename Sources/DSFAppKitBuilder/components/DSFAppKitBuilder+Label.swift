@@ -111,12 +111,6 @@ public extension Label {
 		return self
 	}
 
-	/// The font used to draw text in the receiver’s cell.
-	func font(_ font: NSFont? = nil) -> Self {
-		self.label.font = font
-		return self
-	}
-
 	/// The color of the text field’s content.
 	func textColor(_ textColor: NSColor? = nil) -> Self {
 		self.label.textColor = textColor

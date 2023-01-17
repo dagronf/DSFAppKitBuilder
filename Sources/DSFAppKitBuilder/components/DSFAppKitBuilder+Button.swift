@@ -175,12 +175,6 @@ public extension Button {
 		return self
 	}
 
-	/// Set the button's font
-	func font(_ font: NSFont) -> Self {
-		self.button.font = font
-		return self
-	}
-
 	/// Set the bezel color for the button.
 	///
 	/// Note: Not all button types support bezel colors.
