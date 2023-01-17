@@ -38,6 +38,10 @@ public class Control: Element {
 		self.isEnabledBinder?.deregister(self)
 	}
 
+	@objc open func onControlSizeChange(_ controlSize: NSControl.ControlSize) {
+		// Do nothing
+	}
+
 	// Private
 	private var isEnabledBinder: ValueBinder<Bool>?
 	private var control: NSControl { return view() as! NSControl }
@@ -53,8 +57,9 @@ public extension Control {
 	}
 
 	/// Set the control size for the element
-	func controlSize(_ controlSize: NSControl.ControlSize) -> Self {
+	@objc func controlSize(_ controlSize: NSControl.ControlSize) -> Self {
 		self.control.controlSize = controlSize
+		self.onControlSizeChange(controlSize)
 		return self
 	}
 }

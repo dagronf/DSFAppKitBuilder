@@ -45,6 +45,13 @@ public class Toggle: Control {
 		case on
 	}
 
+	class ControlSize {
+		static let mini    = CGSize(width: 28, height: 16)
+		static let small   = CGSize(width: 36, height: 21)
+		static let regular = CGSize(width: 42, height: 25)
+		static let large   = CGSize(width: 50, height: 30)
+	}
+
 	public typealias ToggleAction = (State) -> Void
 
 	/// Create a switch
@@ -60,6 +67,9 @@ public class Toggle: Control {
 		_ onChange: ToggleAction? = nil
 	) {
 		super.init()
+
+		// Set a default size
+		self.size(width: 42, height: 25)
 
 		self.toggleButton.color = color ?? DSFAppearanceCache.shared.accentColor
 
@@ -87,6 +97,9 @@ public class Toggle: Control {
 		showLabels: Bool = false
 	) {
 		super.init()
+
+		// Set a default size
+		self.size(width: 42, height: 25)
 
 		self.stateBinder = state
 
@@ -135,6 +148,19 @@ public class Toggle: Control {
 
 		// Tell the binders to update
 		self.stateBinder?.wrappedValue = newState
+	}
+
+	@objc public override func onControlSizeChange(_ controlSize: NSControl.ControlSize) {
+		let sz: CGSize
+		switch controlSize {
+		case .regular: sz = ControlSize.regular
+		case .small: sz = ControlSize.small
+		case .mini: sz = ControlSize.mini
+		case .large: sz = ControlSize.large
+		@unknown default:
+			fatalError()
+		}
+		self.size(width: sz.width, height: sz.height)
 	}
 }
 
@@ -194,6 +220,36 @@ struct TogglePreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		SwiftUI.VStack {
 			VStack {
+				Label("Default sizing")
+				HStack {
+					Toggle(state: .off)
+					Toggle(state: .off)
+						.isEnabled(false)
+					Toggle(state: .on)
+					Toggle(state: .on)
+						.isEnabled(false)
+				}
+				Label("Control sizing")
+				HStack {
+					VStack {
+						Toggle(state: .on).controlSize(.mini)
+						Label(".mini")
+					}
+					VStack {
+						Toggle(state: .on).controlSize(.small)
+						Label(".small")
+					}
+					VStack {
+						Toggle(state: .on).controlSize(.regular)
+						Label(".regular")
+					}
+//					VStack {
+//						Toggle(state: .on).controlSize(.large)
+//						Label(".large")
+//					}
+				}
+				HDivider()
+				Label("100x50, not labelled")
 				HStack {
 					Toggle(state: .off)
 						.size(width: 100, height: 50)
@@ -207,6 +263,7 @@ struct TogglePreviews: PreviewProvider {
 						.size(width: 100, height: 50)
 				}
 				HDivider()
+				Label("100x50, labelled")
 				HStack {
 					Toggle(state: .off, showLabels: true)
 						.size(width: 100, height: 50)
@@ -221,6 +278,7 @@ struct TogglePreviews: PreviewProvider {
 						.size(width: 100, height: 50)
 				}
 				HDivider()
+				Label("30x30, not labelled")
 				HStack {
 					Toggle(state: .off, color: NSColor.systemRed)
 						.size(width: 30, height: 30)
@@ -231,6 +289,8 @@ struct TogglePreviews: PreviewProvider {
 					Toggle(state: .on, color: NSColor.systemBlue)
 						.size(width: 30, height: 30)
 				}
+				HDivider()
+				Label("150x100")
 				HStack {
 					Toggle(state: .on, color: NSColor.systemRed)
 						.size(width: 150, height: 100)
@@ -239,8 +299,14 @@ struct TogglePreviews: PreviewProvider {
 					Toggle(state: .on, color: NSColor.systemBlue)
 						.size(width: 150, height: 100)
 				}
-				Toggle(state: .on, color: NSColor.systemYellow)
-					.size(width: 400, height: 300)
+				HDivider()
+				Label("400x300")
+				HStack {
+					Toggle(state: .off, color: NSColor.systemYellow, showLabels: true)
+						.size(width: 300, height: 200)
+					Toggle(state: .on, color: NSColor.systemYellow, showLabels: true)
+						.size(width: 300, height: 200)
+				}
 			}
 			.Preview()
 			.padding()
