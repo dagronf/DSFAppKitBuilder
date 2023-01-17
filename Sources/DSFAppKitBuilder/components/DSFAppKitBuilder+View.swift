@@ -27,10 +27,10 @@
 import AppKit
 
 /// Embed another NSView within the DSL
-public class View<EmbeddedView: NSView>: Element {
+public class View: Element {
 
 	/// Create an element which embeds another NSView
-	public init(containedView: EmbeddedView) {
+	public init(_ containedView: NSView) {
 		self.containedView = containedView
 		super.init()
 
@@ -39,6 +39,6 @@ public class View<EmbeddedView: NSView>: Element {
 	}
 
 	// Private
-	private let containedView: EmbeddedView
+	private let containedView: NSView
 	public override func view() -> NSView { return containedView }
 }
