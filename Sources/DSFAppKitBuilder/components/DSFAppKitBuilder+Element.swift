@@ -288,10 +288,16 @@ public extension Element {
 	/// Set the width of the element
 	@discardableResult
 	func width(_ value: CGFloat, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		with(self.view()) {
-			let c = NSLayoutConstraint(item: $0, attribute: .width, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
+		with(self.view()) { view in
+
+			// Remove any forced width constraints firest
+			view.constraints.filter({ $0.identifier == "forcedWidth" }).forEach { view.removeConstraint($0) }
+
+			// Create and attach a new width constraint
+			let c = NSLayoutConstraint(item: view, attribute: .width, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
 			if let p = priority { c.priority = p }
-			$0.addConstraint(c)
+			c.identifier = "forcedWidth"
+			view.addConstraint(c)
 		}
 		return self
 	}
@@ -321,10 +327,15 @@ public extension Element {
 	/// Set the height of the element
 	@discardableResult
 	func height(_ value: CGFloat, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		with(self.view()) {
-			let c = NSLayoutConstraint(item: $0, attribute: .height, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
+		with(self.view()) { view in
+			// Removed any forced height constraints
+			view.constraints.filter({ $0.identifier == "forcedHeight" }).forEach { view.removeConstraint($0) }
+
+			// Create and attach a new height constraint
+			let c = NSLayoutConstraint(item: view, attribute: .height, relatedBy: relation, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: value)
 			if let p = priority { c.priority = p }
-			$0.addConstraint(c)
+			c.identifier = "forcedHeight"
+			view.addConstraint(c)
 		}
 		return self
 	}
