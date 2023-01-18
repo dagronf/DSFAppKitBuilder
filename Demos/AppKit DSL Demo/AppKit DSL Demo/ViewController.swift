@@ -19,7 +19,7 @@ class ViewController: NSViewController {
 		super.viewDidLoad()
 
 		// Do any additional setup after loading the view.
-		self.mainView.builder = mainTabs
+		self.mainView.setHandler(mainTabs)
 	}
 
 	override var representedObject: Any? {

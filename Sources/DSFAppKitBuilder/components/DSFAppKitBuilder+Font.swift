@@ -224,7 +224,7 @@ struct FontPreviews: PreviewProvider {
 					}
 				}
 			}
-			.Preview()
+			.SwiftUIPreview()
 			.padding()
 		}
 	}

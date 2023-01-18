@@ -17,7 +17,8 @@ I have a few apps that need to play nicely pre 10.15. Even in 10.15, SwiftUI can
 
 Sometimes I have to play in AppKit code and it always struck me how much boilerplate code was required to get relatively straight-forward views to display nicely - especially with autolayout! NSStackView makes life easier for sure but it still can lead to very verbose and difficult-to-read code.  Even moreso - as a reviewer it can be VERY difficult to understand the intent of programatically generated AppKit code.
 
-So I decided to make a SwiftUI-style builder DSL for AppKit views.  It has certainly made round-trip times faster for the projects I have that use it (although not as swish as with SwiftUI and its previews)
+So I decided to make a SwiftUI-style builder DSL for AppKit views.  It has certainly made round-trip times faster for the projects I have that use it.
+You can even use SwiftUI to preview your `DSFAppKitBuilder` views if you're targeting 10.15 and later.
 
 ## TL;DL - Show me something!
 
@@ -363,6 +364,68 @@ TextField()
 | `Window`           | An `NSWindow` wrapper |
 | `ZStack`           | Layer multiple Elements on top of each other |
 
+## Using SwiftUI previews
+
+You can preview your `DSFAppKitBuilder` creations using the SwiftUI previews if your app is targeting 10.15 and later.
+
+The following types provide a `.Preview()` function function call which returns a SwiftUI wrapped presentation of your
+`DSFAppKitBuilder` view.  
+
+* `Element`
+* `DSFAppKitBuilderViewController`
+* `DSFAppKitBuilderViewHandler`
+
+<details>
+<summary>Show an example of using SwiftUI to generate a preview</summary>
+
+```swift
+@available(macOS 10.15, *)
+class IdentityViewController: DSFAppKitBuilderViewController {
+   // Build the view's body
+   override var viewBody: Element {
+      HStack(spacing: 4) {
+         ImageView()
+            .image(NSImage(named: "apple_logo_orig")!)               // The image
+            .size(width: 42, height: 42, priority: .required)        // fixed size
+         VStack(spacing: 2, alignment: .leading) {
+            Label("Apple Computer")                                  // The label with title 'Name'
+               .font(NSFont.systemFont(ofSize: 24))                  // Font size 12
+               .lineBreakMode(.byTruncatingTail)                     // Truncate line
+               .horizontalPriorities(compressionResistance: 100)     // Allow the text field to compress
+            Label("This is the description that can be quite long")  // The label with title 'Description'
+               .font(NSFont.systemFont(ofSize: 12))                  // Font size 12
+               .textColor(.placeholderTextColor)                     // Grey text
+               .lineBreakMode(.byTruncatingTail)                     // Truncate line
+               .horizontalPriorities(compressionResistance: 100)     // Allow the text field to compress
+         }
+      }
+   }
+}
+
+#if canImport(SwiftUI)
+import SwiftUI
+@available(macOS 10.15, *)
+struct IdentityViewPreview: PreviewProvider {
+   static var previews: some SwiftUI.View {
+      IdentityViewController()
+         .SwiftUIPreview()
+         .frame(width: 280, height: 60)
+         .padding()
+   }
+}
+#endif
+
+```
+
+<p align="center">
+<a href="https://raw.githubusercontent.com/dagronf/dagronf.github.io/master/art/projects/DSFAppKitBuilder/swiftui-preview.jpg">
+<img src="https://raw.githubusercontent.com/dagronf/dagronf.github.io/master/art/projects/DSFAppKitBuilder/swiftui-preview.jpg" alt="SwiftUI preview image" width="400" />
+</a>
+</p>
+
+</details>
+
+
 ## Avoiding Retain Cycles
 
 Any time a block is provided to either a `ValueBinder` or an `Element`, if the block captures `self` it is important to make sure that you capture `self` either `weak` or `unowned`.
@@ -409,6 +472,15 @@ The code is documented and will produce nice documentation for each element when
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
 
 ## Releases
+
+### 9.3.0
+
+* Made `DSFAppKitBuilderView` easier to use
+* SwiftUI previews of your DSFAppKitBuilder views (10.15+)
+
+### 9.2.0
+
+* Custom font support
 
 ### 9.1.0
 

@@ -316,7 +316,7 @@ struct DatePickerPreviews: PreviewProvider {
 					}
 				}
 			}
-			.Preview()
+			.SwiftUIPreview()
 		}
 		.padding()
 		.frame(width: 400)

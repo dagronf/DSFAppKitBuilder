@@ -31,7 +31,7 @@ import SwiftUI
 @available(macOS 10.15, *)
 public extension DSFAppKitBuilderViewHandler {
 	/// Generate a SwiftUI preview encapsulating a DSFAppKitBuilderViewHandler object
-	func Preview() -> DSFAppKitBuilderViewHandlerPreview {
+	func SwiftUIPreview() -> DSFAppKitBuilderViewHandlerPreview {
 		return DSFAppKitBuilderViewHandlerPreview(self)
 	}
 }
@@ -58,7 +58,7 @@ public struct DSFAppKitBuilderViewHandlerPreview: NSViewRepresentable {
 extension DSFAppKitBuilderViewController {
 
 	/// Generate a SwiftUI compatible view for this view controller
-	public func Preview() -> DSFAppKitBuilderViewController.Preview {
+	public func SwiftUIPreview() -> DSFAppKitBuilderViewController.Preview {
 		return DSFAppKitBuilderViewController.Preview(self)
 	}
 
@@ -82,7 +82,7 @@ extension DSFAppKitBuilderViewController {
 @available(macOS 10.15, *)
 extension Element {
 	/// Generate a SwiftUI compatible view for this element
-	public func Preview() -> Element.Preview { Self.Preview(element: self) }
+	public func SwiftUIPreview() -> Element.Preview { Self.Preview(element: self) }
 	public struct Preview: NSViewRepresentable {
 		let element: Element
 		public func makeNSView(context: Context) -> NSView { return element.view() }

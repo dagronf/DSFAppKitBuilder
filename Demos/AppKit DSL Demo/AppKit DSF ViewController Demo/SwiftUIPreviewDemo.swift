@@ -72,7 +72,7 @@ import SwiftUI
 struct DummyPreview: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		DummyTestViewController()
-			.Preview()
+			.SwiftUIPreview()
 			.padding()
 	}
 }
@@ -88,7 +88,7 @@ struct LabelTextFieldPairPreview: PreviewProvider {
 				LabelTextFieldPair(label: "username", value: labelContent)
 				LabelTextFieldPair(label: "password", value: passwordContent)
 			}
-			.Preview()
+			.SwiftUIPreview()
 		}
 		.padding()
 	}

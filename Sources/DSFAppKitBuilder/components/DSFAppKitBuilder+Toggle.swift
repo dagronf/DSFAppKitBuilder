@@ -308,7 +308,7 @@ struct TogglePreviews: PreviewProvider {
 						.size(width: 300, height: 200)
 				}
 			}
-			.Preview()
+			.SwiftUIPreview()
 			.padding()
 		}
 	}

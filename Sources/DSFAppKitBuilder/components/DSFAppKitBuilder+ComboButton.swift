@@ -184,7 +184,7 @@ struct ComboButtonPreviews: PreviewProvider {
 						.bindIsHidden(ValueBinder<Bool>(true))
 				}
 			}
-			.Preview()
+			.SwiftUIPreview()
 		}
 		.padding()
 		.frame(width: 400)

@@ -21,6 +21,7 @@
 		232EC66326B223C40042C7F7 /* SplitDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232EC66226B223C40042C7F7 /* SplitDSL.swift */; };
 		234AEF332974E58B00758E6A /* TertiaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AEF322974E58A00758E6A /* TertiaryDSL.swift */; };
 		2351367C26B3DAAE0026EAA1 /* BoxDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */; };
+		236BA6722977769900FB72C4 /* IdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236BA6712977769900FB72C4 /* IdentityViewController.swift */; };
 		237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */; };
 		237E74C3282C5B7E0069846A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E74C2282C5B7E0069846A /* AppDelegate.swift */; };
 		237E74C5282C5B7E0069846A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E74C4282C5B7E0069846A /* ViewController.swift */; };
@@ -56,6 +57,7 @@
 		23350DB226CDF4DA00A5CA09 /* AppKit-DSL-Demo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "AppKit-DSL-Demo-Info.plist"; sourceTree = SOURCE_ROOT; };
 		234AEF322974E58A00758E6A /* TertiaryDSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TertiaryDSL.swift; sourceTree = "<group>"; };
 		2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxDSL.swift; sourceTree = "<group>"; };
+		236BA6712977769900FB72C4 /* IdentityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityViewController.swift; sourceTree = "<group>"; };
 		237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollerTestDSL.swift; sourceTree = "<group>"; };
 		237E74C0282C5B7E0069846A /* AppKit DSF ViewController Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppKit DSF ViewController Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		237E74C2282C5B7E0069846A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 			children = (
 				23F884842977451600ADC53D /* AppDelegate.swift */,
 				23F884862977451600ADC53D /* ViewController.swift */,
+				236BA6712977769900FB72C4 /* IdentityViewController.swift */,
 				23F884882977451700ADC53D /* Assets.xcassets */,
 				23F8848A2977451700ADC53D /* Main.storyboard */,
 				23F8848D2977451700ADC53D /* DSFAppKitBuilderView_Demo.entitlements */,
@@ -368,6 +371,7 @@
 			files = (
 				23F884872977451600ADC53D /* ViewController.swift in Sources */,
 				23F884852977451600ADC53D /* AppDelegate.swift in Sources */,
+				236BA6722977769900FB72C4 /* IdentityViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

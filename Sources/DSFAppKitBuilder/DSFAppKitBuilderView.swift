@@ -69,15 +69,25 @@ open class DSFAppKitBuilderView: NSView {
 		self.configure()
 	}
 
-	/// Create
+	/// Create via interface builder
 	public required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		self.configure()
 	}
 
+	/// Set the content of the view using a view handler.
+	///
+	/// This object is not strongly held by the view. Thus, if you want to keep the handler around
+	/// after the view has gone away you must hold onto the builder object elsewhere.
+	///
+	/// This allows a view to contain itself as a handler without having a reference count loop.
+	public func setHandler(_ handler: DSFAppKitBuilderViewHandler) {
+		self.element = handler.body
+	}
+
 	deinit {
 		if DSFAppKitBuilder.ShowDebuggingOutput {
-			Swift.print("AKBView deinit (element: \(element?.id.uuidString ?? "")")
+			Swift.print("DSFAppKitBuilderView deinit (element: \(element?.id.uuidString ?? "<nil>")")
 		}
 	}
 
