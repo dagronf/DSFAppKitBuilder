@@ -38,6 +38,14 @@ public class View: Element {
 		containedView.layoutSubtreeIfNeeded()
 	}
 
+	/// Create a view element that displays the content of a `DSFAppKitBuilderViewController`
+	///
+	/// Note that this view does not retain the passed viewcontroller, so it is your
+	/// responsibility to make sure it stays alive
+	public convenience init(_ containedViewController: DSFAppKitBuilderViewController) {
+		self.init(containedViewController.view)
+	}
+
 	// Private
 	private let containedView: NSView
 	public override func view() -> NSView { return containedView }

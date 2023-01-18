@@ -13,12 +13,13 @@ class ViewController: NSViewController {
 
 	@IBOutlet weak var coreView: DSFAppKitBuilderView!
 
-	var titleValue: ValueBinder<String>? = ValueBinder("Womble") { newValue in
+	var titleValue: ValueBinder<String>? = ValueBinder("555 Amity Crt, Somewhereville") { newValue in
 		Swift.print("title is now '\(newValue)'")
 	}
 
 	var colorBinder = ValueBinder(NSColor.textColor)
 
+	let identity = IdentityViewController()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -42,11 +43,18 @@ class ViewController: NSViewController {
 					.lineBreakMode(NSLineBreakMode.byTruncatingTail)
 				TextField("Wooble")
 					.bindText(titleValue!)
+					.isScrollable(true)
 					.font(.largeTitle)
 
 				HDivider()
 
+				// Embed a DSFAppKitBuilderView in this view
 				View(subView)
+
+				// Embed a DSFAppKitBuilderViewController in this view
+				View(self.identity)
+					.padding(16)
+					.border(width: 0.5, color: NSColor.secondaryLabelColor)
 
 				Button(title: "Destroy") { [weak self] _ in
 					self?.remove()

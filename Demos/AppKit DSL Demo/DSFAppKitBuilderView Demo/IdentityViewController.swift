@@ -22,7 +22,7 @@ class IdentityViewController: DSFAppKitBuilderViewController {
 				Label("This is the description that can be quite long")  // The label with title 'Description'
 					.font(NSFont.systemFont(ofSize: 12))                  // Font size 12
 					.textColor(.placeholderTextColor)                     // Grey text
-					.lineBreakMode(.byTruncatingTail)                     // Truncate line
+					.lineBreakMode(.byWordWrapping)                       // Truncate line
 					.horizontalPriorities(compressionResistance: 100)     // Allow the text field to compress
 			}
 		}
