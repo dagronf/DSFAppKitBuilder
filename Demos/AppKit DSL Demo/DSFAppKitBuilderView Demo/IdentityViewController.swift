@@ -7,7 +7,6 @@ import AppKit
 
 import DSFAppKitBuilder
 
-@available(macOS 10.15, *)
 class IdentityViewController: DSFAppKitBuilderViewController {
 	// Build the view's body
 	override var viewBody: Element {
@@ -32,7 +31,6 @@ class IdentityViewController: DSFAppKitBuilderViewController {
 
 #if canImport(SwiftUI)
 import SwiftUI
-@available(macOS 10.15, *)
 struct DummyPreview: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		IdentityViewController()
