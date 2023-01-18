@@ -62,6 +62,8 @@ class LabelTextFieldPair: Element {
 	}
 }
 
+// MARK: SwiftUI preview
+
 #if canImport(SwiftUI)
 
 import SwiftUI
@@ -69,7 +71,9 @@ import SwiftUI
 @available(macOS 10.15, *)
 struct DummyPreview: PreviewProvider {
 	static var previews: some SwiftUI.View {
-		DummyTestViewController().Preview()
+		DummyTestViewController()
+			.Preview()
+			.padding()
 	}
 }
 
@@ -80,10 +84,11 @@ private let passwordContent = ValueBinder("initial password")
 struct LabelTextFieldPairPreview: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		SwiftUI.Group {
-			SwiftUI.VStack {
-				LabelTextFieldPair(label: "username", value: labelContent).Preview()
-				LabelTextFieldPair(label: "password", value: passwordContent).Preview()
+			VStack {
+				LabelTextFieldPair(label: "username", value: labelContent)
+				LabelTextFieldPair(label: "password", value: passwordContent)
 			}
+			.Preview()
 		}
 		.padding()
 	}

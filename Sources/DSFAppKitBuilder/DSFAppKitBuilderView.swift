@@ -26,55 +26,91 @@
 
 import AppKit
 
-/// A protocol for defining AppKitBuilder conformance for a class
-public protocol DSFAppKitBuilderViewHandler: NSObjectProtocol {
-	/// Return the root element to display within the Builder View
-	var body: Element { get }
-}
-
-@available(macOS 10.15, *)
-public extension DSFAppKitBuilderViewHandler {
-	/// Generate a SwiftUI preview encapsulating a DSFAppKitBuilderViewHandler object
-	func Preview() -> DSFAppKitBuilderViewHandlerPreview {
-		return DSFAppKitBuilderViewHandlerPreview(self)
-	}
-}
-
-/// Displays a DSFAppKitBuilder Element in a view
+/// A simple NSView for displaying a DSFAppKitBuilder Element
 open class DSFAppKitBuilderView: NSView {
+	/// The element to display in the view
+	///
+	/// Must be set on the main thread
+	public var element: Element? {
+		get { _element }
+		set {
+			assert(Thread.isMainThread)
+			self.setRootElement(newValue)
+		}
+	}
 
-	/// Create an instance
+	/// Create a empty view
+	///
+	/// Assign to `element` to display
 	public init() {
+		self._element = nil
 		super.init(frame: .zero)
+		self.configure()
 	}
 
-	/// Create an instance
-	required public init?(coder: NSCoder) {
+	/// Create and evaluate the builder block to determine the content
+	public init(_ builder: () -> Element) {
+		self._element = builder()
+		super.init(frame: .zero)
+		self.configure()
+	}
+
+	/// Create by evaluating a builder view handler
+	public init(_ handler: DSFAppKitBuilderViewHandler) {
+		self._element = handler.body
+		super.init(frame: .zero)
+		self.configure()
+	}
+
+	/// Create and display an element
+	public init(element: Element) {
+		self._element = element
+		super.init(frame: .zero)
+		self.configure()
+	}
+
+	/// Create
+	public required init?(coder: NSCoder) {
 		super.init(coder: coder)
+		self.configure()
 	}
 
-	/// The builder to use when displaying the view
-	///
-	/// This object is not strongly held by the view. Thus, if you want to keep the builder around
-	/// after the view has gone away you must hold onto the builder object elsewhere.
-	///
-	/// This allows a view to contain itself as a builder without having a reference count loop.
-	public weak var builder: DSFAppKitBuilderViewHandler? {
-		didSet {
-			self.rootElement = self.builder?.body
+	deinit {
+		if DSFAppKitBuilder.ShowDebuggingOutput {
+			Swift.print("AKBView deinit (element: \(element?.id.uuidString ?? "")")
 		}
 	}
 
-	// The root element for the view
-	private var rootElement: Element? {
-		willSet {
-			self.rootElement?.view().removeFromSuperview()
+	// private
+	private var _element: Element? = nil
+}
+
+private extension DSFAppKitBuilderView {
+	private func configure() {
+		assert(Thread.isMainThread)
+
+		self.translatesAutoresizingMaskIntoConstraints = false
+		self.wantsLayer = true
+
+		self.setRootElement(self._element)
+	}
+
+	private func setRootElement(_ element: Element?) {
+		assert(Thread.isMainThread)
+
+		// If there was an element being displayed, remove it.
+		if let rootView = _element?.view() {
+			rootView.removeFromSuperview()
 		}
-		didSet {
-			if let d = rootElement {
-				self.addSubview(d.view())
-				d.view().pinEdges(to: self)
-			}
+		_element = element
+
+		// Install the element's view
+		if let rootView = element?.view() {
+			self.addSubview(rootView)
+			rootView.pinEdges(to: self)
+
+			self.needsLayout = true
+			self.needsDisplay = true
 		}
 	}
 }

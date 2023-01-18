@@ -24,7 +24,17 @@
 import Foundation
 import AppKit
 
+#if canImport(SwiftUI)
+
 import SwiftUI
+
+@available(macOS 10.15, *)
+public extension DSFAppKitBuilderViewHandler {
+	/// Generate a SwiftUI preview encapsulating a DSFAppKitBuilderViewHandler object
+	func Preview() -> DSFAppKitBuilderViewHandlerPreview {
+		return DSFAppKitBuilderViewHandlerPreview(self)
+	}
+}
 
 @available(macOS 10.15, *)
 /// A SwiftUI Preview element wrapping a DSFAppKitBuilderView
@@ -32,7 +42,7 @@ public struct DSFAppKitBuilderViewHandlerPreview: NSViewRepresentable {
 	let harness = DSFAppKitBuilderView()
 
 	public init(_ builder: DSFAppKitBuilderViewHandler) {
-		harness.builder = builder
+		harness.element = builder.body
 	}
 
 	public func makeNSView(context: Context) -> DSFAppKitBuilderView {
@@ -79,3 +89,5 @@ extension Element {
 		public func updateNSView(_ nsView: NSView, context: Context) { }
 	}
 }
+
+#endif
