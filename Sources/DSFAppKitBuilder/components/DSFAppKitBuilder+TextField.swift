@@ -102,6 +102,12 @@ public extension TextField {
 		self.label.isContinuous = b
 		return self
 	}
+
+	/// A Boolean value indicating whether excess text scrolls past the label's bounds
+	func isScrollable(_ b: Bool) -> Self {
+		self.label.cell?.isScrollable = b
+		return self
+	}
 }
 
 // MARK: Actions
