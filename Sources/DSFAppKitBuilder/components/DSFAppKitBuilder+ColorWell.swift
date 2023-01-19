@@ -39,6 +39,15 @@ import DSFValueBinders
 /// }
 /// ```
 public class ColorWell: Control {
+	/// Constants that specify the appearance and interaction modes for a color well.
+	public enum Style {
+		/// The default style for color wells.
+		case `default`
+		/// A style that adds minimal adornments to the color well (available macOS 13)
+		case minimal
+		/// A style that supports a color picker popover for fast interactions, and adds a dedicated button to display the color panel. (available macOS 13)
+		case expanded
+	}
 
 	/// Create a ColorWell
 	/// - Parameters:
@@ -46,10 +55,24 @@ public class ColorWell: Control {
 	///   - isBordered: true if the color well has a border
 	///   - color: The initial color
 	public init(
+		style: Style = .default,
 		showsAlpha: Bool = false,
 		isBordered: Bool = true,
-		color: NSColor? = nil)
-	{
+		color: NSColor? = nil
+	) {
+		if #available(macOS 13, *) {
+			self.colorWell = {
+				switch style {
+				case .`default`: return AlphaCompatibleColorWell(style: .default)
+				case .minimal: return AlphaCompatibleColorWell(style: .minimal)
+				case .expanded: return AlphaCompatibleColorWell(style: .expanded)
+				}
+			}()
+		}
+		else {
+			self.colorWell = AlphaCompatibleColorWell()
+		}
+
 		super.init()
 		self.colorWell.showsAlpha = showsAlpha
 		self.colorWell.isBordered = isBordered
@@ -68,7 +91,7 @@ public class ColorWell: Control {
 	}
 
 	// Privates
-	private let colorWell = AlphaCompatibleColorWell()
+	private let colorWell: AlphaCompatibleColorWell
 	public override func view() -> NSView { return self.colorWell }
 
 	private var colorBinder: ValueBinder<NSColor>?
@@ -110,8 +133,63 @@ public extension ColorWell {
 
 internal class AlphaCompatibleColorWell: NSColorWell {
 	var showsAlpha: Bool = false
+
+	@available(macOS 13.0, *)
+	init(style: NSColorWell.Style) {
+		super.init(frame: .zero)
+		self.colorWellStyle = style
+	}
+
+	init() {
+		super.init(frame: .zero)
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
 	override func activate(_ exclusive: Bool) {
 		NSColorPanel.shared.showsAlpha = self.showsAlpha
 		super.activate(exclusive)
 	}
 }
+
+// MARK: - SwiftUI previews
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+@available(macOS 10.15, *)
+struct ColorWellPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.VStack {
+			Group(layoutType: .center) {
+				Grid(columnSpacing: 16) {
+					GridRow(rowAlignment: .firstBaseline) {
+						Label("Style").font(.title2)
+						Label("Bordered").font(.title2)
+						Label("No border").font(.title2)
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".default").font(.monospaced.size(14))
+						ColorWell(style: .default, showsAlpha: true, isBordered: true, color: NSColor.controlAccentColor)
+						ColorWell(style: .default, showsAlpha: true, isBordered: false, color: NSColor.controlAccentColor)
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".minimal").font(.monospaced.size(14))
+						ColorWell(style: .minimal, showsAlpha: true, isBordered: true, color: NSColor.controlAccentColor)
+						ColorWell(style: .minimal, showsAlpha: true, isBordered: false, color: NSColor.controlAccentColor)
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".expanded").font(.monospaced.size(14))
+						ColorWell(style: .expanded, showsAlpha: true, isBordered: true, color: NSColor.controlAccentColor)
+						ColorWell(style: .expanded, showsAlpha: true, isBordered: false, color: NSColor.controlAccentColor)
+					}
+				}
+				.columnFormatting(xPlacement: .center, atColumn: 1)
+				.columnFormatting(xPlacement: .center, atColumn: 2)
+			}
+			.SwiftUIPreview()
+		}
+	}
+}
+#endif
