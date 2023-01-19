@@ -182,6 +182,16 @@ public extension Button {
 		self.button.bezelColor = color
 		return self
 	}
+
+	/// Applies a tint color to template image and text content, in combination with other theme-appropriate effects. Only applicable to borderless buttons
+	///
+	/// Only applicable on 10.14 and later. 10.13 will ignore calls.
+	func contentTintColor(_ color: NSColor) -> Self {
+		if #available(macOS 10.14, *) {
+			self.button.contentTintColor = color
+		}
+		return self
+	}
 }
 
 // MARK: - Actions
@@ -281,3 +291,170 @@ public extension Button {
 		return self
 	}
 }
+
+// MARK: - SwiftUI previews
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+@available(macOS 10.15, *)
+struct ButtonPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.VStack {
+			VStack {
+				Grid(columnSpacing: 20) {
+					GridRow(rowAlignment: .firstBaseline) {
+						Label("Bezel Style").font(.title2)
+						Label("Preview").font(.title2)
+						Label("Var Height").font(.title2)
+						Label("Multiline").font(.title2)
+						Label("Bezel Color?").font(.title2)
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".circular").font(.monospaced)
+						Button(title: "", bezelStyle: .circular)
+						Label("-")
+						Label("-")
+						Label("-")
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".disclosure").font(.monospaced)
+						Button(title: "", bezelStyle: .disclosure)
+						Label("-")
+						Label("-")
+						Label("-")
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".helpButton").font(.monospaced)
+						Button(title: "", bezelStyle: .helpButton)
+						Label("-")
+						Label("-")
+						Label("-")
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".inline").font(.monospaced)
+						Button(title: "My Button", bezelStyle: .inline)
+						Label("✅")
+						Label("✅")
+						Label("-")
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".recessed").font(.monospaced)
+						Button(title: "My Button", bezelStyle: .recessed)
+						Label("-")
+						Label("-")
+						Label("-")
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".regularSquare").font(.monospaced)
+						Button(title: "My Button", bezelStyle: .regularSquare)
+						Label("✅")
+						Label("✅")
+						Button(title: "My Button", bezelStyle: .regularSquare)
+							.bezelColor(NSColor.systemRed)
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".rounded").font(.monospaced)
+						Button(title: "My Button", bezelStyle: .rounded)
+						Label("-")
+						Label("-")
+						Button(title: "My Button", bezelStyle: .rounded)
+							.bezelColor(NSColor.systemRed)
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".roundedDisclosure").font(.monospaced)
+						Button(title: "", bezelStyle: .roundedDisclosure)
+						Label("-")
+						Label("-")
+						Label("-")
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".roundRect").font(.monospaced)
+						Button(title: "My Button", bezelStyle: .roundRect)
+						Label("-")
+						Label("-")
+						Label("-")
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".shadowlessSquare").font(.monospaced)
+						Button(title: "My Button", bezelStyle: .shadowlessSquare)
+						Label("-")
+						Label("✅")
+						Label("-")
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".smallSquare").font(.monospaced)
+						Button(title: "My Button", bezelStyle: .smallSquare)
+						Label("✅")
+						Label("✅")
+						Label("-")
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".texturedRounded").font(.monospaced)
+						Button(title: "My Button", bezelStyle: .texturedRounded)
+						Label("-")
+						Label("-")
+						Label("-")
+					}
+					GridRow(rowAlignment: .firstBaseline) {
+						Label(".texturedSquare").font(.monospaced)
+						Button(title: "My Button", bezelStyle: .texturedSquare)
+						Label("-")
+						Label("✅")
+						Label("-")
+					}
+				}
+				.columnFormatting(xPlacement: .center, atColumn: 2)
+				.columnFormatting(xPlacement: .center, atColumn: 3)
+				.columnFormatting(xPlacement: .center, atColumn: 4)
+				.cellFormatting(xPlacement: .center, atRowIndex: 0, columnIndex: 2)
+				.cellFormatting(xPlacement: .center, atRowIndex: 0, columnIndex: 3)
+				.cellFormatting(xPlacement: .center, atRowIndex: 0, columnIndex: 4)
+				HDivider()
+
+				EmptyView()
+			}
+			.SwiftUIPreview()
+			.padding()
+		}
+	}
+}
+
+@available(macOS 11, *)
+struct ButtonContentTintPreview: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.VStack {
+			Group(layoutType: .center, visualEffect: .init(VisualEffect(material: .hudWindow))) {
+				HStack {
+					Label("Button Content tint color -> ")
+					Button(title: "I'm green!").isBordered(false)
+						.font(.title3)
+						.image(
+							NSImage(systemSymbolName: "apple.logo", accessibilityDescription: nil)!,
+							imagePosition: .imageLeading
+						)
+						.contentTintColor(NSColor.systemGreen)
+						.border(width: 0.5, color: NSColor.quaternaryLabelColor)
+					Button(title: "I'm red!").isBordered(false)
+						.font(.title3)
+						.contentTintColor(NSColor.systemRed)
+						.image(
+							NSImage(systemSymbolName: "apple.logo", accessibilityDescription: nil)!,
+							imagePosition: .imageAbove
+						)
+						.border(width: 0.5, color: NSColor.quaternaryLabelColor)
+					Button(title: "I'm blue").isBordered(false)
+						.font(.title3)
+						.contentTintColor(NSColor.systemBlue)
+						.image(
+							NSImage(systemSymbolName: "apple.logo", accessibilityDescription: nil)!,
+							imagePosition: .imageOnly,
+							imageScaling: .scaleProportionallyUpOrDown
+						)
+						.border(width: 0.5, color: NSColor.quaternaryLabelColor)
+				}
+			}
+			.SwiftUIPreview()
+		}
+	}
+}
+#endif

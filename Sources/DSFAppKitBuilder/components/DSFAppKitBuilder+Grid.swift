@@ -58,9 +58,13 @@ public class Grid: Element {
 
 	/// Create a Grid
 	/// - Parameter builder: The builder for the rows for the grid
-	public init(@GridRowBuilder builder: () -> [GridRow]) {
+	public init(columnSpacing: CGFloat? = nil, @GridRowBuilder builder: () -> [GridRow]) {
 		self.rows = builder()
 		super.init()
+
+		if let columnSpacing = columnSpacing {
+			self.gridView.columnSpacing = columnSpacing
+		}
 
 		self.rows.enumerated().forEach { row in
 			let currentRowCells = row.1.rowCells
