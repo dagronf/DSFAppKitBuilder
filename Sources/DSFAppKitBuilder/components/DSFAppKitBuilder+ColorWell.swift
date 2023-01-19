@@ -51,6 +51,7 @@ public class ColorWell: Control {
 
 	/// Create a ColorWell
 	/// - Parameters:
+	///   - style: (macOS 13+) The style for the color well.
 	///   - showsAlpha: true if the color well should allow setting the opacity of the returned color
 	///   - isBordered: true if the color well has a border
 	///   - color: The initial color
