@@ -56,6 +56,15 @@
         }
       },
       {
+        "package": "DSFToolbar",
+        "repositoryURL": "https://github.com/dagronf/DSFToolbar",
+        "state": {
+          "branch": null,
+          "revision": "1e88eec910f374796a72d25981b6c352f9e7c650",
+          "version": "3.1.1"
+        }
+      },
+      {
         "package": "DSFValueBinders",
         "repositoryURL": "https://github.com/dagronf/DSFValueBinders",
         "state": {

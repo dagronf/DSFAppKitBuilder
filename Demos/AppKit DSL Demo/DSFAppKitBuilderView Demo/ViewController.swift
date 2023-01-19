@@ -8,6 +8,7 @@
 import Cocoa
 import DSFAppKitBuilder
 import DSFValueBinders
+import DSFToolbar
 
 class ViewController: NSViewController {
 
@@ -16,6 +17,8 @@ class ViewController: NSViewController {
 	var titleValue: ValueBinder<String>? = ValueBinder("555 Amity Crt, Somewhereville") { newValue in
 		Swift.print("title is now '\(newValue)'")
 	}
+
+	let titleBinder = ElementBinder()
 
 	var colorBinder1 = ValueBinder(NSColor.textColor)
 	var colorBinder2 = ValueBinder(NSColor.secondaryLabelColor)
@@ -47,10 +50,12 @@ class ViewController: NSViewController {
 					.horizontalPriorities(compressionResistance: 100)
 					.font(.monospaced.weight(.heavy))
 					.lineBreakMode(NSLineBreakMode.byTruncatingTail)
+
 				TextField("Wooble")
 					.bindText(titleValue!)
 					.isScrollable(true)
 					.font(.largeTitle)
+					.bindElement(titleBinder)
 
 				HDivider()
 
@@ -64,6 +69,8 @@ class ViewController: NSViewController {
 				// Embed a DSFAppKitBuilderView in this view
 				View(subView)
 
+				HDivider()
+
 				// Embed a DSFAppKitBuilderViewController in this view
 				View(self.identity)
 					.padding(16)
@@ -74,7 +81,11 @@ class ViewController: NSViewController {
 				}
 			}
 		}()
+	}
 
+	override func viewDidAppear() {
+		super.viewDidAppear()
+		self.customToolbar.attachedWindow = self.view.window
 	}
 
 	func remove() {
@@ -90,6 +101,100 @@ class ViewController: NSViewController {
 		// Update the view, if already loaded.
 		}
 	}
+
+	private lazy var selection = ValueBinder<NSSet>(NSSet(array: [1])) { [weak self] newValue in
+		Swift.print("Selection is now \(newValue)")
+		guard let `self` = self else { return }
+
+		if newValue.contains(0) {
+			(self.titleBinder.view as! NSTextField).alignment = .left
+		}
+		else if newValue.contains(1) {
+			(self.titleBinder.view as! NSTextField).alignment = .center
+		}
+		else if newValue.contains(2) {
+			(self.titleBinder.view as! NSTextField).alignment = .right
+		}
+	}
+
+	let format = ValueBinder<NSSet>(NSSet(array: [])) { newValue in
+		Swift.print("Format is now \(newValue)")
+	}
+
+	lazy var customToolbar = {
+		DSFToolbar("Main Toolbar", allowsUserCustomization: true) {
+			DSFToolbar.Item(.init("press-share"))
+				.label("Share")
+				.image(NSImage(systemSymbolName: "square.and.arrow.up", accessibilityDescription: nil)!)
+				.action { item in
+					Swift.print("Pressed share button")
+				}
+			DSFToolbar.Item(.init("press-trash"))
+				.label("Trash")
+				.image(NSImage(systemSymbolName: "trash", accessibilityDescription: nil)!)
+				.action { item in
+					Swift.print("Pressed trash button")
+				}
+			DSFToolbar.FixedSpace()
+
+			DSFToolbar.Segmented(
+				.init("alignment"),
+				type: .Grouped,
+				switching: .selectOne
+				) {
+					DSFToolbar.Segmented.Segment(title: "")
+						.image(NSImage(systemSymbolName: "text.alignleft", accessibilityDescription: nil)!, scaling: .scaleNone)
+					DSFToolbar.Segmented.Segment(title: "")
+						.image(NSImage(systemSymbolName: "text.aligncenter", accessibilityDescription: nil)!, scaling: .scaleNone)
+					DSFToolbar.Segmented.Segment(title: "")
+						.image(NSImage(systemSymbolName: "text.alignright", accessibilityDescription: nil)!, scaling: .scaleNone)
+				}
+				.label("Alignment")
+				.bindSelection(selection)
+
+			DSFToolbar.Segmented(
+				.init("format"),
+				type: .Grouped,
+				switching: .selectAny
+				) {
+					DSFToolbar.Segmented.Segment(title: "")
+						.image(NSImage(systemSymbolName: "bold", accessibilityDescription: nil)!, scaling: .scaleNone)
+					DSFToolbar.Segmented.Segment(title: "")
+						.image(NSImage(systemSymbolName: "italic", accessibilityDescription: nil)!, scaling: .scaleNone)
+					DSFToolbar.Segmented.Segment(title: "")
+						.image(NSImage(systemSymbolName: "underline", accessibilityDescription: nil)!, scaling: .scaleNone)
+				}
+				.label("Format")
+				.bindSelection(format)
+
+//			DSFToolbar.Group(
+//				.init("segment"),
+//				selectionMode: .selectOne
+//			) {
+//				DSFToolbar.Item(.init("alignment-left"))
+//					//.label("left")
+//					.image(NSImage(systemSymbolName: "text.alignleft", accessibilityDescription: nil)!)
+//					.action { item in
+//						Swift.print("Pressed left button")
+//					}
+//				DSFToolbar.Item(.init("alignment-center"))
+//					//.label("center")
+//					.image(NSImage(systemSymbolName: "text.aligncenter", accessibilityDescription: nil)!)
+//					.action { item in
+//						Swift.print("Pressed center button")
+//					}
+//				DSFToolbar.Item(.init("alignment-right"))
+//					//.label("right")
+//					.image(NSImage(systemSymbolName: "text.alignright", accessibilityDescription: nil)!)
+//					.action { item in
+//						Swift.print("Pressed right button")
+//					}
+//			}
+//			.label("Alignment")
+//			.isBordered(true)
+
+		}
+	}()
 }
 
 

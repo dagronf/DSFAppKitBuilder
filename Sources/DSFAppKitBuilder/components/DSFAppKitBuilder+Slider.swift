@@ -96,6 +96,12 @@ public extension Slider {
 		self.slider.allowsTickMarkValuesOnly = allowsTickMarkValuesOnly
 		return self
 	}
+
+	/// The color of the filled portion of the slider track, in appearances that support it.
+	func trackColor(_ color: NSColor) -> Self {
+		self.slider.trackFillColor = color
+		return self
+	}
 }
 
 // MARK: - Actions

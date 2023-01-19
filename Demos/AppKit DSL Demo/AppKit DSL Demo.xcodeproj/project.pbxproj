@@ -54,6 +54,8 @@
 		23F884892977451700ADC53D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23F884882977451700ADC53D /* Assets.xcassets */; };
 		23F8848C2977451700ADC53D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23F8848A2977451700ADC53D /* Main.storyboard */; };
 		23F88492297745DD00ADC53D /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 23F88491297745DD00ADC53D /* DSFAppKitBuilder */; };
+		23FEE85A29790DD900E4497D /* DSFToolbar in Frameworks */ = {isa = PBXBuildFile; productRef = 23FEE85929790DD900E4497D /* DSFToolbar */; };
+		23FEE85C29790E0000E4497D /* DSFToolbar in Frameworks */ = {isa = PBXBuildFile; productRef = 23FEE85B29790E0000E4497D /* DSFToolbar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23FEE85A29790DD900E4497D /* DSFToolbar in Frameworks */,
 				2314B32B26AFB816003BAA0C /* DSFAppKitBuilder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,6 +142,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23FEE85C29790E0000E4497D /* DSFToolbar in Frameworks */,
 				23F88492297745DD00ADC53D /* DSFAppKitBuilder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,6 +256,7 @@
 			name = "AppKit DSL Demo";
 			packageProductDependencies = (
 				2314B32A26AFB816003BAA0C /* DSFAppKitBuilder */,
+				23FEE85929790DD900E4497D /* DSFToolbar */,
 			);
 			productName = "AppKit DSL Demo";
 			productReference = 2304027526AF7E5F002016FD /* AppKit DSL Demo.app */;
@@ -293,6 +298,7 @@
 			name = "DSFAppKitBuilderView Demo";
 			packageProductDependencies = (
 				23F88491297745DD00ADC53D /* DSFAppKitBuilder */,
+				23FEE85B29790E0000E4497D /* DSFToolbar */,
 			);
 			productName = "AKBView Test";
 			productReference = 23F884822977451600ADC53D /* DSFAppKitBuilderView Demo.app */;
@@ -333,6 +339,7 @@
 			mainGroup = 2304026C26AF7E5F002016FD;
 			packageReferences = (
 				237E74D5282C73040069846A /* XCRemoteSwiftPackageReference "Defaults" */,
+				23FEE85829790DD900E4497D /* XCRemoteSwiftPackageReference "DSFToolbar" */,
 			);
 			productRefGroup = 2304027626AF7E5F002016FD /* Products */;
 			projectDirPath = "";
@@ -736,7 +743,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.DSFAppKitBuilderView-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -765,7 +772,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.DSFAppKitBuilderView-Demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -833,6 +840,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		23FEE85829790DD900E4497D /* XCRemoteSwiftPackageReference "DSFToolbar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dagronf/DSFToolbar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -852,6 +867,16 @@
 		23F88491297745DD00ADC53D /* DSFAppKitBuilder */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DSFAppKitBuilder;
+		};
+		23FEE85929790DD900E4497D /* DSFToolbar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 23FEE85829790DD900E4497D /* XCRemoteSwiftPackageReference "DSFToolbar" */;
+			productName = DSFToolbar;
+		};
+		23FEE85B29790E0000E4497D /* DSFToolbar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 23FEE85829790DD900E4497D /* XCRemoteSwiftPackageReference "DSFToolbar" */;
+			productName = DSFToolbar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
