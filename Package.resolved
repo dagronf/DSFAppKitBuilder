@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFComboButton",
         "state": {
           "branch": null,
-          "revision": "d1bae4b7f1778f4492d263caa95bd978753835a2",
-          "version": "0.4.4"
+          "revision": "675b8c13e0db5a759a6b757b09f7e18768830f29",
+          "version": "1.0.0"
         }
       },
       {
@@ -38,12 +38,21 @@
         }
       },
       {
+        "package": "DSFToggleButton",
+        "repositoryURL": "https://github.com/dagronf/DSFToggleButton",
+        "state": {
+          "branch": null,
+          "revision": "17e140dc686e3622bba7a8b6a68495338c293b59",
+          "version": "7.0.0"
+        }
+      },
+      {
         "package": "DSFValueBinders",
         "repositoryURL": "https://github.com/dagronf/DSFValueBinders",
         "state": {
           "branch": null,
-          "revision": "0640c002c3fddea09e80872c9fe4628762ef311a",
-          "version": "0.8.3"
+          "revision": "1cedd5760b0c2c3abff94e65c7af938206d9cdb8",
+          "version": "0.9.1"
         }
       }
     ]
