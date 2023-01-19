@@ -34,6 +34,9 @@ public class AKBFont {
 	public init(_ font: NSFont) {
 		self.font = font
 	}
+
+	/// Return a copy of this font
+	func copy() -> AKBFont { AKBFont(self.font.copy() as! NSFont) }
 }
 
 // MARK: Font variations
@@ -43,20 +46,25 @@ private let AKBFontZero = 0
 
 public extension AKBFont {
 	/// Returns a bold variant of the font
-	func bold() -> AKBFont {
+	func withSymbolicTraits(_ traits: NSFontDescriptor.SymbolicTraits) -> AKBFont {
 		var currentTraits = self.font.fontDescriptor.symbolicTraits
-		currentTraits.insert(.bold)
+		currentTraits.insert(traits)
 		let descriptor = self.font.fontDescriptor.withSymbolicTraits(currentTraits)
-		return AKBFont(NSFont(descriptor: descriptor, size: self.font.pointSize)!)
+		if let font = NSFont(descriptor: descriptor, size: self.font.pointSize) {
+			return AKBFont(font)
+		}
+		// Just return a copy of this font
+		return self.copy()
 	}
 
+	/// Returns a bold variant of the font
+	@inlinable func bold() -> AKBFont { self.withSymbolicTraits(.bold) }
 	/// Returns a italic variant of the font
-	func italic() -> AKBFont {
-		var currentTraits = self.font.fontDescriptor.symbolicTraits
-		currentTraits.insert(.italic)
-		let descriptor = self.font.fontDescriptor.withSymbolicTraits(currentTraits)
-		return AKBFont(NSFont(descriptor: descriptor, size: self.font.pointSize)!)
-	}
+	@inlinable func italic() -> AKBFont { self.withSymbolicTraits(.italic) }
+	/// Returns a expanded variant of the font
+	@inlinable func expanded() -> AKBFont { self.withSymbolicTraits(.expanded) }
+	/// Returns a expanded variant of the font
+	@inlinable func condensed() -> AKBFont { self.withSymbolicTraits(.condensed) }
 
 	/// Returns a weight variant of the font
 	func weight(_ weight: NSFont.Weight) -> AKBFont {
@@ -66,6 +74,14 @@ public extension AKBFont {
 			],
 		])
 		return AKBFont(fnt)
+	}
+
+	/// Returns a version of the font with a specific font size
+	func size(_ size: CGFloat) -> AKBFont {
+		if let mf = NSFont(descriptor: self.font.fontDescriptor, size: size) {
+			return AKBFont(mf)
+		}
+		return self.copy()
 	}
 }
 
@@ -138,6 +154,14 @@ struct FontPreviews: PreviewProvider {
 				VStack(alignment: .leading) {
 					HStack {
 						Label("Plain text").font(.body)
+						Label("Plain text").font(.body.size(14))
+						Label("Plain text").font(.body.size(16))
+						Label("Plain text").font(.body.size(18))
+						Label("Plain text").font(.body.size(24))
+					}
+					HDivider()
+					HStack {
+						Label("Plain text").font(.body)
 						VDivider()
 						Label("Bold text").font(.body.bold())
 						VDivider()
@@ -153,6 +177,14 @@ struct FontPreviews: PreviewProvider {
 						Label("Monospaced").font(.monospaced)
 						VDivider()
 						Label("Monospaced Bold").font(.monospaced.bold())
+					}
+
+					HStack {
+						Label("standard").font(.title2)
+						VDivider()
+						Label("expanded").font(.title2.expanded())
+						VDivider()
+						Label("condensed").font(.title2.condensed())
 					}
 					HDivider()
 					Grid {
