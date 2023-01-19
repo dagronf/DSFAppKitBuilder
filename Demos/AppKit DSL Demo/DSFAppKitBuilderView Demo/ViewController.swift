@@ -17,7 +17,9 @@ class ViewController: NSViewController {
 		Swift.print("title is now '\(newValue)'")
 	}
 
-	var colorBinder = ValueBinder(NSColor.textColor)
+	var colorBinder1 = ValueBinder(NSColor.textColor)
+	var colorBinder2 = ValueBinder(NSColor.secondaryLabelColor)
+	var colorBinder3 = ValueBinder(NSColor.tertiaryLabelColor)
 
 	let identity = IdentityViewController()
 
@@ -26,17 +28,21 @@ class ViewController: NSViewController {
 
 		// Create a subview
 		let subView = DSFAppKitBuilderView {
-			ColorWell()
-				.bindColor(colorBinder)
-				.size(width: 50, height: 26)
+			HStack {
+				ColorWell(style: .default)
+					.bindColor(colorBinder1)
+					.size(width: 70, height: 30)
+				ColorWell(style: .expanded)
+					.bindColor(colorBinder2)
+					.size(width: 70, height: 30)
+				ColorWell(style: .minimal, showsAlpha: true)
+					.bindColor(colorBinder3)
+					.size(width: 70, height: 30)
+			}
 		}
 
 		self.coreView.element = {
 			VStack {
-				Label("Hello title1").font(.title1)
-					.bindTextColor(colorBinder)
-				Label("Hello title2").font(.title2.italic())
-					.bindTextColor(colorBinder)
 				Label("Hello monospaced digit 23.56")
 					.horizontalPriorities(compressionResistance: 100)
 					.font(.monospaced.weight(.heavy))
@@ -47,6 +53,13 @@ class ViewController: NSViewController {
 					.font(.largeTitle)
 
 				HDivider()
+
+				Label("Hello title1").font(.title1)
+					.bindTextColor(colorBinder1)
+				Label("Hello title2").font(.title2.italic())
+					.bindTextColor(colorBinder2)
+				Label("Hello title3").font(.title3.bold())
+					.bindTextColor(colorBinder3)
 
 				// Embed a DSFAppKitBuilderView in this view
 				View(subView)
