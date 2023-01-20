@@ -57,6 +57,17 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		Swift.print("Combo selection is = \(newValue)")
 	}
 
+	// StepperView
+	let stepperViewValue = ValueBinder<Double?>(1)
+
+
+	let stepperViewFormatter: NumberFormatter = {
+		let n = NumberFormatter()
+		n.numberStyle = .ordinal
+		return n
+	}()
+
+
 	// Definition
 
 	lazy var body: Element =
@@ -265,10 +276,40 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 			
 			HDivider()
-			
-			Label("Grouping buttons with a radio group")
-				.font(NSFont.systemFont(ofSize: 16, weight: .medium))
-			
+
+			HStack {
+				VStack {
+					Label("Default")
+					StepperView(style: .init(indicatorColor: NSColor.systemBlue))
+						.bindValue(self.stepperViewValue)
+						.onChange { newValue in
+							Swift.print("StepperView: newValue is \(newValue?.description ?? "nil")")
+						}
+						.size(width: 120, height: 32)
+				}
+
+				VStack {
+					Label("Disabled")
+					StepperView(style: .init(numberFormatter: stepperViewFormatter))
+						.bindValue(self.stepperViewValue)
+						.bindIsEnabled(.init(false))
+						.onChange { newValue in
+							Swift.print("StepperView: newValue is \(newValue?.description ?? "nil")")
+						}
+						.size(width: 120, height: 32)
+				}
+
+				VStack {
+					Label("Editable")
+					StepperView(nil, allowsEmptyValue: true, allowsKeyboardInput: true)
+						.onChange { newValue in
+							Swift.print("StepperView: newValue is \(newValue?.description ?? "nil")")
+						}
+						.plaeholderText("inherited")
+						.size(width: 120, height: 32)
+				}
+			}
+
 			EmptyView()
 		}
 	}

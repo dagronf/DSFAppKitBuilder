@@ -117,8 +117,28 @@ class ViewController: NSViewController {
 		}
 	}
 
-	let format = ValueBinder<NSSet>(NSSet(array: [])) { newValue in
+	private lazy var format = ValueBinder<NSSet>(NSSet(array: [])) { [weak self] newValue in
 		Swift.print("Format is now \(newValue)")
+//		guard
+//			let `self` = self,
+//			let textField = self.titleBinder.element as? TextField,
+//			let tf = textField.view as? NSTextField
+//		else {
+//			return
+//		}
+//
+//		let isBold = newValue.contains(0)
+//		let isItalic = newValue.contains(1)
+//		let isUnderline = newValue.contains(2)
+//
+//		//tf.font
+//		var traits: NSFontSymbolicTraits = 0
+//		if isBold { traits += NSFontDescriptor.SymbolicTraits.bold.rawValue }
+//		if isItalic { traits += NSFontDescriptor.SymbolicTraits.italic.rawValue }
+//
+//		let f = AKBFont(tf.font!)
+//		let f2 = f.withSymbolicTraits(NSFontDescriptor.SymbolicTraits(rawValue: traits))
+//		textField.font(f2)
 	}
 
 	lazy var customToolbar = {
