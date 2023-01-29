@@ -38,6 +38,15 @@
         }
       },
       {
+        "package": "DSFStepperView",
+        "repositoryURL": "https://github.com/dagronf/DSFStepperView",
+        "state": {
+          "branch": null,
+          "revision": "d81b22a217b1ae0a1acb6c025fcbfdbf7bd6ad2e",
+          "version": "4.0.0"
+        }
+      },
+      {
         "package": "DSFToggleButton",
         "repositoryURL": "https://github.com/dagronf/DSFToggleButton",
         "state": {

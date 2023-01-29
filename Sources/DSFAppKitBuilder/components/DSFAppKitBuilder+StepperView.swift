@@ -247,24 +247,65 @@ extension StepperView: DSFStepperViewDelegateProtocol {
 #if DEBUG && canImport(SwiftUI)
 import SwiftUI
 let value = ValueBinder<Double?>(15.0)
+let value2 = ValueBinder<Double?>(nil)
+let style2: StepperView.Style = {
+	let n = NumberFormatter()
+	n.minimumFractionDigits = 1
+	n.maximumFractionDigits = 1
+	let f = NSFont.monospacedDigitSystemFont(ofSize: 14, weight: .medium)
+	return StepperView.Style(font: .init(f), numberFormatter: n)
+}()
+
 @available(macOS 10.15, *)
 struct StepperViewPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		SwiftUI.VStack {
-			VStack {
-				StepperView(66)
-					.size(width: 100, height: 28)
-				StepperView(35, style: .init(
-					textColor: .systemBlue,
-					borderColor: .systemBlue,
-					backgroundColor: .systemBlue.withAlphaComponent(0.1),
-					indicatorColor: .systemBlue
-				))
-					.size(width: 100, height: 28)
+			VStack(spacing: 16, alignment: .leading) {
+				VStack(alignment: .leading) {
+					Label("Default").font(.title3.bold())
+					HStack {
+						StepperView(66)
+							.size(width: 100, height: 28)
+						StepperView(66)
+							.bindIsEnabled(.init(false))
+							.size(width: 100, height: 28)
+						StepperView(66, allowsKeyboardInput: true)
+							.size(width: 100, height: 28)
+					}
+				}
+				HDivider()
+				VStack(alignment: .leading) {
+					Label("Colors").font(.title3.bold())
+					HStack {
+						StepperView(35, style: .init(textColor: .systemRed, borderColor: .systemRed, backgroundColor: .systemRed.withAlphaComponent(0.1), indicatorColor: .systemRed))
+							.size(width: 100, height: 28)
+						StepperView(35, style: .init(textColor: .systemGreen, borderColor: .systemGreen, backgroundColor: .systemGreen.withAlphaComponent(0.1), indicatorColor: .systemGreen))
+							.size(width: 100, height: 28)
+						StepperView(35, style: .init(textColor: .systemBlue, borderColor: .systemBlue, backgroundColor: .systemBlue.withAlphaComponent(0.1), indicatorColor: .systemBlue))
+							.size(width: 100, height: 28)
+					}
+				}
+				HDivider()
+				VStack(alignment: .leading) {
+					Label("Allows empty value (range -10 ... 10, step 0.5)").font(.title3.bold())
+					HStack {
+						StepperView(nil, allowsEmptyValue: true, increment: 0.5, range: -10 ... 10, allowsKeyboardInput: true, style: style2)
+							.plaeholderText("inherited")
+							.bindValue(value2)
+							.size(width: 120, height: 32)
+						StepperView(nil, allowsEmptyValue: true, increment: 0.5, range: -10 ... 10, allowsKeyboardInput: true, style: style2)
+							.plaeholderText("inherited")
+							.bindValue(value2)
+							.bindIsEnabled(.init(false))
+							.size(width: 120, height: 32)
+					}
+				}
+				HDivider()
+				EmptyView()
 			}
 			.SwiftUIPreview()
 			.padding()
-			.frame(width: 300)
+			.frame(width: 400)
 		}
 	}
 }

@@ -67,6 +67,8 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 		return n
 	}()
 
+	let stepperEnabled = ValueBinder(false)
+
 
 	// Definition
 
@@ -139,7 +141,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 							Swift.print("ComboBox onSelectionChange with value '\(newSelection)'")
 						}
 					
-					Button(title: "Randomize") { [unowned self] _ in
+					Button(title: "Randomize Order") { [unowned self] _ in
 						self.comboboxContent.wrappedValue = self.comboboxContent.wrappedValue.shuffled()
 					}
 				}
@@ -308,6 +310,19 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 						.plaeholderText("inherited")
 						.size(width: 120, height: 32)
 				}
+			}
+
+			HStack {
+				SafeSwitch(onOffBinder: self.stepperEnabled)
+				StepperView(35, style: .init(textColor: .systemRed, borderColor: .systemRed, backgroundColor: .systemRed.withAlphaComponent(0.2), indicatorColor: .systemRed))
+					.bindIsEnabled(stepperEnabled)
+					.size(width: 100, height: 28)
+				StepperView(35, style: .init(textColor: .systemGreen, borderColor: .systemGreen, backgroundColor: .systemGreen.withAlphaComponent(0.2), indicatorColor: .systemGreen))
+					.bindIsEnabled(stepperEnabled)
+					.size(width: 100, height: 28)
+				StepperView(35, style: .init(textColor: .systemBlue, borderColor: .systemBlue, backgroundColor: .systemBlue.withAlphaComponent(0.2), indicatorColor: .systemBlue))
+					.bindIsEnabled(stepperEnabled)
+					.size(width: 100, height: 28)
 			}
 
 			EmptyView()
