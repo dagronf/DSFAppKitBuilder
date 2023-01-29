@@ -241,6 +241,26 @@ public extension Element {
 		block(self.view() as! VIEWTYPE)
 		return self
 	}
+
+	/// Bind the wrapped AppKit control to a local variable when it is created.
+	///
+	/// ```swift
+	/// weak var button: NSButton?
+	/// ...
+	///    Button(title: "Title") { [weak self] newState in
+	///       // button action code
+	///    }
+	///    .bindControl(to: &button)
+	/// ```
+	func bindControl<VIEWTYPE: NSView>(to control: inout VIEWTYPE?) -> Self {
+		guard let typedControl = self.view() as? VIEWTYPE else {
+			let expectedType = self.view().self
+			Swift.print("bindControl() requires control of type \(expectedType), given \(String(describing: control.self)) -- ignoring...")
+			return self
+		}
+		control = typedControl
+		return self
+	}
 }
 
 // MARK: - Edge insets

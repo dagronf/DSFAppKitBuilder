@@ -246,6 +246,8 @@ extension StepperView: DSFStepperViewDelegateProtocol {
 
 #if DEBUG && canImport(SwiftUI)
 import SwiftUI
+weak var embedded: DSFStepperView?
+
 let value = ValueBinder<Double?>(15.0)
 let value2 = ValueBinder<Double?>(nil)
 let style2: StepperView.Style = {
@@ -266,6 +268,7 @@ struct StepperViewPreviews: PreviewProvider {
 					HStack {
 						StepperView(66)
 							.size(width: 100, height: 28)
+							.bindControl(to: &embedded)
 						StepperView(66)
 							.bindIsEnabled(.init(false))
 							.size(width: 100, height: 28)

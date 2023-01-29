@@ -10,6 +10,7 @@ import DSFAppearanceManager
 import DSFAppKitBuilder
 import DSFMenuBuilder
 import DSFValueBinders
+import DSFStepperView
 
 class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
@@ -59,16 +60,13 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 
 	// StepperView
 	let stepperViewValue = ValueBinder<Double?>(1)
-
-
 	let stepperViewFormatter: NumberFormatter = {
 		let n = NumberFormatter()
 		n.numberStyle = .ordinal
 		return n
 	}()
-
 	let stepperEnabled = ValueBinder(false)
-
+	weak var stepperControl: DSFStepperView?
 
 	// Definition
 
@@ -323,6 +321,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				StepperView(35, style: .init(textColor: .systemBlue, borderColor: .systemBlue, backgroundColor: .systemBlue.withAlphaComponent(0.2), indicatorColor: .systemBlue))
 					.bindIsEnabled(stepperEnabled)
 					.size(width: 100, height: 28)
+					.bindControl(to: &stepperControl)
 			}
 
 			EmptyView()
