@@ -107,6 +107,34 @@ public extension Switch {
 	}
 }
 
+// MARK: - SwiftUI preview
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+
+private let __switchState = ValueBinder<Bool>(true)
+private let __switchState2 = ValueBinder<Bool>(false)
+
+@available(macOS 10.15, *)
+struct SwitchPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.VStack {
+			VStack {
+				HStack {
+					Switch(state: .on)
+						.bindOnOffState(__switchState)
+					Switch(state: .on)
+						.bindIsEnabled(.init(false))
+						.bindOnOffState(__switchState)
+				}
+			}
+			.SwiftUIPreview()
+			.padding()
+		}
+	}
+}
+#endif
+
 
 ///// If we're running on 10.15+, use a Switch.  If not, fallback to using a checkbox
 //public class SafeSwitch: Element {
