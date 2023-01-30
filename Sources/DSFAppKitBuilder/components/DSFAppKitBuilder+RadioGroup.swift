@@ -43,21 +43,22 @@ import DSFValueBinders
 /// }
 /// ```
 public class RadioGroup: Control {
-
-
 	/// Create a vertical radio group
 	/// - Parameters:
+	///   - orientation: The orientation for the radio buttons (vertically/horizontally)
 	///   - selected: Which of the group should be initially selected
 	///   - controlSize: The size for the control
 	///   - spacing: The spacing between radio buttons in the control
 	///   - builder: The builder for generating the group of radio elements
 	public convenience init(
+		orientation: NSUserInterfaceLayoutOrientation = .vertical,
 		selected: Int = 0,
 		controlSize: NSButton.ControlSize? = nil,
 		spacing: CGFloat? = nil,
 		@RadioBuilder builder: () -> [RadioElement]
 	) {
 		self.init(
+			orientation: orientation,
 			selected: selected,
 			controlSize: controlSize,
 			spacing: spacing,
@@ -71,14 +72,18 @@ public class RadioGroup: Control {
 
 	// Private
 
-	public override func view() -> NSView { return self.radioGroup }
+	override public func view() -> NSView { return self.radioGroup }
 	private let radioGroup = NSStackView()
 	private let content: [RadioElement]
 
 	private var actionCallback: ((Int) -> Void)?
 	private var selectionBinder: ValueBinder<Int>?
 
+	private var isEnabledBinder: ValueBinder<Bool>?
+	private var radioElementDisabledBinder: ValueBinder<NSSet>?
+
 	internal init(
+		orientation: NSUserInterfaceLayoutOrientation = .vertical,
 		selected: Int = 0,
 		controlSize: NSButton.ControlSize? = nil,
 		spacing: CGFloat? = nil,
@@ -87,8 +92,8 @@ public class RadioGroup: Control {
 		self.content = content
 		super.init()
 
-		self.radioGroup.orientation = .vertical
-		self.radioGroup.alignment = .leading
+		self.radioGroup.orientation = orientation
+		self.radioGroup.alignment = (orientation == .vertical) ? .leading : .firstBaseline
 		if let s = spacing {
 			self.radioGroup.spacing = s
 		}
@@ -115,6 +120,15 @@ public class RadioGroup: Control {
 
 			radioGroup.addArrangedSubview(button)
 		}
+	}
+
+	/// Bind the radio group isEnabled state to a valuebinder
+	override public func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
+		self.isEnabledBinder = enabledBinding
+		enabledBinding.register { [weak self] newValue in
+			self?.updateElementEnabledStates()
+		}
+		return self
 	}
 }
 
@@ -158,6 +172,41 @@ public extension RadioGroup {
 		}
 		return self
 	}
+
+	/// Bind individual radio items to a set to indicate which element(s) are disabled
+	func bindRadioElementsDisabled(_ binder: ValueBinder<NSSet>) -> Self {
+		self.radioElementDisabledBinder = binder
+		binder.register { [weak self] _ in
+			self?.updateElementEnabledStates()
+		}
+		return self
+	}
+
+	private func updateElementEnabledStates() {
+		if let enabledBinding = self.isEnabledBinder {
+			let state = enabledBinding.wrappedValue
+			self.radioGroup.arrangedSubviews.compactMap { $0 as? NSButton }
+				.forEach { $0.isEnabled = state }
+		}
+
+		if	self.isEnabledBinder?.wrappedValue ?? true == true,
+			let individuals = radioElementDisabledBinder {
+			let state = individuals.wrappedValue
+
+			self.radioGroup.arrangedSubviews
+				.enumerated()
+				.compactMap {
+					if let b = $0.1 as? NSButton {
+						return ($0.0, b)
+					}
+					return nil
+				}
+				.forEach { item in
+					let isDisabled = state.contains(item.0)
+					item.1.isEnabled = !isDisabled
+				}
+		}
+	}
 }
 
 // MARK: - RadioElement
@@ -180,7 +229,6 @@ public class RadioElement {
 	}
 }
 
-
 // MARK: - Result builder for RadioElements
 
 @resultBuilder
@@ -194,3 +242,64 @@ public extension RadioBuilder {
 		settings
 	}
 }
+
+// MARK: - SwiftUI preview
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+
+private let __enabler = ValueBinder(true)
+private let __elementDisabler = ValueBinder(NSSet(array: [1]))
+private let __enabler2 = ValueBinder(true)
+
+@available(macOS 10.15, *)
+struct RadioPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			VStack(alignment: .leading) {
+				Label("Vertical alignment (default settings)").font(.title3.bold())
+				RadioGroup(orientation: .vertical) {
+					RadioElement("first")
+					RadioElement("second")
+					RadioElement("third")
+				}
+				HDivider()
+				Label("Horizontal alignment").font(.title3.bold())
+				HStack {
+					Switch(onOffBinder: __enabler)
+					RadioGroup(orientation: .horizontal) {
+						RadioElement("first 1")
+						RadioElement("second 2")
+						RadioElement("third 3")
+					}
+					.bindIsEnabled(__enabler)
+				}
+				HDivider()
+				Label("Disable individual items").font(.title3.bold())
+				HStack {
+					Switch(onOffBinder: __enabler2)
+					Label("Disabled radio elements ->")
+					Segmented(trackingMode: .selectAny) {
+						Segment("1")
+						Segment("2")
+						Segment("3")
+					}
+					.bindIsEnabled(__enabler2)
+					.width(100)
+					.bindSelectedSegments(__elementDisabler)
+				}
+				RadioGroup(orientation: .vertical) {
+					RadioElement("first")
+					RadioElement("second")
+					RadioElement("third")
+				}
+				.bindIsEnabled(__enabler2)
+				.bindRadioElementsDisabled(__elementDisabler)
+				EmptyView()
+			}
+			.SwiftUIPreview()
+			.padding()
+		}
+	}
+}
+#endif

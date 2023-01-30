@@ -68,6 +68,12 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			.enabled { [weak self] in true }
 			.onAction { [weak self] in self?.rabbitComboTitle.wrappedValue = "third" }
 	}
+
+	private let __enabler = ValueBinder(true)
+	private let __elementDisabler = ValueBinder(NSSet(array: [1]))
+	private let __enabler2 = ValueBinder(true)
+
+
 	// Body
 
 	lazy var body: Element =
@@ -99,23 +105,51 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					Swift.print("State is now \(state)")
 				}
 
-			RadioGroup() {
-				RadioElement("first")
-				RadioElement("second")
-				RadioElement("third")
-			}
-			.bindSelection(self.radioSelection)
-			.onChange { which in
-				Swift.print("radio is now \(which)")
-			}
+			HDivider()
 
 			HStack {
-				Button(title: "Reset radio")
-					.onChange { [weak self] state in
-						self?.radioSelection.wrappedValue = 0
+				VStack(alignment: .leading) {
+					RadioGroup() {
+						RadioElement("first")
+						RadioElement("second")
+						RadioElement("third")
 					}
+					.bindSelection(self.radioSelection)
+					.onChange { which in
+						Swift.print("radio is now \(which)")
+					}
+
+					HStack {
+						Button(title: "Reset radio")
+							.onChange { [weak self] state in
+								self?.radioSelection.wrappedValue = 0
+							}
+					}
+					.verticalPriorities(hugging: 999, compressionResistance: 999)
+				}
+				VDivider()
+				VStack(alignment: .leading) {
+					HStack {
+						SafeSwitch(onOffBinder: __enabler2)
+						Label("Disabled radio elements ->")
+						Segmented(trackingMode: .selectAny) {
+							Segment("1")
+							Segment("2")
+							Segment("3")
+						}
+						.bindIsEnabled(__enabler2)
+						.width(100)
+						.bindSelectedSegments(__elementDisabler)
+					}
+					RadioGroup(orientation: .vertical) {
+						RadioElement("first")
+						RadioElement("second")
+						RadioElement("third")
+					}
+					.bindIsEnabled(__enabler2)
+					.bindRadioElementsDisabled(__elementDisabler)
+				}
 			}
-			.verticalPriorities(hugging: 999, compressionResistance: 999)
 
 			HDivider()
 
