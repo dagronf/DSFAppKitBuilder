@@ -43,6 +43,15 @@ public class Control: Element {
 		// Do nothing
 	}
 
+	/// Binding for isEnabled
+	public func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
+		enabledBinding.register { [weak self] newValue in
+			self?.control.isEnabled = newValue
+		}
+		self.isEnabledBinder = enabledBinding
+		return self
+	}
+
 	// Private
 	private var isEnabledBinder: ValueBinder<Bool>?
 	private var fontBinder: ValueBinder<NSFont?>?
@@ -81,15 +90,6 @@ public extension Control {
 // MARK: - Bindings
 
 public extension Control {
-	/// Binding for isEnabled
-	func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
-		enabledBinding.register { [weak self] newValue in
-			self?.control.isEnabled = newValue
-		}
-		self.isEnabledBinder = enabledBinding
-		return self
-	}
-
 	/// Binding for the control's font
 	func bindFont(_ fontBinding: ValueBinder<NSFont?>) -> Self {
 		fontBinding.register { [weak self] newValue in
