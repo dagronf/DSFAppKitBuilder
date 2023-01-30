@@ -78,6 +78,15 @@ class PathControlWithSelector: Element {
 		HStack {
 			PathControl(bindingURL: fileURL)
 				.horizontalPriorities(hugging: 10, compressionResistance: 10)
+				.onClickPathComponent { item in
+					Swift.print("User clicked path component: \(String(describing: item.url))")
+				}
+				.onAction { url in
+					Swift.print("User single-clicked: \(String(describing: url))")
+				}
+				.onDoubleAction { url in
+					Swift.print("User double-clicked: \(String(describing: url))")
+				}
 			Button(title: "…", bezelStyle: .roundRect) { _ in
 				self.selectFile()
 			}

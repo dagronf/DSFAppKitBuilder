@@ -33,6 +33,7 @@ public class PathControl: Control {
 	/// Create a path control displaying a constant URL value
 	public init(url: URL? = nil) {
 		super.init()
+		self.setup()
 		self.pathControl.translatesAutoresizingMaskIntoConstraints = false
 		self.pathControl.url = url
 	}
@@ -40,37 +41,69 @@ public class PathControl: Control {
 	/// Create a path control with a binding to a URL
 	public init(bindingURL: ValueBinder<URL>) {
 		super.init()
+		self.setup()
 		self.pathControl.translatesAutoresizingMaskIntoConstraints = false
 		_ = self.bindURL(bindingURL)
 	}
 
+	private func setup() {
+		self.pathControl.target = self
+		self.pathControl.action = #selector(doAction(_:))
+		self.pathControl.doubleAction = #selector(doDoubleAction(_:))
+	}
+
 	deinit {
 		self.fileURLBinder?.deregister(self)
+		self.actionCallback = nil
+		self.doubleActionCallback = nil
+		self.pathItemClicked = nil
 	}
 
 	// Private
 	private let pathControl = NSPathControl()
 	public override func view() -> NSView { return self.pathControl }
 	private var actionCallback: ((URL?) -> Void)?
+	private var doubleActionCallback: ((URL?) -> Void)?
+	private var pathItemClicked: ((NSPathControlItem) -> Void)?
 
 	// Bindables
 	private var fileURLBinder: ValueBinder<URL>?
+}
 
+private extension PathControl {
+	// Callback when the user single-clicks the path control
+	@objc private func doAction(_ sender: Any) {
+		self.actionCallback?(self.pathControl.url)
+		if let which = self.pathControl.clickedPathItem {
+			self.pathItemClicked?(which)
+		}
+	}
+
+	// Callback when the user double-clicks the path control
+	@objc private func doDoubleAction(_ sender: Any) {
+		self.doubleActionCallback?(self.pathControl.url)
+	}
 }
 
 // MARK: - Actions
 
 public extension PathControl {
-	/// Set a callback block for when the user double-clicks the path control
+	/// Set a callback block for when the user single-clicks the path control
 	func onAction(_ block: @escaping (URL?) -> Void) -> Self {
 		self.actionCallback = block
-		self.pathControl.target = self
-		self.pathControl.doubleAction = #selector(doAction(_:))
 		return self
 	}
 
-	@objc private func doAction(_ sender: Any) {
-		self.actionCallback?(self.pathControl.url)
+	/// Set a callback block for when the user double-clicks the path control
+	func onDoubleAction(_ block: @escaping (URL?) -> Void) -> Self {
+		self.doubleActionCallback = block
+		return self
+	}
+
+	/// Set a block to be called when a user selects a path item in the control
+	func onClickPathComponent(_ block: @escaping (NSPathControlItem) -> Void) -> Self {
+		self.pathItemClicked = block
+		return self
 	}
 }
 
@@ -92,13 +125,41 @@ public extension PathControl {
 #if DEBUG && canImport(SwiftUI)
 import SwiftUI
 
+fileprivate func __getDocumentsDirectory() -> URL {
+	let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+	return paths.first!
+}
+
 @available(macOS 10.15, *)
 struct PathPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		SwiftUI.VStack {
 			VStack {
-				PathControl(url: FileManager.default.temporaryDirectory)
-					.horizontalCompressionResistancePriority(.defaultLow)
+				Grid {
+					GridRow(rowAlignment: .lastBaseline) {
+						Label("Home:").font(.headline)
+						PathControl(url: FileManager.default.homeDirectoryForCurrentUser)
+							.horizontalCompressionResistancePriority(.defaultLow)
+					}
+					GridRow(rowAlignment: .lastBaseline) {
+						Label("Documents:").font(.headline)
+						PathControl(url: __getDocumentsDirectory())
+							.horizontalCompressionResistancePriority(.defaultLow)
+					}
+					GridRow(rowAlignment: .lastBaseline) {
+						Label("Documents (disabled):").font(.headline)
+						PathControl(url: __getDocumentsDirectory())
+							.horizontalCompressionResistancePriority(.defaultLow)
+							.isEnabled(false)
+					}
+					GridRow(rowAlignment: .lastBaseline) {
+						Label("Temporary:").font(.headline)
+						PathControl(url: FileManager.default.temporaryDirectory)
+							.horizontalCompressionResistancePriority(.defaultLow)
+					}
+				}
+				.columnFormatting(xPlacement: .trailing, atColumn: 0)
+				EmptyView()
 			}
 			.SwiftUIPreview()
 			.padding()
