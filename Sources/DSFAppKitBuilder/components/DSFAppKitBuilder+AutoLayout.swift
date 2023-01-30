@@ -72,13 +72,47 @@ public extension Element {
 	func priority(
 		orientation: NSLayoutConstraint.Orientation,
 		hugging: NSLayoutConstraint.Priority? = nil,
-		compressionResistance resistance: NSLayoutConstraint.Priority? = nil) -> Self {
+		compressionResistance resistance: NSLayoutConstraint.Priority? = nil
+	) -> Self {
 		if let hugging = hugging {
 			self.view().setContentHuggingPriority(hugging, for: orientation)
 		}
 		if let resistance = resistance {
 			self.view().setContentCompressionResistancePriority(resistance, for: orientation)
 		}
+		return self
+	}
+}
+
+public extension Element {
+	/// Sets the priority with which a view resists being made smaller than its intrinsic size.
+	///
+	/// See: [documentation](https://developer.apple.com/documentation/appkit/nsview/1524974-setcontentcompressionresistancep)
+	@inlinable func horizontalCompressionResistancePriority(_ priority: NSLayoutConstraint.Priority) -> Self {
+		self.view().setContentCompressionResistancePriority(priority, for: .horizontal)
+		return self
+	}
+	/// Sets the priority with which a view resists being made smaller than its intrinsic size.
+	///
+	/// See: [documentation](https://developer.apple.com/documentation/appkit/nsview/1524974-setcontentcompressionresistancep)
+	@inlinable func verticalCompressionResistancePriority(_ priority: NSLayoutConstraint.Priority) -> Self {
+		self.view().setContentCompressionResistancePriority(priority, for: .vertical)
+		return self
+	}
+
+	/// Sets the priority with which a view resists being made larger than its intrinsic size.
+	///
+	/// See: [documentation](https://developer.apple.com/documentation/appkit/nsview/1526937-setcontenthuggingpriority)
+	@inlinable func horizontalHuggingPriority(_ priority: NSLayoutConstraint.Priority) -> Self {
+		self.view().setContentHuggingPriority(priority, for: .horizontal)
+		return self
+	}
+
+	/// Sets the priority with which a view resists being made larger than its intrinsic size.
+	///
+	/// See: [documentation](https://developer.apple.com/documentation/appkit/nsview/1526937-setcontenthuggingpriority)
+	@inlinable func verticalHuggingPriority(_ priority: NSLayoutConstraint.Priority) -> Self {
+		self.view().setContentHuggingPriority(priority, for: .vertical)
 		return self
 	}
 }

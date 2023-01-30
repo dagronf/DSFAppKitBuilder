@@ -86,3 +86,23 @@ public extension PathControl {
 		return self
 	}
 }
+
+// MARK: - SwiftUI preview
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+
+@available(macOS 10.15, *)
+struct PathPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.VStack {
+			VStack {
+				PathControl(url: FileManager.default.temporaryDirectory)
+					.horizontalCompressionResistancePriority(.defaultLow)
+			}
+			.SwiftUIPreview()
+			.padding()
+		}
+	}
+}
+#endif
