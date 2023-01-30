@@ -51,6 +51,17 @@ public class Switch: Control {
 		self.switchView.action = #selector(self.switchDidChange(_:))
 	}
 
+	/// Create a switch
+	/// - Parameter onOffBinder: A on-off valuebinder for the state of the switch
+	public init(
+		onOffBinder: ValueBinder<Bool>
+	) {
+		super.init()
+		self.switchView.target = self
+		self.switchView.action = #selector(self.switchDidChange(_:))
+		_ = self.bindOnOffState(onOffBinder)
+	}
+
 	// Private
 
 	let switchView = NSSwitch()
