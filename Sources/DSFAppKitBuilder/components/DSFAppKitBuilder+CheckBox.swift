@@ -54,3 +54,37 @@ public class CheckBox<CheckboxType: NSButton>: Button<CheckboxType> {
 		)
 	}
 }
+
+// MARK: - SwiftUI previews
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+import DSFValueBinders
+private let __state1 = ValueBinder<Bool>(true)
+@available(macOS 10.15, *)
+struct CheckboxPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.VStack {
+			VStack(alignment: .leading) {
+				HDivider()
+				CheckBox("off", allowMixedState: true)
+					.state(.off)
+				CheckBox("on", allowMixedState: true)
+					.state(.on)
+				CheckBox("mixed", allowMixedState: true)
+					.state(.mixed)
+				CheckBox("disabled")
+					.state(.on)
+					.isEnabled(false)
+
+				HDivider()
+
+				CheckBox("This is the first checkbox")
+					.bindOnOffState(__state1)
+			}
+			.SwiftUIPreview()
+			.padding()
+		}
+	}
+}
+#endif
