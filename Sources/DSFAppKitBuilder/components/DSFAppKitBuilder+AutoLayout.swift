@@ -108,6 +108,11 @@ public extension Element {
 		return self
 	}
 
+	@inlinable func horizontalHuggingPriority(_ priority: Float) -> Self {
+		self.view().setContentHuggingPriority(NSLayoutConstraint.Priority(priority), for: .horizontal)
+		return self
+	}
+
 	/// Sets the priority with which a view resists being made larger than its intrinsic size.
 	///
 	/// See: [documentation](https://developer.apple.com/documentation/appkit/nsview/1526937-setcontenthuggingpriority)

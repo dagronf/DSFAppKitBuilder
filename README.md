@@ -349,6 +349,7 @@ TextField()
 | `ProgressBar`      | An `NSProgressIndicator` wrapper |
 | `RadioGroup`       | A grouped stack of buttons configured as a radio group |
 | `ScrollView`       | An `NSScrollView` wrapper |
+| `SearchField`      | An `NSSearchField` wrapper |
 | `SecureTextField`  | An `NSSecureTextField` wrapper |
 | `Segmented`        | An `NSSegmentedControl` wrapper |
 | `Slider`           | An `NSSlider` wrapper |

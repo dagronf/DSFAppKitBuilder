@@ -47,6 +47,15 @@
         }
       },
       {
+        "package": "DSFSearchField",
+        "repositoryURL": "https://github.com/dagronf/DSFSearchField",
+        "state": {
+          "branch": null,
+          "revision": "d2dac5e143a8e5ce49f9f12412932684072089ba",
+          "version": "2.0.0"
+        }
+      },
+      {
         "package": "DSFStepperView",
         "repositoryURL": "https://github.com/dagronf/DSFStepperView",
         "state": {

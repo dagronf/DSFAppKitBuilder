@@ -32,6 +32,11 @@ class TertiaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 	let toggleColorEnabled = ValueBinder(Toggle.State.on)
 	let toggleColorEnabled2 = ValueBinder(Toggle.State.on)
 
+	let __searchText = ValueBinder("")
+	let __searchSubmittedText = ValueBinder("")
+	let __searchText2 = ValueBinder("")
+	let __searchSubmittedText2 = ValueBinder("")
+
 	override init() {
 		super.init()
 	}
@@ -101,6 +106,56 @@ class TertiaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					self?.dateSelectionMinMax.wrappedValue = Date()
 				}
 			}
+
+			HDivider()
+
+			///
+			HStack {
+				Box("Binding update for all changes") {
+					VStack(alignment: .leading) {
+						SearchField(searchTermBinder: __searchText, searchBinderUpdateType: .all)
+							.onSubmit { [weak self] newValue in
+								self?.__searchSubmittedText.wrappedValue = newValue
+							}
+						HStack {
+							Label("Search text:")
+							TextField()
+								.bindText(__searchText)
+						}
+						HStack {
+							Label("Last submit:")
+							Label()
+								.bindLabel(__searchSubmittedText)
+						}
+					}
+				}
+				.width(250)
+
+				VDivider()
+
+				Box("Binding update on submit only") {
+					VStack(alignment: .leading) {
+						SearchField(searchTermBinder: __searchText2, searchBinderUpdateType: .submitOnly)
+							.onSubmit { [weak self] newValue in
+								self?.__searchSubmittedText2.wrappedValue = newValue
+							}
+						HStack {
+							Label("Search text:")
+							TextField()
+								.bindText(__searchText2)
+						}
+						HStack {
+							Label("Last submit:")
+							Label()
+								.bindLabel(__searchSubmittedText2)
+						}
+					}
+				}
+				.width(250)
+			}
+
+			///
+
 			EmptyView()
 				.verticalPriorities(hugging: 10, compressionResistance: 10)
 		}

@@ -18,7 +18,8 @@ let package = Package(
 		.package(url: "https://github.com/dagronf/DSFValueBinders", from: "0.9.1"),
 		.package(url: "https://github.com/dagronf/DSFComboButton", from: "1.0.0"),
 		.package(url: "https://github.com/dagronf/DSFToggleButton", from: "7.0.0"),
-		.package(url: "https://github.com/dagronf/DSFStepperView", from: "4.0.0")
+		.package(url: "https://github.com/dagronf/DSFStepperView", from: "4.0.0"),
+		.package(url: "https://github.com/dagronf/DSFSearchField", from: "2.0.0")
 	],
 	targets: [
 		.target(
@@ -29,7 +30,8 @@ let package = Package(
 				"DSFValueBinders",
 				"DSFComboButton",
 				"DSFToggleButton",
-				"DSFStepperView"
+				"DSFStepperView",
+				"DSFSearchField"
 			]
 		),
 		.testTarget(
