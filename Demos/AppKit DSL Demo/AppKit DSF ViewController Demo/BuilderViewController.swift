@@ -71,7 +71,11 @@ class BuilderViewController: DSFAppKitBuilderViewController {
 				}
 				.bindIsEnabled(hasUpdates)
 				.additionalAppKitControlSettings { (button: NSButton) in
-					button.hasDestructiveAction = true
+					if #available(macOS 11.0, *) {
+						button.hasDestructiveAction = true
+					} else {
+						// Fallback on earlier versions
+					}
 					button.bezelColor = .red
 				}
 
