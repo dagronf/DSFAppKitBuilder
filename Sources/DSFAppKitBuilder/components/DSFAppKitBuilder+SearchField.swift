@@ -24,6 +24,8 @@
 //  SOFTWARE.
 //
 
+import Foundation
+import AppKit
 import DSFSearchField
 import DSFValueBinders
 
