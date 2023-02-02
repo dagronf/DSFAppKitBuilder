@@ -37,6 +37,11 @@
 		232EC66326B223C40042C7F7 /* SplitDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232EC66226B223C40042C7F7 /* SplitDSL.swift */; };
 		234AEF332974E58B00758E6A /* TertiaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AEF322974E58A00758E6A /* TertiaryDSL.swift */; };
 		2351367C26B3DAAE0026EAA1 /* BoxDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */; };
+		235CBB16298B451B00D3D4DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB15298B451B00D3D4DE /* AppDelegate.swift */; };
+		235CBB18298B451B00D3D4DE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB17298B451B00D3D4DE /* ViewController.swift */; };
+		235CBB1A298B451C00D3D4DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 235CBB19298B451C00D3D4DE /* Assets.xcassets */; };
+		235CBB1D298B451C00D3D4DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 235CBB1B298B451C00D3D4DE /* Main.storyboard */; };
+		235CBB23298B456000D3D4DE /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 235CBB22298B456000D3D4DE /* DSFAppKitBuilder */; };
 		236BA6722977769900FB72C4 /* IdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236BA6712977769900FB72C4 /* IdentityViewController.swift */; };
 		237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */; };
 		237E74C3282C5B7E0069846A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E74C2282C5B7E0069846A /* AppDelegate.swift */; };
@@ -99,6 +104,12 @@
 		23350DB226CDF4DA00A5CA09 /* AppKit-DSL-Demo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "AppKit-DSL-Demo-Info.plist"; sourceTree = SOURCE_ROOT; };
 		234AEF322974E58A00758E6A /* TertiaryDSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TertiaryDSL.swift; sourceTree = "<group>"; };
 		2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxDSL.swift; sourceTree = "<group>"; };
+		235CBB13298B451B00D3D4DE /* DiscolsureView Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DiscolsureView Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		235CBB15298B451B00D3D4DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		235CBB17298B451B00D3D4DE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		235CBB19298B451C00D3D4DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		235CBB1C298B451C00D3D4DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		235CBB1E298B451C00D3D4DE /* DiscolsureView_Test.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DiscolsureView_Test.entitlements; sourceTree = "<group>"; };
 		236BA6712977769900FB72C4 /* IdentityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityViewController.swift; sourceTree = "<group>"; };
 		237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollerTestDSL.swift; sourceTree = "<group>"; };
 		237E74C0282C5B7E0069846A /* AppKit DSF ViewController Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AppKit DSF ViewController Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +137,14 @@
 			files = (
 				23FEE85A29790DD900E4497D /* DSFToolbar in Frameworks */,
 				2314B32B26AFB816003BAA0C /* DSFAppKitBuilder in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235CBB10298B451B00D3D4DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				235CBB23298B456000D3D4DE /* DSFAppKitBuilder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +176,7 @@
 				2304027726AF7E5F002016FD /* AppKit DSL Demo */,
 				237E74C1282C5B7E0069846A /* AppKit DSF ViewController Demo */,
 				23F884832977451600ADC53D /* DSFAppKitBuilderView Demo */,
+				235CBB14298B451B00D3D4DE /* DiscolsureView Test */,
 				2304027626AF7E5F002016FD /* Products */,
 				2304028726AF7E70002016FD /* Frameworks */,
 			);
@@ -168,6 +188,7 @@
 				2304027526AF7E5F002016FD /* AppKit DSL Demo.app */,
 				237E74C0282C5B7E0069846A /* AppKit DSF ViewController Demo.app */,
 				23F884822977451600ADC53D /* DSFAppKitBuilderView Demo.app */,
+				235CBB13298B451B00D3D4DE /* DiscolsureView Test.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -209,6 +230,18 @@
 				23EBC53526DDA0CC001A861E /* GridDSL.swift */,
 			);
 			path = views;
+			sourceTree = "<group>";
+		};
+		235CBB14298B451B00D3D4DE /* DiscolsureView Test */ = {
+			isa = PBXGroup;
+			children = (
+				235CBB15298B451B00D3D4DE /* AppDelegate.swift */,
+				235CBB17298B451B00D3D4DE /* ViewController.swift */,
+				235CBB19298B451C00D3D4DE /* Assets.xcassets */,
+				235CBB1B298B451C00D3D4DE /* Main.storyboard */,
+				235CBB1E298B451C00D3D4DE /* DiscolsureView_Test.entitlements */,
+			);
+			path = "DiscolsureView Test";
 			sourceTree = "<group>";
 		};
 		237E74C1282C5B7E0069846A /* AppKit DSF ViewController Demo */ = {
@@ -260,6 +293,26 @@
 			);
 			productName = "AppKit DSL Demo";
 			productReference = 2304027526AF7E5F002016FD /* AppKit DSL Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		235CBB12298B451B00D3D4DE /* DiscolsureView Test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 235CBB21298B451C00D3D4DE /* Build configuration list for PBXNativeTarget "DiscolsureView Test" */;
+			buildPhases = (
+				235CBB0F298B451B00D3D4DE /* Sources */,
+				235CBB10298B451B00D3D4DE /* Frameworks */,
+				235CBB11298B451B00D3D4DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DiscolsureView Test";
+			packageProductDependencies = (
+				235CBB22298B456000D3D4DE /* DSFAppKitBuilder */,
+			);
+			productName = "DiscolsureView Test";
+			productReference = 235CBB13298B451B00D3D4DE /* DiscolsureView Test.app */;
 			productType = "com.apple.product-type.application";
 		};
 		237E74BF282C5B7E0069846A /* AppKit DSF ViewController Demo */ = {
@@ -317,6 +370,9 @@
 					2304027426AF7E5F002016FD = {
 						CreatedOnToolsVersion = 13.0;
 					};
+					235CBB12298B451B00D3D4DE = {
+						CreatedOnToolsVersion = 14.2;
+					};
 					237E74BF282C5B7E0069846A = {
 						CreatedOnToolsVersion = 13.3.1;
 					};
@@ -349,6 +405,7 @@
 				237E74BF282C5B7E0069846A /* AppKit DSF ViewController Demo */,
 				23F884812977451600ADC53D /* DSFAppKitBuilderView Demo */,
 				23D7C020297785FF0018CDF2 /* Build All Demos */,
+				235CBB12298B451B00D3D4DE /* DiscolsureView Test */,
 			);
 		};
 /* End PBXProject section */
@@ -360,6 +417,15 @@
 			files = (
 				2304027D26AF7E60002016FD /* Assets.xcassets in Resources */,
 				2304028026AF7E60002016FD /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235CBB11298B451B00D3D4DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				235CBB1A298B451C00D3D4DE /* Assets.xcassets in Resources */,
+				235CBB1D298B451C00D3D4DE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +468,15 @@
 				237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */,
 				2324632626C11A2800FF3158 /* ZStackDSL.swift in Sources */,
 				234AEF332974E58B00758E6A /* TertiaryDSL.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		235CBB0F298B451B00D3D4DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				235CBB18298B451B00D3D4DE /* ViewController.swift in Sources */,
+				235CBB16298B451B00D3D4DE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +526,14 @@
 			isa = PBXVariantGroup;
 			children = (
 				2304027F26AF7E60002016FD /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		235CBB1B298B451C00D3D4DE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				235CBB1C298B451C00D3D4DE /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -647,6 +730,64 @@
 			};
 			name = Release;
 		};
+		235CBB1F298B451C00D3D4DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "DiscolsureView Test/DiscolsureView_Test.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.DiscolsureView-Test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		235CBB20298B451C00D3D4DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = "DiscolsureView Test/DiscolsureView_Test.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3L6RK3LGGW;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.DiscolsureView-Test";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		237E74CC282C5B7F0069846A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -802,6 +943,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		235CBB21298B451C00D3D4DE /* Build configuration list for PBXNativeTarget "DiscolsureView Test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				235CBB1F298B451C00D3D4DE /* Debug */,
+				235CBB20298B451C00D3D4DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		237E74CE282C5B7F0069846A /* Build configuration list for PBXNativeTarget "AppKit DSF ViewController Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -852,6 +1002,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		2314B32A26AFB816003BAA0C /* DSFAppKitBuilder */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DSFAppKitBuilder;
+		};
+		235CBB22298B456000D3D4DE /* DSFAppKitBuilder */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DSFAppKitBuilder;
 		};

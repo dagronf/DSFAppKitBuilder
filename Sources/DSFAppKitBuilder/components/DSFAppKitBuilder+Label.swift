@@ -87,6 +87,12 @@ public class Label: Control {
 		self.attributedLabelBinder?.deregister(self)
 		self.doubleBinder?.deregister(self)
 		self.textColorBinder?.deregister(self)
+
+		if let c = self.clickDetector {
+			self.label.removeGestureRecognizer(c)
+			self.clickDetector = nil
+		}
+		self.onLabelClickBlock = nil
 	}
 
 	// Privates
@@ -100,6 +106,10 @@ public class Label: Control {
 
 	private var textColorBinder: ValueBinder<NSColor>?
 	private lazy var textColorAnimator = NSColor.Animator()
+
+	// Click detection for non-editable Labels
+	private var clickDetector: NSClickGestureRecognizer?
+	private var onLabelClickBlock: (() -> Void)?
 }
 
 // MARK: - Modifiers
@@ -178,6 +188,30 @@ public extension Label {
 	}
 }
 
+// MARK: - Actions
+
+public extension Label {
+	/// A block to be called when the label is clicked.
+	///
+	/// Asserts if the Label is editable (ie. its actually a TextField()) 
+	func onLabelClicked(_ block: @escaping () -> Void) -> Self {
+		guard self.label.isEditable == false else {
+			assert(false, "DSFAppKitBuilder.Label: onLabelClicked() cannot be applied to an editable text field, ignoring...")
+			return self
+		}
+
+		let clickDetector = NSClickGestureRecognizer(target: self, action: #selector(clicked(_:)))
+		self.clickDetector = clickDetector
+		self.label.addGestureRecognizer(clickDetector)
+		self.onLabelClickBlock = block
+		return self
+	}
+
+	@objc func clicked(_ sender: Any) {
+		self.onLabelClickBlock?()
+	}
+}
+
 // MARK: - Bindings
 
 public extension Label {
@@ -235,5 +269,52 @@ public extension Label {
 			}
 		}
 		return self
+	}
+}
+
+
+
+final class TrackingArea {
+	private weak var view: NSView?
+	private let rect: CGRect
+	private let options: NSTrackingArea.Options
+	private var trackingArea: NSTrackingArea?
+
+	/**
+	- Parameters:
+		- view: The view to add tracking to.
+		- rect: The area inside the view to track. Defaults to the whole view (`view.bounds`).
+	*/
+	init(
+		for view: NSView,
+		rect: CGRect? = nil,
+		options: NSTrackingArea.Options = []
+	) {
+		self.view = view
+		self.rect = rect ?? view.bounds
+		self.options = options
+	}
+
+	/**
+	Updates the tracking area.
+	- Note: This should be called in your `NSView#updateTrackingAreas()` method.
+	*/
+	func update() {
+		if let trackingArea {
+			view?.removeTrackingArea(trackingArea)
+		}
+
+		let newTrackingArea = NSTrackingArea(
+			rect: rect,
+			options: [
+				.mouseEnteredAndExited,
+				.activeInActiveApp
+			],
+			owner: view,
+			userInfo: nil
+		)
+
+		view?.addTrackingArea(newTrackingArea)
+		trackingArea = newTrackingArea
 	}
 }
