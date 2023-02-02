@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder+Nothing.swift
+//  DSFAppKitBuilder+Maybe.swift
 //
 //  Copyright © 2023 Darren Ford. All rights reserved.
 //
@@ -27,27 +27,26 @@
 import Foundation
 import AppKit
 
-/// An element which is nothing.
-public class Nothing: Element {
-	public override func view() -> NSView { NothingView() }
-}
+/// A Maybe element which optionally adds an element to the build
+///
+/// Mostly useful for HStack/VStack builds
+public class Maybe: Element {
 
-internal class NothingView: NSView {
-	override var intrinsicContentSize: NSSize { .zero }
-	init() {
-		super.init(frame: .zero)
-
-		self.translatesAutoresizingMaskIntoConstraints = false
-		let vconstraint = self.widthAnchor.constraint(equalToConstant: 0)
-		vconstraint.priority = NSLayoutConstraint.Priority(999)
-		let hconstraint = self.heightAnchor.constraint(equalToConstant: 0)
-		hconstraint.priority = NSLayoutConstraint.Priority(999)
-
-		self.addConstraint(vconstraint)
-		self.addConstraint(hconstraint)
+	/// An element IF a condition block returns as true
+	public init(_ condition: @autoclosure () -> Bool, element: Element) {
+		if condition() {
+			self.underlyingView = element.view()
+		}
+		else {
+			self.underlyingView = NothingView()
+		}
 	}
 
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+	/// If the element is non-nil, adds the element to the build, otherwise it is ignored
+	public init(_ element: Element?) {
+		self.underlyingView = element?.view() ?? NothingView()
 	}
+
+	public override func view() -> NSView { self.underlyingView }
+	private let underlyingView: NSView
 }
