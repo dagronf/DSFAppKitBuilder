@@ -46,7 +46,10 @@ public class Stack: Element {
 		}
 
 		content.forEach {
-			stack.addArrangedSubview($0.view())
+			let v = $0.view()
+			if !(v is NothingView) {
+				stack.addArrangedSubview(v)
+			}
 		}
 
 		self.stack.needsLayout = true

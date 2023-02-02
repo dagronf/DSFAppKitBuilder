@@ -45,13 +45,79 @@ class ViewController: DSFAppKitBuilderViewController {
 			}
 			ScrollView(borderType: .bezelBorder, fitHorizontally: true) {
 				DisclosureGroup {
-					DisclosureView(title: "Formatting", isExpandedBinder: firstVisible) {
-						Label("First one!")
-							.horizontalHuggingPriority(.init(10))
+					DisclosureView(title: "Spacing", isExpandedBinder: firstVisible, header: {
+						Button(title: "Reset").controlSize(.small)
+					}) {
+						VStack {
+							HStack {
+								PopupButton {
+									MenuItem("Lines")
+									MenuItem("At Least")
+									MenuItem("Exactly")
+									MenuItem("Between")
+								}
+								EmptyView()
+								TextField("one")
+									.isEnabled(false)
+									.bindValue(firstSize, formatter: firstSizeFormatter)
+									.width(60)
+								Stepper(range: 0.1 ... 10.0, increment: 0.1)
+									.valueWraps(false)
+									.bindValue(firstSize)
+							}
+							HStack {
+								Label("Before Paragraph")
+								EmptyView()
+								TextField("one")
+									.width(60)
+								Stepper()
+							}
+							HStack {
+								Label("After Paragraph")
+								EmptyView()
+								TextField("one")
+									.width(60)
+								Stepper()
+									.horizontalHuggingPriority(999)
+							}
+						}
+//						Grid {
+//							GridRow(rowAlignment: .firstBaseline) {
+//								PopupButton {
+//									MenuItem("Lines")
+//									MenuItem("At Least")
+//									MenuItem("Exactly")
+//									MenuItem("Between")
+//								}
+//								TextField("one")
+//									.isEnabled(false)
+//									.bindValue(firstSize, formatter: firstSizeFormatter)
+//									.width(60)
+//								Stepper(range: 0.1 ... 10.0, increment: 0.1)
+//									.valueWraps(false)
+//									.bindValue(firstSize)
+//							}
+//							GridRow(rowAlignment: .firstBaseline) {
+//								Label("Before Paragraph")
+//									.horizontalHuggingPriority(.defaultLow)
+//								TextField("one")
+//									.width(60)
+//								Stepper()
+//							}
+//							GridRow(rowAlignment: .firstBaseline) {
+//								Label("After Paragraph")
+//									.horizontalHuggingPriority(.defaultLow)
+//								TextField("one")
+//									.width(60)
+//								Stepper()
+//									.horizontalHuggingPriority(999)
+//							}
+//						}
+//						.columnFormatting(xPlacement: .trailing, atColumn: 1)
 					}
 					.disclosureTooltip("Formatting disclosure view")
-					
-					DisclosureView(title: "Spacing", initiallyExpanded: true) {
+
+					DisclosureView(title: "Bullets & Lists", initiallyExpanded: true) {
 						VStack {
 							HStack {
 								Label("Slidey!")
