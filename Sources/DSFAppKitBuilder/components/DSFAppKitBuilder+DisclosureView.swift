@@ -29,17 +29,23 @@ import AppKit
 import DSFValueBinders
 
 public class DisclosureView: Element {
-
+	/// Create a disclosure view
+	/// - Parameters:
+	///   - title: The title
+	///   - titleFont: The font to use for the title
+	///   - initialExpansionState: The initial state for the disclosure
+	///   - isExpandedBinder: A ValueBinder for hiding/expanding the disclosure view
+	///   - builder: The content to display in the disclosure view
 	public init(
 		title: String,
 		titleFont: AKBFont? = nil,
-		initialState: NSControl.StateValue = .on,
+		initiallyExpanded: Bool = true,
 		isExpandedBinder: ValueBinder<Bool>? = nil,
 		_ builder: () -> Element
 	) {
 		self.title = title
 		self.titleFont = titleFont ?? AKBFont.headline.weight(.bold)
-		self.initialState = initialState
+		self.initiallyExpanded = initiallyExpanded
 		self.childElements = builder()
 
 		super.init()
@@ -51,57 +57,36 @@ public class DisclosureView: Element {
 
 	private lazy var rootElement: Element = {
 		let disclosure: Element =
-		VStack(spacing: 8, alignment: .leading, distribution: .fill) {
-			HStack(spacing: 4, alignment: .lastBaseline)  {
-				Button(title: "", type: .onOff, bezelStyle: .disclosure)
-					.state(self.initialState)
-					.bindElement(self.disclosureButtonBinder)
-					.onChange { [weak self] newState in
-						self?.updateState(newState)
-					}
-				Label(self.title).font(self.titleFont)
-					.horizontalHuggingPriority(1)
-					.onLabelClicked { [weak self] in
-						self?.toggleState()
-					}
+			VStack(spacing: 8, alignment: .leading, distribution: .fill) {
+				HStack(spacing: 4, alignment: .lastBaseline)  {
+					Button(title: "", type: .onOff, bezelStyle: .disclosure)
+						.state(self.initiallyExpanded ? .on : .off)
+						.bindElement(self.disclosureButtonBinder)
+						.onChange { [weak self] newState in
+							self?.updateState(newState)
+						}
+					Label(self.title).font(self.titleFont)
+						.horizontalHuggingPriority(1)
+						.onLabelClicked { [weak self] in
+							self?.toggleState()
+						}
+				}
+				.hugging(h: 1)
+
+				self.childElements
 			}
-			.hugging(h: 1)
+			.detachesHiddenViews()
 
-			self.childElements
-		}
-		.detachesHiddenViews()
-
-		self.updateState(self.initialState)
+		self.updateState(self.initiallyExpanded ? .on : .off)
 
 		return disclosure
 	}()
-
-	private func toggleState() {
-		guard
-			let e = disclosureButtonBinder.element as? Button,
-			let b = e.view() as? NSButton
-		else {
-			fatalError()
-		}
-		b.performClick(self)
-	}
-
-	private func updateState(_ newState: NSControl.StateValue) {
-		assert(Thread.isMainThread)
-		if !isUpdatingState {
-			self.isUpdatingState = true
-			let isExpanded = (newState != .off)
-			self.childElements.view().isHidden = !isExpanded
-			self.isExpandedBinder?.wrappedValue = isExpanded
-			self.isUpdatingState = false
-		}
-	}
 
 	override public func view() -> NSView { return self.rootElement.view() }
 
 	private let title: String
 	private let titleFont: AKBFont
-	private let initialState: NSControl.StateValue
+	private let initiallyExpanded: Bool
 	private var titleBinder: ValueBinder<String>?
 	private var isExpandedBinder: ValueBinder<Bool>?
 
@@ -109,6 +94,14 @@ public class DisclosureView: Element {
 	private var isUpdatingState: Bool = false
 
 	private let childElements: Element
+}
+
+public extension DisclosureView {
+	/// Set the tooltip to use for the disclosure button (the little '>' and '∨' button)
+	@discardableResult func disclosureTooltip(_ tooltip: String) -> Self {
+		self.underlyingAppKitButton().toolTip = tooltip
+		return self
+	}
 }
 
 // MARK: - Bindings
@@ -128,6 +121,35 @@ public extension DisclosureView {
 	}
 }
 
+// MARK: Private methods
+
+private extension DisclosureView {
+	private func underlyingAppKitButton() -> NSButton {
+		guard
+			let e = disclosureButtonBinder.element as? Button,
+			let b = e.view() as? NSButton
+		else {
+			fatalError("INTERNAL ERROR: Underlying disclosure button type is not button!")
+		}
+		return b
+	}
+
+	private func toggleState() {
+		self.underlyingAppKitButton().performClick(self)
+	}
+
+	private func updateState(_ newState: NSControl.StateValue) {
+		assert(Thread.isMainThread)
+		if !isUpdatingState {
+			self.isUpdatingState = true
+			let isExpanded = (newState != .off)
+			self.childElements.view().isHidden = !isExpanded
+			self.isExpandedBinder?.wrappedValue = isExpanded
+			self.isUpdatingState = false
+		}
+	}
+}
+
 // MARK: - SwiftUI previews
 
 #if DEBUG && canImport(SwiftUI)
@@ -135,33 +157,46 @@ import SwiftUI
 @available(macOS 10.15, *)
 struct DisclosureViewPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
-		SwiftUI.VStack {
-			VStack {
-				DisclosureView(title: "Format") {
-					HStack {
-						Label("Format style!")
-							.horizontalHuggingPriority(.init(10))
-						Toggle()
+		SwiftUI.Group {
+			SplitView {
+				SplitViewItem {
+					VStack {
+						Label("title")
+						EmptyView()
 					}
 				}
-				.border(width: 1, color: NSColor.green)
+				SplitViewItem {
+					VStack {
+						DisclosureView(title: "Format") {
+							HStack {
+								Label("Format style!")
+									.horizontalHuggingPriority(.init(10))
+								Toggle()
+							}
+						}
+						.border(width: 1, color: NSColor.green)
+						.backgroundColor(NSColor.green.withAlphaComponent(0.2))
 
-				HDivider()
+						HDivider()
 
-				DisclosureView(title: "Style") {
-					HStack {
-						Label("Style style!")
-							.horizontalHuggingPriority(.init(10))
-						Toggle()
+						DisclosureView(title: "Style") {
+							HStack {
+								Label("Style style!")
+									.horizontalHuggingPriority(.init(10))
+								Toggle()
+							}
+						}
+						.border(width: 1, color: NSColor.red)
+						.backgroundColor(NSColor.red.withAlphaComponent(0.2))
+
+						HDivider()
+						EmptyView()
 					}
+					.edgeInsets(12)
 				}
-				.border(width: 1, color: NSColor.green)
-
-				HDivider()
-				EmptyView()
 			}
+
 			.SwiftUIPreview()
-			.padding()
 		}
 	}
 }

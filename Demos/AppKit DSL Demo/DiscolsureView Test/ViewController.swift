@@ -39,28 +39,35 @@ class ViewController: DSFAppKitBuilderViewController {
 	}
 
 	override var viewBody: Element {
-		ScrollView(borderType: .bezelBorder, fitHorizontally: true) {
-			DisclosureGroup {
-				DisclosureView(title: "Formatting", initialState: .off) {
-					Label("First one!")
-						.horizontalHuggingPriority(.init(10))
-				}
-				DisclosureView(title: "Spacing", initialState: .on) {
-					VStack {
-						HStack {
-							Label("Slidey!")
-								.horizontalHuggingPriority(.init(10))
-							Slider(range: 0 ... 100, value: 65)
-						}
-						HStack {
-							Label("Activatey?")
-								.horizontalHuggingPriority(.init(10))
-							Toggle()
+		VStack {
+			Button(title: "Toggle first") { _ in
+				self.firstVisible.wrappedValue.toggle()
+			}
+			ScrollView(borderType: .bezelBorder, fitHorizontally: true) {
+				DisclosureGroup {
+					DisclosureView(title: "Formatting", isExpandedBinder: firstVisible) {
+						Label("First one!")
+							.horizontalHuggingPriority(.init(10))
+					}
+					.disclosureTooltip("Formatting disclosure view")
+					
+					DisclosureView(title: "Spacing", initiallyExpanded: true) {
+						VStack {
+							HStack {
+								Label("Slidey!")
+									.horizontalHuggingPriority(.init(10))
+								Slider(range: 0 ... 100, value: 65)
+							}
+							HStack {
+								Label("Activatey?")
+									.horizontalHuggingPriority(.init(10))
+								Toggle()
+							}
 						}
 					}
 				}
+				.padding(16)
 			}
-			.padding(16)
 		}
 		.padding(16)
 

@@ -76,11 +76,11 @@ struct DisclosureGroupPreviews: PreviewProvider {
 		SwiftUI.VStack {
 			ScrollView(fitHorizontally: true) {
 				DisclosureGroup {
-					DisclosureView(title: "Formatting", initialState: .off) {
+					DisclosureView(title: "Formatting", initiallyExpanded: false) {
 						Label("First one!")
 							.horizontalHuggingPriority(.init(10))
 					}
-					DisclosureView(title: "Spacing", initialState: .on) {
+					DisclosureView(title: "Spacing", initiallyExpanded: true) {
 						VStack {
 							HStack {
 								Label("Slidey!")
