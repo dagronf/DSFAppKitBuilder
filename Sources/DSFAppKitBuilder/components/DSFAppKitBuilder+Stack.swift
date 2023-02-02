@@ -72,6 +72,12 @@ public class Stack: Element {
 // MARK: - Modifiers
 
 public extension Stack {
+	/// Indicate that the stack view removes hidden views from its view hierarchy.
+	func detachesHiddenViews(_ detaches: Bool = true) -> Self {
+		self.stack.detachesHiddenViews = detaches
+		return self
+	}
+
 	/// The minimum spacing, in points, between adjacent views in the stack view.
 	func spacing(_ spacing: CGFloat) -> Self {
 		self.stack.spacing = spacing

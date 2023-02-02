@@ -210,7 +210,7 @@ public extension Button {
 
 public extension Button {
 	/// Bind the title
-	func bindTitle(_ titleBinder: ValueBinder<String>) -> Self {
+	@discardableResult func bindTitle(_ titleBinder: ValueBinder<String>) -> Self {
 		self.titleBinder = titleBinder
 		titleBinder.register { [weak self] newValue in
 			self?.button.title = newValue
@@ -219,7 +219,7 @@ public extension Button {
 	}
 
 	/// Bind the alternatetitle
-	func bindAlternateTitle(_ alternateTitleBinder: ValueBinder<String>) -> Self {
+	@discardableResult func bindAlternateTitle(_ alternateTitleBinder: ValueBinder<String>) -> Self {
 		self.alternateTitleBinder = alternateTitleBinder
 		alternateTitleBinder.register { [weak self] newValue in
 			self?.button.alternateTitle = newValue
@@ -228,7 +228,7 @@ public extension Button {
 	}
 
 	/// Bind the state
-	func bindState(_ stateBinder: ValueBinder<NSControl.StateValue>) -> Self {
+	@discardableResult func bindState(_ stateBinder: ValueBinder<NSControl.StateValue>) -> Self {
 		self.stateBinder = stateBinder
 		stateBinder.register { [weak self] newValue in
 			self?.button.state = newValue
@@ -237,7 +237,7 @@ public extension Button {
 	}
 
 	/// Bind on/off state
-	func bindOnOffState(_ onOffBinder: ValueBinder<Bool>) -> Self {
+	@discardableResult func bindOnOffState(_ onOffBinder: ValueBinder<Bool>) -> Self {
 		self.onOffBinder = onOffBinder
 		onOffBinder.register { [weak self] newValue in
 			self?.button.state = newValue ? .on : .off

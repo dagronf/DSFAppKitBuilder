@@ -36,14 +36,13 @@ import DSFValueBinders
 ///    .bindValue(self.stepperValue)
 /// ```
 public class Stepper: Control {
-
 	/// Create a stepper element
 	/// - Parameters:
 	///   - range: The range of values
 	///   - increment: The amount by which the receiver changes with each increment or decrement.
 	///   - value: The initial value for the stepper
 	public init(
-		range: ClosedRange<Double> = 0...100,
+		range: ClosedRange<Double> = 0 ... 100,
 		increment: Double = 1,
 		value: Double = 20
 	) {
@@ -64,9 +63,9 @@ public class Stepper: Control {
 
 	// Private
 	private let stepper = NSStepper()
-	public override func view() -> NSView { return self.stepper }
+	override public func view() -> NSView { return self.stepper }
 	private var valueBinder: ValueBinder<Double>?
-	private var actionCallback: ((Double) -> Void)? = nil
+	private var actionCallback: ((Double) -> Void)?
 }
 
 // MARK: - Actions
@@ -89,10 +88,19 @@ public extension Stepper {
 	}
 }
 
+// MARK: - Modifiers
+
+public extension Stepper {
+	/// whether the stepper wraps around the minimum and maximum values.
+	func valueWraps(_ wraps: Bool) -> Self {
+		self.stepper.valueWraps = wraps
+		return self
+	}
+}
+
 // MARK: - Bindings
 
 public extension Stepper {
-
 	/// Bind the stepper value
 	func bindValue(_ value: ValueBinder<Double>) -> Self {
 		self.valueBinder = value
