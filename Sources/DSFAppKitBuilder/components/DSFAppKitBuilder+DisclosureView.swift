@@ -39,6 +39,7 @@ public class DisclosureView: Element {
 	convenience public init(
 		title: String,
 		titleFont: AKBFont? = nil,
+		headerHeight: Double? = nil,
 		initiallyExpanded: Bool = true,
 		header: (() -> Element)? = nil,
 		_ builder: () -> Element
@@ -46,6 +47,7 @@ public class DisclosureView: Element {
 		self.init(
 			title: title,
 			titleFont: titleFont,
+			headerHeight: headerHeight,
 			initiallyExpanded: initiallyExpanded,
 			isExpandedBinder: nil,
 			header: header,
@@ -63,6 +65,7 @@ public class DisclosureView: Element {
 	convenience public init(
 		title: String,
 		titleFont: AKBFont? = nil,
+		headerHeight: Double? = nil,
 		isExpandedBinder: ValueBinder<Bool>,
 		header: (() -> Element)? = nil,
 		_ builder: () -> Element
@@ -70,6 +73,7 @@ public class DisclosureView: Element {
 		self.init(
 			title: title,
 			titleFont: titleFont,
+			headerHeight: headerHeight,
 			initiallyExpanded: false,
 			isExpandedBinder: isExpandedBinder,
 			header: header,
@@ -88,6 +92,7 @@ public class DisclosureView: Element {
 	internal init(
 		title: String,
 		titleFont: AKBFont? = nil,
+		headerHeight: Double? = nil,
 		initiallyExpanded: Bool = true,
 		isExpandedBinder: ValueBinder<Bool>? = nil,
 		header: (() -> Element)? = nil,
@@ -96,9 +101,9 @@ public class DisclosureView: Element {
 		self.title = title
 		self.titleFont = titleFont ?? AKBFont.headline.weight(.bold)
 		self.initiallyExpanded = initiallyExpanded
-		self.childElements = builder()
+		self.childElement = builder()
 		self.headerElement = header?()
-
+		self.headerHeight = headerHeight
 		super.init()
 
 		if let isExpandedBinder = isExpandedBinder {
@@ -107,9 +112,12 @@ public class DisclosureView: Element {
 	}
 
 	private lazy var rootElement: Element = {
+
+		var hstackBinder: NSStackView?
+
 		let disclosure: Element =
 			VStack(spacing: 8, alignment: .leading, distribution: .fill) {
-				HStack(spacing: 4, alignment: .lastBaseline)  {
+				HStack(spacing: 4, alignment: .centerY)  {
 					Button(title: "", type: .onOff, bezelStyle: .disclosure)
 						.state(self.initiallyExpanded ? .on : .off)
 						.bindElement(self.disclosureButtonBinder)
@@ -117,17 +125,28 @@ public class DisclosureView: Element {
 							self?.updateState(newState)
 						}
 					Label(self.title).font(self.titleFont)
-						.horizontalHuggingPriority(1)
 						.onLabelClicked { [weak self] in
 							self?.toggleState()
 						}
+					EmptyView()
+						.horizontalHuggingPriority(10)
 					Maybe(self.headerElement)
 				}
-				.hugging(h: 1)
+				.edgeInsets(right: 4)
+				.hugging(h: 10)
+				.verticalCompressionResistancePriority(.defaultHigh)
+				.bindControl(to: &hstackBinder)
 
-				self.childElements
+				self.childElement
 			}
 			.detachesHiddenViews()
+
+		if let forcedHeight = self.headerHeight, let binder = hstackBinder {
+			let c = binder.heightAnchor.constraint(equalToConstant: forcedHeight)
+			c.priority = .defaultLow
+			c.isActive = true
+			//hstackBinder?.heightAnchor.constraint(equalToConstant: forcedHeight).isActive = true
+		}
 
 		self.updateState(self.initiallyExpanded ? .on : .off)
 
@@ -144,6 +163,7 @@ public class DisclosureView: Element {
 	private let title: String
 	private let titleFont: AKBFont
 	private let initiallyExpanded: Bool
+	private let headerHeight: Double?
 
 	private var isExpandedBinder: ValueBinder<Bool>?
 	private var isEnabledBinder: ValueBinder<Bool>?
@@ -151,7 +171,7 @@ public class DisclosureView: Element {
 	private let disclosureButtonBinder = ElementBinder()
 	private var isUpdatingState: Bool = false
 
-	private let childElements: Element
+	private let childElement: Element
 	private let headerElement: Element?
 }
 
@@ -211,7 +231,7 @@ private extension DisclosureView {
 		if !isUpdatingState {
 			self.isUpdatingState = true
 			let isExpanded = (newState != .off)
-			self.childElements.view().isHidden = !isExpanded
+			self.childElement.view().isHidden = !isExpanded
 			self.isExpandedBinder?.wrappedValue = isExpanded
 
 			// If a header element was specified, hide it if we are expanded
@@ -265,7 +285,7 @@ struct DisclosureViewPreviews: PreviewProvider {
 				}
 				SplitViewItem {
 					VStack {
-						DisclosureView(title: "Format") {
+						DisclosureView(title: "Format", headerHeight: 28) {
 							HStack {
 								Label("Format style!")
 									.horizontalHuggingPriority(.init(10))
@@ -277,7 +297,7 @@ struct DisclosureViewPreviews: PreviewProvider {
 
 						HDivider()
 
-						DisclosureView(title: "Style") {
+						DisclosureView(title: "Style", headerHeight: 28) {
 							HStack {
 								Label("Style style!")
 									.horizontalHuggingPriority(.init(10))
