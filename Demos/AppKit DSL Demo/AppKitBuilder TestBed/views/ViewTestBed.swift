@@ -16,9 +16,10 @@ protocol ViewTestBed {
 public class ViewItems {
 
 	let items: [ViewTestBed] = [
-		Disclosure(),
+		DisclosureViewBuilder(),
 		FontBuilder(),
-		DatePickerContainer(),
+		DatePickerBuilder(),
+		ButtonBuilder(),
 	].sorted { a, b in a.title < b.title }
 
 }

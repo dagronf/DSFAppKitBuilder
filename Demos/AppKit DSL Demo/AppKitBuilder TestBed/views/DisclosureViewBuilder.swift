@@ -1,5 +1,5 @@
 //
-//  Disclosure.swift
+//  DisclosureViewBuilder.swift
 //  AppKitBuilder TestBed
 //
 //  Created by Darren Ford on 2/2/2023.
@@ -11,9 +11,9 @@ import AppKit
 import DSFAppKitBuilder
 import DSFValueBinders
 
-public class Disclosure: ViewTestBed {
+public class DisclosureViewBuilder: ViewTestBed {
 
-	let __onOffBinder1 = ValueBinder(false)
+	let __onOffBinder1 = ValueBinder(true)
 	let __onOffBinder2 = ValueBinder(false)
 
 	let __headerFont = AKBFont.title3.bold()
@@ -64,6 +64,9 @@ public class Disclosure: ViewTestBed {
 			VStack(alignment: .leading) {
 				HStack {
 					Label("Basic control with header").font(__headerFont)
+						.horizontalCompressionResistancePriority(.defaultLow)
+						.truncatesLastVisibleLine(true)
+						.lineBreakMode(.byTruncatingHead)
 					EmptyView()
 					Label("first:")
 					Toggle()
@@ -78,7 +81,7 @@ public class Disclosure: ViewTestBed {
 					}
 
 				}
-				DisclosureView(title: "Format (default on)", headerHeight: 24, header: {
+				DisclosureView(title: "Format (default on)", headerHeight: 28, header: {
 					HStack {
 						Label("Spacing:")
 						TextField().width(60).controlSize(.small).roundedBezel()
@@ -92,6 +95,7 @@ public class Disclosure: ViewTestBed {
 				}
 				.bindIsExpanded(__onOffBinder1)
 				.backgroundColor(NSColor.systemPink.withAlphaComponent(0.2))
+				.cornerRadius(4)
 
 				DisclosureView(title: "Format (default off)", headerHeight: 28, initiallyExpanded: false, header: {
 					Button(title: "Reset", bezelStyle: .roundRect).controlSize(.small)
@@ -104,31 +108,29 @@ public class Disclosure: ViewTestBed {
 				}
 				.bindIsExpanded(__onOffBinder2)
 				.backgroundColor(NSColor.systemGreen.withAlphaComponent(0.2))
+				.cornerRadius(4)
 			}
 			.hugging(h: 10)
 			.padding(8)
 			.border(width: 1, color: NSColor.quaternaryLabelColor)
 			.cornerRadius(8)
 
-			HDivider()
-
 			EmptyView()
 		}
 	}
 }
 
-//// MARK: - SwiftUI previews
-//
-//#if DEBUG && canImport(SwiftUI)
-//import SwiftUI
-//
-//@available(macOS 10.15, *)
-//struct DisclosureViewPreviews: PreviewProvider {
-//	static var previews: some SwiftUI.View {
-//		SwiftUI.Group {
-//			Disclosure().build()
-//				.SwiftUIPreview()
-//		}
-//	}
-//}
-//#endif
+// MARK: - SwiftUI previews
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+@available(macOS 10.15, *)
+struct DisclosureViewPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			DisclosureViewBuilder().build()
+				.SwiftUIPreview()
+		}
+	}
+}
+#endif

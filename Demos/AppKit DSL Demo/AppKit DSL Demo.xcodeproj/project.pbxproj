@@ -46,10 +46,10 @@
 		235CBB2D298B99A400D3D4DE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB2C298B99A400D3D4DE /* ViewController.swift */; };
 		235CBB2F298B99A500D3D4DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 235CBB2E298B99A500D3D4DE /* Assets.xcassets */; };
 		235CBB32298B99A500D3D4DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 235CBB30298B99A500D3D4DE /* Main.storyboard */; };
-		235CBB38298B99C300D3D4DE /* DisclosureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB37298B99C300D3D4DE /* DisclosureView.swift */; };
+		235CBB38298B99C300D3D4DE /* DisclosureViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB37298B99C300D3D4DE /* DisclosureViewBuilder.swift */; };
 		235CBB3A298B99D800D3D4DE /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 235CBB39298B99D800D3D4DE /* DSFAppKitBuilder */; };
-		235CBB3D298BA2AD00D3D4DE /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB3C298BA2AD00D3D4DE /* Font.swift */; };
-		235CBB3F298C842300D3D4DE /* DatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB3E298C842300D3D4DE /* DatePicker.swift */; };
+		235CBB3D298BA2AD00D3D4DE /* FontBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB3C298BA2AD00D3D4DE /* FontBuilder.swift */; };
+		235CBB3F298C842300D3D4DE /* DatePickerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB3E298C842300D3D4DE /* DatePickerBuilder.swift */; };
 		235CBB41298C843500D3D4DE /* ViewTestBed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB40298C843500D3D4DE /* ViewTestBed.swift */; };
 		236BA6722977769900FB72C4 /* IdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236BA6712977769900FB72C4 /* IdentityViewController.swift */; };
 		237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */; };
@@ -60,6 +60,7 @@
 		237E74D0282C5BA30069846A /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 237E74CF282C5BA30069846A /* DSFAppKitBuilder */; };
 		237E74D2282C61710069846A /* BuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E74D1282C61710069846A /* BuilderViewController.swift */; };
 		237E74D7282C73040069846A /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 237E74D6282C73040069846A /* Defaults */; };
+		239A1FB2298CCB9400F5B5AD /* ButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */; };
 		23C6E90A26AF971600FBF106 /* PrimaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C6E90926AF971600FBF106 /* PrimaryDSL.swift */; };
 		23E66E68296F94110025AFB0 /* SwiftUIPreviewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66E67296F94110025AFB0 /* SwiftUIPreviewDemo.swift */; };
 		23EBC53626DDA0CC001A861E /* GridDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC53526DDA0CC001A861E /* GridDSL.swift */; };
@@ -125,9 +126,9 @@
 		235CBB2E298B99A500D3D4DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		235CBB31298B99A500D3D4DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		235CBB33298B99A500D3D4DE /* AppKitBuilder_TestBed.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AppKitBuilder_TestBed.entitlements; sourceTree = "<group>"; };
-		235CBB37298B99C300D3D4DE /* DisclosureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureView.swift; sourceTree = "<group>"; };
-		235CBB3C298BA2AD00D3D4DE /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
-		235CBB3E298C842300D3D4DE /* DatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePicker.swift; sourceTree = "<group>"; };
+		235CBB37298B99C300D3D4DE /* DisclosureViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclosureViewBuilder.swift; sourceTree = "<group>"; };
+		235CBB3C298BA2AD00D3D4DE /* FontBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontBuilder.swift; sourceTree = "<group>"; };
+		235CBB3E298C842300D3D4DE /* DatePickerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerBuilder.swift; sourceTree = "<group>"; };
 		235CBB40298C843500D3D4DE /* ViewTestBed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTestBed.swift; sourceTree = "<group>"; };
 		236BA6712977769900FB72C4 /* IdentityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityViewController.swift; sourceTree = "<group>"; };
 		237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollerTestDSL.swift; sourceTree = "<group>"; };
@@ -138,6 +139,7 @@
 		237E74C9282C5B7F0069846A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		237E74CB282C5B7F0069846A /* AppKit_DSF_ViewController_Demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AppKit_DSF_ViewController_Demo.entitlements; sourceTree = "<group>"; };
 		237E74D1282C61710069846A /* BuilderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuilderViewController.swift; sourceTree = "<group>"; };
+		239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonBuilder.swift; sourceTree = "<group>"; };
 		23C6E90926AF971600FBF106 /* PrimaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDSL.swift; sourceTree = "<group>"; };
 		23E66E67296F94110025AFB0 /* SwiftUIPreviewDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUIPreviewDemo.swift; sourceTree = "<group>"; };
 		23EBC53526DDA0CC001A861E /* GridDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridDSL.swift; sourceTree = "<group>"; };
@@ -289,10 +291,11 @@
 		235CBB3B298B99FB00D3D4DE /* views */ = {
 			isa = PBXGroup;
 			children = (
-				235CBB37298B99C300D3D4DE /* DisclosureView.swift */,
-				235CBB3C298BA2AD00D3D4DE /* Font.swift */,
-				235CBB3E298C842300D3D4DE /* DatePicker.swift */,
+				235CBB37298B99C300D3D4DE /* DisclosureViewBuilder.swift */,
+				235CBB3C298BA2AD00D3D4DE /* FontBuilder.swift */,
+				235CBB3E298C842300D3D4DE /* DatePickerBuilder.swift */,
 				235CBB40298C843500D3D4DE /* ViewTestBed.swift */,
+				239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -570,12 +573,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				239A1FB2298CCB9400F5B5AD /* ButtonBuilder.swift in Sources */,
 				235CBB41298C843500D3D4DE /* ViewTestBed.swift in Sources */,
-				235CBB3D298BA2AD00D3D4DE /* Font.swift in Sources */,
+				235CBB3D298BA2AD00D3D4DE /* FontBuilder.swift in Sources */,
 				235CBB2D298B99A400D3D4DE /* ViewController.swift in Sources */,
 				235CBB2B298B99A400D3D4DE /* AppDelegate.swift in Sources */,
-				235CBB38298B99C300D3D4DE /* DisclosureView.swift in Sources */,
-				235CBB3F298C842300D3D4DE /* DatePicker.swift in Sources */,
+				235CBB38298B99C300D3D4DE /* DisclosureViewBuilder.swift in Sources */,
+				235CBB3F298C842300D3D4DE /* DatePickerBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -915,7 +919,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.AppKitBuilder-TestBed";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -944,7 +948,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.AppKitBuilder-TestBed";
 				PRODUCT_NAME = "$(TARGET_NAME)";

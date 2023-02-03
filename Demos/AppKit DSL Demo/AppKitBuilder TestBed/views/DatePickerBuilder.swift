@@ -11,7 +11,7 @@ import AppKit
 import DSFAppKitBuilder
 import DSFValueBinders
 
-public class DatePickerContainer: ViewTestBed {
+public class DatePickerBuilder: ViewTestBed {
 
 	let __previewDate = ValueBinder(Date())
 
@@ -101,3 +101,20 @@ public class DatePickerContainer: ViewTestBed {
 		}
 	}
 }
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+@available(macOS 10.15, *)
+struct DatePickerPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			VStack(alignment: .leading) {
+				DatePickerBuilder().build()
+				EmptyView()
+			}
+			.SwiftUIPreview()
+		}
+		.padding()
+	}
+}
+#endif

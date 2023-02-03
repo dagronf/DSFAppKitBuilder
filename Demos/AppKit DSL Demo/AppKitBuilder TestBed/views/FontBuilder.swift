@@ -119,7 +119,22 @@ public class FontBuilder: ViewTestBed {
 				CheckBox("Checkbox!").font(.system.bold())
 			}
 		}
-
 	}
 }
 
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+@available(macOS 10.15, *)
+struct FontBuilderPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			VStack {
+				FontBuilder().build()
+				EmptyView()
+			}
+			.SwiftUIPreview()
+		}
+		.padding()
+	}
+}
+#endif
