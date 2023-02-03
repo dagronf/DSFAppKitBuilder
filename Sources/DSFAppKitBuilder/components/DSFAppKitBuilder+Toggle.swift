@@ -103,7 +103,7 @@ public class Toggle: Control {
 
 		self.stateBinder = state
 
-		state.register { [weak self] newState in
+		state.register(self) { [weak self] newState in
 			self?.toggleButton.state = (newState == .on) ? .on : .off
 		}
 
@@ -118,7 +118,12 @@ public class Toggle: Control {
 
 	deinit {
 		self.action = nil
+		self.customColor = nil
+		self.onOffBinder?.deregister(self)
+		self.onOffBinder = nil
+		self.stateBinder?.deregister(self)
 		self.stateBinder = nil
+		self.colorBinder?.deregister(self)
 		self.colorBinder = nil
 	}
 
@@ -127,6 +132,7 @@ public class Toggle: Control {
 
 	private var action: ToggleAction?
 	private var stateBinder: ValueBinder<State>?
+	private var onOffBinder: ValueBinder<Bool>?
 	private var colorBinder: ValueBinder<NSColor>?
 	private var customColor: NSColor?
 
@@ -148,6 +154,7 @@ public class Toggle: Control {
 
 		// Tell the binders to update
 		self.stateBinder?.wrappedValue = newState
+		self.onOffBinder?.wrappedValue = (newState == .on)
 	}
 
 	@objc public override func onControlSizeChange(_ controlSize: NSControl.ControlSize) {
@@ -182,8 +189,17 @@ public extension Toggle {
 	/// Bind the color of the toggle button to a color ValueBinder
 	func bindColor(_ color: ValueBinder<NSColor>) -> Self {
 		self.colorBinder = color
-		color.register { [weak self] newColor in
+		color.register(self) { [weak self] newColor in
 			self?.toggleButton.color = newColor
+		}
+		return self
+	}
+
+	/// Bind the on-off state for the toggle
+	func bindOnOff(_ state: ValueBinder<Bool>) -> Self {
+		self.onOffBinder = state
+		state.register(self) { [weak self] newState in
+			self?.toggleButton.state = newState ? .on : .off
 		}
 		return self
 	}
