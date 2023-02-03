@@ -186,6 +186,14 @@ public extension Label {
 		self.label.cell?.truncatesLastVisibleLine = truncates
 		return self
 	}
+
+	/// Set a rounded bezel for the text field
+	func roundedBezel() -> Self {
+		if let cell = self.label.cell as? NSTextFieldCell {
+			cell.bezelStyle = .roundedBezel
+		}
+		return self
+	}
 }
 
 // MARK: - Actions
