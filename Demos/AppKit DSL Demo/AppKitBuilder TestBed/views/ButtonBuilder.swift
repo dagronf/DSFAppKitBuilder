@@ -10,8 +10,9 @@ import AppKit
 import DSFAppKitBuilder
 
 public class ButtonBuilder: ViewTestBed {
-	var title: String { "Button" }
-	var description: String { "An Element that displays a button" }
+	var title: String { String.localized("Button") }
+	var type: String { "Button" }
+	var description: String { String.localized("An Element that displays a button") }
 	func build() -> ElementController {
 		ButtonBuilderController()
 	}

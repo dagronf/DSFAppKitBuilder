@@ -10,8 +10,9 @@ import AppKit
 import DSFAppKitBuilder
 
 public class FontBuilder: ViewTestBed {
-	var title: String { "Fonts" }
-	var description: String { "The built-in font styles" }
+	var title: String { String.localized("Font Styles") }
+	var type: String { "" }
+	var description: String { String.localized("The built-in font styles") }
 	func build() -> ElementController {
 		FontBuilderController()
 	}

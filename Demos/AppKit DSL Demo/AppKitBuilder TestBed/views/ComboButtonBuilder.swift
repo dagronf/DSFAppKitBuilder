@@ -12,8 +12,9 @@ import DSFValueBinders
 import DSFMenuBuilder
 
 public class ComboButtonBuilder: ViewTestBed {
-	var title: String { "Combo Button" }
-	var description: String { "The ComboButton element displays a combo button" }
+	var title: String { String.localized("Combo Button") }
+	var type: String { "ComboButton" }
+	var description: String { String.localized("The ComboButton element displays a combo button") }
 	func build() -> ElementController {
 		ComboButtonController()
 	}

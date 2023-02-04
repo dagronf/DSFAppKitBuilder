@@ -43,6 +43,7 @@
 		23513C6E298DE6DA00CDBE36 /* ToggleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */; };
 		23513C70298DE8AE00CDBE36 /* ColorWellBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */; };
 		23513C72298DEB8700CDBE36 /* PathBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C71298DEB8700CDBE36 /* PathBuilder.swift */; };
+		23513C78298E2B8800CDBE36 /* String+localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C77298E2B8800CDBE36 /* String+localized.swift */; };
 		235CBB16298B451B00D3D4DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB15298B451B00D3D4DE /* AppDelegate.swift */; };
 		235CBB18298B451B00D3D4DE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB17298B451B00D3D4DE /* ViewController.swift */; };
 		235CBB1A298B451C00D3D4DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 235CBB19298B451C00D3D4DE /* Assets.xcassets */; };
@@ -140,6 +141,7 @@
 		23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleBuilder.swift; sourceTree = "<group>"; };
 		23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorWellBuilder.swift; sourceTree = "<group>"; };
 		23513C71298DEB8700CDBE36 /* PathBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathBuilder.swift; sourceTree = "<group>"; };
+		23513C77298E2B8800CDBE36 /* String+localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+localized.swift"; sourceTree = "<group>"; };
 		235CBB13298B451B00D3D4DE /* DiscolsureView Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DiscolsureView Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		235CBB15298B451B00D3D4DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		235CBB17298B451B00D3D4DE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				235CBB2E298B99A500D3D4DE /* Assets.xcassets */,
 				235CBB30298B99A500D3D4DE /* Main.storyboard */,
 				235CBB33298B99A500D3D4DE /* AppKitBuilder_TestBed.entitlements */,
+				23513C77298E2B8800CDBE36 /* String+localized.swift */,
 			);
 			path = "AppKitBuilder TestBed";
 			sourceTree = "<group>";
@@ -319,17 +322,17 @@
 		235CBB3B298B99FB00D3D4DE /* views */ = {
 			isa = PBXGroup;
 			children = (
+				239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */,
+				23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */,
+				239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */,
+				235CBB3E298C842300D3D4DE /* DatePickerBuilder.swift */,
 				235CBB37298B99C300D3D4DE /* DisclosureViewBuilder.swift */,
 				235CBB3C298BA2AD00D3D4DE /* FontBuilder.swift */,
-				235CBB3E298C842300D3D4DE /* DatePickerBuilder.swift */,
-				235CBB40298C843500D3D4DE /* ViewTestBed.swift */,
-				239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */,
 				239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */,
-				239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */,
 				23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */,
-				23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */,
-				23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */,
 				23513C71298DEB8700CDBE36 /* PathBuilder.swift */,
+				23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */,
+				235CBB40298C843500D3D4DE /* ViewTestBed.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -615,6 +618,7 @@
 				23513C6C298DDF4D00CDBE36 /* OneOfBuilder.swift in Sources */,
 				235CBB41298C843500D3D4DE /* ViewTestBed.swift in Sources */,
 				235CBB3D298BA2AD00D3D4DE /* FontBuilder.swift in Sources */,
+				23513C78298E2B8800CDBE36 /* String+localized.swift in Sources */,
 				235CBB2D298B99A400D3D4DE /* ViewController.swift in Sources */,
 				235CBB2B298B99A400D3D4DE /* AppDelegate.swift in Sources */,
 				235CBB38298B99C300D3D4DE /* DisclosureViewBuilder.swift in Sources */,

@@ -13,18 +13,10 @@ import DSFAppKitBuilder
 import DSFMenuBuilder
 import DSFValueBinders
 
-
-func viewTestBedTitle(_ title: String, _ description: String) -> Element {
-	VStack(alignment: .leading) {
-		Label(title).font(.title1)
-		Label(description)
-			.applyStyle(Label.Styling.multiline)
-	}
-}
-
 public class ToggleBuilder: ViewTestBed {
-	var title: String { "Toggle" }
-	var description: String { "An Element that displays a toggle button" }
+	var title: String { String.localized("Toggle") }
+	var type: String { "Toggle" }
+	var description: String { String.localized("An Element that displays a toggle button") }
 	func build() -> ElementController {
 		ToggleBuilderController()
 	}

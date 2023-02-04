@@ -33,9 +33,9 @@ import AppKit
 public class Maybe: Element {
 
 	/// An element IF a condition block returns as true
-	public init(_ condition: @autoclosure () -> Bool, element: Element) {
+	public init(_ condition: @autoclosure () -> Bool, _ element: () -> Element) {
 		if condition() {
-			self.underlyingView = element.view()
+			self.underlyingView = element().view()
 		}
 		else {
 			self.underlyingView = NothingView()

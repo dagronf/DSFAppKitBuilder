@@ -14,8 +14,9 @@ import DSFMenuBuilder
 import DSFValueBinders
 
 public class PathBuilder: ViewTestBed {
-	var title: String { "Path" }
-	var description: String { "An Element that presents an NSPathControl" }
+	var title: String { String.localized("Path Control") }
+	var type: String { "PathControl" }
+	var description: String { String.localized("An Element that presents an NSPathControl") }
 	func build() -> ElementController {
 		PathBuilderController()
 	}

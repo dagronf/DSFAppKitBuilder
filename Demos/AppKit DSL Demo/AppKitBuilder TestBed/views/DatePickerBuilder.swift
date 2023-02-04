@@ -12,8 +12,9 @@ import DSFAppKitBuilder
 import DSFValueBinders
 
 public class DatePickerBuilder: ViewTestBed {
-	var title: String { "Date Picker" }
-	var description: String { "Displays a date picker with support for different styles, locales and timezones" }
+	var title: String { String.localized("Date Picker") }
+	var type: String { "DatePicker" }
+	var description: String { String.localized("Displays a date picker with support for different styles, locales and timezones") }
 	func build() -> ElementController {
 		DatePickerBuilderController()
 	}

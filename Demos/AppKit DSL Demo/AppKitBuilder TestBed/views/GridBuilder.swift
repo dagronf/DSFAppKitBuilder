@@ -13,8 +13,9 @@ import DSFMenuBuilder
 import DSFValueBinders
 
 public class GridBuilder: ViewTestBed {
-	var title: String { "Grid" }
-	var description: String { "A grid control" }
+	var title: String { String.localized("Grid") }
+	var type: String { "Grid" }
+	var description: String { String.localized("A grid control") }
 	func build() -> ElementController {
 		GridBuilderController()
 	}

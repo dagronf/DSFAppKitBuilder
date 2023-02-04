@@ -14,8 +14,9 @@ import DSFMenuBuilder
 import DSFValueBinders
 
 public class OneOfBuilder: ViewTestBed {
-	var title: String { "One Of" }
-	var description: String { "An Element that allows the user to display exactly one of the child elements at any time" }
+	var title: String { String.localized("One Of") }
+	var type: String { "OneOf" }
+	var description: String { String.localized("An Element that allows the user to display exactly one of the child elements at any time") }
 	func build() -> ElementController {
 		OneOfBuilderController()
 	}
