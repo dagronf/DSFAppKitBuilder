@@ -31,7 +31,10 @@ class FontBuilderController: ElementController {
 				Label("Plain text").font(.body.size(18))
 				Label("Plain text").font(.body.size(24))
 			}
+			.hugging(h: 10)
+
 			HDivider()
+
 			HStack {
 				Label("Plain text").font(.body)
 				VDivider()
@@ -45,11 +48,14 @@ class FontBuilderController: ElementController {
 				VDivider()
 				Label("Black Italic text").font(.body.weight(.black).italic())
 			}
+			.hugging(h: 10)
+
 			HStack {
 				Label("Monospaced").font(.monospaced)
 				VDivider()
 				Label("Monospaced Bold").font(.monospaced.bold())
 			}
+			.hugging(h: 10)
 
 			HStack {
 				Label("standard").font(.title2)
@@ -58,10 +64,13 @@ class FontBuilderController: ElementController {
 				VDivider()
 				Label("condensed").font(.title2.condensed())
 			}
+			.hugging(h: 10)
+
 			HDivider()
+
 			Grid {
 				GridRow(rowAlignment: .firstBaseline) {
-					Label("Style").font(.title3.bold()).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label("Style").font(.title3.bold()).applyStyle(Label.Styling.truncatingTail)
 					Label("Preview").font(.title3.bold()).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
 				}
 				GridRow(rowAlignment: .firstBaseline) {
@@ -117,7 +126,10 @@ class FontBuilderController: ElementController {
 					Label(_sampleText).font(.monospaced).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
 				}
 			}
+			.horizontalHuggingPriority(10)
+
 			HDivider()
+			
 			HStack {
 				Button(title: "Pressable!")
 				Button(title: "Pressable!").font(.system.bold())
@@ -126,6 +138,7 @@ class FontBuilderController: ElementController {
 				CheckBox("Checkbox!").font(.system.italic())
 				CheckBox("Checkbox!").font(.system.bold())
 			}
+			.hugging(h: 10)
 		}
 	}()
 }

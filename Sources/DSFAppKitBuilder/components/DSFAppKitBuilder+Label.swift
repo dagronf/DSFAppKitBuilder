@@ -348,6 +348,9 @@ public extension Label {
 public extension Label.Styling {
 	/// Apply multiline wrapping for the label
 	static let multiline = Multiline()
+	static let truncatingTail = TruncatingTail()
+	static let truncatingHead = TruncatingHead()
+	static let truncatingMiddle = TruncatingMiddle()
 
 	/// A multiline style for a label
 	struct Multiline: DSFAppKitBuilder.LabelStyle {
@@ -358,4 +361,44 @@ public extension Label.Styling {
 				.truncatesLastVisibleLine(true)
 		}
 	}
+
+	/// A single-line truncation style
+	struct Truncating: DSFAppKitBuilder.LabelStyle {
+		public init(_ lineBreakMode: NSLineBreakMode) {
+			self.lineBreakMode = lineBreakMode
+		}
+		@discardableResult public func apply(_ labelElement: Label) -> Label {
+			labelElement
+				.truncatesLastVisibleLine(true)
+				.lineBreakMode(self.lineBreakMode)
+				.allowsDefaultTighteningForTruncation(true)
+				.horizontalCompressionResistancePriority(.init(10))
+		}
+		private let lineBreakMode: NSLineBreakMode
+	}
+
+	/// A single-line tail truncation style
+	struct TruncatingTail: DSFAppKitBuilder.LabelStyle {
+		let truncator = Truncating(.byTruncatingTail)
+		@discardableResult public func apply(_ labelElement: Label) -> Label {
+			truncator.apply(labelElement)
+		}
+	}
+
+	/// A single-line head truncation style
+	struct TruncatingHead: DSFAppKitBuilder.LabelStyle {
+		let truncator = Truncating(.byTruncatingHead)
+		@discardableResult public func apply(_ labelElement: Label) -> Label {
+			truncator.apply(labelElement)
+		}
+	}
+
+	/// A single-line middle truncation style
+	struct TruncatingMiddle: DSFAppKitBuilder.LabelStyle {
+		let truncator = Truncating(.byTruncatingMiddle)
+		@discardableResult public func apply(_ labelElement: Label) -> Label {
+			truncator.apply(labelElement)
+		}
+	}
+
 }

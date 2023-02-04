@@ -66,12 +66,14 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 
 			contentView.element = ScrollView {
 				VStack(alignment: .leading) {
+
 					VStack(alignment: .leading) {
 						HStack {
-							Label(newItem.title).font(.title1.weight(.medium))
+							Label(newItem.title).font(.title1.weight(.medium)).applyStyle(Label.Styling.truncatingTail)
 							Maybe(!newItem.type.isEmpty) {
 								Label("(\(newItem.type))")
 									.font(.title1.weight(.medium).withSymbolicTraits(.monoSpace))
+									.applyStyle(Label.Styling.truncatingTail)
 							}
 						}
 						.hugging(h: 10)
@@ -80,7 +82,9 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 							.applyStyle(Label.Styling.multiline)
 					}
 					.hugging(h: 10)
+
 					HDivider()
+
 					newController.body
 				}
 				.padding(8)
