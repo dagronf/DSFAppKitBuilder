@@ -15,6 +15,7 @@ import DSFValueBinders
 
 public class PathBuilder: ViewTestBed {
 	var title: String { "Path" }
+	var description: String { "An Element that presents an NSPathControl" }
 	func build() -> ElementController {
 		PathBuilderController()
 	}
@@ -26,7 +27,6 @@ extension ValueBinder where ValueType == URL {
 			url.path
 		}
 	}
-
 }
 
 class PathBuilderController: ElementController {
@@ -42,6 +42,25 @@ class PathBuilderController: ElementController {
 	private lazy var urlPath: ValueBinder<URL> = {
 		ValueBinder(__getDocumentsDirectory())
 	}()
+
+	struct LabelStyling: DSFAppKitBuilder.LabelStyle {
+		@inlinable func apply(_ labelElement: DSFAppKitBuilder.Label) -> DSFAppKitBuilder.Label {
+			labelElement
+				.font(.subheadline).textColor(.secondaryLabelColor)
+				.truncatesLastVisibleLine(true)
+				.allowsDefaultTighteningForTruncation(true)
+				.lineBreakMode(.byTruncatingHead)
+				.horizontalCompressionResistancePriority(.defaultLow)
+		}
+	}
+
+	// Style structure
+	struct RowHeaderStyle: DSFAppKitBuilder.LabelStyle {
+		@inlinable func apply(_ labelElement: DSFAppKitBuilder.Label) -> DSFAppKitBuilder.Label {
+			labelElement
+				.font(.headline.weight(.heavy))
+		}
+	}
 
 	private func selectFile() {
 		let openPanel = NSOpenPanel()
@@ -60,36 +79,36 @@ class PathBuilderController: ElementController {
 
 	lazy var body: Element = {
 		VStack(alignment: .leading) {
-			Label("Path Element").font(.title1)
-			Label("An Element that presents an NSPathControl")
-				.horizontalCompressionResistancePriority(.defaultLow)
-				.wraps(true)
-			HDivider()
 			Grid {
 				GridRow(rowAlignment: .lastBaseline) {
-					Label("Home:").font(.headline)
+					Label("Home:")
+						.applyStyle(RowHeaderStyle())
 					PathControl(url: FileManager.default.homeDirectoryForCurrentUser)
 						.horizontalCompressionResistancePriority(.defaultLow)
 				}
 				GridRow(rowAlignment: .lastBaseline) {
-					Label("Documents:").font(.headline)
+					Label("Documents:")
+						.applyStyle(RowHeaderStyle())
 					PathControl(url: __getDocumentsDirectory())
 						.horizontalCompressionResistancePriority(.defaultLow)
 				}
 				GridRow(rowAlignment: .lastBaseline) {
-					Label("(disabled):").font(.headline)
+					Label("(disabled):")
+						.applyStyle(RowHeaderStyle())
 					PathControl(url: __getDocumentsDirectory())
 						.horizontalCompressionResistancePriority(.defaultLow)
 						.isEnabled(false)
 				}
 				GridRow(rowAlignment: .lastBaseline) {
-					Label("Temporary:").font(.headline)
+					Label("Temporary:")
+						.applyStyle(RowHeaderStyle())
 					PathControl(url: FileManager.default.temporaryDirectory)
 						.horizontalCompressionResistancePriority(.defaultLow)
 				}
 
 				GridRow(rowAlignment: .firstBaseline) {
-					Label("Choose:").font(.headline)
+					Label("Choose:")
+						.applyStyle(RowHeaderStyle())
 					VStack(alignment: .leading) {
 						HStack(spacing: 2) {
 							Button(title: "…", bezelStyle: .roundRect) { [weak self] _ in
@@ -107,12 +126,8 @@ class PathBuilderController: ElementController {
 							}
 							.controlSize(.small)
 							Label("")
-								.horizontalCompressionResistancePriority(.defaultLow)
-								.font(.subheadline).textColor(.secondaryLabelColor)
 								.bindLabel(urlPath.filePath())
-								.truncatesLastVisibleLine(true)
-								.allowsDefaultTighteningForTruncation(true)
-								.lineBreakMode(.byTruncatingHead)
+								.applyStyle(LabelStyling())
 						}
 					}
 				}

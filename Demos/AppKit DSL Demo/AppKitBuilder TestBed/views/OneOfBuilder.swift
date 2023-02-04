@@ -15,6 +15,7 @@ import DSFValueBinders
 
 public class OneOfBuilder: ViewTestBed {
 	var title: String { "One Of" }
+	var description: String { "An Element that allows the user to display exactly one of the child elements at any time" }
 	func build() -> ElementController {
 		OneOfBuilderController()
 	}
@@ -29,12 +30,6 @@ class OneOfBuilderController: ElementController {
 
 	lazy var body: Element = {
 		VStack(alignment: .leading) {
-			Label("OneOf element type").font(.title1)
-			Label("An Element that allows the user to display exactly one of the child elements at any time")
-				.horizontalCompressionResistancePriority(.defaultLow)
-				.wraps(true)
-			HDivider()
-
 			Box("", titlePosition: .noTitle) {
 				HStack {
 					PopupButton {

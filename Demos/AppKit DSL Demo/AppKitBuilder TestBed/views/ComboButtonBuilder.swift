@@ -13,6 +13,7 @@ import DSFMenuBuilder
 
 public class ComboButtonBuilder: ViewTestBed {
 	var title: String { "Combo Button" }
+	var description: String { "The ComboButton element displays a combo button" }
 	func build() -> ElementController {
 		ComboButtonController()
 	}

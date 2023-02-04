@@ -326,3 +326,36 @@ final class TrackingArea {
 		trackingArea = newTrackingArea
 	}
 }
+
+// MARK: - Label styling
+
+public extension Label {
+	enum Styling { }
+}
+
+public protocol LabelStyle {
+	/// A method that applies label styles to the provided label
+	func apply(_ labelElement: Label) -> Label
+}
+
+public extension Label {
+	/// Apply a predefined Label style to the label
+	@discardableResult func applyStyle(_ style: LabelStyle) -> Label {
+		style.apply(self)
+	}
+}
+
+public extension Label.Styling {
+	/// Apply multiline wrapping for the label
+	static let multiline = Multiline()
+
+	/// A multiline style for a label
+	struct Multiline: DSFAppKitBuilder.LabelStyle {
+		@discardableResult public func apply(_ labelElement: Label) -> Label {
+			labelElement
+				.horizontalCompressionResistancePriority(.defaultLow)
+				.wraps(true)
+				.truncatesLastVisibleLine(true)
+		}
+	}
+}

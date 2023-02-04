@@ -13,8 +13,18 @@ import DSFAppKitBuilder
 import DSFMenuBuilder
 import DSFValueBinders
 
+
+func viewTestBedTitle(_ title: String, _ description: String) -> Element {
+	VStack(alignment: .leading) {
+		Label(title).font(.title1)
+		Label(description)
+			.applyStyle(Label.Styling.multiline)
+	}
+}
+
 public class ToggleBuilder: ViewTestBed {
 	var title: String { "Toggle" }
+	var description: String { "An Element that displays a toggle button" }
 	func build() -> ElementController {
 		ToggleBuilderController()
 	}
@@ -39,12 +49,6 @@ class ToggleBuilderController: ElementController {
 
 	lazy var body: Element = {
 		VStack(alignment: .leading) {
-			Label("Toggle element type").font(.title1)
-			Label("An Element that displays a toggle button")
-				.horizontalCompressionResistancePriority(.defaultLow)
-				.wraps(true)
-
-			HDivider()
 			Label("Default sizing")
 			HStack {
 				Toggle(state: .off)

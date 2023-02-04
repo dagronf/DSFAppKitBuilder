@@ -26,8 +26,5 @@
 
 import AppKit
 
-/// DSFAppKitBuilder
-public class DSFAppKitBuilder {
-	/// Set this value to true to write debugging info out to the log
-	static public var ShowDebuggingOutput: Bool = false
-}
+/// DSFAppKitBuilder global debug logging
+public var DSFAppKitBuilderShowDebuggingOutput: Bool = false

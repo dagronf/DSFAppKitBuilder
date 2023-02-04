@@ -13,9 +13,11 @@
 			buildPhases = (
 			);
 			dependencies = (
-				23D7C025297786090018CDF2 /* PBXTargetDependency */,
 				23D7C027297786090018CDF2 /* PBXTargetDependency */,
+				23D7C025297786090018CDF2 /* PBXTargetDependency */,
 				23D7C029297786090018CDF2 /* PBXTargetDependency */,
+				23513C76298E279700CDBE36 /* PBXTargetDependency */,
+				23513C74298E277900CDBE36 /* PBXTargetDependency */,
 			);
 			name = "Build All Demos";
 			productName = "Build All Demos";
@@ -80,6 +82,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		23513C73298E277900CDBE36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2304026D26AF7E5F002016FD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 235CBB27298B99A300D3D4DE;
+			remoteInfo = "AppKitBuilder TestBed";
+		};
+		23513C75298E279700CDBE36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2304026D26AF7E5F002016FD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 235CBB12298B451B00D3D4DE;
+			remoteInfo = "DiscolsureView Test";
+		};
 		23D7C024297786090018CDF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 2304026D26AF7E5F002016FD /* Project object */;
@@ -631,6 +647,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		23513C74298E277900CDBE36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 235CBB27298B99A300D3D4DE /* AppKitBuilder TestBed */;
+			targetProxy = 23513C73298E277900CDBE36 /* PBXContainerItemProxy */;
+		};
+		23513C76298E279700CDBE36 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 235CBB12298B451B00D3D4DE /* DiscolsureView Test */;
+			targetProxy = 23513C75298E279700CDBE36 /* PBXContainerItemProxy */;
+		};
 		23D7C025297786090018CDF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 237E74BF282C5B7E0069846A /* AppKit DSF ViewController Demo */;

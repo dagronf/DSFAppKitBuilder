@@ -15,7 +15,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		// Insert code here to initialize your application
 
 		// Uncomment the following line to show debugging output when debugging
-		DSFAppKitBuilder.ShowDebuggingOutput = true
+		// DSFAppKitBuilderShowDebuggingOutput = true
 	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {

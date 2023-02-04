@@ -14,6 +14,7 @@ protocol ElementController {
 
 protocol ViewTestBed {
 	var title: String { get }
+	var description: String { get }
 	func build() -> ElementController
 }
 

@@ -65,8 +65,16 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 			controller = newController
 
 			contentView.element = ScrollView {
-				newController.body
-					.padding(8)
+				VStack(alignment: .leading) {
+					VStack(alignment: .leading) {
+						Label(newItem.title).font(.title1.weight(.medium))
+						Label(newItem.description)
+							.applyStyle(Label.Styling.multiline)
+					}
+					HDivider()
+					newController.body
+				}
+				.padding(8)
 			}
 		}
 	}

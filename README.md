@@ -450,7 +450,7 @@ TextField()
   .bindText(self.badTextBinder)    // <- Text field will leak as self is captured in a retain cycle
 ```
 
-If you believe you have a leak, you can set `DSFAppKitBuilder.ShowDebuggingOutput = true` to report element deinit calls in the debugger output pane.
+If you believe you have a leak, you can set `DSFAppKitBuilderShowDebuggingOutput = true` to report element deinit calls in the debugger output pane.
 
 ## Integration
 

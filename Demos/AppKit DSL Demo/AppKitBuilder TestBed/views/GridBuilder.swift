@@ -14,6 +14,7 @@ import DSFValueBinders
 
 public class GridBuilder: ViewTestBed {
 	var title: String { "Grid" }
+	var description: String { "A grid control" }
 	func build() -> ElementController {
 		GridBuilderController()
 	}

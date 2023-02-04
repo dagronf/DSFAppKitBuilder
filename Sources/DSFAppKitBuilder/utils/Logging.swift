@@ -29,7 +29,7 @@ import Foundation
 internal class Logger {
 	@inline(__always)
 	internal static func Debug(_ str: String) {
-		if DSFAppKitBuilder.ShowDebuggingOutput {
+		if DSFAppKitBuilderShowDebuggingOutput {
 			Swift.print(str)
 		}
 	}

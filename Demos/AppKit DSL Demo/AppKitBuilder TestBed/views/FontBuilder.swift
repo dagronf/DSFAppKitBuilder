@@ -11,6 +11,7 @@ import DSFAppKitBuilder
 
 public class FontBuilder: ViewTestBed {
 	var title: String { "Fonts" }
+	var description: String { "The built-in font styles" }
 	func build() -> ElementController {
 		FontBuilderController()
 	}

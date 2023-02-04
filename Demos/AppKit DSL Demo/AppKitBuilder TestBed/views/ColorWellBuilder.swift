@@ -15,6 +15,7 @@ import DSFValueBinders
 
 public class ColorWellBuilder: ViewTestBed {
 	var title: String { "Color Well" }
+	var description: String { "An Element that allows the user to display exactly one of the child elements at any time" }
 	func build() -> ElementController {
 		ColorWellBuilderController()
 	}
@@ -31,13 +32,6 @@ class ColorWellBuilderController: ElementController {
 
 	lazy var body: Element = {
 		VStack {
-			Label("ColorWell elements").font(.title1)
-			Label("An Element that allows the user to display exactly one of the child elements at any time")
-				.horizontalCompressionResistancePriority(.defaultLow)
-				.wraps(true)
-
-			HDivider()
-
 			Group(layoutType: .center) {
 				Grid(columnSpacing: 16) {
 					GridRow(rowAlignment: .firstBaseline) {

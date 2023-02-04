@@ -13,6 +13,7 @@ import DSFValueBinders
 
 public class DisclosureViewBuilder: ViewTestBed {
 	var title: String { "Disclosure View" }
+	var description: String { "A disclosure view consists of a label to identify the contents, and a control to show and hide the contents. Showing the contents puts the disclosure group into the “expanded” state, and hiding them makes the disclosure view 'collapsed'." }
 	func build() -> ElementController {
 		DisclosureViewController()
 	}

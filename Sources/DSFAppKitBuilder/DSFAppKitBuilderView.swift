@@ -86,7 +86,7 @@ open class DSFAppKitBuilderView: NSView {
 	}
 
 	deinit {
-		if DSFAppKitBuilder.ShowDebuggingOutput {
+		if DSFAppKitBuilderShowDebuggingOutput {
 			Swift.print("DSFAppKitBuilderView deinit (element: \(element?.id.uuidString ?? "<nil>")")
 		}
 	}
