@@ -28,5 +28,6 @@ public class ViewItems {
 		OneOfBuilder(),
 		ToggleBuilder(),
 		ColorWellBuilder(),
+		PathBuilder(),
 	].sorted { a, b in a.title < b.title }
 }

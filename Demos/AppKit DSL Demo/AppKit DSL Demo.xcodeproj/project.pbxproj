@@ -40,6 +40,7 @@
 		23513C6C298DDF4D00CDBE36 /* OneOfBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */; };
 		23513C6E298DE6DA00CDBE36 /* ToggleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */; };
 		23513C70298DE8AE00CDBE36 /* ColorWellBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */; };
+		23513C72298DEB8700CDBE36 /* PathBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C71298DEB8700CDBE36 /* PathBuilder.swift */; };
 		235CBB16298B451B00D3D4DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB15298B451B00D3D4DE /* AppDelegate.swift */; };
 		235CBB18298B451B00D3D4DE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB17298B451B00D3D4DE /* ViewController.swift */; };
 		235CBB1A298B451C00D3D4DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 235CBB19298B451C00D3D4DE /* Assets.xcassets */; };
@@ -122,6 +123,7 @@
 		23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneOfBuilder.swift; sourceTree = "<group>"; };
 		23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleBuilder.swift; sourceTree = "<group>"; };
 		23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorWellBuilder.swift; sourceTree = "<group>"; };
+		23513C71298DEB8700CDBE36 /* PathBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathBuilder.swift; sourceTree = "<group>"; };
 		235CBB13298B451B00D3D4DE /* DiscolsureView Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DiscolsureView Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		235CBB15298B451B00D3D4DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		235CBB17298B451B00D3D4DE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 				23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */,
 				23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */,
 				23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */,
+				23513C71298DEB8700CDBE36 /* PathBuilder.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -590,6 +593,7 @@
 			files = (
 				239A1FB2298CCB9400F5B5AD /* ButtonBuilder.swift in Sources */,
 				23513C6E298DE6DA00CDBE36 /* ToggleBuilder.swift in Sources */,
+				23513C72298DEB8700CDBE36 /* PathBuilder.swift in Sources */,
 				239A1FB4298CD9AB00F5B5AD /* GridBuilder.swift in Sources */,
 				239A1FB6298CDF0C00F5B5AD /* ComboButtonBuilder.swift in Sources */,
 				23513C6C298DDF4D00CDBE36 /* OneOfBuilder.swift in Sources */,
@@ -939,7 +943,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.AppKitBuilder-TestBed";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -968,7 +972,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.AppKitBuilder-TestBed";
 				PRODUCT_NAME = "$(TARGET_NAME)";

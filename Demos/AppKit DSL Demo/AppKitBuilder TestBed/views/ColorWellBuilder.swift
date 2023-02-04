@@ -86,3 +86,20 @@ class ColorWellBuilderController: ElementController {
 		}
 	}()
 }
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+@available(macOS 10.15, *)
+struct ColorWellBuilderPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			VStack {
+				ColorWellBuilder().build().body
+				EmptyView()
+			}
+			.SwiftUIPreview()
+		}
+		.padding()
+	}
+}
+#endif
