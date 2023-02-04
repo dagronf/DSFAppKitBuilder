@@ -11,10 +11,16 @@ import DSFAppKitBuilder
 
 public class FontBuilder: ViewTestBed {
 	var title: String { "Fonts" }
+	func build() -> ElementController {
+		FontBuilderController()
+	}
+}
+
+class FontBuilderController: ElementController {
 
 	fileprivate let _sampleText = "Sphinx of black quartz judge my vow 19.330"
 
-	func build() -> Element {
+	lazy var body: Element = {
 		VStack(alignment: .leading) {
 			HStack {
 				Label("Plain text").font(.body)
@@ -119,7 +125,7 @@ public class FontBuilder: ViewTestBed {
 				CheckBox("Checkbox!").font(.system.bold())
 			}
 		}
-	}
+	}()
 }
 
 #if DEBUG && canImport(SwiftUI)
@@ -129,7 +135,7 @@ struct FontBuilderPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		SwiftUI.Group {
 			VStack {
-				FontBuilder().build()
+				FontBuilder().build().body
 				EmptyView()
 			}
 			.SwiftUIPreview()

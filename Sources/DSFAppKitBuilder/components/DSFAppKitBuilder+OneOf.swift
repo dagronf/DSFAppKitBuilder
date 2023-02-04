@@ -28,11 +28,47 @@ import AppKit
 import DSFValueBinders
 import Foundation
 
-/// An element representing multiple 'tabs' of which only one can be visible at a time
+/// An element representing multiple child elements of which only one can be visible at a time
+///
+/// Example usage:
+///
+/// ```swift
+/// OneOf(__visible) {
+///   HStack(spacing: 2) {
+///      Label("x:")
+///      TextField().width(40)
+///      Stepper()
+///   }
+///   HStack {
+///      HStack(spacing: 2) {
+///         Label("x:")
+///         TextField().width(40)
+///      }
+///      HStack(spacing: 2) {
+///         Label("y:")
+///         TextField().width(40)
+///      }
+///   }
+///   HStack {
+///      HStack(spacing: 2) {
+///         Label("x:")
+///         TextField().width(40)
+///      }
+///      HStack(spacing: 2) {
+///         Label("y:")
+///         TextField().width(40)
+///      }
+///      HStack(spacing: 2) {
+///         Label("z:")
+///         TextField().width(40)
+///      }
+///   }
+/// }
+/// ```
 public class OneOf: Element {
 	/// Create a OneOf
 	/// - Parameters:
-	///   - visibleIndexBinder: A binder to the index that is visible
+	///   - visibleIndexBinder: A binder to the child index that is visible
 	///   - builder: The content
 	public init(
 		_ visibleIndexBinder: ValueBinder<Int>,

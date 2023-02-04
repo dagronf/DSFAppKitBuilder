@@ -13,6 +13,8 @@ class ViewController: NSViewController {
 	@IBOutlet weak var tableView: NSTableView!
 	@IBOutlet weak var contentView: DSFAppKitBuilderView!
 
+	var controller: ElementController?
+
 	let viewItems = ViewItems()
 
 	override func viewDidLoad() {
@@ -50,14 +52,20 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 	}
 
 	func tableViewSelectionDidChange(_ notification: Notification) {
+		self.controller = nil
 		let which = self.tableView.selectedRow
 		if which < 0 {
 			self.displayEmptyView()
 		}
 		else {
-			let v = self.viewItems.items[which]
+			let newItem = self.viewItems.items[which]
+			let newController = newItem.build()
+
+			// Hold on to the controller so we can use ValueBinders etc.
+			controller = newController
+
 			contentView.element = ScrollView {
-				v.build()
+				newController.body
 					.padding(8)
 			}
 		}

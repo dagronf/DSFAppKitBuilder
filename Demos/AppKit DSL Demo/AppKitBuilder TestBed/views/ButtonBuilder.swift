@@ -11,22 +11,28 @@ import DSFAppKitBuilder
 
 public class ButtonBuilder: ViewTestBed {
 	var title: String { "Button" }
-	func build() -> Element {
-		VStack(spacing: 16) {
-				self.ButtonBezels
-				HDivider()
-				HStack(spacing: 16) {
-					self.ButtonType
-					VDivider()
-					self.ButtonTint
-					EmptyView()
-				}
+	func build() -> ElementController {
+		ButtonBuilderController()
+	}
+}
 
+class ButtonBuilderController: ElementController {
+	lazy var body: Element = {
+		VStack(spacing: 16) {
+			self.buildButtonBezels()
+			HDivider()
+			HStack(spacing: 16) {
+				self.buildButtonType()
+				VDivider()
+				self.buildButtonTint()
 				EmptyView()
 			}
-	}
 
-	private lazy var ButtonBezels: Element = {
+			EmptyView()
+		}
+	}()
+
+	func buildButtonBezels() -> Element {
 		HStack {
 			Grid(columnSpacing: 20) {
 				GridRow(rowAlignment: .firstBaseline) {
@@ -140,9 +146,9 @@ public class ButtonBuilder: ViewTestBed {
 
 			EmptyView()
 		}
-	}()
+	}
 
-	private lazy var ButtonType: Element = {
+	private func buildButtonType() -> Element {
 		HStack {
 			Grid(columnSpacing: 20) {
 				GridRow(rowAlignment: .firstBaseline) {
@@ -184,9 +190,9 @@ public class ButtonBuilder: ViewTestBed {
 			}
 			.columnFormatting(xPlacement: .center, atColumn: 1)
 		}
-	}()
+	}
 
-	private lazy var ButtonTint: Element = {
+	private func buildButtonTint() -> Element {
 		if #available(macOS 11, *) {
 			return VStack {
 				Grid {
@@ -270,7 +276,7 @@ public class ButtonBuilder: ViewTestBed {
 		else {
 			return Nothing()
 		}
-	}()
+	}
 }
 
 // MARK: - SwiftUI previews
@@ -281,7 +287,7 @@ import SwiftUI
 struct ButtonBuilderPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		SwiftUI.Group {
-			ButtonBuilder().build()
+			ButtonBuilder().build().body
 				.SwiftUIPreview()
 		}
 		.padding()

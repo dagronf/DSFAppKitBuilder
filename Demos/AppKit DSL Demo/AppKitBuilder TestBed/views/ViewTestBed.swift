@@ -8,18 +8,23 @@
 import Foundation
 import DSFAppKitBuilder
 
+protocol ElementController {
+	var body: Element { get }
+}
+
 protocol ViewTestBed {
 	var title: String { get }
-	func build() -> Element
+	func build() -> ElementController
 }
 
 public class ViewItems {
-
 	let items: [ViewTestBed] = [
+		ComboButtonBuilder(),
 		DisclosureViewBuilder(),
 		FontBuilder(),
 		DatePickerBuilder(),
 		ButtonBuilder(),
+		GridBuilder(),
+		OneOfBuilder(),
 	].sorted { a, b in a.title < b.title }
-
 }

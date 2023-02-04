@@ -12,14 +12,19 @@ import DSFAppKitBuilder
 import DSFValueBinders
 
 public class DisclosureViewBuilder: ViewTestBed {
+	var title: String { "Disclosure View" }
+	func build() -> ElementController {
+		DisclosureViewController()
+	}
+}
+
+class DisclosureViewController: ElementController {
 
 	let __onOffBinder1 = ValueBinder(true)
 	let __onOffBinder2 = ValueBinder(false)
-
 	let __headerFont = AKBFont.title3.bold()
 
-	var title: String { "Disclosure View" }
-	func build() -> Element {
+	lazy var body: Element = {
 		VStack(alignment: .leading) {
 			VStack(alignment: .leading) {
 				VStack(alignment: .leading) {
@@ -117,7 +122,8 @@ public class DisclosureViewBuilder: ViewTestBed {
 
 			EmptyView()
 		}
-	}
+	}()
+
 }
 
 // MARK: - SwiftUI previews
@@ -128,7 +134,7 @@ import SwiftUI
 struct DisclosureViewPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		SwiftUI.Group {
-			DisclosureViewBuilder().build()
+			DisclosureViewBuilder().build().body
 				.SwiftUIPreview()
 		}
 	}

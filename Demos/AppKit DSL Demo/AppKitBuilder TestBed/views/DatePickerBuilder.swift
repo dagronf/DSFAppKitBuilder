@@ -12,11 +12,16 @@ import DSFAppKitBuilder
 import DSFValueBinders
 
 public class DatePickerBuilder: ViewTestBed {
+	var title: String { "Date Picker" }
+	func build() -> ElementController {
+		DatePickerBuilderController()
+	}
+}
 
+class DatePickerBuilderController: ElementController {
 	let __previewDate = ValueBinder(Date())
 
-	var title: String { "Date Picker" }
-	func build() -> Element {
+	lazy var body: Element = {
 		VStack(alignment: .leading) {
 			VStack(alignment: .leading) {
 				Label("Default").font(NSFont.boldSystemFont(ofSize: 14))
@@ -99,7 +104,7 @@ public class DatePickerBuilder: ViewTestBed {
 				}
 			}
 		}
-	}
+	}()
 }
 
 #if DEBUG && canImport(SwiftUI)
@@ -109,7 +114,7 @@ struct DatePickerPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		SwiftUI.Group {
 			VStack(alignment: .leading) {
-				DatePickerBuilder().build()
+				DatePickerBuilder().build().body
 				EmptyView()
 			}
 			.SwiftUIPreview()
