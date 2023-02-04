@@ -26,5 +26,6 @@ public class ViewItems {
 		ButtonBuilder(),
 		GridBuilder(),
 		OneOfBuilder(),
+		ToggleBuilder(),
 	].sorted { a, b in a.title < b.title }
 }
