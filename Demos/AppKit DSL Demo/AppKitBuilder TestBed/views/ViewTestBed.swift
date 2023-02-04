@@ -27,5 +27,6 @@ public class ViewItems {
 		GridBuilder(),
 		OneOfBuilder(),
 		ToggleBuilder(),
+		ColorWellBuilder(),
 	].sorted { a, b in a.title < b.title }
 }
