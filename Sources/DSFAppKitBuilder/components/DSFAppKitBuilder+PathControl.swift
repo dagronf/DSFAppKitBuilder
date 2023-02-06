@@ -28,8 +28,15 @@ import AppKit.NSPathControl
 import DSFValueBinders
 
 /// An NSPathControl element
+///
+/// Usage:
+///
+/// ```swift
+/// let urlBinder = ValueBinder<URL>(…some url…)
+/// …
+/// PathControl(bindingURL: urlBinder)
+/// ```
 public class PathControl: Control {
-
 	/// Create a path control displaying a constant URL value
 	public init(url: URL? = nil) {
 		super.init()
@@ -46,12 +53,6 @@ public class PathControl: Control {
 		_ = self.bindURL(bindingURL)
 	}
 
-	private func setup() {
-		self.pathControl.target = self
-		self.pathControl.action = #selector(doAction(_:))
-		self.pathControl.doubleAction = #selector(doDoubleAction(_:))
-	}
-
 	deinit {
 		self.fileURLBinder?.deregister(self)
 		self.actionCallback = nil
@@ -61,7 +62,7 @@ public class PathControl: Control {
 
 	// Private
 	private let pathControl = NSPathControl()
-	public override func view() -> NSView { return self.pathControl }
+	override public func view() -> NSView { return self.pathControl }
 	private var actionCallback: ((URL?) -> Void)?
 	private var doubleActionCallback: ((URL?) -> Void)?
 	private var pathItemClicked: ((NSPathControlItem) -> Void)?
@@ -71,6 +72,12 @@ public class PathControl: Control {
 }
 
 private extension PathControl {
+	private func setup() {
+		self.pathControl.target = self
+		self.pathControl.action = #selector(doAction(_:))
+		self.pathControl.doubleAction = #selector(doDoubleAction(_:))
+	}
+	
 	// Callback when the user single-clicks the path control
 	@objc private func doAction(_ sender: Any) {
 		self.actionCallback?(self.pathControl.url)

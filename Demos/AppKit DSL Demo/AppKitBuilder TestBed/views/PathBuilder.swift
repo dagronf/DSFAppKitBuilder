@@ -86,6 +86,11 @@ class PathBuilderController: ElementController {
 						.applyStyle(RowHeaderStyle())
 					PathControl(url: FileManager.default.homeDirectoryForCurrentUser)
 						.horizontalCompressionResistancePriority(.defaultLow)
+						.onClickPathComponent { item in
+							let alert = NSAlert()
+							alert.messageText = "User clicked component '\(item.title)'"
+							alert.runModal()
+						}
 				}
 				GridRow(rowAlignment: .lastBaseline) {
 					Label("Documents:")
