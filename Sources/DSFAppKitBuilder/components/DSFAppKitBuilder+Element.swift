@@ -72,6 +72,7 @@ open class Element: NSObject {
 	}
 
 	deinit {
+		self.onAppearObserver = nil
 		self.receiveThemeNotifications = false
 		self.isHiddenBinder?.deregister(self)
 		Logger.Debug("Element [\(type(of: self))] deinit")
@@ -93,6 +94,9 @@ open class Element: NSObject {
 	// CGColor convertibles
 	private var _backgroundColor: NSColor?
 	private var _borderColor: NSColor?
+
+	// An onAppear detector
+	private var onAppearObserver: ElementOnAppearObservation?
 }
 
 // MARK: - Dark mode handling
@@ -398,6 +402,60 @@ public extension Element {
 		elementBinder.element = self
 		return self
 	}
+}
+
+// MARK: - View onAppear
+
+extension Element {
+	/// Provide a block that gets called when the element's view is moved onto a window
+	public func onAppear(_ block: @escaping () -> Void) -> Self {
+		self.onAppearObserver = ElementOnAppearObservation(
+			self.view(), "\(type(of: self))",
+			onAppearBlock: block,
+			onTriggered: { [weak self] in
+			self?.onAppearObserver = nil
+		})
+		return self
+	}
+}
+
+private class ElementOnAppearObservation {
+	init(
+		_ view: NSView,
+		_ description: String,
+		onAppearBlock: @escaping () -> Void,
+		onTriggered: @escaping () -> Void)
+	{
+		self.ownerDescription = description
+		self.onAppearBlock = onAppearBlock
+		self.onTriggered = onTriggered
+		self.onAppearObserver = view.observe(\.window, options: [.new]) { [weak self] v, change in
+			// This is a bit odd -- change is a NSWindow?? so we have to unwrap twice.
+			// Only trigger when the window FIRST becomes non-nil
+			if let e = change.newValue, let _ = e {
+				self?.onAppearBlock()
+			}
+		}
+	}
+
+	deinit {
+		self.onAppearObserver = nil
+		Logger.Debug("ViewAppearObserver[\(self.ownerDescription)]: deinit")
+	}
+
+	private func onAppear() {
+		// Call the onAppear block
+		self.onAppearBlock()
+		// Remove our observation - we only want the first appearance
+		self.onAppearObserver = nil
+		// Tell the element that the view has appeared
+		self.onTriggered()
+	}
+
+	private var ownerDescription: String
+	private var onAppearObserver: NSKeyValueObservation?
+	private let onAppearBlock: () -> Void
+	private let onTriggered: () -> Void
 }
 
 // MARK: - Result Builder for stacks

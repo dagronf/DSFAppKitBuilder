@@ -240,6 +240,10 @@ Button(title: "Press Me!") { [weak self] _ in
   guard let `self` = self else { return }
   Swift.print("You pressed it!")
 }
+TextField(labelBinder)
+  .onAppear {
+    Swift.print("Label appeared in the window!")  
+  }
 ```
 
 ### Binders
