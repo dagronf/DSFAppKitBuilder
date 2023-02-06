@@ -29,6 +29,9 @@ import DSFValueBinders
 
 /// A color well
 ///
+/// Note that in later macOS versions (10.15+?) NSColorWell provides an intrinsic control size.
+/// If you're targeting earlier versions you will need to provide a size to the control for it to appear.
+///
 /// Usage:
 ///
 /// ```swift

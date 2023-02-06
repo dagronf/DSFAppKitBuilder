@@ -44,20 +44,26 @@ class ColorWellBuilderController: ElementController {
 					GridRow(rowAlignment: .firstBaseline) {
 						Label(".default").font(.monospaced.size(14))
 						ColorWell(style: .default, showsAlpha: true, isBordered: true)
+							.size(width: 60, height: 26)
 							.bindColor(color1)
 						ColorWell(style: .default, showsAlpha: true, isBordered: false)
+							.size(width: 60, height: 26)
 							.bindColor(color1)
 						ColorWell(style: .default, showsAlpha: true, isBordered: true)
+							.size(width: 60, height: 26)
 							.bindColor(color1)
 							.isEnabled(false)
 					}
 					GridRow(rowAlignment: .firstBaseline) {
 						Label(".minimal").font(.monospaced.size(14))
 						ColorWell(style: .minimal, showsAlpha: true, isBordered: true)
+							.size(width: 60, height: 26)
 							.bindColor(color2)
 						ColorWell(style: .minimal, showsAlpha: true, isBordered: false)
+							.size(width: 60, height: 26)
 							.bindColor(color2)
 						ColorWell(style: .minimal, showsAlpha: true, isBordered: false)
+							.size(width: 60, height: 26)
 							.bindColor(color2)
 							.isEnabled(false)
 
@@ -65,10 +71,13 @@ class ColorWellBuilderController: ElementController {
 					GridRow(rowAlignment: .firstBaseline) {
 						Label(".expanded").font(.monospaced.size(14))
 						ColorWell(style: .expanded, showsAlpha: true, isBordered: true)
+							.size(width: 60, height: 26)
 							.bindColor(color3)
 						ColorWell(style: .expanded, showsAlpha: true, isBordered: false)
+							.size(width: 60, height: 26)
 							.bindColor(color3)
 						ColorWell(style: .expanded, showsAlpha: true, isBordered: false)
+							.size(width: 60, height: 26)
 							.bindColor(color3)
 							.isEnabled(false)
 
