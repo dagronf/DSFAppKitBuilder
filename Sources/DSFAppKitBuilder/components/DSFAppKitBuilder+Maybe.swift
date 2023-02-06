@@ -42,6 +42,16 @@ public class Maybe: Element {
 		}
 	}
 
+	/// An element IF a condition block returns as true
+	public init(_ condition: @autoclosure () -> Bool, _ element: Element) {
+		if condition() {
+			self.underlyingView = element.view()
+		}
+		else {
+			self.underlyingView = NothingView()
+		}
+	}
+
 	/// If the element is non-nil, adds the element to the build, otherwise it is ignored
 	public init(_ element: Element?) {
 		self.underlyingView = element?.view() ?? NothingView()

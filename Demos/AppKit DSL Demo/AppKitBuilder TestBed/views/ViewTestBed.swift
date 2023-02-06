@@ -31,5 +31,7 @@ public class ViewItems {
 		ToggleBuilder(),
 		ColorWellBuilder(),
 		PathBuilder(),
+		CheckboxBuilder(),
+		SearchFieldBuilder(),
 	].sorted { a, b in a.title < b.title }
 }

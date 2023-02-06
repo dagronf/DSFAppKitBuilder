@@ -38,7 +38,6 @@ import AppKit
 /// }
 /// ```
 public class Box: Element {
-
 	/// Create a box
 	/// - Parameters:
 	///   - title: The title of the box
@@ -67,12 +66,10 @@ public class Box: Element {
 		self.content = content
 		super.init()
 
-		containerView.autoresizingMask = [.width, .height]
+		let contentView = content.view()
 
-		boxView.contentView = containerView
-		containerView.addSubview(content.view())
-		content.view().pinEdges(to: containerView)
-		containerView.needsLayout = true
+		self.boxContent.addSubview(contentView)
+		contentView.pinEdges(to: self.boxContent)
 
 		boxView.title = title
 		boxView.titlePosition = titlePosition
@@ -83,11 +80,8 @@ public class Box: Element {
 
 	// Private
 	private let boxView = NSBox()
+	private var boxContent: NSView { return boxView.contentView! }
 	public override func view() -> NSView { return self.boxView }
-	public override func childElements() -> [Element] {
-		return [self.content]
-	}
-	private let containerView = NSView()
 	private let content: Element
 }
 
@@ -97,6 +91,12 @@ public extension Box {
 	/// Set the font for the box title
 	func titleFont(_ font: NSFont) -> Self {
 		self.boxView.titleFont = font
+		return self
+	}
+
+	/// Set the font for the box title
+	func titleFont(_ font: AKBFont) -> Self {
+		self.boxView.titleFont = font.font
 		return self
 	}
 }

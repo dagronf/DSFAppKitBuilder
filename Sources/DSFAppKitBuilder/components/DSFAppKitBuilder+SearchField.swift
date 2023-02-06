@@ -177,14 +177,6 @@ public extension SearchField {
 
 #if DEBUG && canImport(SwiftUI)
 
-extension ValueBinder where ValueType == String {
-	func stringValue(emptyPlaceholderString: String) -> ValueBinder<String> {
-		self.transform { text in
-			(text.isNotEmpty) ? text : emptyPlaceholderString
-		}
-	}
-}
-
 let __searchText = ValueBinder("")
 let __searchSubmittedText = ValueBinder("")
 let __searchText2 = ValueBinder("")
@@ -213,6 +205,7 @@ struct SearchFieldPreviews: PreviewProvider {
 						}
 					}
 				}
+				.titleFont(.headline)
 				.horizontalHuggingPriority(.init(10))
 
 				Box("Binding update on submit only") {
@@ -232,14 +225,21 @@ struct SearchFieldPreviews: PreviewProvider {
 						}
 					}
 				}
+				.titleFont(.headline)
 				.horizontalHuggingPriority(.init(10))
 
 				HDivider()
-				SearchField(placeholderText: "Type something…")
-				SearchField(
-					initialSearchTerm: "caterpillar",
-					placeholderText: "Search for something meaningful…"
-				)
+				HStack {
+					Label("Show placeholder text")
+					SearchField(placeholderText: "Type something…")
+				}
+				HStack {
+					Label("Set initial value")
+					SearchField(
+						initialSearchTerm: "caterpillar",
+						placeholderText: "Search for something meaningful…"
+					)
+				}
 			}
 			.SwiftUIPreview()
 			.padding()

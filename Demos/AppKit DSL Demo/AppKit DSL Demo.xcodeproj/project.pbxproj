@@ -44,6 +44,7 @@
 		23513C70298DE8AE00CDBE36 /* ColorWellBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */; };
 		23513C72298DEB8700CDBE36 /* PathBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C71298DEB8700CDBE36 /* PathBuilder.swift */; };
 		23513C78298E2B8800CDBE36 /* String+localized.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C77298E2B8800CDBE36 /* String+localized.swift */; };
+		23513C7A298E383000CDBE36 /* CheckboxBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C79298E383000CDBE36 /* CheckboxBuilder.swift */; };
 		235CBB16298B451B00D3D4DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB15298B451B00D3D4DE /* AppDelegate.swift */; };
 		235CBB18298B451B00D3D4DE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB17298B451B00D3D4DE /* ViewController.swift */; };
 		235CBB1A298B451C00D3D4DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 235CBB19298B451C00D3D4DE /* Assets.xcassets */; };
@@ -67,6 +68,7 @@
 		237E74D0282C5BA30069846A /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 237E74CF282C5BA30069846A /* DSFAppKitBuilder */; };
 		237E74D2282C61710069846A /* BuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E74D1282C61710069846A /* BuilderViewController.swift */; };
 		237E74D7282C73040069846A /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 237E74D6282C73040069846A /* Defaults */; };
+		23910CA1299071240016E150 /* SearchFieldBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23910CA0299071240016E150 /* SearchFieldBuilder.swift */; };
 		239A1FB2298CCB9400F5B5AD /* ButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */; };
 		239A1FB4298CD9AB00F5B5AD /* GridBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */; };
 		239A1FB6298CDF0C00F5B5AD /* ComboButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */; };
@@ -142,6 +144,7 @@
 		23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorWellBuilder.swift; sourceTree = "<group>"; };
 		23513C71298DEB8700CDBE36 /* PathBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathBuilder.swift; sourceTree = "<group>"; };
 		23513C77298E2B8800CDBE36 /* String+localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+localized.swift"; sourceTree = "<group>"; };
+		23513C79298E383000CDBE36 /* CheckboxBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxBuilder.swift; sourceTree = "<group>"; };
 		235CBB13298B451B00D3D4DE /* DiscolsureView Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DiscolsureView Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		235CBB15298B451B00D3D4DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		235CBB17298B451B00D3D4DE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -167,6 +170,7 @@
 		237E74C9282C5B7F0069846A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		237E74CB282C5B7F0069846A /* AppKit_DSF_ViewController_Demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AppKit_DSF_ViewController_Demo.entitlements; sourceTree = "<group>"; };
 		237E74D1282C61710069846A /* BuilderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuilderViewController.swift; sourceTree = "<group>"; };
+		23910CA0299071240016E150 /* SearchFieldBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldBuilder.swift; sourceTree = "<group>"; };
 		239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonBuilder.swift; sourceTree = "<group>"; };
 		239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridBuilder.swift; sourceTree = "<group>"; };
 		239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComboButtonBuilder.swift; sourceTree = "<group>"; };
@@ -323,6 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */,
+				23513C79298E383000CDBE36 /* CheckboxBuilder.swift */,
 				23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */,
 				239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */,
 				235CBB3E298C842300D3D4DE /* DatePickerBuilder.swift */,
@@ -333,6 +338,7 @@
 				23513C71298DEB8700CDBE36 /* PathBuilder.swift */,
 				23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */,
 				235CBB40298C843500D3D4DE /* ViewTestBed.swift */,
+				23910CA0299071240016E150 /* SearchFieldBuilder.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -614,12 +620,14 @@
 				23513C6E298DE6DA00CDBE36 /* ToggleBuilder.swift in Sources */,
 				23513C72298DEB8700CDBE36 /* PathBuilder.swift in Sources */,
 				239A1FB4298CD9AB00F5B5AD /* GridBuilder.swift in Sources */,
+				23910CA1299071240016E150 /* SearchFieldBuilder.swift in Sources */,
 				239A1FB6298CDF0C00F5B5AD /* ComboButtonBuilder.swift in Sources */,
 				23513C6C298DDF4D00CDBE36 /* OneOfBuilder.swift in Sources */,
 				235CBB41298C843500D3D4DE /* ViewTestBed.swift in Sources */,
 				235CBB3D298BA2AD00D3D4DE /* FontBuilder.swift in Sources */,
 				23513C78298E2B8800CDBE36 /* String+localized.swift in Sources */,
 				235CBB2D298B99A400D3D4DE /* ViewController.swift in Sources */,
+				23513C7A298E383000CDBE36 /* CheckboxBuilder.swift in Sources */,
 				235CBB2B298B99A400D3D4DE /* AppDelegate.swift in Sources */,
 				235CBB38298B99C300D3D4DE /* DisclosureViewBuilder.swift in Sources */,
 				235CBB3F298C842300D3D4DE /* DatePickerBuilder.swift in Sources */,
