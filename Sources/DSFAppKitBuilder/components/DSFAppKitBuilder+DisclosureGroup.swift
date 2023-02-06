@@ -28,6 +28,7 @@ import AppKit
 
 // MARK: - Disclosure Group
 
+/// An element that contains a collection of `DisclosureView`s
 public class DisclosureGroup: Element {
 	/// Create a vertical disclosure group (a stack of disclosure views)
 	/// - Parameters:

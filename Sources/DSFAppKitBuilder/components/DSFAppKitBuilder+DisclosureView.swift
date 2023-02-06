@@ -28,6 +28,19 @@ import Foundation
 import AppKit
 import DSFValueBinders
 
+/// An element that has a title and a disclosable child element
+///
+/// Usage: 
+///
+/// ```swift
+/// DisclosureView(title: "Style") {
+///    HStack {
+///       Label("Display Style Elements")
+///       EmptyView()
+///       Toggle()
+///    }
+/// }
+/// ```
 public class DisclosureView: Element {
 	/// Create a disclosure view
 	/// - Parameters:

@@ -367,18 +367,19 @@ TextField()
 
 ### Optional and controllable elements
 
-| Element Type       |  Description            |
-|--------------------|-------------------------|
-| `Maybe`            | An element that inserts an element into the view IF a condition is met |
-| `OneOf`            | An element that binds the visibility of a number of elements to a `ValueBinder<>` value |
-| `DynamicElement`   | An element that binds the displayed Element to a `ValueBinder<>` |
-| `DisclosureView`   | An element that binds the displayed Element to a `ValueBinder<>` |
+| Element Type        |  Description            |
+|---------------------|-------------------------|
+| `Maybe`             | An element that inserts an element into the view IF a condition is met |
+| `OneOf`             | An element that binds the visibility of a number of elements to a `ValueBinder<>` value |
+| `DynamicElement`    | An element that binds the displayed Element to a `ValueBinder<>` |
+| `DisclosureView`    | An element has a title and a disclosable child element` |
+| `DisclosureGroup`   | An element that is a collection of `DisclosureView` elements` |
 
 ## Using SwiftUI previews
 
 You can preview your `DSFAppKitBuilder` creations using the SwiftUI previews if your app is targeting 10.15 and later.
 
-The following types provide a `.Preview()` function function call which returns a SwiftUI wrapped presentation of your
+The following types provide a `.SwiftUIPreview()` method call which returns a SwiftUI wrapped presentation of your
 `DSFAppKitBuilder` view.  
 
 * `Element`
