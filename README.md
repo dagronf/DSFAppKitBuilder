@@ -372,6 +372,7 @@ TextField()
 | `Maybe`            | An element that inserts an element into the view IF a condition is met |
 | `OneOf`            | An element that binds the visibility of a number of elements to a `ValueBinder<>` value |
 | `DynamicElement`   | An element that binds the displayed Element to a `ValueBinder<>` |
+| `DisclosureView`   | An element that binds the displayed Element to a `ValueBinder<>` |
 
 ## Using SwiftUI previews
 
