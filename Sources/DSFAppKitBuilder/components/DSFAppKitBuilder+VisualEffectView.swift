@@ -146,7 +146,7 @@ public struct VisualEffect {
 
 extension VisualEffect {
 	// Make a visual effect view from the stored settings
-	func makeView() -> NSVisualEffectView {
+	public func makeView() -> NSVisualEffectView {
 		return VisualEffect.MakeView(
 			material: self.material,
 			blendingMode: self.blendingMode,
@@ -155,17 +155,17 @@ extension VisualEffect {
 	}
 
 	// Make a visual effect view using the provided settings
-	static func MakeView(
+	public static func MakeView(
 		material: NSVisualEffectView.Material? = nil,
 		blendingMode: NSVisualEffectView.BlendingMode? = nil,
 		isEmphasized: Bool = false
 	) -> NSVisualEffectView {
-		let vview = NSVisualEffectView()
-		vview.wantsLayer = true
-		vview.translatesAutoresizingMaskIntoConstraints = false
-		material.withUnwrapped { vview.material = $0 }
-		blendingMode.withUnwrapped { vview.blendingMode = $0 }
-		vview.isEmphasized = isEmphasized
-		return vview
+		let newView = NSVisualEffectView()
+		newView.wantsLayer = true
+		newView.translatesAutoresizingMaskIntoConstraints = false
+		material.withUnwrapped { newView.material = $0 }
+		blendingMode.withUnwrapped { newView.blendingMode = $0 }
+		newView.isEmphasized = isEmphasized
+		return newView
 	}
 }

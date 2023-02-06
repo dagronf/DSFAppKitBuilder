@@ -33,5 +33,6 @@ public class ViewItems {
 		PathBuilder(),
 		CheckboxBuilder(),
 		SearchFieldBuilder(),
+		DynamicElementBuilder(),
 	].sorted { a, b in a.title < b.title }
 }

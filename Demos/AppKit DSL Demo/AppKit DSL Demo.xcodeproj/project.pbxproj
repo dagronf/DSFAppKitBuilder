@@ -69,6 +69,7 @@
 		237E74D2282C61710069846A /* BuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E74D1282C61710069846A /* BuilderViewController.swift */; };
 		237E74D7282C73040069846A /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 237E74D6282C73040069846A /* Defaults */; };
 		23910CA1299071240016E150 /* SearchFieldBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23910CA0299071240016E150 /* SearchFieldBuilder.swift */; };
+		23910CA32990BBA60016E150 /* DynamicElementBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */; };
 		239A1FB2298CCB9400F5B5AD /* ButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */; };
 		239A1FB4298CD9AB00F5B5AD /* GridBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */; };
 		239A1FB6298CDF0C00F5B5AD /* ComboButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */; };
@@ -171,6 +172,7 @@
 		237E74CB282C5B7F0069846A /* AppKit_DSF_ViewController_Demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AppKit_DSF_ViewController_Demo.entitlements; sourceTree = "<group>"; };
 		237E74D1282C61710069846A /* BuilderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuilderViewController.swift; sourceTree = "<group>"; };
 		23910CA0299071240016E150 /* SearchFieldBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldBuilder.swift; sourceTree = "<group>"; };
+		23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicElementBuilder.swift; sourceTree = "<group>"; };
 		239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonBuilder.swift; sourceTree = "<group>"; };
 		239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridBuilder.swift; sourceTree = "<group>"; };
 		239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComboButtonBuilder.swift; sourceTree = "<group>"; };
@@ -339,6 +341,7 @@
 				23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */,
 				235CBB40298C843500D3D4DE /* ViewTestBed.swift */,
 				23910CA0299071240016E150 /* SearchFieldBuilder.swift */,
+				23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -628,6 +631,7 @@
 				23513C78298E2B8800CDBE36 /* String+localized.swift in Sources */,
 				235CBB2D298B99A400D3D4DE /* ViewController.swift in Sources */,
 				23513C7A298E383000CDBE36 /* CheckboxBuilder.swift in Sources */,
+				23910CA32990BBA60016E150 /* DynamicElementBuilder.swift in Sources */,
 				235CBB2B298B99A400D3D4DE /* AppDelegate.swift in Sources */,
 				235CBB38298B99C300D3D4DE /* DisclosureViewBuilder.swift in Sources */,
 				235CBB3F298C842300D3D4DE /* DatePickerBuilder.swift in Sources */,
