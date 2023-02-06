@@ -98,7 +98,7 @@ class CheckboxBuilderController: ElementController {
 			HDivider()
 			Label("Horizontal alignment").font(.title3.bold())
 			HStack {
-				Switch(onOffBinder: __enabler)
+				CompatibleSwitch(onOffBinder: __enabler)
 				RadioGroup(orientation: .horizontal) {
 					RadioElement("first 1")
 					RadioElement("second 2")
@@ -109,7 +109,7 @@ class CheckboxBuilderController: ElementController {
 			HDivider()
 			Label("Disable individual items").font(.title3.bold())
 			HStack {
-				Switch(onOffBinder: __enabler2)
+				CompatibleSwitch(onOffBinder: __enabler2)
 				Label("Disabled radio elements ->")
 				Segmented(trackingMode: .selectAny) {
 					Segment("1")

@@ -169,3 +169,140 @@ extension VisualEffect {
 		return newView
 	}
 }
+
+// MARK: - SwiftUI preview
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+
+@available(macOS 10.15, *)
+struct VisualEffectViewPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.VStack {
+			VStack(alignment: .leading) {
+				HStack {
+					Box(".titlebar") {
+						VisualEffectView(material: .titlebar) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+					Box(".selection") {
+						VisualEffectView(material: .selection) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+				}
+
+				HStack {
+					Box(".menu") {
+						VisualEffectView(material: .menu) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+					Box(".popover") {
+						VisualEffectView(material: .popover) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+				}
+
+				HStack {
+					Box(".sidebar") {
+						VisualEffectView(material: .sidebar) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+					Box(".headerView") {
+						VisualEffectView(material: .headerView) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+				}
+
+				HStack {
+					Box(".sheet") {
+						VisualEffectView(material: .sheet) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+					Box(".windowBackground") {
+						VisualEffectView(material: .windowBackground) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+				}
+
+				HStack {
+					Box(".hudWindow") {
+						VisualEffectView(material: .hudWindow) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+					Box(".fullScreenUI") {
+						VisualEffectView(material: .fullScreenUI) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+				}
+
+				HStack {
+					Box(".toolTip") {
+						VisualEffectView(material: .toolTip) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+					Box(".contentBackground") {
+						VisualEffectView(material: .contentBackground) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+				}
+
+				HStack {
+					Box(".underWindowBackground") {
+						VisualEffectView(material: .underWindowBackground) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+					Box(".underPageBackground") {
+						VisualEffectView(material: .underPageBackground) {
+							EmptyView()
+								.size(width: 200, height: 50)
+						}
+						.horizontalHuggingPriority(10)
+					}
+				}
+			}
+			.hugging(h: 10)
+			.SwiftUIPreview()
+			.padding()
+		}
+	}
+}
+#endif

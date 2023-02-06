@@ -36,9 +36,9 @@ import DSFValueBinders
 ///    .bindState(self.switchState)
 /// ```
 ///
+/// If you need access to Switch on pre-10.15 versions, use CompatibleSwitch() instead
 @available(macOS 10.15, *)
 public class Switch: Control {
-
 	/// Create a switch
 	/// - Parameter state: the initial state for the control
 	public init(
@@ -147,30 +147,30 @@ struct SwitchPreviews: PreviewProvider {
 #endif
 
 
-///// If we're running on 10.15+, use a Switch.  If not, fallback to using a checkbox
-//public class SafeSwitch: Element {
-//
-//	let onOffBinder: ValueBinder<Bool>
-//	let stateBinder: ValueBinder<NSControl.StateValue>
-//
-//	public init(onOffBinder: ValueBinder<Bool>,
-//					onOffBinder: ValueBinder<Bool>) {
-//		self.onOffBinder = onOffBinder
-//		super.init()
-//	}
-//
-//	public override func view() -> NSView {
-//		return self.body.view()
-//	}
-//
-//	lazy var body: Element = {
-//		if #available(macOS 10.15, *) {
-//			return Switch()
-//				.bindOnOffState(self.onOffBinder)
-//		}
-//		else {
-//			return CheckBox("")
-//				.bindOnOffState(self.onOffBinder)
-//		}
-//	}()
-//}
+/// A Switch button that uses NSSwitch on 10.15+, otherwise DSFToggleButton
+public class CompatibleSwitch: Element {
+	/// Create a Switch
+	/// - Parameter onOffBinder: The ValueBinder<> to determine the state of the switch
+	public init(onOffBinder: ValueBinder<Bool>) {
+		self.onOffBinder = onOffBinder
+		super.init()
+	}
+
+	public override func view() -> NSView {
+		return self.body.view()
+	}
+
+	lazy var body: Element = {
+		if #available(macOS 10.15, *) {
+			return Switch()
+				.bindOnOffState(self.onOffBinder)
+		}
+		else {
+			return Toggle()
+				.bindOnOff(self.onOffBinder)
+		}
+	}()
+
+	private let onOffBinder: ValueBinder<Bool>
+}
+

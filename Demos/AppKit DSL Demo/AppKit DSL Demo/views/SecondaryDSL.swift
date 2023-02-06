@@ -130,7 +130,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				VDivider()
 				VStack(alignment: .leading) {
 					HStack {
-						SafeSwitch(onOffBinder: __enabler2)
+						CompatibleSwitch(onOffBinder: __enabler2)
 						Label("Disabled radio elements ->")
 						Segmented(trackingMode: .selectAny) {
 							Segment("1")

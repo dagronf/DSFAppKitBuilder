@@ -65,7 +65,7 @@ class DynamicElementBuilderController: ElementController {
 					}
 				}
 			}
-			DynamicElement(elementBinder, visualEffect: .init(material: .headerView))
+			DynamicElement(elementBinder, visualEffect: .init(material: .sidebar))
 				.border(width: 0.5, color: NSColor.systemRed)
 			EmptyView()
 		}

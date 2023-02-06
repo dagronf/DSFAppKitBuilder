@@ -157,7 +157,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 			
 			HStack {
-				SafeSwitch(onOffBinder: self.switchOn)
+				CompatibleSwitch(onOffBinder: self.switchOn)
 				Slider(range: 0 ... 100, value: 10)
 					.bindIsEnabled(self.switchOn)
 					.bindValue(self.sliderValue)
@@ -311,7 +311,7 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 
 			HStack {
-				SafeSwitch(onOffBinder: self.stepperEnabled)
+				CompatibleSwitch(onOffBinder: self.stepperEnabled)
 				StepperView(35, style: .init(textColor: .systemRed, borderColor: .systemRed, backgroundColor: .systemRed.withAlphaComponent(0.2), indicatorColor: .systemRed))
 					.bindIsEnabled(stepperEnabled)
 					.size(width: 100, height: 28)
@@ -327,30 +327,4 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			EmptyView()
 		}
 	}
-}
-
-/// If we're running on 10.15+, use a Switch.  If not, fallback to using a checkbox
-class SafeSwitch: Element {
-
-	let onOffBinder: ValueBinder<Bool>
-
-	init(onOffBinder: ValueBinder<Bool>) {
-		self.onOffBinder = onOffBinder
-		super.init()
-	}
-
-	override func view() -> NSView {
-		return self.body.view()
-	}
-
-	lazy var body: Element = {
-		if #available(macOS 10.15, *) {
-			return Switch()
-				.bindOnOffState(self.onOffBinder)
-		}
-		else {
-			return CheckBox("")
-				.bindOnOffState(self.onOffBinder)
-		}
-	}()
 }

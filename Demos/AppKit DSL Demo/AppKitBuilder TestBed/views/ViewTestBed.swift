@@ -34,5 +34,6 @@ public class ViewItems {
 		CheckboxBuilder(),
 		SearchFieldBuilder(),
 		DynamicElementBuilder(),
+		VisualEffectBuilder(),
 	].sorted { a, b in a.title < b.title }
 }

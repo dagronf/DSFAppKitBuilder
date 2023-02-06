@@ -365,6 +365,14 @@ TextField()
 | `Window`           | An `NSWindow` wrapper |
 | `ZStack`           | Layer multiple Elements on top of each other |
 
+### Optional and controllable elements
+
+| Element Type       |  Description            |
+|--------------------|-------------------------|
+| `Maybe`            | An element that inserts an element into the view IF a condition is met |
+| `OneOf`            | An element that binds the visibility of a number of elements to a `ValueBinder<>` value |
+| `DynamicElement`   | An element that binds the displayed Element to a `ValueBinder<>` |
+
 ## Using SwiftUI previews
 
 You can preview your `DSFAppKitBuilder` creations using the SwiftUI previews if your app is targeting 10.15 and later.
