@@ -46,11 +46,11 @@ public class VisualEffectView: Element {
 	/// - Parameters:
 	///   - effect: The effects to apply to the view
 	///   - padding: Inset padding for child content
-	///   - builder: The builder to generate the content of the effect view
+	///   - builder: The builder to generate the content of the effect view, or nil for just the VisualEffectView
 	public convenience init(
 		effect: VisualEffect,
 		padding: CGFloat? = nil,
-		_ builder: () -> Element
+		_ builder: (() -> Element)? = nil
 	) {
 		self.init(
 			material: effect.material,
@@ -60,19 +60,19 @@ public class VisualEffectView: Element {
 			builder
 		)
 	}
-
+	
 	/// Create a visual effect view
 	/// - Parameters:
 	///   - material: The material shown by the visual effect view
 	///   - blendingMode: A value indicating how the view’s contents blend with the surrounding content
-	///   - builder: The builder to generate the content of the effect view
 	///   - isEmphasized: A Boolean value indicating whether to emphasize the look of the material
+	///   - builder: The builder to generate the content of the effect view
 	public init(
 		material: NSVisualEffectView.Material? = nil,
 		blendingMode: NSVisualEffectView.BlendingMode? = nil,
 		isEmphasized: Bool = false,
 		padding: CGFloat? = nil,
-		_ builder: () -> Element
+		_ builder: (() -> Element)? = nil
 	) {
 		// Make the visual effect view
 		self.visualView = VisualEffect.MakeView(
@@ -80,30 +80,33 @@ public class VisualEffectView: Element {
 			blendingMode: blendingMode,
 			isEmphasized: isEmphasized
 		)
-
-		// Build the content
-		self.content = builder()
-
+		
+		self.content = builder?()
+		
 		super.init()
-
-		let contentView = self.content.view()
-		self.visualView.addSubview(contentView)
-
-		let inset = padding ?? 0
-		contentView.pinEdges(to: self.visualView, edgeInset: inset)
+		
+		// Build and attach the child view if a builder was supplied
+		if let content = self.content {
+			let contentView = content.view()
+			self.visualView.addSubview(contentView)
+			contentView.pinEdges(to: self.visualView, edgeInset: padding ?? 0)
+		}
 	}
-
+	
 	deinit {
 		self.isEmphasizedBinder?.deregister(self)
 	}
-
+	
 	// Private
 	override public func view() -> NSView { return self.visualView }
-	public override func childElements() -> [Element] { return [self.content] }
-
+	public override func childElements() -> [Element] {
+		if let content = self.content { return [content] }
+		return []
+	}
+	
 	private let visualView: NSVisualEffectView
-	private let content: Element
-
+	private let content: Element?
+	
 	private var isEmphasizedBinder: ValueBinder<Bool>?
 }
 
@@ -127,7 +130,7 @@ public struct VisualEffect {
 	let material: NSVisualEffectView.Material?
 	let blendingMode: NSVisualEffectView.BlendingMode?
 	let isEmphasized: Bool
-
+	
 	/// Create
 	/// - Parameters:
 	///   - material: The material to use, or nil to use default
@@ -153,7 +156,7 @@ extension VisualEffect {
 			isEmphasized: self.isEmphasized
 		)
 	}
-
+	
 	// Make a visual effect view using the provided settings
 	public static func MakeView(
 		material: NSVisualEffectView.Material? = nil,
@@ -182,120 +185,78 @@ struct VisualEffectViewPreviews: PreviewProvider {
 			VStack(alignment: .leading) {
 				HStack {
 					Box(".titlebar") {
-						VisualEffectView(material: .titlebar) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .titlebar)
+							.size(width: 200, height: 50)
 					}
 					Box(".selection") {
-						VisualEffectView(material: .selection) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .selection)
+							.size(width: 200, height: 50)
 					}
 				}
-
+				
 				HStack {
 					Box(".menu") {
-						VisualEffectView(material: .menu) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .menu)
+							.size(width: 200, height: 50)
 					}
 					Box(".popover") {
-						VisualEffectView(material: .popover) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .popover)
+							.size(width: 200, height: 50)
 					}
 				}
-
+				
 				HStack {
 					Box(".sidebar") {
-						VisualEffectView(material: .sidebar) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .sidebar)
+							.size(width: 200, height: 50)
 					}
 					Box(".headerView") {
-						VisualEffectView(material: .headerView) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .headerView)
+							.size(width: 200, height: 50)
 					}
 				}
-
+				
 				HStack {
 					Box(".sheet") {
-						VisualEffectView(material: .sheet) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .sheet)
+							.size(width: 200, height: 50)
 					}
 					Box(".windowBackground") {
-						VisualEffectView(material: .windowBackground) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .windowBackground)
+							.size(width: 200, height: 50)
 					}
 				}
-
+				
 				HStack {
 					Box(".hudWindow") {
-						VisualEffectView(material: .hudWindow) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .hudWindow)
+							.size(width: 200, height: 50)
 					}
 					Box(".fullScreenUI") {
-						VisualEffectView(material: .fullScreenUI) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .fullScreenUI)
+							.size(width: 200, height: 50)
 					}
 				}
-
+				
 				HStack {
 					Box(".toolTip") {
-						VisualEffectView(material: .toolTip) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .toolTip)
+							.size(width: 200, height: 50)
 					}
 					Box(".contentBackground") {
-						VisualEffectView(material: .contentBackground) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .contentBackground)
+							.size(width: 200, height: 50)
 					}
 				}
-
+				
 				HStack {
 					Box(".underWindowBackground") {
-						VisualEffectView(material: .underWindowBackground) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .underWindowBackground)
+							.size(width: 200, height: 50)
 					}
 					Box(".underPageBackground") {
-						VisualEffectView(material: .underPageBackground) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .underPageBackground)
+							.size(width: 200, height: 50)
 					}
 				}
 			}

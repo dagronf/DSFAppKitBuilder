@@ -48,7 +48,9 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 	}
 
 	func displayEmptyView() {
-		self.contentView.element = Group(layoutType: .center) { Label("No selection") }
+		self.contentView.element = Group(layoutType: .center) {
+			Label("No selection")
+		}
 	}
 
 	func tableViewSelectionDidChange(_ notification: Notification) {

@@ -30,51 +30,56 @@ class VisualEffectBuilderController: ElementController {
 				Label("Available for all macOS versions").font(.title3)
 				HStack {
 					Box(".titlebar") {
-						VisualEffectView(material: .titlebar) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .titlebar)
+							.size(width: 200, height: 50)
 					}
 					Box(".selection") {
-						VisualEffectView(material: .selection) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .selection)
+							.size(width: 200, height: 50)
 					}
 					Box(".menu") {
-						VisualEffectView(material: .menu) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .menu)
+							.size(width: 200, height: 50)
 					}
 				}
 
 				HStack {
 					Box(".popover") {
-						VisualEffectView(material: .popover) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .popover)
+							.size(width: 200, height: 50)
 					}
 					Box(".sidebar") {
-						VisualEffectView(material: .sidebar) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .sidebar)
+							.size(width: 200, height: 50)
 					}
 				}
 
 				HDivider()
 
 				self.buildModernEffects()
+
+				HDivider()
+
+				self.buildWithChildren()
 			}
 		}
 	}()
+
+	func buildWithChildren() -> Element {
+		VStack(alignment: .leading) {
+			Label("Visual Effect View with child element(s)").font(.title3)
+				.horizontalHuggingPriority(10)
+			VisualEffectView(material: .sidebar) {
+				HStack(spacing: 4) {
+					Label("Perform a search:").font(.headline)
+					SearchField()
+					Toggle()
+				}
+				.padding(8)
+			}
+			.border(width: 0.5, color: NSColor.quaternaryLabelColor)
+		}
+	}
 
 	func buildModernEffects() -> Element {
 		if #available(macOS 10.14, *) {
@@ -82,72 +87,45 @@ class VisualEffectBuilderController: ElementController {
 				Label("Available 10.14+").font(.title3)
 				HStack {
 					Box(".headerView") {
-						VisualEffectView(material: .headerView) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .headerView)
+							.size(width: 200, height: 50)
 					}
 					Box(".sheet") {
-						VisualEffectView(material: .sheet) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .sheet)
+							.size(width: 200, height: 50)
 					}
 					Box(".windowBackground") {
-						VisualEffectView(material: .windowBackground) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .windowBackground)
+							.size(width: 200, height: 50)
 					}
 				}
 
 				HStack {
 					Box(".hudWindow") {
-						VisualEffectView(material: .hudWindow) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .hudWindow)
+							.size(width: 200, height: 50)
 					}
 					Box(".fullScreenUI") {
-						VisualEffectView(material: .fullScreenUI) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .fullScreenUI)
+							.size(width: 200, height: 50)
 					}
 					Box(".toolTip") {
-						VisualEffectView(material: .toolTip) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .toolTip)
+							.size(width: 200, height: 50)
 					}
 				}
 				HStack {
 					Box(".contentBackground") {
-						VisualEffectView(material: .contentBackground) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .contentBackground)
+							.size(width: 200, height: 50)
 					}
 					Box(".underWindowBackground") {
-						VisualEffectView(material: .underWindowBackground) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .underWindowBackground)
+							.size(width: 200, height: 50)
 					}
 					Box(".underPageBackground") {
-						VisualEffectView(material: .underPageBackground) {
-							EmptyView()
-								.size(width: 200, height: 50)
-						}
-						.horizontalHuggingPriority(10)
+						VisualEffectView(material: .underPageBackground)
+							.size(width: 200, height: 50)
 					}
 				}
 			}
