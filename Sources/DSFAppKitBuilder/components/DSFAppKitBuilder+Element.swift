@@ -310,8 +310,11 @@ public extension Element {
 
 public extension Element {
 	/// Set the width of the element
+	///
+	/// If the value is nil, no constraint is applied
 	@discardableResult
-	func width(_ value: CGFloat, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+	func width(_ value: Double?, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+		guard let value = value else { return self }
 		with(self.view()) { view in
 
 			// Remove any forced width constraints firest
@@ -327,21 +330,23 @@ public extension Element {
 	}
 
 	/// Set the width of the element
+	///
+	/// If the value is nil, no constraint is applied
 	@discardableResult
-	func width(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		return self.width(value, relation: .equal, priority: priority)
+	func width(_ value: Double?, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+		self.width(value, relation: .equal, priority: priority)
 	}
 
 	/// Set the minimum width of the element
 	@discardableResult
-	func minWidth(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		return self.width(value, relation: .greaterThanOrEqual, priority: priority)
+	func minWidth(_ value: Double, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+		self.width(value, relation: .greaterThanOrEqual, priority: priority)
 	}
 
 	/// Set the maximum width of the element
 	@discardableResult
-	func maxWidth(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		return self.width(value, relation: .lessThanOrEqual, priority: priority)
+	func maxWidth(_ value: Double, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+		self.width(value, relation: .lessThanOrEqual, priority: priority)
 	}
 }
 
@@ -349,8 +354,11 @@ public extension Element {
 
 public extension Element {
 	/// Set the height of the element
+	///
+	/// If the value is nil, no constraint is applied
 	@discardableResult
-	func height(_ value: CGFloat, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+	func height(_ value: Double?, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+		guard let value = value else { return self }
 		with(self.view()) { view in
 			// Removed any forced height constraints
 			view.constraints.filter({ $0.identifier == "forcedHeight" }).forEach { view.removeConstraint($0) }
@@ -365,21 +373,23 @@ public extension Element {
 	}
 
 	/// Set the height of the element
+	///
+	/// If the value is nil, no constraint is applied
 	@discardableResult
-	func height(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		return self.height(value, relation: .equal, priority: priority)
+	func height(_ value: Double?, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+		self.height(value, relation: .equal, priority: priority)
 	}
 
 	/// Set the minimum height of the element
 	@discardableResult
-	func minHeight(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		return self.height(value, relation: .greaterThanOrEqual, priority: priority)
+	func minHeight(_ value: Double, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+		self.height(value, relation: .greaterThanOrEqual, priority: priority)
 	}
 
 	/// Set the maximum height of the element
 	@discardableResult
-	func maxHeight(_ value: CGFloat, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		return self.height(value, relation: .lessThanOrEqual, priority: priority)
+	func maxHeight(_ value: Double, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+		self.height(value, relation: .lessThanOrEqual, priority: priority)
 	}
 }
 

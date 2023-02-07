@@ -137,7 +137,7 @@ class DisclosureViewController: ElementController {
 	}
 
 	private lazy var otherContent: Element = {
-		DisclosureGroup { //}(label: "Format Settings") {
+		DisclosureGroup {
 			DisclosureView(title: "Spacing", isExpandedBinder: firstVisible, header: {
 				Button(title: "Reset").controlSize(.small)
 			}) {

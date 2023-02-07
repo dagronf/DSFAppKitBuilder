@@ -125,9 +125,6 @@ public class DisclosureView: Element {
 	}
 
 	private lazy var rootElement: Element = {
-
-		var hstackBinder: NSStackView?
-
 		let disclosure: Element =
 			VStack(spacing: 8, alignment: .leading, distribution: .fill) {
 				HStack(spacing: 4, alignment: .centerY)  {
@@ -151,7 +148,7 @@ public class DisclosureView: Element {
 				.edgeInsets(right: 4)
 				.hugging(h: 10)
 				.verticalCompressionResistancePriority(.defaultHigh)
-				.bindControl(to: &hstackBinder)
+				.height(headerHeight, priority: .defaultLow)
 
 				self.childElement
 			}
@@ -159,12 +156,6 @@ public class DisclosureView: Element {
 				.group(self.title)
 			])
 			.detachesHiddenViews()
-
-		if let forcedHeight = self.headerHeight, let binder = hstackBinder {
-			let c = binder.heightAnchor.constraint(equalToConstant: forcedHeight)
-			c.priority = .defaultLow
-			c.isActive = true
-		}
 
 		self.updateState(self.initiallyExpanded ? .on : .off)
 
