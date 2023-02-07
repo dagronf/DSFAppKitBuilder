@@ -27,13 +27,15 @@ class ViewController: NSViewController {
 		displayEmptyView()
 	}
 
+	override func viewDidAppear() {
+		super.viewDidAppear()
+	}
+
 	override var representedObject: Any? {
 		didSet {
 		// Update the view, if already loaded.
 		}
 	}
-
-
 }
 
 extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
@@ -66,30 +68,63 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 			// Hold on to the controller so we can use ValueBinders etc.
 			controller = newController
 
+//			contentView.element =
+//				VStack(spacing: 0, alignment: .leading) {
+//					VisualEffectView(effect: .init(material: .titlebar), padding: 8) {
+//						VStack(alignment: .leading) {
+//							HStack {
+//								Label(newItem.title).font(.title1.weight(.medium)).applyStyle(Label.Styling.truncatingTail)
+//								Maybe(!newItem.type.isEmpty) {
+//									Label("(\(newItem.type))")
+//										.font(.title1.weight(.medium).withSymbolicTraits(.monoSpace))
+//										.applyStyle(Label.Styling.truncatingTail)
+//								}
+//							}
+//							Label(newItem.description)
+//								.applyStyle(Label.Styling.multiline)
+//						}
+//						.hugging(h: 10, v: 999)
+//					}
+//
+//					HDivider()
+//
+//					ScrollView(borderType: .noBorder, fitHorizontally: true) {
+//						newController.body
+//							.horizontalHuggingPriority(10)
+//							.padding(8)
+//					}
+//				}
+
 			contentView.element = ScrollView {
-				VStack(alignment: .leading) {
+				VStack(spacing: 0, alignment: .leading) {
 
-					VStack(alignment: .leading) {
-						HStack {
-							Label(newItem.title).font(.title1.weight(.medium)).applyStyle(Label.Styling.truncatingTail)
-							Maybe(!newItem.type.isEmpty) {
-								Label("(\(newItem.type))")
-									.font(.title1.weight(.medium).withSymbolicTraits(.monoSpace))
-									.applyStyle(Label.Styling.truncatingTail)
+					VisualEffectView(effect: .init(material: .titlebar), padding: 8) {
+						VStack(alignment: .leading) {
+							HStack {
+								Label(newItem.title).font(.title1.weight(.medium)).applyStyle(Label.Styling.truncatingTail)
+								Maybe(!newItem.type.isEmpty) {
+									Label("(\(newItem.type))")
+										.font(.title1.weight(.medium).withSymbolicTraits(.monoSpace))
+										.applyStyle(Label.Styling.truncatingTail)
+								}
 							}
+							Label(newItem.description)
+								.applyStyle(Label.Styling.multiline)
 						}
-						.hugging(h: 10)
-
-						Label(newItem.description)
-							.applyStyle(Label.Styling.multiline)
+						.accessibility([
+							.role(.group),
+							.label("Element Overview Header")
+						])
+						.hugging(h: 10, v: 999)
 					}
-					.hugging(h: 10)
+
 
 					HDivider()
 
 					newController.body
+						.padding(8)
 				}
-				.padding(8)
+
 			}
 		}
 	}

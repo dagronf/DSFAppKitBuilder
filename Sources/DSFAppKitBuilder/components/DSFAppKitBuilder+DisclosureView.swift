@@ -137,6 +137,9 @@ public class DisclosureView: Element {
 						.onChange { [weak self] newState in
 							self?.updateState(newState)
 						}
+						.accessibility([
+							.title(self.title)
+						])
 					Label(self.title).font(self.titleFont)
 						.onLabelClicked { [weak self] in
 							self?.toggleState()
@@ -152,13 +155,15 @@ public class DisclosureView: Element {
 
 				self.childElement
 			}
+			.accessibility([
+				.group(self.title)
+			])
 			.detachesHiddenViews()
 
 		if let forcedHeight = self.headerHeight, let binder = hstackBinder {
 			let c = binder.heightAnchor.constraint(equalToConstant: forcedHeight)
 			c.priority = .defaultLow
 			c.isActive = true
-			//hstackBinder?.heightAnchor.constraint(equalToConstant: forcedHeight).isActive = true
 		}
 
 		self.updateState(self.initiallyExpanded ? .on : .off)

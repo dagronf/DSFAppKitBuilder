@@ -32,7 +32,7 @@ class DisclosureViewController: ElementController {
 			VStack(alignment: .leading) {
 				VStack(alignment: .leading) {
 					Label("Basic control").font(__headerFont)
-					DisclosureView(title: "Format (default on)") {
+					DisclosureView(title: "Format") {
 						HStack {
 							Label("Format style!")
 							EmptyView()
@@ -41,7 +41,7 @@ class DisclosureViewController: ElementController {
 					}
 					.backgroundColor(NSColor.systemPurple.withAlphaComponent(0.2))
 
-					DisclosureView(title: "Format (default off)", initiallyExpanded: false) {
+					DisclosureView(title: "Style", initiallyExpanded: false) {
 						VStack {
 							HStack {
 								Label("Format style!")
@@ -86,7 +86,7 @@ class DisclosureViewController: ElementController {
 					}
 
 				}
-				DisclosureView(title: "Format (default on)", headerHeight: 28, header: {
+				DisclosureView(title: "Text Format", headerHeight: 28, header: {
 					HStack {
 						Label("Spacing:")
 						TextField().width(60).controlSize(.small).roundedBezel()
@@ -102,7 +102,7 @@ class DisclosureViewController: ElementController {
 				.backgroundColor(NSColor.systemPink.withAlphaComponent(0.2))
 				.cornerRadius(4)
 
-				DisclosureView(title: "Format (default off)", headerHeight: 28, initiallyExpanded: false, header: {
+				DisclosureView(title: "Spacing", headerHeight: 28, initiallyExpanded: false, header: {
 					Button(title: "Reset", bezelStyle: .roundRect).controlSize(.small)
 				}) {
 					HStack {
@@ -137,7 +137,7 @@ class DisclosureViewController: ElementController {
 	}
 
 	private lazy var otherContent: Element = {
-		DisclosureGroup {
+		DisclosureGroup { //}(label: "Format Settings") {
 			DisclosureView(title: "Spacing", isExpandedBinder: firstVisible, header: {
 				Button(title: "Reset").controlSize(.small)
 			}) {

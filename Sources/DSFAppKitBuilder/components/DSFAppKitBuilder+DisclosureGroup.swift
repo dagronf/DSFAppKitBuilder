@@ -34,6 +34,7 @@ public class DisclosureGroup: Element {
 	/// - Parameters:
 	///   - builder: The builder for generating the group of radio elements
 	public init(
+		label: String? = nil,
 		spacing: CGFloat = 12,
 		showSeparators: Bool = true,
 		@DisclosureGroupBuilder builder: () -> [DisclosureView]
@@ -46,8 +47,17 @@ public class DisclosureGroup: Element {
 				contents.append(HDivider())
 			}
 		}
-		self.rootStack = VStack(orientation: .vertical, alignment: .leading, content: contents)
+
+		let stack = VStack(orientation: .vertical, alignment: .leading, content: contents)
 			.spacing(spacing)
+
+		if let label = label {
+			// If a label was set, mark the view as an accessibility group with a label
+			_ = stack.accessibility([.group(label)])
+		}
+
+		self.rootStack = stack
+
 		super.init()
 	}
 
