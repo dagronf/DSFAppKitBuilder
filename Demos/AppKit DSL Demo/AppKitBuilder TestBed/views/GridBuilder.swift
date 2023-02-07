@@ -91,3 +91,19 @@ class GridBuilderController: ElementController {
 	}()
 }
 
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+@available(macOS 10.15, *)
+struct GridBuilderPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			VStack {
+				GridBuilder().build().body
+				EmptyView()
+			}
+			.SwiftUIPreview()
+		}
+		.padding()
+	}
+}
+#endif

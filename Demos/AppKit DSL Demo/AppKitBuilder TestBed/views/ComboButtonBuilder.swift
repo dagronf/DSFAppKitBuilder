@@ -182,26 +182,19 @@ class ComboButtonController: ElementController {
 	}()
 }
 
-//static var previews: some SwiftUI.View {
-//	SwiftUI.VStack {
-//		HStack {
-//			VStack(alignment: .leading) {
-//				Label("Default")
-//				ComboButton(style: .split, "Split Style", menu: menu1)
-//				ComboButton(style: .unified, "Unified Style", menu: menu2)
-//			}
-//			VStack {
-//				Label("Disabled") //.font(.headline)
-//				ComboButton(style: .split, "Split Style", menu: nil)
-//					.isEnabled(false)
-//				ComboButton(style: .unified, "Unified Style", menu: nil)
-//					.isEnabled(false)
-//				ComboButton(style: .unified, "Unified Style", menu: nil)
-//					.bindIsHidden(ValueBinder<Bool>(true))
-//			}
-//		}
-//		.SwiftUIPreview()
-//	}
-//	.padding()
-//	.frame(width: 400)
-//}
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+@available(macOS 10.15, *)
+struct ComboButtonBuilderPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			VStack {
+				ComboButtonBuilder().build().body
+				EmptyView()
+			}
+			.SwiftUIPreview()
+		}
+		.padding()
+	}
+}
+#endif

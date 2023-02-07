@@ -89,3 +89,20 @@ class OneOfBuilderController: ElementController {
 		}
 	}()
 }
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+@available(macOS 10.15, *)
+struct OneOfBuilderPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			VStack {
+				OneOfBuilder().build().body
+				EmptyView()
+			}
+			.SwiftUIPreview()
+		}
+		.padding()
+	}
+}
+#endif
