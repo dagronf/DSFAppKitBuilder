@@ -135,8 +135,8 @@ private extension ScrollView {
 		clipView.translatesAutoresizingMaskIntoConstraints = false
 
 		NSLayoutConstraint.activate([
-			clipView.leftAnchor.constraint(equalTo: self.scrollView.leftAnchor),
-			clipView.rightAnchor.constraint(equalTo: self.scrollView.rightAnchor),
+			clipView.leadingAnchor.constraint(equalTo: self.scrollView.leadingAnchor),
+			clipView.trailingAnchor.constraint(equalTo: self.scrollView.trailingAnchor),
 			clipView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
 			clipView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
 		])
@@ -146,14 +146,14 @@ private extension ScrollView {
 		self.scrollView.documentView = contentView
 
 		NSLayoutConstraint.activate([
-			contentView.leftAnchor.constraint(equalTo: clipView.leftAnchor),
+			contentView.leadingAnchor.constraint(equalTo: clipView.leadingAnchor),
 			contentView.topAnchor.constraint(equalTo: clipView.topAnchor),
 			// NOTE: No need for bottomAnchor
 		])
 
 		if fitHorizontally {
 			NSLayoutConstraint.activate([
-				contentView.rightAnchor.constraint(equalTo: clipView.rightAnchor),
+				contentView.trailingAnchor.constraint(equalTo: clipView.trailingAnchor),
 			])
 		}
 	}
