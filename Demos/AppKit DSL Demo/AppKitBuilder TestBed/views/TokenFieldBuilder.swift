@@ -33,11 +33,16 @@ class TokenFieldBuilderController: ElementController {
 	private let tokenField3 = ValueBinder<[String]>(["maroon"])
 	private let tokenField4 = ValueBinder<[String]>([])
 	private let tokenField5 = ValueBinder<[String]>(["pig", "fish", "elephant", "womble"])
+	private let tokenField6 = ValueBinder<[String]>(["caterpillar@womble.com", "flutterby@womble.com"])
+
+	private let headerFont = AKBFont(.systemFont(ofSize: 16, weight: .bold))
 
 	lazy var body: Element = {
 		VStack(spacing: 16, alignment: .leading) {
 			VStack(alignment: .leading) {
-				Label("TokenField update on end editing only").font(.headline)
+				Label("TokenField update on end editing only")
+					.font(headerFont)
+					.applyStyle(Label.Styling.truncatingTail)
 				TokenField(content: self.tokenField1, updateOnEndEditingOnly: true)
 				HStack {
 					Label("Tokens:").font(.system.bold())
@@ -47,8 +52,9 @@ class TokenFieldBuilderController: ElementController {
 
 				HDivider()
 
-				Label("TokenField update every change").font(.headline)
-					.horizontalHuggingPriority(1)
+				Label("TokenField update every change")
+					.font(headerFont)
+					.applyStyle(Label.Styling.truncatingTail)
 				TokenField(content: self.tokenField2)
 					.completions { str in
 						["red", "green", "blue", "yellow", "cyan", "magenta", "black"]
@@ -62,7 +68,9 @@ class TokenFieldBuilderController: ElementController {
 
 				HDivider()
 
-				Label("TokenField with completions (basic web color names)").font(.headline)
+				Label("TokenField with completions (basic web color names)")
+					.font(headerFont)
+					.applyStyle(Label.Styling.truncatingTail)
 				TokenField(tokenStyle: .rounded, content: self.tokenField3)
 					.completions { str in
 						colorKeywordMap
@@ -76,7 +84,9 @@ class TokenFieldBuilderController: ElementController {
 
 				HDivider()
 
-				Label("TokenField validating color names (basic web color names)").font(.headline)
+				Label("TokenField validating color names (basic web color names)")
+					.font(headerFont)
+					.applyStyle(Label.Styling.truncatingTail)
 				TokenField(content: self.tokenField4)
 					.completions { str in
 						colorKeywordMap
@@ -102,7 +112,38 @@ class TokenFieldBuilderController: ElementController {
 
 				HDivider()
 
-				Label("TokenField with large font").font(.headline)
+				Label("TokenField with menus")
+					.font(headerFont)
+					.applyStyle(Label.Styling.truncatingTail)
+				TokenField(content: self.tokenField6, updateOnEndEditingOnly: true)
+					.hasMenuForToken { token in
+						true
+					}
+					.menuForToken { token in
+						Menu {
+							MenuItem("Send email…")
+								.onAction { Swift.print("Selected 'one'") }
+							MenuItem("Send file…")
+								.onAction { Swift.print("Selected 'two'") }
+							Separator()
+							MenuItem("Delete contact…")
+								.onAction { Swift.print("Selected 'three'") }
+						}
+					}
+				HStack {
+					Label("Tokens:").font(.system.bold())
+					Label(self.tokenField6.stringValue())
+						.lineBreakMode(.byTruncatingTail)
+						.wraps(true)
+						.horizontalPriorities(hugging: 100, compressionResistance: 100)
+					EmptyView()
+				}
+
+				HDivider()
+
+				Label("TokenField with large font")
+					.font(headerFont)
+					.applyStyle(Label.Styling.truncatingTail)
 				TokenField(content: self.tokenField5, updateOnEndEditingOnly: true)
 					.font(.title3.bold().condensed())
 				HStack {

@@ -19,9 +19,11 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import AppKit
-import DSFValueBinders
 import Foundation
+import AppKit
+
+import DSFValueBinders
+import DSFMenuBuilder
 
 /// A string-based Token Field that expands vertically to fit the content as needed
 ///
@@ -86,6 +88,15 @@ public class TokenField: TextField {
 	/// Should add [`token`]s at index
 	public typealias ShouldAddTokensBlockType = ((_ tokens: [String], _ at: Int) -> [String])
 	private var shouldAddTokensBlock: ShouldAddTokensBlockType?
+
+	public typealias HasMenuForTokenBlockType = ((_ token: String) -> Bool)
+	private var hasMenuForTokenBlock: HasMenuForTokenBlockType?
+
+	public typealias MenuForTokenBlockType = ((_ token: String) -> Menu?)
+	private var menuForTokenBlock: MenuForTokenBlockType?
+
+	public typealias NSMenuForTokenBlockType = ((_ token: String) -> NSMenu?)
+	private var nsMenuForTokenBlock: NSMenuForTokenBlockType?
 }
 
 // MARK: - Callbacks
@@ -106,6 +117,28 @@ public extension TokenField {
 	/// Called when the tokenfield has completed editing and committed the changes
 	func onEndEditingTokens(_ block: @escaping OnEndEditingTokensBlockType) -> Self {
 		self.onEndEditingTokensBlock = block
+		return self
+	}
+}
+
+// MARK: - Token menu support
+
+public extension TokenField {
+	/// A block that gets called to determine whether a particular token has a menu or not
+	func hasMenuForToken(_ block: @escaping (_ token: String) -> Bool) -> Self {
+		self.hasMenuForTokenBlock = block
+		return self
+	}
+
+	/// A block to return a Menu (DSFMenuBuilder) for a particular token
+	func menuForToken(_ block: @escaping (_ token: String) -> Menu?) -> Self {
+		self.menuForTokenBlock = block
+		return self
+	}
+
+	/// A block to return an NSMenu for a particular token
+	func menuForToken(_ block: @escaping (_ token: String) -> NSMenu?) -> Self {
+		self.nsMenuForTokenBlock = block
 		return self
 	}
 }
@@ -139,17 +172,29 @@ extension TokenField: NSTokenFieldDelegate {
 		return false
 	}
 
-//	public func controlTextDidChange(_ obj: Notification) {
-//		if updateOnEndEditingOnly == false {
-//			self.updateContent()
-//		}
-//	}
-//
 	public override func controlTextDidEndEditing(_ obj: Notification) {
 		super.controlTextDidEndEditing(obj)
 		self.onEndEditingTokensBlock?(self.content.wrappedValue)
 	}
 }
+
+extension TokenField {
+	public func tokenField(_ tokenField: NSTokenField, hasMenuForRepresentedObject representedObject: Any) -> Bool {
+		self.hasMenuForTokenBlock?(representedObject as! String) ?? false
+	}
+
+	public func tokenField(_ tokenField: NSTokenField, menuForRepresentedObject representedObject: Any) -> NSMenu? {
+		if let block = self.menuForTokenBlock {
+			return block(representedObject as! String)?.menu
+		}
+		else if let block = self.nsMenuForTokenBlock {
+			return block(representedObject as! String)
+		}
+		return nil
+	}
+}
+
+// MARK: - SwiftUI support
 
 //#if DEBUG && canImport(SwiftUI)
 //import SwiftUI
@@ -171,29 +216,3 @@ extension TokenField: NSTokenFieldDelegate {
 //	}
 //}
 //#endif
-
-// A custom NSTokenField class that automatically expands the field vertically to fit the content
-private class VerticalSizingTokenField: NSTokenField {
-	override var intrinsicContentSize: NSSize {
-		 // Guard the cell exists and wraps
-		 guard let cell = self.cell, cell.wraps else {
-			 return super.intrinsicContentSize
-		 }
-
-		 // Use intrinsic width to jive with autolayout
-		 let width = super.intrinsicContentSize.width
-
-		 // Set the frame height to a reasonable number
-		 self.frame.size.height = 750.0
-
-		 // Calcuate height
-		 let height = cell.cellSize(forBounds: self.frame).height
-
-		 return NSMakeSize(width, height);
-	}
-
-	override func textDidChange(_ notification: Notification) {
-		 super.textDidChange(notification)
-		 super.invalidateIntrinsicContentSize()
-	}
-}
