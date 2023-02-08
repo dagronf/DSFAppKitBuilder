@@ -364,6 +364,7 @@ TextField()
 | `TabView`          | An `NSTabView` wrapper |
 | `TextField`        | An `NSTextField` wrapper configured as an editable field |
 | `Toggle`           | A scalable toggle button (uses [DSFToggleButton](https://github.com/dagronf/DSFToggleButton)) |
+| `TokenField`       | A wrapper around `NSTokenField` |
 | `View`             | A wrapper for any `NSView` instance |
 | `VisualEffectView` | A wrapper for a `NSVisualEffectView` instance |
 | `Window`           | An `NSWindow` wrapper |
@@ -376,8 +377,8 @@ TextField()
 | `Maybe`             | An element that inserts an element into the view IF a condition is met |
 | `OneOf`             | An element that binds the visibility of a number of elements to a `ValueBinder<>` value |
 | `DynamicElement`    | An element that binds the displayed Element to a `ValueBinder<>` |
-| `DisclosureView`    | An element has a title and a disclosable child element` |
-| `DisclosureGroup`   | An element that is a collection of `DisclosureView` elements` |
+| `DisclosureView`    | An element has a title and a disclosable child element |
+| `DisclosureGroup`   | An element that is a collection of `DisclosureView` elements |
 
 ## Using SwiftUI previews
 

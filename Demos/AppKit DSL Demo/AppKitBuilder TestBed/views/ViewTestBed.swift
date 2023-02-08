@@ -35,5 +35,6 @@ public class ViewItems {
 		SearchFieldBuilder(),
 		DynamicElementBuilder(),
 		VisualEffectBuilder(),
+		TokenFieldBuilder(),
 	].sorted { a, b in a.title < b.title }
 }

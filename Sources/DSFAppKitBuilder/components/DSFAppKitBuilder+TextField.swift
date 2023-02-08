@@ -74,6 +74,10 @@ public class TextField: Label {
 		self.textValueBinder?.deregister(self)
 	}
 
+	// Called when the text in the field changes. Is overridden in inherited classes (eg. TokenField) to do
+	// additional parsing when the content changes
+	internal func updateContent() { }
+
 	// Privates
 
 	// Block callbacks
@@ -83,7 +87,7 @@ public class TextField: Label {
 
 	// Text Content binding
 	private var textValueBinder: ValueBinder<String>?
-	private var updateOnEndEditingOnly: Bool = false
+	internal var updateOnEndEditingOnly: Bool = false
 
 	private var hasTextBinder: ValueBinder<Bool>?
 }
@@ -174,10 +178,12 @@ extension TextField: NSTextFieldDelegate {
 		if !updateOnEndEditingOnly {
 			self.textValueBinder?.wrappedValue = self.label.stringValue
 			self.hasTextBinder?.wrappedValue = !self.label.stringValue.isEmpty
+			self.updateContent()
 		}
 	}
 
 	public func controlTextDidEndEditing(_: Notification) {
+		self.updateContent()
 		if updateOnEndEditingOnly {
 			self.textValueBinder?.wrappedValue = self.label.stringValue
 			self.hasTextBinder?.wrappedValue = !self.label.stringValue.isEmpty
