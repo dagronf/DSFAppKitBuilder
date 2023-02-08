@@ -86,8 +86,8 @@ public class StepperView: Element {
 		super.init()
 
 		self.stepper.allowsEmpty = allowsEmptyValue
-		self.stepper.minimum = range.lowerBound
-		self.stepper.maximum = range.upperBound
+		self.stepper.minimum = CGFloat(range.lowerBound)
+		self.stepper.maximum = CGFloat(range.upperBound)
 		self.stepper.increment = CGFloat(increment)
 		self.stepper.allowsKeyboardInput = allowsKeyboardInput
 
@@ -171,7 +171,7 @@ public extension StepperView {
 		valueBinder.register { newValue in
 			let currentValue: Double? = self.stepper.floatValue == nil ? nil : Double(self.stepper.floatValue!)
 			if currentValue != newValue {
-				self.stepper.floatValue = newValue == nil ? nil : Double(newValue!)
+				self.stepper.floatValue = newValue == nil ? nil : CGFloat(newValue!)
 			}
 		}
 		return self

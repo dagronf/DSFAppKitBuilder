@@ -162,6 +162,7 @@
 		239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonBuilder.swift; sourceTree = "<group>"; };
 		239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridBuilder.swift; sourceTree = "<group>"; };
 		239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComboButtonBuilder.swift; sourceTree = "<group>"; };
+		23C4B93F2993B4E900BD4425 /* AppKitBuilder_TestBed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppKitBuilder_TestBed.plist; sourceTree = "<group>"; };
 		23C6E90926AF971600FBF106 /* PrimaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDSL.swift; sourceTree = "<group>"; };
 		23C818872993841A00816107 /* TokenFieldBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFieldBuilder.swift; sourceTree = "<group>"; };
 		23E66E67296F94110025AFB0 /* SwiftUIPreviewDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUIPreviewDemo.swift; sourceTree = "<group>"; };
@@ -279,6 +280,7 @@
 		235CBB29298B99A400D3D4DE /* AppKitBuilder TestBed */ = {
 			isa = PBXGroup;
 			children = (
+				23C4B93F2993B4E900BD4425 /* AppKitBuilder_TestBed.plist */,
 				235CBB3B298B99FB00D3D4DE /* views */,
 				235CBB2A298B99A400D3D4DE /* AppDelegate.swift */,
 				235CBB2C298B99A400D3D4DE /* ViewController.swift */,
@@ -836,6 +838,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "AppKitBuilder TestBed/AppKitBuilder_TestBed.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -865,6 +868,7 @@
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "AppKitBuilder TestBed/AppKitBuilder_TestBed.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;

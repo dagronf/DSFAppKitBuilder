@@ -207,7 +207,7 @@ class ButtonBuilderController: ElementController {
 						Button(title: "Press Me").isBordered(false)
 							.font(.title3)
 							.image(
-								NSImage(systemSymbolName: "apple.logo", accessibilityDescription: nil)!,
+								NSImage(named: "apple.logo")!,
 								imagePosition: .imageLeading
 							)
 							.contentTintColor(NSColor.systemGreen)
@@ -219,7 +219,7 @@ class ButtonBuilderController: ElementController {
 							.font(.title3)
 							.contentTintColor(NSColor.systemRed)
 							.image(
-								NSImage(systemSymbolName: "apple.logo", accessibilityDescription: nil)!,
+								NSImage(named: "apple.logo")!,
 								imagePosition: .imageAbove
 							)
 							.border(width: 0.5, color: NSColor.quaternaryLabelColor)
@@ -230,7 +230,7 @@ class ButtonBuilderController: ElementController {
 							.font(.title3)
 							.contentTintColor(NSColor.systemBlue)
 							.image(
-								NSImage(systemSymbolName: "apple.logo", accessibilityDescription: nil)!,
+								NSImage(named: "apple.logo")!,
 								imagePosition: .imageOnly
 							)
 							.border(width: 0.5, color: NSColor.quaternaryLabelColor)
@@ -241,7 +241,7 @@ class ButtonBuilderController: ElementController {
 							.font(.title3)
 							.contentTintColor(NSColor.systemYellow)
 							.image(
-								NSImage(systemSymbolName: "apple.logo", accessibilityDescription: nil)!,
+								NSImage(named: "apple.logo")!,
 								imagePosition: .imageTrailing
 							)
 							.border(width: 0.5, color: NSColor.quaternaryLabelColor)
@@ -252,7 +252,7 @@ class ButtonBuilderController: ElementController {
 							.font(.title3)
 							.contentTintColor(NSColor.systemPink)
 							.image(
-								NSImage(systemSymbolName: "apple.logo", accessibilityDescription: nil)!,
+								NSImage(named: "apple.logo")!,
 								imagePosition: .imageBelow
 							)
 							.border(width: 0.5, color: NSColor.quaternaryLabelColor)
@@ -263,7 +263,7 @@ class ButtonBuilderController: ElementController {
 							.font(.title3)
 							.contentTintColor(NSColor.systemTeal)
 							.image(
-								NSImage(systemSymbolName: "apple.logo", accessibilityDescription: nil)!,
+								NSImage(named: "apple.logo")!,
 								imagePosition: .imageOverlaps
 							)
 							.border(width: 0.5, color: NSColor.quaternaryLabelColor)

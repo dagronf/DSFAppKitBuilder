@@ -167,7 +167,7 @@ public class Toggle: Control {
 		@unknown default:
 			fatalError()
 		}
-		self.size(width: sz.width, height: sz.height)
+		self.size(width: Double(sz.width), height: Double(sz.height))
 	}
 }
 
