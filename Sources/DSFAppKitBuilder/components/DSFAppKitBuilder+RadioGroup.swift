@@ -197,13 +197,13 @@ public extension RadioGroup {
 				.enumerated()
 				.compactMap {
 					if let b = $0.1 as? NSButton {
-						return ($0.0, b)
+						return (index: $0.0, button: b)
 					}
 					return nil
 				}
-				.forEach { item in
-					let isDisabled = state.contains(item.0)
-					item.1.isEnabled = !isDisabled
+				.forEach { (item: (index: Int, button: NSButton)) in
+					let isDisabled = state.contains(item.index)
+					item.button.isEnabled = !isDisabled
 				}
 		}
 	}

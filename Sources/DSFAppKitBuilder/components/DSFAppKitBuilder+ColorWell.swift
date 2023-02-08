@@ -54,7 +54,7 @@ public class ColorWell: Control {
 
 	/// Create a ColorWell
 	/// - Parameters:
-	///   - style: (macOS 13+) The style for the color well.
+	///   - style: (macOS 13+) The style for the color well, ignored before macOS 13
 	///   - showsAlpha: true if the color well should allow setting the opacity of the returned color
 	///   - isBordered: true if the color well has a border
 	///   - color: The initial color
@@ -138,11 +138,25 @@ public extension ColorWell {
 internal class AlphaCompatibleColorWell: NSColorWell {
 	var showsAlpha: Bool = false
 
+// Workaround for NSColorWell.Style only available on Xcode 14+
+
+#if swift(>=5.7)
 	@available(macOS 13.0, *)
-	init(style: NSColorWell.Style) {
+	init(style: ColorWell.Style) {
 		super.init(frame: .zero)
-		self.colorWellStyle = style
+		self.colorWellStyle = {
+			switch style {
+			case .`default`: return NSColorWell.Style.default
+			case .minimal: return NSColorWell.Style.minimal
+			case .expanded: return NSColorWell.Style.expanded
+			}
+		}()
 	}
+#else
+	init(style: ColorWell.Style) {
+		super.init(frame: .zero)
+	}
+#endif
 
 	init() {
 		super.init(frame: .zero)

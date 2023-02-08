@@ -53,6 +53,7 @@ public class ComboButton: Control {
 
 	override public func view() -> NSView { return self.comboButton }
 
+#if swift(>=5.7)
 	private lazy var comboButton: ComboButtonWrapper = {
 		if #available(macOS 13, *) {
 			return NSComboButton()
@@ -61,6 +62,9 @@ public class ComboButton: Control {
 			return DSFComboButton()
 		}
 	}()
+#else
+	private lazy var comboButton = DSFComboButton()
+#endif
 
 	private let menu: NSMenu
 	private var action: (() -> Void)?
@@ -127,6 +131,7 @@ protocol ComboButtonWrapper: NSView {
 	var styleWrapper: DSFComboButton.Style { get set }
 }
 
+#if swift(>=5.7)
 @available(macOS 13.0, *)
 extension NSComboButton: ComboButtonWrapper {
 	var styleWrapper: DSFComboButton.Style {
@@ -139,6 +144,7 @@ extension NSComboButton: ComboButtonWrapper {
 		set { self.menu = newValue }
 	}
 }
+#endif
 
 extension DSFComboButton: ComboButtonWrapper {
 	var menuWrapper: NSMenu {

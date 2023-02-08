@@ -308,22 +308,22 @@ final class TrackingArea {
 	- Note: This should be called in your `NSView#updateTrackingAreas()` method.
 	*/
 	func update() {
-		if let trackingArea {
-			view?.removeTrackingArea(trackingArea)
+		if let trackingArea = self.trackingArea {
+			self.view?.removeTrackingArea(trackingArea)
 		}
 
 		let newTrackingArea = NSTrackingArea(
-			rect: rect,
+			rect: self.rect,
 			options: [
 				.mouseEnteredAndExited,
 				.activeInActiveApp
 			],
-			owner: view,
+			owner: self.view,
 			userInfo: nil
 		)
 
-		view?.addTrackingArea(newTrackingArea)
-		trackingArea = newTrackingArea
+		self.view?.addTrackingArea(newTrackingArea)
+		self.trackingArea = newTrackingArea
 	}
 }
 
