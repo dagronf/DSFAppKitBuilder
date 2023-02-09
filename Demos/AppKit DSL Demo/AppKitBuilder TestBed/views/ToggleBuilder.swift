@@ -50,6 +50,7 @@ class ToggleBuilderController: ElementController {
 				Toggle(state: .on)
 					.isEnabled(false)
 			}
+			HDivider()
 			Label("Control sizing")
 			HStack {
 				VStack {
@@ -126,6 +127,7 @@ class ToggleBuilderController: ElementController {
 					.size(width: 300, height: 200)
 			}
 		}
+		.hugging(h: 10)
 
 	}()
 }
