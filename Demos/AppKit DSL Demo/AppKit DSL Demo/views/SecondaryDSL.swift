@@ -188,7 +188,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				ComboButton(
 					style: .split,
 					"Split (fixed menu)",
-					image: NSImage(named: "status-bar-icon"),
+					image: NSImage(named: "fan.oscillation"),
 					menu: menu1
 				) {
 					Swift.print("Split Button pressed!")
@@ -219,7 +219,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				ComboButton(
 					style: .split,
 					"Rabbit",
-					image: NSImage(named: "slider-rabbit"),
+					image: NSImage(named: "house"),
 					menu: nil
 				) {
 					Swift.print("Unified Button pressed!")
@@ -236,7 +236,7 @@ class SecondaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 				ComboButton(
 					style: .split,
 					"Rabbit",
-					image: NSImage(named: "slider-rabbit"),
+					image: NSImage(named: "fan.oscillation"),
 					menu: rabbitMenu
 				) { [weak self] in
 					if let w = self?.rabbitComboTitle.wrappedValue {

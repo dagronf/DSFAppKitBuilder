@@ -43,6 +43,15 @@ class ComboButtonController: ElementController {
 			.onAction { [weak self] in self?.rabbitComboTitle.wrappedValue = "third" }
 	}
 
+	private lazy var simpleMenu: NSMenu = NSMenu {
+		MenuItem("first")
+			.enabled { [weak self] in true }
+		MenuItem("second")
+			.enabled { [weak self] in true }
+		MenuItem("third")
+			.enabled { [weak self] in true }
+	}
+
 	private var menu2Count = 0
 
 	private let buWidth = 200.0
@@ -118,13 +127,17 @@ class ComboButtonController: ElementController {
 				ComboButton(
 					style: .split,
 					"Split (fixed menu)",
-					image: NSImage(named: "status-bar-icon"),
+					image: NSImage(named: "house"),
 					menu: menu1
 				) {
 					Swift.print("Split Button pressed!")
 				}
 
-				ComboButton(style: .unified, "Unified (dynamic menu)", menu: nil) {
+				ComboButton(
+					style: .unified,
+					"Unified (dynamic menu)",
+					menu: nil
+				) {
 					Swift.print("Unified Button pressed!")
 				}
 				.width(buWidth)
@@ -148,7 +161,7 @@ class ComboButtonController: ElementController {
 				ComboButton(
 					style: .split,
 					"Rabbit",
-					image: NSImage(named: "slider-rabbit"),
+					image: NSImage(named: "house"),
 					menu: nil
 				) {
 					Swift.print("Unified Button pressed!")
@@ -162,9 +175,9 @@ class ComboButtonController: ElementController {
 				}
 
 				ComboButton(
-					style: .split,
+					style: .unified,
 					"Rabbit",
-					image: NSImage(named: "slider-rabbit"),
+					image: NSImage(named: "fan.oscillation"),
 					menu: rabbitMenu
 				) { [weak self] in
 					if let w = self?.rabbitComboTitle.wrappedValue {
@@ -172,7 +185,6 @@ class ComboButtonController: ElementController {
 					}
 				}
 				.bindTitle(rabbitComboTitle)
-				.controlSize(.small)
 			}
 			.visualEffect(.init(material: .sidebar), padding: 12)
 			.border(width: 0.5, color: NSColor.textColor)
