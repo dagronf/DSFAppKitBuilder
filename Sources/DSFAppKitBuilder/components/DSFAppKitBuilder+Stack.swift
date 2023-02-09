@@ -170,7 +170,6 @@ public extension Stack {
 /// }
 /// ```
 public class HStack: Stack {
-
 	/// Create a horizontal stack
 	/// - Parameters:
 	///   - spacing: The minimum spacing, in points, between adjacent views in the stack view
@@ -190,6 +189,27 @@ public class HStack: Stack {
 			distribution: distribution,
 			content: builder())
 	}
+
+	/// Create a horizontal stack
+	/// - Parameters:
+	///   - spacing: The minimum spacing, in points, between adjacent views in the stack view
+	///   - alignment: The view alignment within the stack view
+	///   - distribution: The spacing and sizing distribution of stacked views along the primary axis. Defaults to GravityAreas.
+	///   - elements: The array of elements to add to the stack
+	public convenience init(
+		spacing: CGFloat = 8,
+		alignment: NSLayoutConstraint.Attribute = .centerX,
+		distribution: NSStackView.Distribution? = nil,
+		elements: [Element]
+	) {
+		self.init(
+			orientation: .horizontal,
+			spacing: spacing,
+			alignment: alignment,
+			distribution: distribution,
+			content: elements
+		)
+	}
 }
 
 // MARK: - Vertical Stack
@@ -205,7 +225,6 @@ public class HStack: Stack {
 /// }
 /// ```
 public class VStack: Stack {
-
 	/// Create a vertical stack
 	/// - Parameters:
 	///   - spacing: The minimum spacing, in points, between adjacent views in the stack view
@@ -224,5 +243,26 @@ public class VStack: Stack {
 			alignment: alignment,
 			distribution: distribution,
 			content: builder())
+	}
+
+	/// Create a vertical stack
+	/// - Parameters:
+	///   - spacing: The minimum spacing, in points, between adjacent views in the stack view
+	///   - alignment: The view alignment within the stack view
+	///   - distribution: The spacing and sizing distribution of stacked views along the primary axis. Defaults to GravityAreas.
+	///   - elements: The array of elements to add to the stack
+	public convenience init(
+		spacing: CGFloat = 8,
+		alignment: NSLayoutConstraint.Attribute = .centerX,
+		distribution: NSStackView.Distribution? = nil,
+		elements: [Element]
+	) {
+		self.init(
+			orientation: .vertical,
+			spacing: spacing,
+			alignment: alignment,
+			distribution: distribution,
+			content: elements
+		)
 	}
 }

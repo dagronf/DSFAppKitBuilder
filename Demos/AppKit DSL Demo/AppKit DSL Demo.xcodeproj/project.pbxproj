@@ -302,16 +302,16 @@
 				239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */,
 				235CBB3E298C842300D3D4DE /* DatePickerBuilder.swift */,
 				235CBB37298B99C300D3D4DE /* DisclosureViewBuilder.swift */,
+				23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */,
 				235CBB3C298BA2AD00D3D4DE /* FontBuilder.swift */,
 				239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */,
 				23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */,
 				23513C71298DEB8700CDBE36 /* PathBuilder.swift */,
-				23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */,
-				235CBB40298C843500D3D4DE /* ViewTestBed.swift */,
 				23910CA0299071240016E150 /* SearchFieldBuilder.swift */,
-				23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */,
-				23910CA42990CDEE0016E150 /* VisualEffectBuilder.swift */,
+				23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */,
 				23C818872993841A00816107 /* TokenFieldBuilder.swift */,
+				235CBB40298C843500D3D4DE /* ViewTestBed.swift */,
+				23910CA42990CDEE0016E150 /* VisualEffectBuilder.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
