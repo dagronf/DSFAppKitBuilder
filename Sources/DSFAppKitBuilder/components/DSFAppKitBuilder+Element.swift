@@ -278,6 +278,14 @@ public extension Element {
 		Group(edgeInset: value) { self }
 	}
 
+	/// Wrap this element in a Group
+	/// - Parameters:
+	///   - padding: The inset to apply for child elements
+	/// - Returns: Group
+	func padding(_ value: NSEdgeInsets) -> Group {
+		Group(edgeInsets: value) { self }
+	}
+
 	/// Wrap the current element in a VisualEffectView
 	/// - Parameters:
 	///   - effect: The effect to apply to the wrapper view

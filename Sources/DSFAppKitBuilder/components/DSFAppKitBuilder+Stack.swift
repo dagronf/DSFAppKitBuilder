@@ -87,6 +87,18 @@ public extension Stack {
 		return self
 	}
 
+	/// Set the edge insets for the stack view
+	func stackPadding(_ edgeInset: CGFloat) -> Self {
+		self.stack.edgeInsets = NSEdgeInsets(edgeInset: edgeInset)
+		return self
+	}
+
+	/// Set the edge insets for the stack view
+	func stackPadding(_ edgeInsets: NSEdgeInsets) -> Self {
+		self.stack.edgeInsets = edgeInsets
+		return self
+	}
+
 	/// The spacing and sizing distribution of stacked views along the primary axis. Defaults to GravityAreas.
 	func distribution(_ dist: NSStackView.Distribution) -> Self {
 		self.stack.distribution = dist

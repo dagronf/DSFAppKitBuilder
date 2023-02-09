@@ -63,6 +63,12 @@ public class Label: Control {
 	}
 
 	/// Create a label control
+	/// - Parameter attributedLabel: An attributed string to use as the label
+	convenience public init(_ attributedLabel: AKBAttributedString) {
+		self.init(attributedLabel.attributedString)
+	}
+
+	/// Create a label control
 	/// - Parameter stringBinder: A string binder containing the display value
 	public init(_ stringBinder: ValueBinder<String>) {
 		super.init()
@@ -96,7 +102,7 @@ public class Label: Control {
 	}
 
 	// Privates
-	let label = NSTextField()
+	let label = PaddableTextField()
 	public override func view() -> NSView { return self.label }
 
 	private var labelBinder: ValueBinder<String>?
@@ -196,6 +202,20 @@ public extension Label {
 	}
 }
 
+public extension Label {
+	/// Apply padding to the text field
+	final func labelPadding(_ value: CGFloat) -> Self {
+		self.label.edgeInsets = NSEdgeInsets(edgeInset: value)
+		return self
+	}
+
+	/// Apply padding to the text field
+	final func labelPadding(_ value: NSEdgeInsets) -> Self {
+		self.label.edgeInsets = value
+		return self
+	}
+}
+
 // MARK: - Actions
 
 public extension Label {
@@ -278,127 +298,4 @@ public extension Label {
 		}
 		return self
 	}
-}
-
-
-
-final class TrackingArea {
-	private weak var view: NSView?
-	private let rect: CGRect
-	private let options: NSTrackingArea.Options
-	private var trackingArea: NSTrackingArea?
-
-	/**
-	- Parameters:
-		- view: The view to add tracking to.
-		- rect: The area inside the view to track. Defaults to the whole view (`view.bounds`).
-	*/
-	init(
-		for view: NSView,
-		rect: CGRect? = nil,
-		options: NSTrackingArea.Options = []
-	) {
-		self.view = view
-		self.rect = rect ?? view.bounds
-		self.options = options
-	}
-
-	/**
-	Updates the tracking area.
-	- Note: This should be called in your `NSView#updateTrackingAreas()` method.
-	*/
-	func update() {
-		if let trackingArea = self.trackingArea {
-			self.view?.removeTrackingArea(trackingArea)
-		}
-
-		let newTrackingArea = NSTrackingArea(
-			rect: self.rect,
-			options: [
-				.mouseEnteredAndExited,
-				.activeInActiveApp
-			],
-			owner: self.view,
-			userInfo: nil
-		)
-
-		self.view?.addTrackingArea(newTrackingArea)
-		self.trackingArea = newTrackingArea
-	}
-}
-
-// MARK: - Label styling
-
-public extension Label {
-	enum Styling { }
-}
-
-public protocol LabelStyle {
-	/// A method that applies label styles to the provided label
-	func apply(_ labelElement: Label) -> Label
-}
-
-public extension Label {
-	/// Apply a predefined Label style to the label
-	@discardableResult func applyStyle(_ style: LabelStyle) -> Label {
-		style.apply(self)
-	}
-}
-
-public extension Label.Styling {
-	/// Apply multiline wrapping for the label
-	static let multiline = Multiline()
-	static let truncatingTail = TruncatingTail()
-	static let truncatingHead = TruncatingHead()
-	static let truncatingMiddle = TruncatingMiddle()
-
-	/// A multiline style for a label
-	struct Multiline: DSFAppKitBuilder.LabelStyle {
-		@discardableResult public func apply(_ labelElement: Label) -> Label {
-			labelElement
-				.horizontalCompressionResistancePriority(.defaultLow)
-				.wraps(true)
-				.truncatesLastVisibleLine(true)
-		}
-	}
-
-	/// A single-line truncation style
-	struct Truncating: DSFAppKitBuilder.LabelStyle {
-		public init(_ lineBreakMode: NSLineBreakMode) {
-			self.lineBreakMode = lineBreakMode
-		}
-		@discardableResult public func apply(_ labelElement: Label) -> Label {
-			labelElement
-				.truncatesLastVisibleLine(true)
-				.lineBreakMode(self.lineBreakMode)
-				.allowsDefaultTighteningForTruncation(true)
-				.horizontalCompressionResistancePriority(.init(10))
-		}
-		private let lineBreakMode: NSLineBreakMode
-	}
-
-	/// A single-line tail truncation style
-	struct TruncatingTail: DSFAppKitBuilder.LabelStyle {
-		let truncator = Truncating(.byTruncatingTail)
-		@discardableResult public func apply(_ labelElement: Label) -> Label {
-			truncator.apply(labelElement)
-		}
-	}
-
-	/// A single-line head truncation style
-	struct TruncatingHead: DSFAppKitBuilder.LabelStyle {
-		let truncator = Truncating(.byTruncatingHead)
-		@discardableResult public func apply(_ labelElement: Label) -> Label {
-			truncator.apply(labelElement)
-		}
-	}
-
-	/// A single-line middle truncation style
-	struct TruncatingMiddle: DSFAppKitBuilder.LabelStyle {
-		let truncator = Truncating(.byTruncatingMiddle)
-		@discardableResult public func apply(_ labelElement: Label) -> Label {
-			truncator.apply(labelElement)
-		}
-	}
-
 }

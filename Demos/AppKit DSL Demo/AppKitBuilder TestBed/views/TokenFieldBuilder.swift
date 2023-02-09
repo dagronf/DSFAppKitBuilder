@@ -26,6 +26,31 @@ extension ValueBinder where ValueType == [String] {
 	}
 }
 
+class HeaderLabelStyle: DSFAppKitBuilder.LabelStyle {
+	private let headerFont = AKBFont(.systemFont(ofSize: 16, weight: .bold))
+	func apply(_ labelElement: DSFAppKitBuilder.Label) -> DSFAppKitBuilder.Label {
+		labelElement
+		.labelPadding(NSEdgeInsets(edgeInset: 4))
+		.horizontalHuggingPriority(1)
+		.font(headerFont)
+		.applyStyle(Label.Styling.truncatingTail)
+		.cornerRadius(4)
+		.border(width: 0.5, color: NSColor.systemPink.withAlphaComponent(0.8))
+		.backgroundColor(NSColor.systemPink.withAlphaComponent(0.2))
+	}
+}
+
+class StackStyle: DSFAppKitBuilder.StackStyle {
+	func apply<StackType>(_ stack: StackType) -> StackType where StackType : Stack {
+		return stack
+			.hugging(h: 1)
+			.stackPadding(8)
+			.cornerRadius(8)
+			.border(width: 0.5, color: NSColor.quaternaryLabelColor)
+			.backgroundColor(NSColor.quaternaryLabelColor.withAlphaComponent(0.04))
+	}
+}
+
 class TokenFieldBuilderController: ElementController {
 
 	private let tokenField1 = ValueBinder<[String]>(["cat"])
@@ -35,26 +60,27 @@ class TokenFieldBuilderController: ElementController {
 	private let tokenField5 = ValueBinder<[String]>(["pig", "fish", "elephant", "womble"])
 	private let tokenField6 = ValueBinder<[String]>(["caterpillar@womble.com", "flutterby@womble.com"])
 
-	private let headerFont = AKBFont(.systemFont(ofSize: 16, weight: .bold))
+	private let headerStyle = HeaderLabelStyle()
+	private let stackStyle = StackStyle()
 
 	lazy var body: Element = {
 		VStack(spacing: 16, alignment: .leading) {
-			VStack(alignment: .leading) {
-				Label("TokenField update on end editing only")
-					.font(headerFont)
-					.applyStyle(Label.Styling.truncatingTail)
+			VStack(spacing: 8, alignment: .leading) {
+				Label(AKBAttributedString("TokenField update on end editing only").underlined())
+					.applyStyle(headerStyle)
+
 				TokenField(content: self.tokenField1, updateOnEndEditingOnly: true)
 				HStack {
 					Label("Tokens:").font(.system.bold())
 					Label(self.tokenField1.stringValue())
 					EmptyView()
 				}
+			}
+			.applyStyle(stackStyle)
 
-				HDivider()
-
-				Label("TokenField update every change")
-					.font(headerFont)
-					.applyStyle(Label.Styling.truncatingTail)
+			VStack(spacing: 8, alignment: .leading) {
+				Label(AKBAttributedString("TokenField update every change").underlined())
+					.applyStyle(headerStyle)
 				TokenField(content: self.tokenField2)
 					.completions { str in
 						["red", "green", "blue", "yellow", "cyan", "magenta", "black"]
@@ -65,12 +91,12 @@ class TokenFieldBuilderController: ElementController {
 					Label(self.tokenField2.stringValue())
 					EmptyView()
 				}
+			}
+			.applyStyle(stackStyle)
 
-				HDivider()
-
-				Label("TokenField with completions (basic web color names)")
-					.font(headerFont)
-					.applyStyle(Label.Styling.truncatingTail)
+			VStack(spacing: 8, alignment: .leading) {
+				Label(AKBAttributedString("TokenField with completions (basic web color names)").underlined())
+					.applyStyle(headerStyle)
 				TokenField(tokenStyle: .rounded, content: self.tokenField3)
 					.completions { str in
 						colorKeywordMap
@@ -81,12 +107,12 @@ class TokenFieldBuilderController: ElementController {
 					Label("Tokens:").font(.system.bold())
 					Label(self.tokenField3.stringValue())
 				}
+			}
+			.applyStyle(stackStyle)
 
-				HDivider()
-
-				Label("TokenField validating color names (basic web color names)")
-					.font(headerFont)
-					.applyStyle(Label.Styling.truncatingTail)
+			VStack(spacing: 8, alignment: .leading) {
+				Label(AKBAttributedString("TokenField validating color names (basic web color names)").underlined())
+					.applyStyle(headerStyle)
 				TokenField(content: self.tokenField4)
 					.completions { str in
 						colorKeywordMap
@@ -109,12 +135,12 @@ class TokenFieldBuilderController: ElementController {
 					Label("Tokens:").font(.system.bold())
 					Label(self.tokenField4.stringValue())
 				}
+			}
+			.applyStyle(stackStyle)
 
-				HDivider()
-
-				Label("TokenField with menus")
-					.font(headerFont)
-					.applyStyle(Label.Styling.truncatingTail)
+			VStack(spacing: 8, alignment: .leading) {
+				Label(AKBAttributedString("TokenField with menus").underlined())
+					.applyStyle(headerStyle)
 				TokenField(content: self.tokenField6, updateOnEndEditingOnly: true)
 					.hasMenuForToken { token in
 						true
@@ -122,12 +148,12 @@ class TokenFieldBuilderController: ElementController {
 					.menuForToken { token in
 						Menu {
 							MenuItem("Send email…")
-								.onAction { Swift.print("Selected 'one'") }
+								.onAction { Swift.print("Sending email to '\(token)'") }
 							MenuItem("Send file…")
-								.onAction { Swift.print("Selected 'two'") }
+								.onAction { Swift.print("Sending file to '\(token)'") }
 							Separator()
 							MenuItem("Delete contact…")
-								.onAction { Swift.print("Selected 'three'") }
+								.onAction { Swift.print("Deleting contact '\(token)'") }
 						}
 					}
 				HStack {
@@ -138,12 +164,12 @@ class TokenFieldBuilderController: ElementController {
 						.horizontalPriorities(hugging: 100, compressionResistance: 100)
 					EmptyView()
 				}
+			}
+			.applyStyle(stackStyle)
 
-				HDivider()
-
-				Label("TokenField with large font")
-					.font(headerFont)
-					.applyStyle(Label.Styling.truncatingTail)
+			VStack(spacing: 8, alignment: .leading) {
+				Label(AKBAttributedString("TokenField with large font").underlined())
+					.applyStyle(headerStyle)
 				TokenField(content: self.tokenField5, updateOnEndEditingOnly: true)
 					.font(.title3.bold().condensed())
 				HStack {
@@ -154,13 +180,10 @@ class TokenFieldBuilderController: ElementController {
 						.horizontalPriorities(hugging: 100, compressionResistance: 100)
 					EmptyView()
 				}
-
-				HDivider()
-
-				EmptyView()
 			}
-			.hugging(h: 10)
+			.applyStyle(stackStyle)
 		}
+		.hugging(h: 10)
 	}()
 }
 
