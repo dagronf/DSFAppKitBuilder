@@ -5,7 +5,7 @@ A SwiftUI-style DSL for generating AppKit user interfaces.
 <p align="center">
     <img src="https://img.shields.io/github/v/tag/dagronf/DSFAppKitBuilder" />
     <img src="https://img.shields.io/badge/macOS-10.13+-red" />
-    <img src="https://img.shields.io/badge/Swift-5.1-orange.svg" />
+    <img src="https://img.shields.io/badge/Swift-5.4-orange.svg" />
     <a href="https://swift.org/package-manager">
         <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" /></a>
     <img src="https://img.shields.io/badge/License-MIT-lightgrey" />
