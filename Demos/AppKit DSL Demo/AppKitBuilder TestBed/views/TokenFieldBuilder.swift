@@ -35,35 +35,6 @@ class TokenFieldBuilderController: ElementController {
 	private let tokenField5 = ValueBinder<[String]>(["pig", "fish", "elephant", "womble"])
 	private let tokenField6 = ValueBinder<[String]>(["caterpillar@womble.com", "flutterby@womble.com"])
 
-	class HeaderLabelStyle: DSFAppKitBuilder.LabelStyle {
-		private let headerFont = AKBFont(.systemFont(ofSize: 16, weight: .bold))
-		func apply(_ labelElement: DSFAppKitBuilder.Label) -> DSFAppKitBuilder.Label {
-			labelElement
-			.labelPadding(NSEdgeInsets(edgeInset: 4))
-			.horizontalHuggingPriority(1)
-			.font(headerFont)
-			//.textColor(NSColor.systemIndigo)
-			.applyStyle(Label.Styling.truncatingTail)
-			.cornerRadius(4)
-			//.border(width: 0.5, color: NSColor.textColor)
-			.backgroundColor(NSColor.quaternaryLabelColor)
-		}
-	}
-
-	class StackStyle: DSFAppKitBuilder.StackStyle {
-		func apply<StackType>(_ stack: StackType) -> StackType where StackType : Stack {
-			return stack
-				.hugging(h: 1)
-				.stackPadding(8)
-				.cornerRadius(8)
-				.border(width: 0.5, color: NSColor.quaternaryLabelColor)
-				.backgroundColor(NSColor.quaternaryLabelColor.withAlphaComponent(0.04))
-		}
-	}
-
-	private let headerStyle = HeaderLabelStyle()
-	private let stackStyle = StackStyle()
-
 	lazy var body: Element = {
 		VStack(spacing: 12, alignment: .leading) {
 			FakeBox("TokenField update on end editing only") {
@@ -164,6 +135,7 @@ class TokenFieldBuilderController: ElementController {
 								}
 						}
 					}
+
 				HStack {
 					Label("Tokens:").font(.system.bold())
 					Label(self.tokenField6.stringValue())
