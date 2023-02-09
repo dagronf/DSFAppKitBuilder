@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder.swift
+//  View.swift
 //
 //  Copyright © 2023 Darren Ford. All rights reserved.
 //
@@ -26,8 +26,27 @@
 
 import AppKit
 
-/// DSFAppKitBuilder global debug logging
-public var DSFAppKitBuilderShowDebuggingOutput: Bool = false
+/// Embed another NSView within the DSL
+public class View: Element {
 
+	/// Create an element which embeds another NSView
+	public init(_ containedView: NSView) {
+		self.containedView = containedView
+		super.init()
 
+		containedView.needsLayout = true
+		containedView.layoutSubtreeIfNeeded()
+	}
 
+	/// Create a view element that displays the content of a `DSFAppKitBuilderViewController`
+	///
+	/// Note that this view does not retain the passed viewcontroller, so it is your
+	/// responsibility to make sure it stays alive
+	public convenience init(_ containedViewController: DSFAppKitBuilderViewController) {
+		self.init(containedViewController.view)
+	}
+
+	// Private
+	private let containedView: NSView
+	public override func view() -> NSView { return containedView }
+}

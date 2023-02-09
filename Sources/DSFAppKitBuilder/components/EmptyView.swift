@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder.swift
+//  EmptyView.swift
 //
 //  Copyright © 2023 Darren Ford. All rights reserved.
 //
@@ -24,10 +24,22 @@
 //  SOFTWARE.
 //
 
-import AppKit
+import AppKit.NSView
 
-/// DSFAppKitBuilder global debug logging
-public var DSFAppKitBuilderShowDebuggingOutput: Bool = false
+/// An empty 'spacer' view.
+public class EmptyView: Element {
 
+	// Private
 
+	private let emptyView: NSView = {
+		let v = NSView()
+		v.translatesAutoresizingMaskIntoConstraints = false
+		v.setContentHuggingPriority(.init(1), for: .horizontal)
+		v.setContentHuggingPriority(.init(1), for: .vertical)
+		v.setContentCompressionResistancePriority(.init(1), for: .horizontal)
+		v.setContentCompressionResistancePriority(.init(1), for: .vertical)
+		return v
+	}()
 
+	public override func view() -> NSView { return emptyView }
+}

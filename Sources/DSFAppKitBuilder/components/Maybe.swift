@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder.swift
+//  Maybe.swift
 //
 //  Copyright © 2023 Darren Ford. All rights reserved.
 //
@@ -24,10 +24,39 @@
 //  SOFTWARE.
 //
 
+import Foundation
 import AppKit
 
-/// DSFAppKitBuilder global debug logging
-public var DSFAppKitBuilderShowDebuggingOutput: Bool = false
+/// A Maybe element which optionally adds an element to the build
+///
+/// Mostly useful for HStack/VStack builds
+public class Maybe: Element {
 
+	/// An element IF a condition block returns as true
+	public init(_ condition: @autoclosure () -> Bool, _ element: () -> Element) {
+		if condition() {
+			self.underlyingView = element().view()
+		}
+		else {
+			self.underlyingView = NothingView()
+		}
+	}
 
+	/// An element IF a condition block returns as true
+	public init(_ condition: @autoclosure () -> Bool, _ element: Element) {
+		if condition() {
+			self.underlyingView = element.view()
+		}
+		else {
+			self.underlyingView = NothingView()
+		}
+	}
 
+	/// If the element is non-nil, adds the element to the build, otherwise it is ignored
+	public init(_ element: Element?) {
+		self.underlyingView = element?.view() ?? NothingView()
+	}
+
+	public override func view() -> NSView { self.underlyingView }
+	private let underlyingView: NSView
+}

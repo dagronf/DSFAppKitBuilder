@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder.swift
+//  Nothing.swift
 //
 //  Copyright © 2023 Darren Ford. All rights reserved.
 //
@@ -24,10 +24,30 @@
 //  SOFTWARE.
 //
 
+import Foundation
 import AppKit
 
-/// DSFAppKitBuilder global debug logging
-public var DSFAppKitBuilderShowDebuggingOutput: Bool = false
+/// An element which is nothing.
+public class Nothing: Element {
+	public override func view() -> NSView { NothingView() }
+}
 
+internal class NothingView: NSView {
+	override var intrinsicContentSize: NSSize { .zero }
+	init() {
+		super.init(frame: .zero)
 
+		self.translatesAutoresizingMaskIntoConstraints = false
+		let vconstraint = self.widthAnchor.constraint(equalToConstant: 0)
+		vconstraint.priority = NSLayoutConstraint.Priority(999)
+		let hconstraint = self.heightAnchor.constraint(equalToConstant: 0)
+		hconstraint.priority = NSLayoutConstraint.Priority(999)
 
+		self.addConstraint(vconstraint)
+		self.addConstraint(hconstraint)
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+}

@@ -1,5 +1,5 @@
 //
-//  DSFAppKitBuilder.swift
+//  View+SwiftUI.swift
 //
 //  Copyright © 2023 Darren Ford. All rights reserved.
 //
@@ -24,10 +24,32 @@
 //  SOFTWARE.
 //
 
+#if canImport(SwiftUI)
+
 import AppKit
+import SwiftUI
 
-/// DSFAppKitBuilder global debug logging
-public var DSFAppKitBuilderShowDebuggingOutput: Bool = false
+/// Embed a SwiftUI view within the DSL
+@available(macOS 10.15, *)
+public class SwiftUIView: Element {
 
+	/// Override this in your subclass to provide the root SwiftUI content for the view
+	open func rootView() -> some SwiftUI.View {
+		return SwiftUI.EmptyView()
+	}
 
+	/// Create a hosted SwiftUI control within the DSL
+	override public init() {
+		super.init()
+		self.containerView.translatesAutoresizingMaskIntoConstraints = false
+		let hostingView = NSHostingView(rootView: self.rootView())
+		self.containerView.addSubview(hostingView)
+		hostingView.pinEdges(to: self.containerView)
+	}
 
+	// Private
+	let containerView = NSView()
+	public override func view() -> NSView { return containerView }
+}
+
+#endif
