@@ -99,6 +99,8 @@ public class RadioGroup: Control {
 		}
 		self.radioGroup.edgeInsets = NSEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
 
+		self.radioGroup.setContentHuggingPriority(.init(10), for: .horizontal)
+
 		content.enumerated().forEach { item in
 			let button = NSButton()
 			button.setButtonType(.radio)

@@ -88,6 +88,7 @@ class ColorWellBuilderController: ElementController {
 				.columnFormatting(xPlacement: .center, atColumn: 3)
 			}
 		}
+		.hugging(h: 249)
 	}()
 }
 

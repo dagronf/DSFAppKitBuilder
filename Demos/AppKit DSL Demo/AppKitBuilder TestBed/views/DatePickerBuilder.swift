@@ -38,7 +38,9 @@ class DatePickerBuilderController: ElementController {
 						.isEnabled(false)
 				}
 			}
+
 			HDivider()
+			
 			VStack(alignment: .leading) {
 				Label("Components").font(NSFont.boldSystemFont(ofSize: 14))
 				Grid {
@@ -60,7 +62,9 @@ class DatePickerBuilderController: ElementController {
 					}
 				}
 			}
+
 			HDivider()
+
 			HStack {
 				VStack(alignment: .leading) {
 					Label("GMT Timezone").font(NSFont.boldSystemFont(ofSize: 16))
@@ -74,13 +78,17 @@ class DatePickerBuilderController: ElementController {
 						.locale(Locale(identifier: "FR-fr"))
 				}
 			}
+
 			HDivider()
+
 			VStack(alignment: .leading) {
 				Label("Clock and Calendar").font(NSFont.boldSystemFont(ofSize: 16))
 				DatePicker(date: __previewDate, style: .clockAndCalendar)
 					.locale(Locale(identifier: "GMT"))
 			}
+
 			HDivider()
+
 			VStack(alignment: .leading) {
 				Label("Bezels and borders").font(NSFont.boldSystemFont(ofSize: 16))
 				HStack {
@@ -95,7 +103,9 @@ class DatePickerBuilderController: ElementController {
 						.isBordered(true)
 				}
 			}
+
 			HDivider()
+
 			VStack(alignment: .leading) {
 				Label("Colors").font(NSFont.boldSystemFont(ofSize: 16))
 				HStack {
@@ -106,6 +116,7 @@ class DatePickerBuilderController: ElementController {
 				}
 			}
 		}
+		.hugging(h: 249)
 	}()
 }
 

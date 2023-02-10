@@ -188,9 +188,8 @@ class ComboButtonController: ElementController {
 			}
 			.visualEffect(.init(material: .sidebar), padding: 12)
 			.border(width: 0.5, color: NSColor.textColor)
-
 		}
-
+		.hugging(h: 249)
 	}()
 }
 
