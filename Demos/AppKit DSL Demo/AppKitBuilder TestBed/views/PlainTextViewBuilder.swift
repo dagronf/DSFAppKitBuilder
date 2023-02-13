@@ -36,6 +36,13 @@ class PlainTextViewBuilderController: ElementController {
 	private let _wrapText = ValueBinder(true)
 	private let _isEditable = ValueBinder(false)
 	private let _isSelectable = ValueBinder(true)
+	private let _rangeString = ValueBinder("")
+	private lazy var _selectedRange: ValueBinder<NSRange> = {
+		ValueBinder(NSRange(location: 5, length: 10)) { [weak self] newValue in
+			Swift.print("Selection is now \(newValue)")
+			self?._rangeString.wrappedValue = "\(newValue)"
+		}
+	}()
 
 	lazy var body: Element = {
 		TabView {
@@ -64,15 +71,15 @@ class PlainTextViewBuilderController: ElementController {
 							.bindOnOffState(_isEditable)
 						CheckBox("Selectable", allowMixedState: false)
 							.bindOnOffState(_isSelectable)
-//						Button(title: "Editable", type: .pushOnPushOff)
-//							.bindOnOffState(_isEditable)
-//						Button(title: "Selectable", type: .pushOnPushOff)
-//							.bindOnOffState(_isSelectable)
+						VDivider()
+						Label("Selection:")
+						Label(_rangeString)
 					}
 					PlainTextView(text: _textValue, wrapsLines: true)
 						.font(.monospaced)
 						.bindIsEditable(_isEditable)
 						.bindIsSelectable(_isSelectable)
+						.bindSelectedRange(_selectedRange)
 				}
 				.hugging(h: 10)
 			}

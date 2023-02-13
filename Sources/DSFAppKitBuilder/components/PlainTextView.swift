@@ -67,6 +67,8 @@ public class PlainTextView: Element {
 			}
 		}
 
+		self.contentView.textView.delegate = self
+
 		self.configure(wrapsLines: wrapsLines)
 	}
 
@@ -84,12 +86,22 @@ public class PlainTextView: Element {
 	private var wrapsBinder: ValueBinder<Bool>?
 	private var editableBinder: ValueBinder<Bool>?
 	private var selectableBinder: ValueBinder<Bool>?
+	private var selectionRangeBinder: ValueBinder<NSRange>?
 	private var isUpdating = false
 
 	override public func view() -> NSView { self.contentView }
 }
 
 extension PlainTextView: NSTextViewDelegate {
+
+	public func textViewDidChangeSelection(_ notification: Notification) {
+		if !self.isUpdating {
+			self.isUpdating = true
+			self.selectionRangeBinder?.wrappedValue = self.contentView.textView.selectedRange()
+			self.isUpdating = false
+		}
+	}
+
 	public func textDidChange(_ notification: Notification) {
 		if !self.isUpdating {
 			self.isUpdating = true
@@ -153,6 +165,20 @@ public extension PlainTextView {
 		self.selectableBinder = binder
 		binder.register(self) { [weak self] newValue in
 			self?.contentView.textView.isSelectable = newValue
+		}
+		return self
+	}
+
+	/// Create a binding for single range selection
+	@discardableResult func bindSelectedRange(_ binder: ValueBinder<NSRange>) -> Self {
+		self.selectionRangeBinder = binder
+		binder.register(self) { [weak self] newValue in
+			guard let `self` = self else { return }
+			if !self.isUpdating {
+				self.isUpdating = true
+				self.contentView.textView.selectedRanges = [NSValue(range: newValue)]
+				self.isUpdating = false
+			}
 		}
 		return self
 	}
