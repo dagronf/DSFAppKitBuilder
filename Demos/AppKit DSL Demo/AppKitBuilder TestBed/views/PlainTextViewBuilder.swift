@@ -34,6 +34,8 @@ class PlainTextViewBuilderController: ElementController {
 
 	private let _textValue = ValueBinder(__dummyText)
 	private let _wrapText = ValueBinder(true)
+	private let _isEditable = ValueBinder(false)
+	private let _isSelectable = ValueBinder(true)
 
 	lazy var body: Element = {
 		TabView {
@@ -52,6 +54,25 @@ class PlainTextViewBuilderController: ElementController {
 					PlainTextView(text: _textValue, wrapsLines: true)
 						.font(.monospaced)
 						.bindWrapsText(_wrapText)
+				}
+				.hugging(h: 10)
+			}
+			TabViewItem("Enabled") {
+				VStack {
+					HStack {
+						CheckBox("Editable", allowMixedState: false)
+							.bindOnOffState(_isEditable)
+						CheckBox("Selectable", allowMixedState: false)
+							.bindOnOffState(_isSelectable)
+//						Button(title: "Editable", type: .pushOnPushOff)
+//							.bindOnOffState(_isEditable)
+//						Button(title: "Selectable", type: .pushOnPushOff)
+//							.bindOnOffState(_isSelectable)
+					}
+					PlainTextView(text: _textValue, wrapsLines: true)
+						.font(.monospaced)
+						.bindIsEditable(_isEditable)
+						.bindIsSelectable(_isSelectable)
 				}
 				.hugging(h: 10)
 			}

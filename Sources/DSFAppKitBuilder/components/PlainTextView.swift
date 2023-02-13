@@ -29,62 +29,31 @@ import Foundation
 
 import DSFValueBinders
 
-public extension NSTextView {
-	func wrapText(_ isWrapped: Bool) {
-		guard let scrollView = enclosingScrollView else { return }
-		
-		scrollView.hasHorizontalScroller = !isWrapped
-		self.isHorizontallyResizable = !isWrapped
-
-		scrollView.hasVerticalScroller = true
-
-		let width = isWrapped ? scrollView.contentSize.width : CGFloat.greatestFiniteMagnitude
-		self.maxSize = NSSize(width: width, height: CGFloat.greatestFiniteMagnitude)
-
-		self.textContainer?.size = NSSize(width: width, height: CGFloat.greatestFiniteMagnitude)
-		self.textContainer?.widthTracksTextView = isWrapped
-
-		if isWrapped {
-			self.autoresizingMask = [.width]
-		}
-		else {
-			self.autoresizingMask = [.width, .height]
-		}
-
-		if isWrapped {
-			self.setFrameSize(NSSize(width: width, height: scrollView.contentSize.height))
-		}
-
-		self.invalidateTextContainerOrigin()
-	}
-}
-
 public class PlainTextView: Element {
+	/// Create a plain text (ie. no text formatting) scrollable editor view
+	/// - Parameters:
+	///   - text: The text binder for the content of the view
+	///   - borderType: The type of border to use
+	///   - wrapsLines: If true, text is word-wrapped at the edge of the text view
+	///   - isEditable: Is the text editable?
+	///   - isSelectable: Is the text selectable?
 	public init(
 		text: ValueBinder<String>,
 		borderType: NSBorderType? = nil,
-		wrapsLines: Bool = true
+		wrapsLines: Bool = true,
+		isEditable: Bool? = nil,
+		isSelectable: Bool? = nil
 	) {
 		self.textBinder = text
 
 		super.init()
 
-		// Setup NSTextView
-		textView.wantsLayer = true
-		textView.delegate = self
-		textView.isRichText = false
-		textView.autoresizingMask = [.width] //, .height]
-		textView.isEditable = true
-
-		scrollView.wantsLayer = true
-		scrollView.documentView = textView
-		scrollView.hasVerticalScroller = true
-		if let borderType = borderType {
-			scrollView.borderType = borderType
-		}
+		if let borderType = borderType { contentView.scrollView.borderType = borderType }
+		if let isEditable = isEditable { contentView.textView.isEditable = isEditable }
+		if let isSelectable = isSelectable { contentView.textView.isSelectable = isSelectable }
 
 		if #available(macOS 10.14, *) {
-			 textView.usesAdaptiveColorMappingForDarkAppearance = true
+			contentView.textView.usesAdaptiveColorMappingForDarkAppearance = true
 		} else {
 			 // Fallback on earlier versions - do nothing
 		}
@@ -93,7 +62,7 @@ public class PlainTextView: Element {
 			guard let `self` = self else { return }
 			if !self.isUpdating {
 				self.isUpdating = true
-				self.textView.string = newText
+				self.contentView.textView.string = newText
 				self.isUpdating = false
 			}
 		}
@@ -102,7 +71,7 @@ public class PlainTextView: Element {
 	}
 
 	private func configure(wrapsLines: Bool) {
-		self.textView.wrapText(wrapsLines)
+		self.contentView.wrapText(wrapsLines)
 	}
 
 	deinit {
@@ -110,52 +79,80 @@ public class PlainTextView: Element {
 		self.wrapsBinder = nil
 	}
 
-	private let scrollView = NSScrollView()
-	private let textView = NSTextView()
+	private let contentView = ScrollableTextView()
 	private let textBinder: ValueBinder<String>
 	private var wrapsBinder: ValueBinder<Bool>?
+	private var editableBinder: ValueBinder<Bool>?
+	private var selectableBinder: ValueBinder<Bool>?
 	private var isUpdating = false
 
-	override public func view() -> NSView { self.scrollView }
+	override public func view() -> NSView { self.contentView }
 }
 
 extension PlainTextView: NSTextViewDelegate {
 	public func textDidChange(_ notification: Notification) {
 		if !self.isUpdating {
 			self.isUpdating = true
-			self.textBinder.wrappedValue = self.textView.string
+			self.textBinder.wrappedValue = self.contentView.textView.string
 			self.isUpdating = false
 		}
 	}
 }
 
+// MARK: - Modifiers
+
 public extension PlainTextView {
-
+	/// Is the text view editable
 	@discardableResult func isEditable(_ editable: Bool) -> Self {
-		self.textView.isEditable = editable
+		self.contentView.textView.isEditable = editable
 		return self
 	}
 
+	/// Is the text view selectable?
 	@discardableResult func isSelectable(_ selectable: Bool) -> Self {
-		self.textView.isSelectable = selectable
+		self.contentView.textView.isSelectable = selectable
 		return self
 	}
 
+	/// Set the font to use for display
 	@discardableResult func font(_ font: AKBFont) -> Self {
-		self.textView.font = font.font
+		self.contentView.textView.font = font.font
 		return self
 	}
 
-	/// 
+	/// Set the font to use for display
 	@discardableResult func font(_ font: NSFont) -> Self {
-		self.textView.font = font
+		self.contentView.textView.font = font
 		return self
 	}
+}
 
+// MARK: - Bindings
+
+public extension PlainTextView {
+	/// Create a binding to toggle wrapping on the text view
 	@discardableResult func bindWrapsText(_ binder: ValueBinder<Bool>) -> Self {
 		self.wrapsBinder = binder
 		binder.register(self) { [weak self] newValue in
 			self?.configure(wrapsLines: newValue)
+		}
+		return self
+	}
+
+	/// Create a binding to toggle wrapping on the text view
+	@discardableResult func bindIsEditable(_ binder: ValueBinder<Bool>) -> Self {
+		self.editableBinder = binder
+		binder.register(self) { [weak self] newValue in
+			self?.contentView.textView.isEditable = newValue
+		}
+		return self
+	}
+
+	/// Create a binding to toggle wrapping on the text view
+	@discardableResult func bindIsSelectable(_ binder: ValueBinder<Bool>) -> Self {
+		self.selectableBinder = binder
+		binder.register(self) { [weak self] newValue in
+			self?.contentView.textView.isSelectable = newValue
 		}
 		return self
 	}
@@ -176,7 +173,6 @@ struct WrappingTextViewPreviews: PreviewProvider {
 				PlainTextView(text: _textValue)
 			}
 			.SwiftUIPreview()
-			.padding()
 		}
 	}
 }
@@ -189,7 +185,6 @@ struct ScrollingTextViewPreviews: PreviewProvider {
 				PlainTextView(text: _textValue, wrapsLines: false)
 			}
 			.SwiftUIPreview()
-			.padding()
 		}
 	}
 }
