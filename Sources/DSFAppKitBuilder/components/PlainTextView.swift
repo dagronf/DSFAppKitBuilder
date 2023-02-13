@@ -29,19 +29,65 @@ import Foundation
 
 import DSFValueBinders
 
-@available(macOS 10.14, *)
-public class PlainTextView: Element {
-	public init(text: ValueBinder<String>, wrapsLines: Bool = true) {
-		self.scrollView = NSTextView.scrollablePlainDocumentContentTextView()
-		guard let t = scrollView.documentView as? NSTextView else { fatalError() }
-		self.textView = t
-		self.textBinder = text
+public extension NSTextView {
+	func wrapText(_ isWrapped: Bool) {
+		guard let scrollView = enclosingScrollView else { return }
+		
+		scrollView.hasHorizontalScroller = !isWrapped
+		self.isHorizontallyResizable = !isWrapped
 
-		self.scrollView.autohidesScrollers = true
+		scrollView.hasVerticalScroller = true
+
+		let width = isWrapped ? scrollView.contentSize.width : CGFloat.greatestFiniteMagnitude
+		self.maxSize = NSSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+
+		self.textContainer?.size = NSSize(width: width, height: CGFloat.greatestFiniteMagnitude)
+		self.textContainer?.widthTracksTextView = isWrapped
+
+		if isWrapped {
+			self.autoresizingMask = [.width]
+		}
+		else {
+			self.autoresizingMask = [.width, .height]
+		}
+
+		if isWrapped {
+			self.setFrameSize(NSSize(width: width, height: scrollView.contentSize.height))
+		}
+
+		self.invalidateTextContainerOrigin()
+	}
+}
+
+public class PlainTextView: Element {
+	public init(
+		text: ValueBinder<String>,
+		borderType: NSBorderType? = nil,
+		wrapsLines: Bool = true
+	) {
+		self.textBinder = text
 
 		super.init()
 
-		self.configure(wrapsLines: wrapsLines)
+		// Setup NSTextView
+		textView.wantsLayer = true
+		textView.delegate = self
+		textView.isRichText = false
+		textView.autoresizingMask = [.width] //, .height]
+		textView.isEditable = true
+
+		scrollView.wantsLayer = true
+		scrollView.documentView = textView
+		scrollView.hasVerticalScroller = true
+		if let borderType = borderType {
+			scrollView.borderType = borderType
+		}
+
+		if #available(macOS 10.14, *) {
+			 textView.usesAdaptiveColorMappingForDarkAppearance = true
+		} else {
+			 // Fallback on earlier versions - do nothing
+		}
 
 		self.textBinder.register(self) { [weak self] newText in
 			guard let `self` = self else { return }
@@ -51,70 +97,28 @@ public class PlainTextView: Element {
 				self.isUpdating = false
 			}
 		}
+
+		self.configure(wrapsLines: wrapsLines)
 	}
 
 	private func configure(wrapsLines: Bool) {
-
-		self.textView.delegate = self
-
-		if !wrapsLines {
-			self.scrollView.hasHorizontalScroller = true
-			self.textView.isHorizontallyResizable = true
-			self.textView.textContainer?.widthTracksTextView = false
-			self.textView.textContainer?.containerSize = .maximum
-			self.textView.maxSize = .maximum
-			self.textView.needsUpdateConstraints = true
-			self.textView.needsLayout = true
-		}
-
-		if #available(macOS 10.14, *) {
-			 textView.usesAdaptiveColorMappingForDarkAppearance = true
-		} else {
-			 // Fallback on earlier versions - do nothing
-		}
+		self.textView.wrapText(wrapsLines)
 	}
 
-//	private func setup() {
-//		let rect = CGRect(x: 0, y: 0, width: 0, height: CGFloat.greatestFiniteMagnitude)
-//		let layoutManager = NSLayoutManager()
-//		let textContainer = NSTextContainer(size: rect.size)
-//		layoutManager.addTextContainer(textContainer)
-//		textView = NSTextView(frame: rect, textContainer: textContainer)
-//		textView.maxSize = NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
-//
-//		textContainer.heightTracksTextView = false
-//		textContainer.widthTracksTextView = true
-//
-//		textView.isRichText = false
-//		textView.importsGraphics = false
-//		textView.isEditable = true
-//		textView.isSelectable = true
-	////		textView.font = R.font.text
-	////		textView.textColor = R.color.text
-//		textView.isVerticallyResizable = true
-//		textView.isHorizontallyResizable = false
-//
-//		scrollView.hasVerticalScroller = true
-//		scrollView.drawsBackground = false
-//		scrollView.drawsBackground = false
-//		textView.drawsBackground = false
-//
-//		scrollView.setContentHuggingPriority(.init(10), for: .horizontal)
-//
-//		scrollView.documentView = textView
-//		textView.autoresizingMask = [.width]
-//	}
+	deinit {
+		self.wrapsBinder?.deregister(self)
+		self.wrapsBinder = nil
+	}
 
-	private let scrollView: NSScrollView
-	private var textView: NSTextView!
+	private let scrollView = NSScrollView()
+	private let textView = NSTextView()
 	private let textBinder: ValueBinder<String>
+	private var wrapsBinder: ValueBinder<Bool>?
 	private var isUpdating = false
-
 
 	override public func view() -> NSView { self.scrollView }
 }
 
-@available(macOS 10.14, *)
 extension PlainTextView: NSTextViewDelegate {
 	public func textDidChange(_ notification: Notification) {
 		if !self.isUpdating {
@@ -125,8 +129,18 @@ extension PlainTextView: NSTextViewDelegate {
 	}
 }
 
-@available(macOS 10.14, *)
 public extension PlainTextView {
+
+	@discardableResult func isEditable(_ editable: Bool) -> Self {
+		self.textView.isEditable = editable
+		return self
+	}
+
+	@discardableResult func isSelectable(_ selectable: Bool) -> Self {
+		self.textView.isSelectable = selectable
+		return self
+	}
+
 	@discardableResult func font(_ font: AKBFont) -> Self {
 		self.textView.font = font.font
 		return self
@@ -135,6 +149,14 @@ public extension PlainTextView {
 	/// 
 	@discardableResult func font(_ font: NSFont) -> Self {
 		self.textView.font = font
+		return self
+	}
+
+	@discardableResult func bindWrapsText(_ binder: ValueBinder<Bool>) -> Self {
+		self.wrapsBinder = binder
+		binder.register(self) { [weak self] newValue in
+			self?.configure(wrapsLines: newValue)
+		}
 		return self
 	}
 }

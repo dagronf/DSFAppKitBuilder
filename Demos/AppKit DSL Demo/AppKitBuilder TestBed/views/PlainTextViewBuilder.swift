@@ -33,6 +33,7 @@ And, after boasting this way of my tolerance, I come to the admission that it ha
 class PlainTextViewBuilderController: ElementController {
 
 	private let _textValue = ValueBinder(__dummyText)
+	private let _wrapText = ValueBinder(true)
 
 	lazy var body: Element = {
 		TabView {
@@ -43,8 +44,16 @@ class PlainTextViewBuilderController: ElementController {
 				PlainTextView(text: _textValue, wrapsLines: false)
 			}
 			TabViewItem("Custom Font") {
-				PlainTextView(text: _textValue, wrapsLines: true)
-					.font(.monospaced)
+				VStack {
+					HStack {
+						Button(title: "Wraps Text", type: .pushOnPushOff)
+							.bindOnOffState(_wrapText)
+					}
+					PlainTextView(text: _textValue, wrapsLines: true)
+						.font(.monospaced)
+						.bindWrapsText(_wrapText)
+				}
+				.hugging(h: 10)
 			}
 		}
 			//.size(width: 400, height: 400)
