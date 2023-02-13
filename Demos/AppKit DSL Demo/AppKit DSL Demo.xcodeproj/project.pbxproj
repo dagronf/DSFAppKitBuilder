@@ -71,6 +71,7 @@
 		239A1FB6298CDF0C00F5B5AD /* ComboButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */; };
 		23C6E90A26AF971600FBF106 /* PrimaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C6E90926AF971600FBF106 /* PrimaryDSL.swift */; };
 		23C818882993841A00816107 /* TokenFieldBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C818872993841A00816107 /* TokenFieldBuilder.swift */; };
+		23CC72C22999BE11004EB3C4 /* PlainTextViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CC72C12999BE11004EB3C4 /* PlainTextViewBuilder.swift */; };
 		23E66E68296F94110025AFB0 /* SwiftUIPreviewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66E67296F94110025AFB0 /* SwiftUIPreviewDemo.swift */; };
 		23EBC53626DDA0CC001A861E /* GridDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC53526DDA0CC001A861E /* GridDSL.swift */; };
 		23F884852977451600ADC53D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F884842977451600ADC53D /* AppDelegate.swift */; };
@@ -165,6 +166,7 @@
 		23C4B93F2993B4E900BD4425 /* AppKitBuilder_TestBed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppKitBuilder_TestBed.plist; sourceTree = "<group>"; };
 		23C6E90926AF971600FBF106 /* PrimaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDSL.swift; sourceTree = "<group>"; };
 		23C818872993841A00816107 /* TokenFieldBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFieldBuilder.swift; sourceTree = "<group>"; };
+		23CC72C12999BE11004EB3C4 /* PlainTextViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlainTextViewBuilder.swift; sourceTree = "<group>"; };
 		23E66E67296F94110025AFB0 /* SwiftUIPreviewDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUIPreviewDemo.swift; sourceTree = "<group>"; };
 		23EBC53526DDA0CC001A861E /* GridDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridDSL.swift; sourceTree = "<group>"; };
 		23F884822977451600ADC53D /* DSFAppKitBuilderView Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DSFAppKitBuilderView Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -308,6 +310,7 @@
 				23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */,
 				23513C71298DEB8700CDBE36 /* PathBuilder.swift */,
 				23910CA0299071240016E150 /* SearchFieldBuilder.swift */,
+				23CC72C12999BE11004EB3C4 /* PlainTextViewBuilder.swift */,
 				23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */,
 				23C818872993841A00816107 /* TokenFieldBuilder.swift */,
 				235CBB40298C843500D3D4DE /* ViewTestBed.swift */,
@@ -553,6 +556,7 @@
 				239A1FB4298CD9AB00F5B5AD /* GridBuilder.swift in Sources */,
 				23910CA1299071240016E150 /* SearchFieldBuilder.swift in Sources */,
 				239A1FB6298CDF0C00F5B5AD /* ComboButtonBuilder.swift in Sources */,
+				23CC72C22999BE11004EB3C4 /* PlainTextViewBuilder.swift in Sources */,
 				23513C6C298DDF4D00CDBE36 /* OneOfBuilder.swift in Sources */,
 				235CBB41298C843500D3D4DE /* ViewTestBed.swift in Sources */,
 				235CBB3D298BA2AD00D3D4DE /* FontBuilder.swift in Sources */,

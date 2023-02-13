@@ -16,7 +16,12 @@ protocol ViewTestBed {
 	var title: String { get }
 	var type: String { get }
 	var description: String { get }
+	var showContentInScroll: Bool { get }
 	func build() -> ElementController
+}
+
+extension ViewTestBed {
+	var showContentInScroll: Bool { true }
 }
 
 public class ViewItems {
@@ -36,5 +41,6 @@ public class ViewItems {
 		DynamicElementBuilder(),
 		VisualEffectBuilder(),
 		TokenFieldBuilder(),
+		PlainTextViewBuilder(),
 	].sorted { a, b in a.title < b.title }
 }
