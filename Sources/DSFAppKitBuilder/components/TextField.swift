@@ -40,7 +40,7 @@ import DSFValueBinders
 /// ```
 public class TextField: Label {
 	/// Create a text field element
-	/// - Parameters:
+	@objc /// - Parameters:
 	///   - label: The initial text for the text field
 	///   - placeholderText: The placeholder text to use for the text field
 	public init(
@@ -173,11 +173,15 @@ extension TextField: NSTextFieldDelegate {
 		self.didBeginEditing?(self.label)
 	}
 
+	@objc public func textDidChange() {
+		self.textValueBinder?.wrappedValue = self.label.stringValue
+		self.hasTextBinder?.wrappedValue = !self.label.stringValue.isEmpty
+	}
+
 	public func controlTextDidChange(_: Notification) {
 		self.didEdit?(self.label)
 		if !updateOnEndEditingOnly {
-			self.textValueBinder?.wrappedValue = self.label.stringValue
-			self.hasTextBinder?.wrappedValue = !self.label.stringValue.isEmpty
+			self.textDidChange()
 			self.updateContent()
 		}
 	}
@@ -185,8 +189,7 @@ extension TextField: NSTextFieldDelegate {
 	public func controlTextDidEndEditing(_: Notification) {
 		self.updateContent()
 		if updateOnEndEditingOnly {
-			self.textValueBinder?.wrappedValue = self.label.stringValue
-			self.hasTextBinder?.wrappedValue = !self.label.stringValue.isEmpty
+			self.textDidChange()
 		}
 		self.didEndEditing?(self.label)
 	}
