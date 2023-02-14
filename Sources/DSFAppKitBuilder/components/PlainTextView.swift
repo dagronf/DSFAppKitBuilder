@@ -93,7 +93,6 @@ public class PlainTextView: Element {
 }
 
 extension PlainTextView: NSTextViewDelegate {
-
 	public func textViewDidChangeSelection(_ notification: Notification) {
 		if !self.isUpdating {
 			self.isUpdating = true

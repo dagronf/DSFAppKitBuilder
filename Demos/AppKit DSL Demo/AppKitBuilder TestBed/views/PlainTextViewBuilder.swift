@@ -36,13 +36,8 @@ class PlainTextViewBuilderController: ElementController {
 	private let _wrapText = ValueBinder(true)
 	private let _isEditable = ValueBinder(false)
 	private let _isSelectable = ValueBinder(true)
-	private let _rangeString = ValueBinder("")
-	private lazy var _selectedRange: ValueBinder<NSRange> = {
-		ValueBinder(NSRange(location: 5, length: 10)) { [weak self] newValue in
-			Swift.print("Selection is now \(newValue)")
-			self?._rangeString.wrappedValue = "\(newValue)"
-		}
-	}()
+
+	private var _selection = RangeComponentBinders()
 
 	lazy var body: Element = {
 		TabView {
@@ -73,13 +68,17 @@ class PlainTextViewBuilderController: ElementController {
 							.bindOnOffState(_isSelectable)
 						VDivider()
 						Label("Selection:")
-						Label(_rangeString)
+						VDivider()
+						NumberField(_selection.location)
+							.width(60)
+						NumberField(_selection.length)
+							.width(60)
 					}
 					PlainTextView(text: _textValue, wrapsLines: true)
 						.font(.monospaced)
 						.bindIsEditable(_isEditable)
 						.bindIsSelectable(_isSelectable)
-						.bindSelectedRange(_selectedRange)
+						.bindSelectedRange(_selection.range)
 				}
 				.hugging(h: 10)
 			}
