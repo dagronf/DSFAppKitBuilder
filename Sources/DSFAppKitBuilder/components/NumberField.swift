@@ -39,6 +39,8 @@ public class NumberField: TextField {
 		self.label.formatter = self.formatter
 		self.label.stringValue = self.formatter.string(from: NSNumber(value: numberBinder.wrappedValue)) ?? ""
 
+		self.updateOnEndEditingOnly = true
+
 		numberBinder.register(self) { [weak self] newValue in
 			guard let `self` = self else { return }
 			self.label.stringValue = self.formatter.string(from: NSNumber(value: newValue)) ?? ""
@@ -54,6 +56,8 @@ public class NumberField: TextField {
 
 		self.label.formatter = self.formatter
 		self.label.stringValue = self.formatter.string(from: NSNumber(value: numberBinder.wrappedValue)) ?? ""
+
+		self.updateOnEndEditingOnly = true
 
 		numberBinder.register(self) { [weak self] newValue in
 			guard let `self` = self else { return }
