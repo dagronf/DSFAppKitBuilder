@@ -43,5 +43,6 @@ public class ViewItems {
 		TokenFieldBuilder(),
 		PlainTextViewBuilder(),
 		TextFieldBuilder(),
+		FlowLayoutBuilder(),
 	].sorted { a, b in a.title < b.title }
 }

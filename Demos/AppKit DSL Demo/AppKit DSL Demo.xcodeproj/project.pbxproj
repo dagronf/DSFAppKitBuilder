@@ -73,6 +73,7 @@
 		23C6E90A26AF971600FBF106 /* PrimaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C6E90926AF971600FBF106 /* PrimaryDSL.swift */; };
 		23C818882993841A00816107 /* TokenFieldBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C818872993841A00816107 /* TokenFieldBuilder.swift */; };
 		23CC72C22999BE11004EB3C4 /* PlainTextViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CC72C12999BE11004EB3C4 /* PlainTextViewBuilder.swift */; };
+		23E50AF0299C5144005038CE /* FlowLayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E50AEF299C5144005038CE /* FlowLayoutBuilder.swift */; };
 		23E66E68296F94110025AFB0 /* SwiftUIPreviewDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E66E67296F94110025AFB0 /* SwiftUIPreviewDemo.swift */; };
 		23EBC53626DDA0CC001A861E /* GridDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC53526DDA0CC001A861E /* GridDSL.swift */; };
 		23F884852977451600ADC53D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F884842977451600ADC53D /* AppDelegate.swift */; };
@@ -169,6 +170,7 @@
 		23C6E90926AF971600FBF106 /* PrimaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDSL.swift; sourceTree = "<group>"; };
 		23C818872993841A00816107 /* TokenFieldBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFieldBuilder.swift; sourceTree = "<group>"; };
 		23CC72C12999BE11004EB3C4 /* PlainTextViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlainTextViewBuilder.swift; sourceTree = "<group>"; };
+		23E50AEF299C5144005038CE /* FlowLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayoutBuilder.swift; sourceTree = "<group>"; };
 		23E66E67296F94110025AFB0 /* SwiftUIPreviewDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftUIPreviewDemo.swift; sourceTree = "<group>"; };
 		23EBC53526DDA0CC001A861E /* GridDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridDSL.swift; sourceTree = "<group>"; };
 		23F884822977451600ADC53D /* DSFAppKitBuilderView Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DSFAppKitBuilderView Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -307,6 +309,7 @@
 				235CBB3E298C842300D3D4DE /* DatePickerBuilder.swift */,
 				235CBB37298B99C300D3D4DE /* DisclosureViewBuilder.swift */,
 				23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */,
+				23E50AEF299C5144005038CE /* FlowLayoutBuilder.swift */,
 				235CBB3C298BA2AD00D3D4DE /* FontBuilder.swift */,
 				239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */,
 				23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */,
@@ -568,6 +571,7 @@
 				235CBB2D298B99A400D3D4DE /* ViewController.swift in Sources */,
 				23513C7A298E383000CDBE36 /* CheckboxBuilder.swift in Sources */,
 				23910CA52990CDEE0016E150 /* VisualEffectBuilder.swift in Sources */,
+				23E50AF0299C5144005038CE /* FlowLayoutBuilder.swift in Sources */,
 				23910CA32990BBA60016E150 /* DynamicElementBuilder.swift in Sources */,
 				235CBB2B298B99A400D3D4DE /* AppDelegate.swift in Sources */,
 				235CBB38298B99C300D3D4DE /* DisclosureViewBuilder.swift in Sources */,
