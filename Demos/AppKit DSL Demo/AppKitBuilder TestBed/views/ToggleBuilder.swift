@@ -39,8 +39,19 @@ class ToggleBuilderController: ElementController {
 		return Nothing()
 	}
 
+	let stateString = ValueBinder("")
+	private lazy var state = ValueBinder(false) { newValue in
+		self.stateString.wrappedValue = newValue ? "on" : "off"
+	}
+
 	lazy var body: Element = {
 		VStack(alignment: .leading) {
+			HStack {
+				Toggle(state: .off)
+					.bindOnOff(state)
+				Label(stateString)
+			}
+			HDivider()
 			Label("Default sizing")
 			HStack {
 				Toggle(state: .off)
