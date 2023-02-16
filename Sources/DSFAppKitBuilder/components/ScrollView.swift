@@ -119,7 +119,8 @@ private extension ScrollView {
 	) {
 		self.scrollView.translatesAutoresizingMaskIntoConstraints = false
 		self.scrollView.borderType = .noBorder
-		self.scrollView.backgroundColor = NSColor.gray
+		self.scrollView.backgroundColor = .clear
+		self.scrollView.drawsBackground = false
 
 		self.scrollView.autohidesScrollers = autohidesScrollers
 		self.scrollView.hasVerticalScroller = true

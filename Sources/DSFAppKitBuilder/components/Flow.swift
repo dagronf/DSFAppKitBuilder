@@ -8,31 +8,54 @@
 import Foundation
 import AppKit
 
-
+/// A collection view that flows its child elements horizontally across its visible space
+///
+/// ```swift
+///   Flow(edgeInsets: NSEdgeInsets(edgeInset: 20)) {
+///		Button(title: "#earth")
+///		Button(title: "#universe")
+///		Button(title: "#space")
+///		Button(title: "#black_hole")
+///	}
+/// ```
 public class Flow: Element {
-
+	/// Create a flow view
+	/// - Parameters:
+	///   - minimumInteritemSpacing: The minimum spacing between each item horizontally
+	///   - minimumLineSpacing: The minimum spacing between lines
+	///   - edgeInsets: The inset to use
+	///   - builder: The builder function
 	convenience public init(
 		minimumInteritemSpacing: CGFloat? = nil,
 		minimumLineSpacing: CGFloat? = nil,
-		@ElementBuilder builder: () -> [Element]) {
+		edgeInsets: NSEdgeInsets? = nil,
+		@ElementBuilder builder: () -> [Element]
+	) {
 		self.init(
 			minimumInteritemSpacing: minimumInteritemSpacing,
 			minimumLineSpacing: minimumLineSpacing,
-			content: builder()
+			edgeInsets: edgeInsets,
+			builder()
 		)
 	}
 
+	/// Create a flow view
+	/// - Parameters:
+	///   - minimumInteritemSpacing: The minimum spacing between each item horizontally
+	///   - minimumLineSpacing: The minimum spacing between lines
+	///   - edgeInsets: The inset to use
+	///   - content: The array of elements to display in the flow view
 	public init(
 		minimumInteritemSpacing: CGFloat? = nil,
 		minimumLineSpacing: CGFloat? = nil,
-		content: [Element]
+		edgeInsets: NSEdgeInsets? = nil,
+		_ content: [Element]
 	) {
+		self.elements = content
 		self.content = content.compactMap { $0.view() }
 		super.init()
 
-		self.collectionView.setContentHuggingPriority(.init(10), for: .horizontal)
-		self.collectionView.setContentHuggingPriority(.init(999), for: .vertical)
-
+		self.collectionView.wantsLayer = true
 		self.collectionView.delegate = self
 		self.collectionView.dataSource = self
 
@@ -43,41 +66,27 @@ public class Flow: Element {
 		if let minimumLineSpacing = minimumLineSpacing {
 			layout.minimumLineSpacing = minimumLineSpacing
 		}
-		self.collectionView.collectionViewLayout = layout
+		if let edgeInsets = edgeInsets {
+			layout.sectionInset = edgeInsets
+		}
 
+		self.collectionView.needsLayout = true
+
+		self.collectionView.collectionViewLayout = layout
 		self.collectionView.reloadData()
 	}
 
 	// Private
-
-	private let collectionView = NSCollectionView()
+	private let collectionView = FlowCollectionView()
+	private let elements: [Element]
 	private let content: [NSView]
 
 	public override func view() -> NSView { return self.collectionView }
 }
 
-class ElementCollectionItem: NSCollectionViewItem {
-
-	override func loadView() {
-		self.view = NSView()
-		self.view.translatesAutoresizingMaskIntoConstraints = false
-		self.view.wantsLayer = true
-		self.view.layer!.borderWidth = 0.5
-		self.view.layer!.borderColor = NSColor.systemGray.cgColor
-	}
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		if let v = elementView {
-			self.view.addSubview(v)
-			v.pinEdges(to: self.view, edgeInset: 2)
-		}
-	}
-	var elementView: NSView?
-}
+// MARK: - Modifiers
 
 extension Flow: NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
-
 	public func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
 		self.content.count
 	}
@@ -92,13 +101,61 @@ extension Flow: NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollecti
 		let view = self.content[indexPath.item]
 		return view.fittingSize
 	}
-
 }
 
+// MARK: - Custom collection view
+
+// A CollectionView that hugs its content
+class FlowCollectionView: NSCollectionView {
+	override func reloadData() {
+		 super.reloadData()
+		 self.invalidateIntrinsicContentSize()
+	}
+
+	override func viewWillMove(toWindow newWindow: NSWindow?) {
+		super.viewWillMove(toWindow: newWindow)
+		self.backgroundColors = [.clear]
+		self.setContentHuggingPriority(.init(10), for: .horizontal)
+		self.setContentHuggingPriority(.init(999), for: .vertical)
+	}
+
+	override func layout() {
+		super.layout()
+		self.invalidateIntrinsicContentSize()
+	}
+
+	override var intrinsicContentSize: CGSize {
+		let intr = self.collectionViewLayout?.collectionViewContentSize ?? .zero
+		return CGSize(width: -1, height: intr.height)
+	}
+}
+
+// MARK: - Flow item
+
+// The collection item
+private class ElementCollectionItem: NSCollectionViewItem {
+	override func loadView() {
+		self.view = NSView()
+		self.view.translatesAutoresizingMaskIntoConstraints = false
+		self.view.wantsLayer = true
+//		self.view.layer!.borderWidth = 0.5
+//		self.view.layer!.borderColor = NSColor.systemGray.cgColor
+	}
+
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		if let v = elementView {
+			self.view.addSubview(v)
+			v.pinEdges(to: self.view)
+		}
+	}
+	
+	var elementView: NSView?
+}
 
 // MARK: - Flow layout
 
-class CollectionViewLeftFlowLayout: NSCollectionViewFlowLayout {
+private class CollectionViewLeftFlowLayout: NSCollectionViewFlowLayout {
 
 	override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
 

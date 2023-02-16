@@ -24,7 +24,7 @@ class FakeBox: Element {
 		let font = font ?? AKBFont(NSFont.systemFont(ofSize: NSFont.smallSystemFontSize))
 		self.body = VStack(spacing: 1, alignment: .leading) {
 			Label(title)
-				.labelPadding(NSEdgeInsets(top: 0, left: 4, bottom: 0, right: 0))
+				.labelPadding(NSEdgeInsets(top: 0, left: 8, bottom: 0, right: 0))
 				.font(font)
 				.applyStyle(Label.Styling.truncatingTail)
 				.horizontalHuggingPriority(1)
