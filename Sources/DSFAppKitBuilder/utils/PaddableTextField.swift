@@ -29,33 +29,69 @@ import Foundation
 
 // A textfield with configurable edge insets
 class PaddableTextField: NSTextField {
-	/// Set the edge inset padding for the text field
-	var edgeInsets: NSEdgeInsets {
-		get {
-			self.customCell.edgeInsets
-		}
-		set {
-			self.customCell.edgeInsets = newValue
-			self.needsDisplay = true
-			self.needsLayout = true
+	/// The edge insets to apply to the field
+	@objc var edgeInsets = NSEdgeInsets() {
+		didSet {
+			self.customCell.edgeInsets = edgeInsets
+			self.invalidateIntrinsicContentSize()
 		}
 	}
 
-	/// Set equal padding on all edges of the text field
-	var padding: CGFloat {
-		get { 0 }
-		set { self.customCell.edgeInsets = NSEdgeInsets(edgeInset: newValue) }
+	override init(frame frameRect: NSRect) {
+		super.init(frame: frameRect)
+		self.setup()
 	}
 
-	// Private
-
-	private var customCell: PaddableTextFieldCell {
-		self.cell as! PaddableTextFieldCell
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		self.setup()
 	}
 
-	override class var cellClass: AnyClass? {
-		get { PaddableTextFieldCell.self }
+	var customCell: NSPaddedTextFieldCell { self.cell as! NSPaddedTextFieldCell }
+}
+
+extension PaddableTextField {
+
+	class override var cellClass: AnyClass? {
+		get { NSPaddedTextFieldCell.self }
 		set {}
+	}
+
+	private func setup() {
+		let new = NSPaddedTextFieldCell()
+		let old = self.cell as! NSTextFieldCell
+
+		// Copy the settings from the old cell into the new one
+
+		new.font = old.font
+		new.state = old.state
+
+		new.stringValue = old.stringValue
+		new.attributedStringValue = old.attributedStringValue
+
+		new.textColor = old.textColor
+		new.identifier = old.identifier
+		new.alignment = old.alignment
+		new.title = old.title
+		new.image = old.image
+		new.backgroundColor = old.backgroundColor
+		new.backgroundStyle = old.backgroundStyle
+		new.drawsBackground = old.drawsBackground
+		new.bezelStyle = old.bezelStyle
+		new.isBezeled = old.isBezeled
+		new.isBordered = old.isBordered
+		new.isEditable = old.isEditable
+		new.isContinuous = old.isContinuous
+		new.isEnabled = old.isEnabled
+		new.isScrollable = old.isScrollable
+		new.isHighlighted = old.isHighlighted
+
+		new.wraps = old.wraps
+		new.formatter = old.formatter
+		new.tag = old.tag
+		new.controlSize = old.controlSize
+
+		self.cell = new
 	}
 
 	override var intrinsicContentSize: NSSize {
@@ -67,10 +103,8 @@ class PaddableTextField: NSTextField {
 }
 
 extension PaddableTextField {
-	// Custom paddable cell
-	private class PaddableTextFieldCell: NSTextFieldCell {
-		var edgeInsets = NSEdgeInsets()
-
+	class NSPaddedTextFieldCell: NSTextFieldCell {
+		public var edgeInsets = NSEdgeInsets()
 		override func titleRect(forBounds rect: NSRect) -> NSRect {
 			var titleFrame = super.titleRect(forBounds: rect)
 			titleFrame.origin.x += edgeInsets.left
