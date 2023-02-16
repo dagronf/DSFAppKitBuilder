@@ -57,33 +57,50 @@ class PaddableTextField: NSTextField {
 		get { PaddableTextFieldCell.self }
 		set {}
 	}
+
+	override var intrinsicContentSize: NSSize {
+		var sz = super.intrinsicContentSize
+		sz.width += (edgeInsets.left + edgeInsets.right)
+		sz.height += (edgeInsets.top + edgeInsets.bottom)
+		return sz
+	}
 }
 
-private class PaddableTextFieldCell: NSTextFieldCell {
-	var edgeInsets = NSEdgeInsets()
+extension PaddableTextField {
+	// Custom paddable cell
+	private class PaddableTextFieldCell: NSTextFieldCell {
+		var edgeInsets = NSEdgeInsets()
 
-	override func cellSize(forBounds rect: NSRect) -> NSSize {
-		var size = super.cellSize(forBounds: rect)
-		size.height += (self.edgeInsets.top + self.edgeInsets.bottom)
-		return size
-	}
+		override func titleRect(forBounds rect: NSRect) -> NSRect {
+			var titleFrame = super.titleRect(forBounds: rect)
+			titleFrame.origin.x += edgeInsets.left
+			titleFrame.size.width -= (edgeInsets.left + edgeInsets.right)
+			titleFrame.origin.y += edgeInsets.top
+			titleFrame.size.height -= (edgeInsets.top + edgeInsets.bottom)
+			return titleFrame
+		}
 
-	override func titleRect(forBounds rect: NSRect) -> NSRect {
-		return rect.insetBy(dx: self.edgeInsets.left, dy: self.edgeInsets.top)
-	}
+		override func edit(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, event: NSEvent?) {
+			var newRect = rect
+			newRect.origin.x += edgeInsets.left
+			newRect.size.width -= (edgeInsets.left + edgeInsets.right)
+			newRect.origin.y += edgeInsets.top
+			newRect.size.height -= (edgeInsets.top + edgeInsets.bottom)
+			super.edit(withFrame: newRect, in: controlView, editor: textObj, delegate: delegate, event: event)
+		}
 
-	override func edit(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, event: NSEvent?) {
-		let insetRect = rect.insetBy(dx: self.edgeInsets.left, dy: self.edgeInsets.top)
-		super.edit(withFrame: insetRect, in: controlView, editor: textObj, delegate: delegate, event: event)
-	}
+		override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
+			var newRect = rect
+			newRect.origin.x += edgeInsets.left
+			newRect.size.width -= (edgeInsets.left + edgeInsets.right)
+			newRect.origin.y += edgeInsets.top
+			newRect.size.height -= (edgeInsets.top + edgeInsets.bottom)
+			super.select(withFrame: newRect, in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)
+		}
 
-	override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
-		let insetRect = rect.insetBy(dx: self.edgeInsets.left, dy: self.edgeInsets.top)
-		super.select(withFrame: insetRect, in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)
-	}
-
-	override func drawInterior(withFrame cellFrame: NSRect, in controlView: NSView) {
-		let insetRect = cellFrame.insetBy(dx: self.edgeInsets.left, dy: self.edgeInsets.top)
-		super.drawInterior(withFrame: insetRect, in: controlView)
+		override func drawInterior(withFrame cellFrame: NSRect, in controlView: NSView) {
+			let titleRect = self.titleRect(forBounds: cellFrame)
+			self.attributedStringValue.draw(in: titleRect)
+		}
 	}
 }
