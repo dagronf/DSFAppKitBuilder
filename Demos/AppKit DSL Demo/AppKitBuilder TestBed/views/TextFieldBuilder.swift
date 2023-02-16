@@ -37,6 +37,48 @@ class TextFieldBuilderController: ElementController {
 
 	lazy var body: Element = {
 		VStack(spacing: 12, alignment: .leading) {
+			FakeBox("Label with padding") {
+				Flow {
+					Label("Label with no padding")
+						.backgroundColor(.systemBlue)
+					Label("Label with 8 padding")
+						.labelPadding(8)
+						.backgroundColor(.systemBlue)
+					Label("Label with 16 padding")
+						.labelPadding(16)
+						.backgroundColor(.systemBlue)
+					Label("Label with leading padding")
+						.labelPadding(NSEdgeInsets(top: 0, left: 16, bottom: 0, right: 0))
+						.horizontalCompressionResistancePriority(.defaultLow)
+						.horizontalHuggingPriority(999)
+						.backgroundColor(.systemBlue)
+				}
+			}
+			HDivider()
+
+			FakeBox("Label with wrapping/truncation") {
+				VStack(alignment: .leading) {
+					Label("Wrapping").font(.body.bold())
+					Label("So I decided to make a SwiftUI-style builder DSL for AppKit views. It has certainly made round-trip times faster for the projects I have that use it. You can even use SwiftUI to preview your DSFAppKitBuilder views if you're targeting 10.15 and later.")
+						.labelPadding(3)
+						.applyStyle(Label.Styling.multiline)
+						.border(width: 0.5, color: .systemRed)
+						.font(.monospaced.size(11).weight(.ultraLight))
+					Label("Single-line truncation").font(.body.bold())
+					Label("So I decided to make a SwiftUI-style builder DSL for AppKit views. It has certainly made round-trip times faster for the projects I have that use it. You can even use SwiftUI to preview your DSFAppKitBuilder views if you're targeting 10.15 and later.")
+						.labelPadding(8)
+						.truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+						.border(width: 0.5, color: .systemBlue)
+					Label("Multi-line truncation, uneven padding").font(.body.bold())
+					Label("So I decided to make a SwiftUI-style builder DSL for AppKit views. It has certainly made round-trip times faster for the projects I have that use it. You can even use SwiftUI to preview your DSFAppKitBuilder views if you're targeting 10.15 and later.")
+						.font(.body.size(16).weight(.light))
+						.labelPadding(NSEdgeInsets(top: 2, left: 48, bottom: 2, right: 4))
+						.applyStyle(Label.Styling.Multiline(maximumNumberOfLines: 3))
+						.border(width: 0.5, color: .systemGreen)
+				}
+				.hugging(h: 10)
+			}
+
 			HDivider()
 			Grid {
 				GridRow(rowAlignment: .firstBaseline) {
@@ -53,6 +95,8 @@ class TextFieldBuilderController: ElementController {
 				}
 			}
 			.columnFormatting(xPlacement: .trailing, atColumn: 0)
+
+			EmptyView()
 		}
 	}()
 }
