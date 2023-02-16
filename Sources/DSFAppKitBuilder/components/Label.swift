@@ -193,6 +193,14 @@ public extension Label {
 		return self
 	}
 
+	/// Set the maximum number of lines to display in a multiline text field
+	func maximumNumberOfLines(_ lineCount: Int) -> Self {
+		if lineCount > 0 {
+			self.label.maximumNumberOfLines = lineCount
+		}
+		return self
+	}
+
 	/// Set a rounded bezel for the text field
 	func roundedBezel() -> Self {
 		if let cell = self.label.cell as? NSTextFieldCell {

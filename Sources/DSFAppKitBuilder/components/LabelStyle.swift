@@ -54,12 +54,17 @@ public extension Label.Styling {
 
 	/// A multiline style for a label
 	struct Multiline: DSFAppKitBuilder.LabelStyle {
+		public init(maximumNumberOfLines: Int = 0) {
+			self.maximumNumberOfLines = maximumNumberOfLines
+		}
 		@discardableResult public func apply(_ labelElement: Label) -> Label {
 			labelElement
 				.horizontalCompressionResistancePriority(.defaultLow)
 				.wraps(true)
+				.maximumNumberOfLines(self.maximumNumberOfLines)
 				.truncatesLastVisibleLine(true)
 		}
+		private let maximumNumberOfLines: Int
 	}
 
 	/// A single-line truncation style
