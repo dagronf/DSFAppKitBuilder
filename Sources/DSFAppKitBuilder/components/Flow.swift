@@ -1,12 +1,12 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Darren Ford on 15/2/2023.
 //
 
-import Foundation
 import AppKit
+import Foundation
 
 /// A collection view that flows its child elements horizontally across its visible space
 ///
@@ -25,7 +25,7 @@ public class Flow: Element {
 	///   - minimumLineSpacing: The minimum spacing between lines
 	///   - edgeInsets: The inset to use
 	///   - builder: The builder function
-	convenience public init(
+	public convenience init(
 		minimumInteritemSpacing: CGFloat? = nil,
 		minimumLineSpacing: CGFloat? = nil,
 		edgeInsets: NSEdgeInsets? = nil,
@@ -59,7 +59,7 @@ public class Flow: Element {
 		self.collectionView.delegate = self
 		self.collectionView.dataSource = self
 
-		let layout = CollectionViewLeftFlowLayout()
+		let layout = CollectionViewLeftAlignedFlowLayout()
 		if let minimumInteritemSpacing = minimumInteritemSpacing {
 			layout.minimumInteritemSpacing = minimumInteritemSpacing
 		}
@@ -81,7 +81,7 @@ public class Flow: Element {
 	private let elements: [Element]
 	private let content: [NSView]
 
-	public override func view() -> NSView { return self.collectionView }
+	override public func view() -> NSView { return self.collectionView }
 }
 
 // MARK: - Modifiers
@@ -108,8 +108,8 @@ extension Flow: NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollecti
 // A CollectionView that hugs its content
 class FlowCollectionView: NSCollectionView {
 	override func reloadData() {
-		 super.reloadData()
-		 self.invalidateIntrinsicContentSize()
+		super.reloadData()
+		self.invalidateIntrinsicContentSize()
 	}
 
 	override func viewWillMove(toWindow newWindow: NSWindow?) {
@@ -149,16 +149,15 @@ private class ElementCollectionItem: NSCollectionViewItem {
 			v.pinEdges(to: self.view)
 		}
 	}
-	
+
 	var elementView: NSView?
 }
 
 // MARK: - Flow layout
 
-private class CollectionViewLeftFlowLayout: NSCollectionViewFlowLayout {
-
+// A left-aligned flow layout class
+private class CollectionViewLeftAlignedFlowLayout: NSCollectionViewFlowLayout {
 	override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
-
 		let defaultAttributes = super.layoutAttributesForElements(in: rect)
 		if defaultAttributes.isEmpty { return defaultAttributes }
 
@@ -168,12 +167,12 @@ private class CollectionViewLeftFlowLayout: NSCollectionViewFlowLayout {
 		var lastYPosition = defaultAttributes[0].frame.maxY
 
 		for itemAttributes in defaultAttributes {
-
 			guard let newAttributes = itemAttributes.copy() as? NSCollectionViewLayoutAttributes else {
 				continue
 			}
 
-			if newAttributes.frame.origin.y > lastYPosition { // NewLine
+			if newAttributes.frame.origin.y > lastYPosition {
+				// Wrap to the next line
 				leftMargin = sectionInset.left
 			}
 
@@ -186,3 +185,26 @@ private class CollectionViewLeftFlowLayout: NSCollectionViewFlowLayout {
 		return leftAlignedAttributes
 	}
 }
+
+// MARK: - SwiftUI preview
+
+#if DEBUG && canImport(SwiftUI)
+import SwiftUI
+
+@available(macOS 10.15, *)
+struct FlowLayoutPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.VStack {
+			Flow(edgeInsets: NSEdgeInsets(edgeInset: 20)) {
+				Button(title: "#earth")
+				Button(title: "#universe")
+				Button(title: "#space")
+				Button(title: "#black_hole")
+				Button(title: "#meteor")
+			}
+			.SwiftUIPreview()
+			.padding()
+		}
+	}
+}
+#endif
