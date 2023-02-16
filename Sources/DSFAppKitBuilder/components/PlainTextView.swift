@@ -136,6 +136,12 @@ public extension PlainTextView {
 		self.contentView.textView.font = font
 		return self
 	}
+
+	/// A Boolean that indicates whether the scroll view automatically hides its scroll bars when they are not needed.
+	@discardableResult func autohidesScrollers(_ hides: Bool) -> Self {
+		self.contentView.scrollView.autohidesScrollers = hides
+		return self
+	}
 }
 
 // MARK: - Bindings

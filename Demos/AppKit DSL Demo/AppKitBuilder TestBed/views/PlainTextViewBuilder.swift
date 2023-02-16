@@ -43,9 +43,11 @@ class PlainTextViewBuilderController: ElementController {
 		TabView {
 			TabViewItem("Wraps text") {
 				PlainTextView(text: _textValue, wrapsLines: true)
+					.autohidesScrollers(true)
 			}
 			TabViewItem("HV Scroll") {
 				PlainTextView(text: _textValue, wrapsLines: false)
+					.autohidesScrollers(true)
 			}
 			TabViewItem("Custom Font") {
 				VStack {
@@ -56,6 +58,7 @@ class PlainTextViewBuilderController: ElementController {
 					PlainTextView(text: _textValue, wrapsLines: true)
 						.font(.monospaced)
 						.bindWrapsText(_wrapText)
+						.autohidesScrollers(true)
 				}
 				.hugging(h: 10)
 			}
@@ -79,6 +82,7 @@ class PlainTextViewBuilderController: ElementController {
 						.bindIsEditable(_isEditable)
 						.bindIsSelectable(_isSelectable)
 						.bindSelectedRange(_selection.range)
+						.autohidesScrollers(true)
 				}
 				.hugging(h: 10)
 			}
