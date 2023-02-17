@@ -29,12 +29,14 @@ public class Flow: Element {
 		minimumInteritemSpacing: CGFloat? = nil,
 		minimumLineSpacing: CGFloat? = nil,
 		edgeInsets: NSEdgeInsets? = nil,
+		layoutDirection: NSUserInterfaceLayoutDirection? = nil,
 		@ElementBuilder builder: () -> [Element]
 	) {
 		self.init(
 			minimumInteritemSpacing: minimumInteritemSpacing,
 			minimumLineSpacing: minimumLineSpacing,
 			edgeInsets: edgeInsets,
+			layoutDirection: layoutDirection,
 			builder()
 		)
 	}
@@ -49,6 +51,7 @@ public class Flow: Element {
 		minimumInteritemSpacing: CGFloat? = nil,
 		minimumLineSpacing: CGFloat? = nil,
 		edgeInsets: NSEdgeInsets? = nil,
+		layoutDirection: NSUserInterfaceLayoutDirection? = nil,
 		_ content: [Element]
 	) {
 		self.elements = content
@@ -60,6 +63,7 @@ public class Flow: Element {
 		self.collectionView.dataSource = self
 
 		let layout = CollectionViewLeftAlignedFlowLayout()
+		layout.direction = layoutDirection ?? self.collectionView.userInterfaceLayoutDirection
 		if let minimumInteritemSpacing = minimumInteritemSpacing {
 			layout.minimumInteritemSpacing = minimumInteritemSpacing
 		}
@@ -92,7 +96,7 @@ extension Flow: NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollecti
 	}
 
 	public func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-		let item = ElementCollectionItem()
+		let item = FlowCollectionView.CollectionItem()
 		item.elementView = self.content[indexPath.item]
 		return item
 	}
@@ -132,37 +136,51 @@ class FlowCollectionView: NSCollectionView {
 
 // MARK: - Flow item
 
-// The collection item
-private class ElementCollectionItem: NSCollectionViewItem {
-	override func loadView() {
-		self.view = NSView()
-		self.view.translatesAutoresizingMaskIntoConstraints = false
-		self.view.wantsLayer = true
-//		self.view.layer!.borderWidth = 0.5
-//		self.view.layer!.borderColor = NSColor.systemGray.cgColor
-	}
-
-	override func viewDidLoad() {
-		super.viewDidLoad()
-		if let v = elementView {
-			self.view.addSubview(v)
-			v.pinEdges(to: self.view)
+fileprivate extension FlowCollectionView {
+	// The collection item
+	class CollectionItem: NSCollectionViewItem {
+		override func loadView() {
+			self.view = NSView()
+			self.view.translatesAutoresizingMaskIntoConstraints = false
+			self.view.wantsLayer = true
+			//		self.view.layer!.borderWidth = 0.5
+			//		self.view.layer!.borderColor = NSColor.systemGray.cgColor
 		}
-	}
 
-	var elementView: NSView?
+		override func viewDidLoad() {
+			super.viewDidLoad()
+			if let v = elementView {
+				self.view.addSubview(v)
+				v.pinEdges(to: self.view)
+			}
+		}
+
+		var elementView: NSView?
+	}
 }
 
 // MARK: - Flow layout
 
 // A left-aligned flow layout class
 private class CollectionViewLeftAlignedFlowLayout: NSCollectionViewFlowLayout {
+	internal var direction: NSUserInterfaceLayoutDirection!
+
 	override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
 		let defaultAttributes = super.layoutAttributesForElements(in: rect)
 		if defaultAttributes.isEmpty { return defaultAttributes }
+		if self.direction == .rightToLeft {
+			return self.layoutAttributesForElementsRTL(in: rect, defaultAttributes: defaultAttributes)
+		}
+		else {
+			return self.layoutAttributesForElementsLTR(in: rect, defaultAttributes: defaultAttributes)
+		}
+	}
 
-		var leftAlignedAttributes = [NSCollectionViewLayoutAttributes]()
-
+	private func layoutAttributesForElementsLTR(
+		in rect: NSRect,
+		defaultAttributes: [NSCollectionViewLayoutAttributes]
+	) -> [NSCollectionViewLayoutAttributes] {
+		var attributes = [NSCollectionViewLayoutAttributes]()
 		var leftMargin = sectionInset.left
 		var lastYPosition = defaultAttributes[0].frame.maxY
 
@@ -180,9 +198,37 @@ private class CollectionViewLeftAlignedFlowLayout: NSCollectionViewFlowLayout {
 			leftMargin += newAttributes.frame.width + minimumInteritemSpacing
 			lastYPosition = newAttributes.frame.maxY
 
-			leftAlignedAttributes.append(newAttributes)
+			attributes.append(newAttributes)
 		}
-		return leftAlignedAttributes
+		return attributes
+	}
+
+	private func layoutAttributesForElementsRTL(
+		in rect: NSRect,
+		defaultAttributes: [NSCollectionViewLayoutAttributes]
+	) -> [NSCollectionViewLayoutAttributes] {
+		var attributes = [NSCollectionViewLayoutAttributes]()
+		let rightMargin = self.collectionViewContentSize.width - sectionInset.right
+		var rightPosition = rightMargin
+		var lastYPosition = defaultAttributes[0].frame.maxY
+
+		for itemAttributes in defaultAttributes {
+			guard let newAttributes = itemAttributes.copy() as? NSCollectionViewLayoutAttributes else {
+				continue
+			}
+
+			if newAttributes.frame.origin.y > lastYPosition {
+				// The next line
+				rightPosition = rightMargin
+			}
+
+			newAttributes.frame.origin.x = rightPosition - itemAttributes.frame.width
+			rightPosition -= (newAttributes.frame.width + minimumInteritemSpacing)
+			lastYPosition = newAttributes.frame.maxY
+
+			attributes.append(newAttributes)
+		}
+		return attributes
 	}
 }
 

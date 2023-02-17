@@ -23,11 +23,42 @@ class FlowLayoutBuilder: ViewTestBed {
 
 class FlowLayoutBuilderController: ElementController {
 	let radioHidden = ValueBinder(false)
+
 	lazy var body: Element = {
 		VStack(alignment: .leading) {
+			FakeBox("Hashtags (left-aligned)") {
+				Flow(
+					minimumInteritemSpacing: 4,
+					minimumLineSpacing: 4,
+					layoutDirection: .leftToRight
+				) {
+					FlatButton(title: "#earth")
+					FlatButton(title: "#universe")
+					FlatButton(title: "#space")
+					FlatButton(title: "#black_hole")
+					FlatButton(title: "#astronomical")
+					FlatButton(title: "#planetary")
+				}
+			}
+			.horizontalHuggingPriority(1)
 
-			HStack(spacing: 4, alignment: .top) {
-				Label("Hashtags:")
+			FakeBox("Hashtags (right-aligned)") {
+				Flow(
+					minimumInteritemSpacing: 4,
+					minimumLineSpacing: 4,
+					layoutDirection: .rightToLeft
+				) {
+					FlatButton(title: "#earth")
+					FlatButton(title: "#universe")
+					FlatButton(title: "#space")
+					FlatButton(title: "#black_hole")
+					FlatButton(title: "#astronomical")
+					FlatButton(title: "#planetary")
+				}
+			}
+			.horizontalHuggingPriority(1)
+
+			FakeBox("Hashtags (user-interface direction)") {
 				Flow(
 					minimumInteritemSpacing: 4,
 					minimumLineSpacing: 4
@@ -37,6 +68,7 @@ class FlowLayoutBuilderController: ElementController {
 					Button(title: "#space", bezelStyle: .roundRect)
 					Button(title: "#black_hole", bezelStyle: .roundRect)
 					Button(title: "#astronomical", bezelStyle: .roundRect)
+					Button(title: "#planetary", bezelStyle: .roundRect)
 				}
 			}
 			.horizontalHuggingPriority(1)
