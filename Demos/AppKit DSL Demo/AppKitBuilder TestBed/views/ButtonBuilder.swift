@@ -20,12 +20,20 @@ public class ButtonBuilder: ViewTestBed {
 
 class ButtonBuilderController: ElementController {
 
-	let customStyle = FlatButton.Style(
+	static let monoFontType: NSFont = {
+		if #available(macOS 10.15, *) {
+			return NSFont.monospacedSystemFont(ofSize: 14, weight: .medium)
+		} else {
+			return NSFont.systemFont(ofSize: 14, weight: .heavy)
+		}
+	}()
+
+	private lazy var customStyle = FlatButton.Style(
 		borderWidth: 2,
 		color: NSColor.systemGreen,
 		borderColor: NSColor.systemBlue,
 		textColor: NSColor.black,
-		font: NSFont.monospacedSystemFont(ofSize: 14, weight: .medium)
+		font: Self.monoFontType
 	)
 
 	lazy var body: Element = {

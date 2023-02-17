@@ -61,16 +61,39 @@ public class Control: Element {
 // MARK: - Modifiers
 
 public extension Control {
-	/// Set the enabled state for the control
-	func isEnabled(_ isEnabled: Bool) -> Self {
-		control.isEnabled = isEnabled
-		return self
+	enum ControlSize: CaseIterable {
+		case large
+		case regular
+		case small
+		case mini
+		var controlSize: NSControl.ControlSize {
+			switch self {
+			case .large:
+				if #available(macOS 11.0, *) {
+					return .large
+				} else {
+					return .regular
+				}
+			case .regular: return .regular
+			case .small: return .small
+			case .mini: return .mini
+			}
+		}
 	}
 
 	/// Set the control size for the element
-	func controlSize(_ controlSize: NSControl.ControlSize) -> Self {
-		self.control.controlSize = controlSize
-		self.onControlSizeChange(controlSize)
+	func controlSize(_ controlSize: Control.ControlSize) -> Self {
+		let sz = controlSize.controlSize
+		self.control.controlSize = sz
+		self.onControlSizeChange(sz)
+		return self
+	}
+}
+
+public extension Control {
+	/// Set the enabled state for the control
+	func isEnabled(_ isEnabled: Bool) -> Self {
+		control.isEnabled = isEnabled
 		return self
 	}
 
