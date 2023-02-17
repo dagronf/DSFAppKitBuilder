@@ -32,6 +32,7 @@ public class Nothing: Element {
 	public override func view() -> NSView { NothingView() }
 }
 
+/// A nothing view. Collection classes can optimize these out.
 internal class NothingView: NSView {
 	override var intrinsicContentSize: NSSize { .zero }
 	init() {

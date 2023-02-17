@@ -39,52 +39,68 @@ class PlainTextViewBuilderController: ElementController {
 
 	private var _selection = RangeComponentBinders()
 
+	lazy var bodyWraps: Element = {
+		PlainTextView(text: _textValue, wrapsLines: true)
+			.autohidesScrollers(true)
+	}()
+
+	lazy var bodyNoWraps: Element = {
+		PlainTextView(text: _textValue, wrapsLines: false)
+			.autohidesScrollers(true)
+	}()
+
+	lazy var bodyToggle: Element = {
+		VStack {
+			HStack {
+				CheckBox("Wrap Text")
+					.bindOnOffState(_wrapText)
+			}
+			PlainTextView(text: _textValue, wrapsLines: true)
+				.font(.body.size(16).weight(.light).italic())
+				.bindWrapsText(_wrapText)
+				.autohidesScrollers(true)
+		}
+		.hugging(h: 10)
+	}()
+
+	lazy var bodyEnabled: Element = {
+		VStack {
+			HStack {
+				CheckBox("Editable", allowMixedState: false)
+					.bindOnOffState(_isEditable)
+				CheckBox("Selectable", allowMixedState: false)
+					.bindOnOffState(_isSelectable)
+				VDivider()
+				Label("Selection:")
+				VDivider()
+				NumberField(_selection.location)
+					.width(60)
+				NumberField(_selection.length)
+					.width(60)
+			}
+			PlainTextView(text: _textValue, wrapsLines: true)
+				.font(.monospaced)
+				.bindIsEditable(_isEditable)
+				.bindIsSelectable(_isSelectable)
+				.bindSelectedRange(_selection.range)
+				.autohidesScrollers(true)
+		}
+		.hugging(h: 10)
+	}()
+
 	lazy var body: Element = {
 		TabView {
 			TabViewItem("Wraps text") {
-				PlainTextView(text: _textValue, wrapsLines: true)
-					.autohidesScrollers(true)
+				self.bodyWraps
 			}
 			TabViewItem("HV Scroll") {
-				PlainTextView(text: _textValue, wrapsLines: false)
-					.autohidesScrollers(true)
+				self.bodyNoWraps
 			}
-			TabViewItem("Custom Font") {
-				VStack {
-					HStack {
-						Button(title: "Wraps Text", type: .pushOnPushOff)
-							.bindOnOffState(_wrapText)
-					}
-					PlainTextView(text: _textValue, wrapsLines: true)
-						.font(.monospaced)
-						.bindWrapsText(_wrapText)
-						.autohidesScrollers(true)
-				}
-				.hugging(h: 10)
+			TabViewItem("Wrapping Toggle") {
+				self.bodyToggle
 			}
 			TabViewItem("Enabled") {
-				VStack {
-					HStack {
-						CheckBox("Editable", allowMixedState: false)
-							.bindOnOffState(_isEditable)
-						CheckBox("Selectable", allowMixedState: false)
-							.bindOnOffState(_isSelectable)
-						VDivider()
-						Label("Selection:")
-						VDivider()
-						NumberField(_selection.location)
-							.width(60)
-						NumberField(_selection.length)
-							.width(60)
-					}
-					PlainTextView(text: _textValue, wrapsLines: true)
-						.font(.monospaced)
-						.bindIsEditable(_isEditable)
-						.bindIsSelectable(_isSelectable)
-						.bindSelectedRange(_selection.range)
-						.autohidesScrollers(true)
-				}
-				.hugging(h: 10)
+				self.bodyEnabled
 			}
 		}
 			//.size(width: 400, height: 400)
@@ -99,6 +115,58 @@ struct TextViewBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			Group {
 				PlainTextViewBuilder().build().body
+			}
+			.SwiftUIPreview()
+		}
+		.padding()
+	}
+}
+
+@available(macOS 10.15, *)
+struct TextViewWrapsPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			Group {
+				PlainTextViewBuilderController().bodyWraps
+			}
+			.SwiftUIPreview()
+		}
+		.padding()
+	}
+}
+
+@available(macOS 10.15, *)
+struct TextViewNoWrapsPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			Group {
+				PlainTextViewBuilderController().bodyNoWraps
+			}
+			.SwiftUIPreview()
+		}
+		.padding()
+	}
+}
+
+@available(macOS 10.15, *)
+struct TextViewTogglePreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			Group {
+				PlainTextViewBuilderController().bodyToggle
+			}
+			.SwiftUIPreview()
+		}
+		.padding()
+	}
+}
+
+@available(macOS 10.15, *)
+struct TextViewEnabledPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		SwiftUI.Group {
+			Group {
+				PlainTextViewBuilderController().bodyEnabled
 			}
 			.SwiftUIPreview()
 		}

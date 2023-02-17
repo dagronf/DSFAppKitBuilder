@@ -341,9 +341,10 @@ TextField()
 | `ComboBox`         | An `NSComboBox` wrapper |
 | `ComboButton`      | An `NSComboButton` wrapper, falling back to [`DSFComboButton`](https://github.com/dagronf/DSFComboButton) on systems earlier than macOS 13 (Ventura) |
 | `DatePicker`       | An `NSDatePicker` wrapper |
-| `Divider`<br/>`HDivider/VDivider` | A divider element (a single line, either horizontal or vertical) |
+| `DisclosureView`   | An element has a title and a disclosable child element |
+| `HDivider`         | A horizontal divider element |
+| `VDivider`         | A vertical divider element |
 | `EmptyView`        | A spacer view |
-| `Grid`             | An `NSGridView` wrapper |
 | `Group`            | A element that contains another element |
 | `ImageView`        | An `NSImageView` wrapper |
 | `Label`            | An `NSTextField` wrapper configured as a read-only label |
@@ -357,28 +358,36 @@ TextField()
 | `SecureTextField`  | An `NSSecureTextField` wrapper |
 | `Segmented`        | An `NSSegmentedControl` wrapper |
 | `Slider`           | An `NSSlider` wrapper |
-| `SplitView`        | An `NSSplitView` wrapper |
-| `Stack`<br/>`HStack/VStack` | An `NSStackView` wrapper (horizontal or vertical) |
 | `Stepper`          | An `NSStepper` wrapper |
-| `Switch`<br/>(10.15+) | An `NSSwitch` wrapper |
-| `TabView`          | An `NSTabView` wrapper |
+| `Switch`           | An `NSSwitch` wrapper |
 | `TextField`        | An `NSTextField` wrapper configured as an editable field |
 | `Toggle`           | A scalable toggle button (uses [DSFToggleButton](https://github.com/dagronf/DSFToggleButton)) |
 | `TokenField`       | A wrapper around `NSTokenField` |
 | `View`             | A wrapper for any `NSView` instance |
-| `VisualEffectView` | A wrapper for a `NSVisualEffectView` instance |
+| `VisualEffectView` | A wrapper for a `NSVisualEffectView` instance containing a child element |
 | `Window`           | An `NSWindow` wrapper |
-| `ZStack`           | Layer multiple Elements on top of each other |
 
-### Optional and controllable elements
+### Collection elements
+
+| Element Type       |  Description            |
+|--------------------|-------------------------|
+| `DisclosureGroup`  | An element that is a collection of `DisclosureView` elements |
+| `DynamicElement`   | A hot-swappable element which displays the view contained in a `ValueBinder` |
+| `Flow`             | An element that is a collection of elements that flow across, then down |
+| `Grid`             | An `NSGridView` wrapper |
+| `HStack`           | A horizontal stack    |
+| `VStack`           | A vertical stack      |
+| `ZStack`           | Layer multiple Elements on top of each other |
+| `TabView`          | An `NSTabView` wrapper |
+| `SplitView`        | An `NSSplitView` wrapper |
+
+### Branching and choice elements
 
 | Element Type        |  Description            |
 |---------------------|-------------------------|
 | `Maybe`             | An element that inserts an element into the view IF a condition is met |
 | `OneOf`             | An element that binds the visibility of a number of elements to a `ValueBinder<>` value |
 | `DynamicElement`    | An element that binds the displayed Element to a `ValueBinder<>` |
-| `DisclosureView`    | An element has a title and a disclosable child element |
-| `DisclosureGroup`   | An element that is a collection of `DisclosureView` elements |
 
 ## Using SwiftUI previews
 

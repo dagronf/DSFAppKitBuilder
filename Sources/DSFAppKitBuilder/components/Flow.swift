@@ -55,7 +55,11 @@ public class Flow: Element {
 		_ content: [Element]
 	) {
 		self.elements = content
-		self.content = content.compactMap { $0.view() }
+		self.content = content.compactMap {
+			let v = $0.view()
+			if v is NothingView { return nil }
+			return v
+		}
 		super.init()
 
 		self.collectionView.wantsLayer = true
