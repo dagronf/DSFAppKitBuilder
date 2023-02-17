@@ -1,5 +1,5 @@
 //
-//  NSColor+animations.swift
+//  NSColor+extensions.swift
 //
 //  Copyright © 2023 Darren Ford. All rights reserved.
 //
@@ -24,6 +24,10 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
+import AppKit
+
+// MARK: - Animated colors
+
 /// Usage:
 ///
 ///   private lazy var textColorAnimator = NSColor.Animator()
@@ -32,10 +36,6 @@
 ///      // Do something with 'color'
 ///   }
 
-
-#if os(macOS)
-
-import AppKit
 
 /// A animation handler for NSColor transitions
 class NSColorAnimator: NSAnimation {
@@ -84,4 +84,18 @@ extension NSColor {
 	}
 }
 
-#endif
+// MARK: - Color modifications
+
+extension NSColor {
+	func flatContrastColor(defaultColor: NSColor = .textColor) -> NSColor {
+		if let rgbColor = self.usingColorSpace(.genericRGB),
+			rgbColor != NSColor.clear {
+			let r = 0.299 * rgbColor.redComponent
+			let g = 0.587 * rgbColor.greenComponent
+			let b = 0.114 * rgbColor.blueComponent
+			let avgGray: CGFloat = 1 - (r + g + b)
+			return (avgGray >= 0.45) ? .white : .black
+		}
+		return defaultColor
+	}
+}

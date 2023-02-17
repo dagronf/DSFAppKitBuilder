@@ -19,6 +19,15 @@ public class ButtonBuilder: ViewTestBed {
 }
 
 class ButtonBuilderController: ElementController {
+
+	let customStyle = FlatButton.Style(
+		borderWidth: 2,
+		color: NSColor.systemGreen,
+		borderColor: NSColor.systemBlue,
+		textColor: NSColor.black,
+		font: NSFont.monospacedSystemFont(ofSize: 14, weight: .medium)
+	)
+
 	lazy var body: Element = {
 		VStack(spacing: 16) {
 			self.buildButtonBezels()
@@ -29,6 +38,29 @@ class ButtonBuilderController: ElementController {
 				self.buildButtonTint()
 				EmptyView()
 			}
+
+			HDivider()
+
+			VStack {
+				Flow {
+					FlatButton(title: "#earth-large 大的")
+						.controlSize(.large)
+					FlatButton(title: "#earth-regular 常规的")
+						.controlSize(.regular)
+					FlatButton(title: "#earth-small 小的")
+						.controlSize(.small)
+					FlatButton(title: "#earth-mini 小型的")
+						.controlSize(.mini)
+				}
+
+				Flow {
+					FlatButton(title: "🤔 thinking emoji", style: customStyle)
+					FlatButton(title: "sauna 🧖‍♂️", style: customStyle)
+					FlatButton(title: "🤩❤️🔒⬆︎🏀", style: customStyle)
+					FlatButton(title: "شلال كبير", style: customStyle)
+				}
+			}
+			.hugging(h: 10)
 
 			EmptyView()
 		}

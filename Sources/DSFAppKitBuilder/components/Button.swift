@@ -95,7 +95,7 @@ public class Button<ButtonType: NSButton>: Control {
 
 	// Privates
 
-	fileprivate let button = ButtonType()
+	internal let button = ButtonType()
 	override public func view() -> NSView { return self.button }
 	private var action: ButtonAction?
 

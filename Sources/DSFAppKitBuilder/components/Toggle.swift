@@ -84,6 +84,8 @@ public class Toggle: Control {
 		self.toggleButton.action = #selector(self.performAction(_:))
 
 		self.customColor = color
+
+		self.receiveThemeNotifications = true
 	}
 
 	/// Create a toggle button
@@ -114,6 +116,8 @@ public class Toggle: Control {
 		self.toggleButton.action = #selector(self.performAction(_:))
 
 		self.customColor = color
+
+		self.receiveThemeNotifications = true
 	}
 
 	deinit {
