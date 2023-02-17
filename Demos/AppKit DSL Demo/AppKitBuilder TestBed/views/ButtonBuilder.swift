@@ -7,7 +7,9 @@
 
 import Foundation
 import AppKit
+
 import DSFAppKitBuilder
+import DSFValueBinders
 
 public class ButtonBuilder: ViewTestBed {
 	var title: String { String.localized("Button") }
@@ -19,6 +21,8 @@ public class ButtonBuilder: ViewTestBed {
 }
 
 class ButtonBuilderController: ElementController {
+
+	let _switch = ValueBinder(true)
 
 	static let monoFontType: NSFont = {
 		if #available(macOS 10.15, *) {
@@ -67,6 +71,16 @@ class ButtonBuilderController: ElementController {
 					FlatButton(title: "🤩❤️🔒⬆︎🏀", style: customStyle)
 					FlatButton(title: "شلال كبير", style: customStyle)
 				}
+			}
+			.hugging(h: 10)
+
+			HDivider()
+
+			HStack(alignment: .leading) {
+				Label("Switches:")
+				CompatibleSwitch(onOffBinder: _switch)
+				CompatibleSwitch(onOffBinder: _switch.toggled())
+					.isEnabled(false)
 			}
 			.hugging(h: 10)
 

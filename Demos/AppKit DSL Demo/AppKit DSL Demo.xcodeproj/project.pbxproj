@@ -66,6 +66,7 @@
 		23910CA32990BBA60016E150 /* DynamicElementBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */; };
 		23910CA52990CDEE0016E150 /* VisualEffectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23910CA42990CDEE0016E150 /* VisualEffectBuilder.swift */; };
 		23910CA72990D46A0016E150 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23910CA62990D46A0016E150 /* Utils.swift */; };
+		23954472299F4AFD002763A9 /* BlankTemplateBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23954471299F4AFD002763A9 /* BlankTemplateBuilder.swift */; };
 		239A1FB2298CCB9400F5B5AD /* ButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */; };
 		239A1FB4298CD9AB00F5B5AD /* GridBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */; };
 		239A1FB6298CDF0C00F5B5AD /* ComboButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */; };
@@ -162,6 +163,7 @@
 		23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicElementBuilder.swift; sourceTree = "<group>"; };
 		23910CA42990CDEE0016E150 /* VisualEffectBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBuilder.swift; sourceTree = "<group>"; };
 		23910CA62990D46A0016E150 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		23954471299F4AFD002763A9 /* BlankTemplateBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankTemplateBuilder.swift; sourceTree = "<group>"; };
 		239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonBuilder.swift; sourceTree = "<group>"; };
 		239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridBuilder.swift; sourceTree = "<group>"; };
 		239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComboButtonBuilder.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 		235CBB3B298B99FB00D3D4DE /* views */ = {
 			isa = PBXGroup;
 			children = (
+				23954471299F4AFD002763A9 /* BlankTemplateBuilder.swift */,
 				239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */,
 				23513C79298E383000CDBE36 /* CheckboxBuilder.swift */,
 				23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */,
@@ -568,6 +571,7 @@
 				235CBB41298C843500D3D4DE /* ViewTestBed.swift in Sources */,
 				235CBB3D298BA2AD00D3D4DE /* FontBuilder.swift in Sources */,
 				23513C78298E2B8800CDBE36 /* String+localized.swift in Sources */,
+				23954472299F4AFD002763A9 /* BlankTemplateBuilder.swift in Sources */,
 				235CBB2D298B99A400D3D4DE /* ViewController.swift in Sources */,
 				23513C7A298E383000CDBE36 /* CheckboxBuilder.swift in Sources */,
 				23910CA52990CDEE0016E150 /* VisualEffectBuilder.swift in Sources */,

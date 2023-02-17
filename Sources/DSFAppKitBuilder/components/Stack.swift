@@ -37,20 +37,25 @@ public class Stack: Element {
 	) {
 		self.content = content
 		super.init()
-		self.stack.spacing = spacing
-		self.stack.orientation = orientation
-		self.stack.alignment = alignment
 
-		if let d = distribution {
-			_ = self.distribution(d)
-		}
-
+		// Map the elements to their views
 		content.forEach {
 			let v = $0.view()
 			if !(v is NothingView) {
 				stack.addArrangedSubview(v)
 			}
 		}
+
+		self.stack.spacing = spacing
+		self.stack.alignment = alignment
+		if let distribution = distribution {
+			self.stack.distribution = distribution
+		}
+
+		// ODDNESS:
+		//   Settings the alignment AFTER setting the orientation seems to reset the
+		//   orientation back to vertical, but only for some control types (NSSwitch?)
+		self.stack.orientation = orientation
 
 		self.stack.needsLayout = true
 		self.stack.needsUpdateConstraints = true

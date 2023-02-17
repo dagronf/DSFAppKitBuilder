@@ -26,6 +26,7 @@ extension ViewTestBed {
 
 public class ViewItems {
 	let items: [ViewTestBed] = [
+		BlankTemplateBuilder(),
 		ComboButtonBuilder(),
 		DisclosureViewBuilder(),
 		FontBuilder(),

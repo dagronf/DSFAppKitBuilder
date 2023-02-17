@@ -146,9 +146,8 @@ struct SwitchPreviews: PreviewProvider {
 }
 #endif
 
-
 /// A Switch button that uses NSSwitch on 10.15+, otherwise DSFToggleButton
-public class CompatibleSwitch: Element {
+public class CompatibleSwitch: Control {
 	/// Create a Switch
 	/// - Parameter onOffBinder: The ValueBinder<> to determine the state of the switch
 	public init(onOffBinder: ValueBinder<Bool>) {
@@ -173,4 +172,3 @@ public class CompatibleSwitch: Element {
 
 	private let onOffBinder: ValueBinder<Bool>
 }
-
