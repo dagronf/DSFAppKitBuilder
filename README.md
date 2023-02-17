@@ -336,6 +336,7 @@ TextField()
 |--------------------|-------------------------|
 | `Box`              | An `NSBox` wrapper      |
 | `Button`           | An `NSButton` wrapper   |
+| `FlatButton`       | A rounded `Button` with border color, fill colors  |
 | `CheckBox`         | An `NSButton` wrapper configured to display as a checkbox |
 | `ColorWell`        | An `NSColorWell` wrapper |
 | `ComboBox`         | An `NSComboBox` wrapper |

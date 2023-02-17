@@ -76,13 +76,51 @@ class ButtonBuilderController: ElementController {
 
 			HDivider()
 
-			HStack(alignment: .leading) {
-				Label("Switches:")
-				CompatibleSwitch(onOffBinder: _switch)
-				CompatibleSwitch(onOffBinder: _switch.toggled())
-					.isEnabled(false)
+			HStack {
+				Box("Switches") {
+					Grid {
+						GridRow(rowAlignment: .firstBaseline) {
+							Label(".large").font(.monospaced)
+							CompatibleSwitch(onOffBinder: _switch)
+							CompatibleSwitch(onOffBinder: _switch.toggled())
+								.isEnabled(false)
+						}
+						GridRow(rowAlignment: .firstBaseline) {
+							Label(".regular").font(.monospaced)
+							CompatibleSwitch(onOffBinder: _switch)
+							CompatibleSwitch(onOffBinder: _switch.toggled())
+								.isEnabled(false)
+						}
+						GridRow(rowAlignment: .firstBaseline) {
+							Label(".small").font(.monospaced)
+							CompatibleSwitch(onOffBinder: _switch)
+								.controlSize(.small)
+							CompatibleSwitch(onOffBinder: _switch.toggled())
+								.isEnabled(false)
+								.controlSize(.small)
+						}
+						GridRow(rowAlignment: .firstBaseline) {
+							Label(".mini").font(.monospaced)
+							CompatibleSwitch(onOffBinder: _switch)
+								.controlSize(.mini)
+							CompatibleSwitch(onOffBinder: _switch.toggled())
+								.isEnabled(false)
+								.controlSize(.mini)
+						}
+					}
+					.columnFormatting(xPlacement: .trailing, trailingPadding: 8, atColumn: 0)
+				}
+				EmptyView()
+
+//				HStack(alignment: .leading) {
+//					Label("Switches:")
+//					CompatibleSwitch(onOffBinder: _switch)
+//					CompatibleSwitch(onOffBinder: _switch.toggled())
+//						.isEnabled(false)
+//				}
+//				.hugging(h: 10)
 			}
-			.hugging(h: 10)
+			.horizontalHuggingPriority(10)
 
 			EmptyView()
 		}
