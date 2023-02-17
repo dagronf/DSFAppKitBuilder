@@ -38,6 +38,8 @@ class TextFieldBuilderController: ElementController {
 	let dummyText = "So I decided to make a SwiftUI-style builder DSL for AppKit views. It has certainly made round-trip times faster for the projects I have that use it. You can even use SwiftUI to preview your DSFAppKitBuilder views if you're targeting 10.15 and later."
 	let dummyText2 = "So I decided to make a SwiftUI-style builder DSL for AppKit views. It has certainly made round-trip times faster for the projects I have that use it."
 
+	let editText = ValueBinder("Text goes here...")
+
 	lazy var body: Element = {
 		VStack(spacing: 12, alignment: .leading) {
 			FakeBox("Label with padding") {
@@ -103,7 +105,6 @@ class TextFieldBuilderController: ElementController {
 				}
 				.hugging(h: 10)
 			}
-
 			HDivider()
 			Grid {
 				GridRow(rowAlignment: .firstBaseline) {
@@ -120,6 +121,31 @@ class TextFieldBuilderController: ElementController {
 				}
 			}
 			.columnFormatting(xPlacement: .trailing, atColumn: 0)
+
+			HDivider()
+
+			FakeBox("TextField with padding") {
+				VStack(alignment: .leading) {
+					Grid {
+						GridRow(rowAlignment: .firstBaseline) {
+							Label("[4, 4, 4, 4]")
+							TextField(editText)
+								.labelPadding(NSEdgeInsets(top: 4, left: 4, bottom: 4, right: 4))
+						}
+						GridRow(rowAlignment: .firstBaseline) {
+							Label("[10, 25, 6, 40]")
+							TextField(editText)
+								.labelPadding(NSEdgeInsets(top: 10, left: 25, bottom: 6, right: 40))
+								.font(.body.size(16).weight(.light).italic())
+						}
+						GridRow(rowAlignment: .firstBaseline) {
+							Label("[0, 0, 0, 0]")
+							TextField(editText)
+						}
+					}
+					.columnFormatting(xPlacement: .trailing, atColumn: 0)
+				}
+			}
 
 			EmptyView()
 		}
