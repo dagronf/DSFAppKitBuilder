@@ -25,7 +25,8 @@ class BlankTemplateBuilderController: ElementController {
 	lazy var body: Element = {
 		Group(layoutType: .center) {
 			// Fill in here
-			Label("Content goes here")
+			TextField()
+			//Label("Content goes here")
 		}
 	}()
 }

@@ -40,8 +40,36 @@ class TextFieldBuilderController: ElementController {
 
 	let editText = ValueBinder("Text goes here...")
 
+	lazy var newAttr: Element = {
+		if #available(macOS 12, *) {
+			var attributes = AttributeContainer()
+			attributes.link = URL(string: "https://github.com/dagronf/DSFAppKitBuilder")
+			let link = AttributedString("This is my link", attributes: attributes)
+			var string = AttributedString("A DSL-style declarative UI generator: ")
+			string.append(link)
+			return Label(string).containsClickableLinks(true)
+		} else {
+			// Fallback on earlier versions
+			return Label("asdfasdf")
+		}
+	}()
+
 	lazy var body: Element = {
 		VStack(spacing: 12, alignment: .leading) {
+			FakeBox("Labels") {
+				VStack(alignment: .leading) {
+					newAttr
+					Link(title: "DSFAppKitBuilder link", url: URL(string: "https://github.com/dagronf/DSFAppKitBuilder")!)
+						.font(.body.weight(.bold))
+					Link(
+						title: "DSFAppKitBuilder link",
+						url: URL(string: "https://github.com/dagronf/DSFAppKitBuilder")!,
+						underlineStyle: .single
+					)
+					.toolTip("A link that is exciting!")
+				}
+			}
+
 			FakeBox("Label with padding") {
 				Flow {
 					Label("Label with no padding")

@@ -349,6 +349,7 @@ TextField()
 | `Group`            | A element that contains another element |
 | `ImageView`        | An `NSImageView` wrapper |
 | `Label`            | An `NSTextField` wrapper configured as a read-only label |
+| `Link`             | An `NSTextField` displaying a read-only hyperlink |
 | `PathControl`      | An `NSPathControl` wrapper |
 | `Popover`          | An `NSPopover` wrapper, uses `DSFMenuBuilder` to generate content |
 | `PopupButton`      | An `NSPopupButton` wrapper |

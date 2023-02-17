@@ -40,7 +40,7 @@ import DSFValueBinders
 /// ```
 public class TextField: Label {
 	/// Create a text field element
-	@objc /// - Parameters:
+	/// - Parameters:
 	///   - label: The initial text for the text field
 	///   - placeholderText: The placeholder text to use for the text field
 	public init(

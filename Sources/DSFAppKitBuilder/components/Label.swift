@@ -24,9 +24,9 @@
 //  DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
 import AppKit.NSTextField
 import DSFValueBinders
+import Foundation
 
 /// A read-only text control
 ///
@@ -61,16 +61,14 @@ public class Label: Control {
 
 	/// Create a label control
 	/// - Parameter attributedLabel: An attributed string to use as the label
-	convenience public init(_ attributedLabel: AKBAttributedString) {
+	public convenience init(_ attributedLabel: AKBAttributedString) {
 		self.init(attributedLabel.attributedString)
 	}
 
 	/// Create a label using the new `AttributedString` type (macOS 12+)
 	@available(macOS 12, *)
-	public init(_ attributedLabel: AttributedString) {
-		super.init()
-		self.configureDefaults()
-		self.label.attributedStringValue = NSAttributedString(attributedLabel)
+	public convenience init(_ attributedLabel: AttributedString) {
+		self.init(NSAttributedString(attributedLabel))
 	}
 
 	/// Create a label control
@@ -104,7 +102,7 @@ public class Label: Control {
 
 	// Privates
 	let label = PaddableTextField()
-	public override func view() -> NSView { return self.label }
+	override public func view() -> NSView { return self.label }
 
 	private var labelBinder: ValueBinder<String>?
 	private var attributedLabelBinder: ValueBinder<NSAttributedString>?
@@ -253,14 +251,14 @@ public extension Label {
 public extension Label {
 	/// A block to be called when the label is clicked.
 	///
-	/// Asserts if the Label is editable (ie. its actually a TextField()) 
+	/// Asserts if the Label is editable (ie. its actually a TextField())
 	func onLabelClicked(_ block: @escaping () -> Void) -> Self {
 		guard self.label.isEditable == false else {
-			assert(false, "DSFAppKitBuilder.Label: onLabelClicked() cannot be applied to an editable text field, ignoring...")
+			assertionFailure("DSFAppKitBuilder.Label: onLabelClicked() cannot be applied to an editable text field, ignoring...")
 			return self
 		}
 
-		let clickDetector = NSClickGestureRecognizer(target: self, action: #selector(clicked(_:)))
+		let clickDetector = NSClickGestureRecognizer(target: self, action: #selector(self.clicked(_:)))
 		self.clickDetector = clickDetector
 		self.label.addGestureRecognizer(clickDetector)
 		self.onLabelClickBlock = block

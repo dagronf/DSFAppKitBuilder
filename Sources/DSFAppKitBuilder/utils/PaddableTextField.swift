@@ -28,14 +28,40 @@ import AppKit
 import Foundation
 
 // A textfield with configurable edge insets
+@IBDesignable
 class PaddableTextField: NSTextField {
+
+	@IBInspectable var topInset: CGFloat = 0 {
+		didSet { self.edgeInsets.top = self.topInset }
+	}
+	@IBInspectable var leadingInset: CGFloat = 0 {
+		didSet { self.edgeInsets.left = self.leadingInset }
+	}
+	@IBInspectable var bottomInset: CGFloat = 0 {
+		didSet { self.edgeInsets.bottom = self.bottomInset }
+	}
+	@IBInspectable var trailingInset: CGFloat = 0 {
+		didSet { self.edgeInsets.right = self.trailingInset }
+	}
+
 	/// The edge insets to apply to the field
 	@objc var edgeInsets = NSEdgeInsets() {
 		didSet {
-			self.customCell.edgeInsets = edgeInsets
-			self.needsLayout = true
-			self.invalidateIntrinsicContentSize()
+			if let cell = self.cell as? PaddedTextFieldCell {
+				cell.edgeInsets = edgeInsets
+				self.needsLayout = true
+				self.invalidateIntrinsicContentSize()
+			}
 		}
+	}
+
+	override init(frame frameRect: NSRect) {
+		super.init(frame: frameRect)
+	}
+
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		self.customCell.edgeInsets = self.edgeInsets
 	}
 
 	class override var cellClass: AnyClass? {
@@ -49,7 +75,7 @@ class PaddableTextField: NSTextField {
 // MARK: - Padded cell
 
 extension PaddableTextField {
-	class PaddedTextFieldCell: NSTextFieldCell {
+	@objc(PaddedTextFieldCell) public class PaddedTextFieldCell: NSTextFieldCell {
 		public var edgeInsets = NSEdgeInsets()
 
 		override func cellSize(forBounds rect: NSRect) -> NSSize {
