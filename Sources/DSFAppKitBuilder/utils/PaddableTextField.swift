@@ -61,9 +61,11 @@ extension PaddableTextField {
 
 		override func drawingRect(forBounds rect: NSRect) -> NSRect {
 			var newRect = rect
-			newRect.origin.x += edgeInsets.left
-			newRect.size.width -= (edgeInsets.left + edgeInsets.right)
+
+			// If we are right-to-left, then the horizontal insets are swapped
+			newRect.origin.x += (self.userInterfaceLayoutDirection == .leftToRight) ? edgeInsets.left : edgeInsets.right
 			newRect.origin.y += edgeInsets.top
+			newRect.size.width -= (edgeInsets.left + edgeInsets.right)
 			newRect.size.height -= (edgeInsets.top + edgeInsets.bottom)
 			return super.drawingRect(forBounds: newRect)
 		}
