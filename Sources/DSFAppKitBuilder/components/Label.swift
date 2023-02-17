@@ -42,13 +42,12 @@ import DSFValueBinders
 ///   .bindLabel(self.textValue)
 /// ```
 public class Label: Control {
+	
 	/// Create a label control
 	/// - Parameter label: The label
 	public init(_ label: String? = nil) {
 		super.init()
-		self.label.isEditable = false
-		self.label.drawsBackground = false
-		self.label.isBezeled = false
+		self.configureDefaults()
 		if let l = label { self.label.stringValue = l }
 	}
 
@@ -56,9 +55,7 @@ public class Label: Control {
 	/// - Parameter attributedLabel: An attributed string to use as the label
 	public init(_ attributedLabel: NSAttributedString) {
 		super.init()
-		self.label.isEditable = false
-		self.label.drawsBackground = false
-		self.label.isBezeled = false
+		self.configureDefaults()
 		self.label.attributedStringValue = attributedLabel
 	}
 
@@ -68,13 +65,19 @@ public class Label: Control {
 		self.init(attributedLabel.attributedString)
 	}
 
+	/// Create a label using the new `AttributedString` type (macOS 12+)
+	@available(macOS 12, *)
+	public init(_ attributedLabel: AttributedString) {
+		super.init()
+		self.configureDefaults()
+		self.label.attributedStringValue = NSAttributedString(attributedLabel)
+	}
+
 	/// Create a label control
 	/// - Parameter stringBinder: A string binder containing the display value
 	public init(_ stringBinder: ValueBinder<String>) {
 		super.init()
-		self.label.isEditable = false
-		self.label.drawsBackground = false
-		self.label.isBezeled = false
+		self.configureDefaults()
 		_ = self.bindLabel(stringBinder)
 	}
 
@@ -82,9 +85,7 @@ public class Label: Control {
 	/// - Parameter stringBinder: An NSAttributedString binder containing the display value
 	public init(_ attributedStringBinder: ValueBinder<NSAttributedString>) {
 		super.init()
-		self.label.isEditable = false
-		self.label.drawsBackground = false
-		self.label.isBezeled = false
+		self.configureDefaults()
 		_ = self.bindAttributedLabel(attributedStringBinder)
 	}
 
@@ -118,6 +119,19 @@ public class Label: Control {
 	private var onLabelClickBlock: (() -> Void)?
 }
 
+extension Label {
+	// Set default settings for the field
+	private func configureDefaults() {
+		self.label.wantsLayer = true
+		self.label.isEditable = false
+		self.label.drawsBackground = false
+		self.label.isBezeled = false
+
+		// Required so that (by default) the field plays nicely in an RTL environment
+		self.label.alignment = .natural
+	}
+}
+
 // MARK: - Modifiers
 
 public extension Label {
@@ -148,6 +162,16 @@ public extension Label {
 	/// A Boolean value that controls whether the text field draws a bezeled background around its contents.
 	func isBezeled(_ s: Bool) -> Self {
 		self.label.isBezeled = s
+		return self
+	}
+
+	/// Needs to be set IF the label contains an attributedstring with clickable link text.
+	///
+	/// See: https://developer.apple.com/library/archive/qa/qa1487
+	func containsClickableLinks(_ hasClickableLinks: Bool) -> Self {
+		// both are needed, otherwise hyperlink won't accept mousedown
+		self.label.allowsEditingTextAttributes = hasClickableLinks
+		self.label.isSelectable = hasClickableLinks
 		return self
 	}
 

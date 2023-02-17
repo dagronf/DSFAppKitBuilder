@@ -48,8 +48,8 @@ public class TextField: Label {
 		_ placeholderText: String? = nil)
 	{
 		super.init(label)
-		self.label.isEditable = true
-		self.label.isBezeled = true
+		self.configureDefaults()
+
 		self.label.placeholderString = placeholderText
 		self.label.delegate = self
 	}
@@ -63,10 +63,11 @@ public class TextField: Label {
 		_ placeholderText: String? = nil)
 	{
 		super.init(nil)
-		self.label.isEditable = true
-		self.label.isBezeled = true
+		self.configureDefaults()
+
 		self.label.placeholderString = placeholderText
 		self.label.delegate = self
+
 		_ = self.bindText(text)
 	}
 
@@ -90,6 +91,16 @@ public class TextField: Label {
 	internal var updateOnEndEditingOnly: Bool = false
 
 	private var hasTextBinder: ValueBinder<Bool>?
+}
+
+extension TextField {
+	func configureDefaults() {
+		self.label.isEditable = true
+		self.label.isBezeled = true
+
+		// Required so that (by default) the field plays nicely in an RTL environment
+		self.label.alignment = .natural
+	}
 }
 
 // MARK: Modifiers
