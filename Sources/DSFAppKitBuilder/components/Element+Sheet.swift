@@ -34,10 +34,22 @@ extension Element {
 	/// Attach a sheet to this element
 	/// - Parameters:
 	///   - isVisible: A ValueBinder to indicate whether the sheet is visible or not
+	///   - isResizable: Is the user able to resize the sheet?
 	///   - builder: A builder for creating the sheet content
 	/// - Returns: self
-	public func sheet(isVisible: ValueBinder<Bool>, _ builder: @escaping () -> Element) -> Self {
-		let sheetInstance = SheetInstance(parent: self, isVisible: isVisible, builder)
+	public func sheet(
+		isVisible: ValueBinder<Bool>,
+		isResizable: Bool = false,
+		frameAutosaveName: NSWindow.FrameAutosaveName? = nil,
+		_ builder: @escaping () -> Element
+	) -> Self {
+		let sheetInstance = SheetInstance(
+			parent: self,
+			isVisible: isVisible,
+			isResizable: isResizable,
+			frameAutosaveName: frameAutosaveName,
+			builder
+		)
 		self.attachedObjects.append(sheetInstance)
 		return self
 	}
@@ -45,11 +57,21 @@ extension Element {
 
 // MARK: Sheet instance wrapper
 
-private class SheetInstance {
-	init(parent: Element, isVisible: ValueBinder<Bool>, _ builder: @escaping () -> Element) {
+private class SheetInstance: NSObject, NSWindowDelegate {
+	init(
+		parent: Element,
+		isVisible: ValueBinder<Bool>,
+		isResizable: Bool = false,
+		frameAutosaveName: NSWindow.FrameAutosaveName?,
+		_ builder: @escaping () -> Element
+	) {
 		self.parent = parent
+		self.isResizable = isResizable
+		self.frameAutosaveName = frameAutosaveName
 		self.viewController = DSFAppKitBuilderAssignableViewController(builder)
 		self.isVisible = isVisible
+
+		super.init()
 
 		isVisible.register(self) { [weak self] state in
 			guard let `self` = self else { return }
@@ -75,7 +97,7 @@ private class SheetInstance {
 
 		let window = KeyableWindow(
 			contentRect: .zero,
-			styleMask: [.resizable],
+			styleMask: isResizable ? [.resizable] : [],
 			backing: .buffered,
 			defer: true
 		)
@@ -84,6 +106,11 @@ private class SheetInstance {
 		window.isReleasedWhenClosed = true
 		window.isMovableByWindowBackground = false
 		window.autorecalculatesKeyViewLoop = true
+		window.delegate = self
+
+		if let saveName = self.frameAutosaveName {
+			window.setFrameAutosaveName(saveName)
+		}
 
 		let content = NSView()
 		content.autoresizingMask = [.width, .height]
@@ -111,9 +138,20 @@ private class SheetInstance {
 		viewController.reset()
 	}
 
+	func windowWillClose(_ notification: Notification) {
+		if
+			let f = self.frameAutosaveName,
+			let sheetWindow = self.viewController.view.window
+		{
+			sheetWindow.saveFrame(usingName: f)
+		}
+	}
+
 	weak var parent: Element?
 	let viewController: DSFAppKitBuilderAssignableViewController
 	let isVisible: ValueBinder<Bool>
+	let isResizable: Bool
+	let frameAutosaveName: NSWindow.FrameAutosaveName?
 
 	class KeyableWindow: NSWindow {
 		override var canBecomeKey: Bool { true }

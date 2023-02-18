@@ -90,7 +90,11 @@ class PopoverSheetBuilderController: ElementController {
 				Button(title: "Present a modal sheet") { [weak self] _ in
 					self?.show.wrappedValue = true
 				}
-				.sheet(isVisible: show, sheetContentBuilder)
+				.sheet(
+					isVisible: show,
+					frameAutosaveName: "Present:Sheet",
+					sheetContentBuilder
+				)
 
 				HStack {
 					Button(title: "Display a popover") { [weak self] _ in
