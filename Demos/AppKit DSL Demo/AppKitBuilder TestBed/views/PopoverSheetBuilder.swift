@@ -10,12 +10,13 @@ import AppKit
 
 import DSFAppKitBuilder
 import DSFValueBinders
+import DSFToolbar
 
 public class PopoverSheetBuilder: ViewTestBed {
-	var title: String { String.localized("Sheets and popovers") }
+	var title: String { String.localized("Windows/Sheets/Popovers") }
 	var type: String { "" }
 	var showContentInScroll: Bool { false }
-	var description: String { String.localized("Sheet and popovers") }
+	var description: String { String.localized("Windows, sheets and popovers") }
 	func build() -> ElementController {
 		PopoverSheetBuilderController()
 	}
@@ -25,6 +26,43 @@ class PopoverSheetBuilderController: ElementController {
 	let show = ValueBinder(false)
 	let popoverShow = ValueBinder(false) { newState in
 		Swift.print("Popover state is '\(newState)'")
+	}
+
+	lazy var customToolbar: DSFToolbar = {
+		DSFToolbar(
+
+			toolbarIdentifier: NSToolbar.Identifier("Core"),
+			allowsUserCustomization: true) {
+
+				DSFToolbar.Item(NSToolbarItem.Identifier("item-new"))
+					.label("New")
+					.isSelectable(true)
+					.image(NSImage(named: "slider-rabbit")!)
+					.shouldEnable { [weak self] in
+						false
+					}
+					.action { [weak self] _ in
+						Swift.print("Custom button pressed")
+					}
+			}
+	}()
+
+
+	private let presentedWindowVisible = ValueBinder(false)
+	private let presentedWindowTitle = ValueBinder("Window")
+	let window: MyWindow
+
+	init() {
+		self.window = MyWindow(isVisible: self.presentedWindowVisible)
+		self.window.bindTitle(self.presentedWindowTitle)
+		self.window.onOpen { [weak self] window in
+			Swift.print("MyWindow: onOpen")
+			self?.customToolbar.attachedWindow = window.window
+			window.toolbarStyle(.preference)
+		}
+		self.window.onClose { _ in
+			Swift.print("MyWindow: onClose")
+		}
 	}
 
 	deinit {
@@ -110,9 +148,50 @@ class PopoverSheetBuilderController: ElementController {
 						.bindValue(self.sliderValue, formatter: self.sliderFormatter)
 						.width(40)
 				}
+
+				Box("Presenting a window") {
+					HStack {
+						Label("Title:")
+						TextField(presentedWindowTitle)
+							.width(100)
+
+						Button(title: "Show") { [weak self] _ in
+							self?.presentedWindowVisible.wrappedValue = true
+						}
+						.bindIsEnabled(presentedWindowVisible.toggled())
+						Button(title: "Close") { [weak self] _ in
+							self?.presentedWindowVisible.wrappedValue = false
+						}
+						.bindIsEnabled(presentedWindowVisible)
+					}
+				}
+				.horizontalHuggingPriority(.defaultLow)
 			}
 		}
 	}()
+}
+
+class MyWindow: ManagedWindow {
+	override var title: String { "Whee!" }
+	override var styleMask: NSWindow.StyleMask { [.titled, .closable, .miniaturizable, .resizable] }
+	override var isMovableByWindowBackground: Bool { true }
+	override var frameAutosaveName: NSWindow.FrameAutosaveName? { "MyWindow:Position" }
+	override func buildContent() -> Element {
+		VisualEffectView(
+			material: .menu,
+			blendingMode: .behindWindow, isEmphasized: true)
+		{
+			Group(edgeInset: 20) {
+				VStack {
+					Label("How exciting!")
+				}
+			}
+		}
+	}
+
+	deinit {
+		Swift.print("MyWindow: deinit")
+	}
 }
 
 // MARK: - SwiftUI previews

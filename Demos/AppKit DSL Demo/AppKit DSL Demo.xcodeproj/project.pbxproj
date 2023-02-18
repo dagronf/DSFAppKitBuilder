@@ -56,6 +56,7 @@
 		236BA6722977769900FB72C4 /* IdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236BA6712977769900FB72C4 /* IdentityViewController.swift */; };
 		237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */; };
 		237E220329A07632002F3856 /* PopoverSheetBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E220229A07632002F3856 /* PopoverSheetBuilder.swift */; };
+		237E220529A0C7A2002F3856 /* DSFToolbar in Frameworks */ = {isa = PBXBuildFile; productRef = 237E220429A0C7A2002F3856 /* DSFToolbar */; };
 		237E74C3282C5B7E0069846A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E74C2282C5B7E0069846A /* AppDelegate.swift */; };
 		237E74C5282C5B7E0069846A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E74C4282C5B7E0069846A /* ViewController.swift */; };
 		237E74C7282C5B7F0069846A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 237E74C6282C5B7F0069846A /* Assets.xcassets */; };
@@ -199,6 +200,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				237E220529A0C7A2002F3856 /* DSFToolbar in Frameworks */,
 				235CBB3A298B99D800D3D4DE /* DSFAppKitBuilder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -397,6 +399,7 @@
 			name = "AppKitBuilder TestBed";
 			packageProductDependencies = (
 				235CBB39298B99D800D3D4DE /* DSFAppKitBuilder */,
+				237E220429A0C7A2002F3856 /* DSFToolbar */,
 			);
 			productName = "AppKitBuilder TestBed";
 			productReference = 235CBB28298B99A300D3D4DE /* AppKitBuilder TestBed.app */;
@@ -1125,6 +1128,11 @@
 		235CBB39298B99D800D3D4DE /* DSFAppKitBuilder */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DSFAppKitBuilder;
+		};
+		237E220429A0C7A2002F3856 /* DSFToolbar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 23FEE85829790DD900E4497D /* XCRemoteSwiftPackageReference "DSFToolbar" */;
+			productName = DSFToolbar;
 		};
 		237E74CF282C5BA30069846A /* DSFAppKitBuilder */ = {
 			isa = XCSwiftPackageProductDependency;

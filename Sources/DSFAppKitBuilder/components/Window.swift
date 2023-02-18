@@ -25,6 +25,7 @@
 //
 
 import AppKit
+
 import DSFValueBinders
 
 /// A wrapper for NSWindow
@@ -58,6 +59,14 @@ import DSFValueBinders
 /// }
 /// ```
 public class Window: NSObject {
+	/// The available toolbar styles
+	public enum ToolbarStyle: Int {
+		 case automatic = 0
+		 case expanded = 1
+		 case preference = 2
+		 case unified = 3
+		 case unifiedCompact = 4
+	}
 
 	public typealias CompletionBlock = (() -> Void)
 
@@ -137,7 +146,7 @@ public class Window: NSObject {
 	private let styleMask: NSWindow.StyleMask
 	private let isMovableByWindowBackground: Bool
 	private let frameAutosaveName: NSWindow.FrameAutosaveName?
-
+	private var toolbarStyle: Window.ToolbarStyle?
 	private var titleBinder: ValueBinder<String>?
 
 	private var onWindowCreate: ((Window) -> Void)?
@@ -181,6 +190,16 @@ public extension Window {
 	/// Close the window if it is open
 	func close() {
 		self.window?.performClose(self)
+	}
+}
+
+// MARK: - Modifiers
+
+public extension Window {
+	/// Set the style for the toolbar
+	@discardableResult func toolbarStyle(_ style: ToolbarStyle?) -> Self {
+		self.toolbarStyle = style
+		return self
 	}
 }
 
@@ -266,6 +285,12 @@ internal extension Window {
 
 		if presentOnScreen {
 			window.makeKeyAndOrderFront(self)
+		}
+
+		if #available(macOS 11.0, *) {
+			if let toolbarStyle = self.toolbarStyle {
+				self.window?.toolbarStyle = NSWindow.ToolbarStyle(rawValue: toolbarStyle.rawValue)!
+			}
 		}
 
 		/// Call the callback if it has been set
