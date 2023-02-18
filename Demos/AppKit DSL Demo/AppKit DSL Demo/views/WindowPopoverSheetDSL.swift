@@ -25,49 +25,41 @@ class WindowPopoverSheetDSL: NSObject, DSFAppKitBuilderViewHandler {
 		super.init()
 	}
 
-	func showPopover() {
-		guard let element = self.popoverLocator.element else {
-			return
-		}
-		self.popover.show(relativeTo: element.bounds,
-								of: element,
-								preferredEdge: .maxY)
-	}
-
 	lazy var body: Element =
-		Box("Popups and windows") {
-			VStack(alignment: .leading) {
-				HStack {
-					Button(title: "Show Popup") { [weak self] _ in
-						// Show the popover when the
-						self?.showPopover()
-					}
-						.bindElement(self.popoverLocator)
-					Label()
-						.font(NSFont.userFixedPitchFont(ofSize: 13))
-						.bindValue(self.sliderValue, formatter: self.sliderFormatter)
+	Box("Popups and windows") {
+		VStack(alignment: .leading) {
+			HStack {
+				Button(title: "Show Popup") { [weak self] _ in
+					self?._popoverVisible.wrappedValue = true
 				}
-				HStack {
-					Button(title: "Show Window") { [weak self] _ in
-						// Display a window when clicking this button
-						self?.currentWindow = self?.createWindow()
-					}
-				}
-				EmptyView()
+				.popover(isVisible: _popoverVisible, preferredEdge: .maxY, self.popoverContent)
+				Label()
+					.font(NSFont.userFixedPitchFont(ofSize: 13))
+					.bindValue(self.sliderValue, formatter: self.sliderFormatter)
 			}
-			.edgeInsets(8)
-			.contentHugging(h: 10)
-			.horizontalPriorities(hugging: 10, compressionResistance: 10)
-			.verticalPriorities(hugging: 10, compressionResistance: 10)
+			HStack {
+				Button(title: "Show Window") { [weak self] _ in
+					// Display a window when clicking this button
+					self?.currentWindow = self?.createWindow()
+				}
+			}
+			EmptyView()
 		}
-		.verticalPriorities(hugging: 100)
-		.horizontalPriorities(hugging: 100)
+		.edgeInsets(8)
+		.contentHugging(h: 10)
+		.horizontalPriorities(hugging: 10, compressionResistance: 10)
+		.verticalPriorities(hugging: 10, compressionResistance: 10)
+	}
+	.verticalPriorities(hugging: 100)
+	.horizontalPriorities(hugging: 100)
 
 	////////////////////
 	// Popover
 	////////////////////
-	let popoverLocator = ElementBinder()
-	lazy var popover: Popover = Popover {
+	let _popoverVisible = ValueBinder(false) { newValue in
+		Swift.print("Popover visibility state: \(newValue)")
+	}
+	lazy var popoverContent = {
 		Group(edgeInset: 20,
 				visualEffect: VisualEffect(material: .titlebar)) {
 			VStack {
@@ -87,41 +79,23 @@ class WindowPopoverSheetDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 		}
 	}
-	.onOpen { _ in
-		Swift.print("Popover opened...")
-	}
-	.onClose { _ in
-		Swift.print("Popover closing...")
-	}
 
-	///////////////////
+	//////////////////////
 	// Sheet definition
-	///////////////////
-	let sheetBinder = SheetBinder()
-	func createSheet() -> Sheet {
-		return Sheet(
-			title: "Sheet",
-			contentRect: NSRect(x: 0, y: 0, width: 500, height: 200),
-			styleMask: [.resizable],
-			frameAutosaveName: "sheetie") {
-				Group(edgeInset: 20) {
-					VStack {
-						Label("First!")
-						EmptyView()
-						Button(title: "Dismiss") { [weak self] _ in
-							guard let `self` = self else { return }
-							self.sheetBinder.dismiss(result: .OK)
-						}
-					}
+	//////////////////////
+	let _sheetVisible = ValueBinder(false) { newValue in
+		Swift.print("Sheet visibility state: \(newValue)")
+	}
+	private lazy var sheetContent = {
+		Group(edgeInset: 20) {
+			VStack {
+				Label("First!")
+				EmptyView()
+				Button(title: "Dismiss") { [weak self] _ in
+					self?._sheetVisible.wrappedValue = false
 				}
 			}
-			.onOpen { _ in
-				Swift.print("Sheet did open...")
-			}
-			.onClose { _ in
-				Swift.print("Sheet will close...")
-			}
-			.bindSheet(sheetBinder)
+		}
 	}
 
 	////////////////////
@@ -159,11 +133,12 @@ class WindowPopoverSheetDSL: NSObject, DSFAppKitBuilderViewHandler {
 							Button(title: "80") { [weak self] _ in self?.sliderValue.wrappedValue = 80 }
 							Button(title: "100") { [weak self] _ in self?.sliderValue.wrappedValue = 100 }
 							Button(title: "Show sheet") { [weak self] _ in
-								guard let `self` = self else { return }
-								self.demoWindowElement.window?.presentModal(self.createSheet()) { result in
-									Swift.print("Sheet result is \(result)")
-								}
+								self?._sheetVisible.wrappedValue = true
 							}
+							.sheet(
+								isVisible: self._sheetVisible,
+								self.sheetContent
+							)
 						}
 					}
 				}
@@ -180,6 +155,3 @@ class WindowPopoverSheetDSL: NSObject, DSFAppKitBuilderViewHandler {
 		}
 	}
 }
-
-
-

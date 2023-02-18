@@ -351,7 +351,6 @@ TextField()
 | `Label`            | An `NSTextField` wrapper configured as a read-only label |
 | `Link`             | An `NSTextField` displaying a read-only hyperlink |
 | `PathControl`      | An `NSPathControl` wrapper |
-| `Popover`          | An `NSPopover` wrapper, uses `DSFMenuBuilder` to generate content |
 | `PopupButton`      | An `NSPopupButton` wrapper |
 | `ProgressBar`      | An `NSProgressIndicator` wrapper |
 | `RadioGroup`       | A grouped stack of buttons configured as a radio group |
@@ -390,6 +389,44 @@ TextField()
 | `Maybe`             | An element that inserts an element into the view IF a condition is met |
 | `OneOf`             | An element that binds the visibility of a number of elements to a `ValueBinder<>` value |
 | `DynamicElement`    | An element that binds the displayed Element to a `ValueBinder<>` |
+
+### Popovers and sheets
+
+### Popover example
+
+```swift
+let _popoverVisible = ValueBinder(false)
+…
+   Button(title: "Display a popover") { [weak self] _ in
+      self?._popoverVisible.wrappedValue = true
+   }
+   .popover(
+      isVisible: self._popoverVisible,
+      preferredEdge: .maxY,
+      {
+         // Content for the sheet goes here 
+         Label("Content here") 
+      }
+   )
+```
+
+#### Sheet example
+
+```swift
+let _sheetVisible = ValueBinder(false)
+…
+   Button(title: "Show sheet") { [weak self] _ in
+      self?._sheetVisible.wrappedValue = true
+   }
+   .sheet(
+      isVisible: self._sheetVisible,
+      {
+         // Content for the sheet goes here 
+         Label("Content here") 
+      }
+   )
+```
+
 
 ## Using SwiftUI previews
 

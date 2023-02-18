@@ -142,46 +142,12 @@ public class Window: NSObject {
 
 	private var onWindowCreate: ((Window) -> Void)?
 	private var onWindowClose: ((Window) -> Void)?
-
-	private var activeSheet: Sheet? = nil
-	private var sheetCompletionHandler: Sheet.CompletionBlock?
 }
 
 public extension Window {
 	override var debugDescription: String {
 		return "[Window: \(self.title)]"
 	}
-}
-
-public extension Window {
-
-	/// Present the sheet modal for a parent window
-	/// - Parameters:
-	///   - sheet: The sheet to present
-	///   - contentRect: The initial size of the sheet being displayed
-	///   - completionBlock: The block to call when the sheet is dismissed
-	func presentModal(_ sheet: Sheet,
-							_ completionBlock: Sheet.CompletionBlock? = nil) {
-		guard let w = self.window,
-				let s = sheet.window else {
-					return
-				}
-
-		self.activeSheet = sheet
-		self.sheetCompletionHandler = completionBlock
-		sheet.parent = self
-
-		w.beginSheet(s) { [weak self] result in
-			guard let `self` = self else { return }
-			if let s = self.sheetCompletionHandler {
-				s(result)
-			}
-
-			self.activeSheet = nil
-			self.sheetCompletionHandler = nil
-		}
-	}
-
 }
 
 // MARK: - Functions
@@ -214,11 +180,6 @@ public extension Window {
 
 	/// Close the window if it is open
 	func close() {
-		// If there's a sheet being displayed, close the sheet
-		if let sheet = self.activeSheet {
-			sheet.dismiss(result: NSApplication.ModalResponse.cancel)
-			self.activeSheet = nil
-		}
 		self.window?.performClose(self)
 	}
 }
@@ -342,8 +303,6 @@ extension Window {
 		self.content = nil
 		self.window = nil
 		self.windowController = nil
-
-		self.sheetCompletionHandler = nil
 	}
 }
 

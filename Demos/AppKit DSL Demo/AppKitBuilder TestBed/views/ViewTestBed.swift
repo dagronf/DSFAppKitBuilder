@@ -45,5 +45,6 @@ public class ViewItems {
 		PlainTextViewBuilder(),
 		TextFieldBuilder(),
 		FlowLayoutBuilder(),
+		PopoverSheetBuilder(),
 	].sorted { a, b in a.title < b.title }
 }

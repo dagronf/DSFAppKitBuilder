@@ -72,6 +72,8 @@ open class Element: NSObject {
 	}
 
 	deinit {
+		self.attachedObjects = []
+		self.attachedSheets = []
 		self.onAppearObserver = nil
 		self.receiveThemeNotifications = false
 		self.isHiddenBinder?.deregister(self)
@@ -97,6 +99,11 @@ open class Element: NSObject {
 
 	// An onAppear detector
 	private var onAppearObserver: ElementOnAppearObservation?
+
+	// Any view controllers that are attached to the element (eg. popovers or sheets)
+	internal var attachedSheets: [DSFAppKitBuilderAssignableViewController] = []
+
+	internal var attachedObjects: [AnyObject] = []
 }
 
 // MARK: - Dark mode handling
@@ -441,8 +448,8 @@ extension Element {
 			self.view(), "\(type(of: self))",
 			onAppearBlock: block,
 			onTriggered: { [weak self] in
-			self?.onAppearObserver = nil
-		})
+				self?.onAppearObserver = nil
+			})
 		return self
 	}
 }
