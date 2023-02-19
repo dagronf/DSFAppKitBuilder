@@ -206,6 +206,13 @@ public extension Window {
 // MARK: - Actions
 
 public extension Window {
+	/// Block to call when the window is first displayed
+	func onOpen(_ block: (Window) -> Void) -> Self {
+		// At this point in time, the window is available, so just call the block
+		block(self)
+		return self
+	}
+
 	/// Block to call when the window is going to close
 	func onClose(_ block: @escaping (Window) -> Void) -> Self {
 		self.onWindowClose = block

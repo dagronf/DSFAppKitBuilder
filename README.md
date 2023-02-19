@@ -390,9 +390,32 @@ TextField()
 | `OneOf`             | An element that binds the visibility of a number of elements to a `ValueBinder<>` value |
 | `DynamicElement`    | An element that binds the displayed Element to a `ValueBinder<>` |
 
-### Popovers and sheets
+### Alerts, popovers and sheets
 
-### Popover example
+#### Alert example
+
+```swift
+let _alertVisible = ValueBinder(false)
+func alertBuilder() -> NSAlert {
+   let a = NSAlert()
+   a.messageText = "Delete the document?"
+   a.informativeText = "Are you sure you would like to delete the document?"
+   a.addButton(withTitle: "Cancel")
+   a.addButton(withTitle: "Delete")
+   a.alertStyle = .warning
+   return a
+}
+…
+   Button(title: "Display an alert") { [weak self] _ in
+      self?._alertVisible.wrappedValue = true
+   }
+   .alert(
+      isVisible: self._alertVisible,
+      alertBuilder: self.alertBuilder
+   )
+```
+
+#### Popover example
 
 ```swift
 let _popoverVisible = ValueBinder(false)

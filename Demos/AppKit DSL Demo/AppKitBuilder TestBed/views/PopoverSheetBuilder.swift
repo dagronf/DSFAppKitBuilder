@@ -28,6 +28,8 @@ class PopoverSheetBuilderController: ElementController {
 		Swift.print("Popover state is '\(newState)'")
 	}
 
+	private let presentedAlertVisible = ValueBinder(false)
+
 	private let presentedWindowVisible = ValueBinder(false)
 	private let presentedWindowMinimised = ValueBinder(false)
 	private let presentedWindowTitle = ValueBinder("Window")
@@ -104,18 +106,42 @@ class PopoverSheetBuilderController: ElementController {
 		.padding(20)
 	}
 
+	func buildAlert() -> NSAlert {
+		let a = NSAlert()
+		a.messageText = "Delete the document?"
+		a.informativeText = "Are you sure you would like to delete the document?"
+		a.addButton(withTitle: "Cancel")
+		a.addButton(withTitle: "Delete")
+		a.alertStyle = .warning
+		a.icon = NSImage(named: "slider-tortoise")
+		return a
+	}
+
+
 	lazy var body: Element = {
 		Group(layoutType: .center) {
 			VStack {
+				// Alert
+				HStack {
+					Button(title: "Show an alert") { [weak self] _ in
+						self?.presentedAlertVisible.wrappedValue = true
+					}
+					.alert(isVisible: self.presentedAlertVisible, alertBuilder: self.buildAlert) { response in
+						Swift.print("HEHEHEHEHEH \(response)")
+					}
+				}
+
+				// Sheet
 				Button(title: "Present a modal sheet") { [weak self] _ in
 					self?.show.wrappedValue = true
 				}
 				.sheet(
 					isVisible: show,
 					frameAutosaveName: "Present:Sheet",
-					sheetContentBuilder
+					self.sheetContentBuilder
 				)
 
+				// Popover
 				HStack {
 					Button(title: "Display a popover") { [weak self] _ in
 						self?.popoverShow.wrappedValue = true
@@ -151,7 +177,7 @@ class PopoverSheetBuilderController: ElementController {
 							self?.presentedWindowVisible.wrappedValue = true
 						}
 						.bindIsEnabled(presentedWindowVisible)
-						
+
 						Button(title: "Close") { [weak self] _ in
 							self?.presentedWindowVisible.wrappedValue = false
 						}
@@ -185,7 +211,7 @@ class MyWindow: ManagedWindow {
 	override var toolbarStyle: DSFAppKitBuilder.Window.ToolbarStyle { .preference }
 
 	override func windowDidOpen(_ window: DSFAppKitBuilder.Window) {
-		window.window?.toolbarStyle = .preference
+		window.toolbarStyle(.preference)
 		self.customToolbar.attachedWindow = window.window
 	}
 

@@ -39,7 +39,7 @@ extension Element {
 	/// - Returns: self
 	public func sheet(
 		isVisible: ValueBinder<Bool>,
-		isResizable: Bool = false,
+		isResizable: Bool = true,
 		frameAutosaveName: NSWindow.FrameAutosaveName? = nil,
 		_ builder: @escaping () -> Element
 	) -> Self {
@@ -97,12 +97,12 @@ private class SheetInstance: NSObject, NSWindowDelegate {
 
 		let window = KeyableWindow(
 			contentRect: .zero,
-			styleMask: isResizable ? [.resizable] : [],
+			styleMask: self.isResizable ? [.resizable] : [],
 			backing: .buffered,
 			defer: true
 		)
 
-		window.title = "something"
+		window.title = "sheet"
 		window.isReleasedWhenClosed = true
 		window.isMovableByWindowBackground = false
 		window.autorecalculatesKeyViewLoop = true

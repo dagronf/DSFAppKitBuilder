@@ -145,11 +145,11 @@ class WindowPopoverSheetDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 		}
 		.bindWindow(demoWindowElement)
-		.onOpen { [weak self] window in
+		.onOpen { [weak self] (window: DSFAppKitBuilder.Window) in
 			Swift.print("Window opened, focussing on button '60'...")
 			self?.demoWindowFocusElement.makeFirstResponder()
 		}
-		.onClose { [weak self] window in
+		.onClose { [weak self] (window: DSFAppKitBuilder.Window) in
 			Swift.print("Window closing...")
 			self?.currentWindow = nil
 		}
