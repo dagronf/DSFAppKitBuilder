@@ -135,7 +135,6 @@ public class Window: NSObject {
 	deinit {
 		Logger.Debug("Window[\(type(of: self))] deinit")
 		self.titleBinder?.deregister(self)
-		self.onWindowCreate = nil
 		self.onWindowClose = nil
 	}
 
@@ -149,8 +148,9 @@ public class Window: NSObject {
 	private var toolbarStyle: Window.ToolbarStyle?
 	private var titleBinder: ValueBinder<String>?
 
-	private var onWindowCreate: ((Window) -> Void)?
 	private var onWindowClose: ((Window) -> Void)?
+
+	internal var onWindowMiniaturize: ((Bool) -> Void)?
 }
 
 public extension Window {
@@ -206,12 +206,6 @@ public extension Window {
 // MARK: - Actions
 
 public extension Window {
-	/// Block to call when the window is first displayed
-	func onOpen(_ block: @escaping (Window) -> Void) -> Self {
-		self.onWindowCreate = block
-		return self
-	}
-
 	/// Block to call when the window is going to close
 	func onClose(_ block: @escaping (Window) -> Void) -> Self {
 		self.onWindowClose = block
@@ -283,18 +277,27 @@ internal extension Window {
 
 		window.recalculateKeyViewLoop()
 
-		if presentOnScreen {
-			window.makeKeyAndOrderFront(self)
-		}
-
 		if #available(macOS 11.0, *) {
 			if let toolbarStyle = self.toolbarStyle {
 				self.window?.toolbarStyle = NSWindow.ToolbarStyle(rawValue: toolbarStyle.rawValue)!
 			}
 		}
 
-		/// Call the callback if it has been set
-		self.onWindowCreate?(self)
+		if presentOnScreen {
+			window.makeKeyAndOrderFront(self)
+		}
+
+		window.delegate = self
+	}
+}
+
+extension Window: NSWindowDelegate {
+	public func windowDidMiniaturize(_ notification: Notification) {
+		self.onWindowMiniaturize?(true)
+	}
+
+	public func windowDidDeminiaturize(_ notification: Notification) {
+		self.onWindowMiniaturize?(false)
 	}
 }
 

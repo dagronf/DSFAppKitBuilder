@@ -28,39 +28,21 @@ class PopoverSheetBuilderController: ElementController {
 		Swift.print("Popover state is '\(newState)'")
 	}
 
-	lazy var customToolbar: DSFToolbar = {
-		DSFToolbar(
-
-			toolbarIdentifier: NSToolbar.Identifier("Core"),
-			allowsUserCustomization: true) {
-
-				DSFToolbar.Item(NSToolbarItem.Identifier("item-new"))
-					.label("New")
-					.isSelectable(true)
-					.image(NSImage(named: "slider-rabbit")!)
-					.shouldEnable { [weak self] in
-						false
-					}
-					.action { [weak self] _ in
-						Swift.print("Custom button pressed")
-					}
-			}
-	}()
-
-
 	private let presentedWindowVisible = ValueBinder(false)
+	private let presentedWindowMinimised = ValueBinder(false)
 	private let presentedWindowTitle = ValueBinder("Window")
-	let window: MyWindow
+	let secondWindow: MyWindow
 
 	init() {
-		self.window = MyWindow(isVisible: self.presentedWindowVisible)
-		self.window.bindTitle(self.presentedWindowTitle)
-		self.window.onOpen { [weak self] window in
+		self.secondWindow = MyWindow(isVisible: self.presentedWindowVisible)
+		self.secondWindow.bindTitle(self.presentedWindowTitle)
+
+		self.secondWindow.bindMinimise(self.presentedWindowMinimised)
+
+		self.secondWindow.onOpen { [weak self] window in
 			Swift.print("MyWindow: onOpen")
-			self?.customToolbar.attachedWindow = window.window
-			window.toolbarStyle(.preference)
 		}
-		self.window.onClose { _ in
+		self.secondWindow.onClose { _ in
 			Swift.print("MyWindow: onClose")
 		}
 	}
@@ -159,6 +141,17 @@ class PopoverSheetBuilderController: ElementController {
 							self?.presentedWindowVisible.wrappedValue = true
 						}
 						.bindIsEnabled(presentedWindowVisible.toggled())
+
+						Button(title: "Toggle minimise") { [weak self] _ in
+							self?.presentedWindowMinimised.wrappedValue.toggle()
+						}
+						.bindIsEnabled(presentedWindowVisible)
+
+						Button(title: "Bring to front") { [weak self] _ in
+							self?.presentedWindowVisible.wrappedValue = true
+						}
+						.bindIsEnabled(presentedWindowVisible)
+						
 						Button(title: "Close") { [weak self] _ in
 							self?.presentedWindowVisible.wrappedValue = false
 						}
@@ -188,6 +181,32 @@ class MyWindow: ManagedWindow {
 			}
 		}
 	}
+
+	override var toolbarStyle: DSFAppKitBuilder.Window.ToolbarStyle { .preference }
+
+	override func windowDidOpen(_ window: DSFAppKitBuilder.Window) {
+		window.window?.toolbarStyle = .preference
+		self.customToolbar.attachedWindow = window.window
+	}
+
+	lazy var customToolbar: DSFToolbar = {
+		DSFToolbar(
+
+			toolbarIdentifier: NSToolbar.Identifier("Core"),
+			allowsUserCustomization: true) {
+
+				DSFToolbar.Item(NSToolbarItem.Identifier("item-new"))
+					.label("New")
+					.isSelectable(true)
+					.image(NSImage(named: "slider-rabbit")!)
+					.shouldEnable { [weak self] in
+						false
+					}
+					.action { [weak self] _ in
+						Swift.print("Custom button pressed")
+					}
+			}
+	}()
 
 	deinit {
 		Swift.print("MyWindow: deinit")

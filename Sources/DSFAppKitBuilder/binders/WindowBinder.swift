@@ -48,7 +48,7 @@ public class WindowBinder: CustomDebugStringConvertible {
 
 	deinit {
 #if DEBUG
-		Logger.Debug("WindowBinder [\(String(describing: window))] deinit")
+		Logger.Debug("WindowBinder [\(String(describing: self.window))] deinit")
 #endif
 		self.window = nil
 	}

@@ -46,10 +46,8 @@ open class ManagedWindow: NSObject {
 				self.present()
 			}
 			else {
-				if !self.isClosing {
-					self.isClosing = true
+				self.isClosing.tryLock {
 					self.currentWindow?.window?.close()
-					self.isClosing = false
 				}
 			}
 		}
@@ -65,6 +63,12 @@ open class ManagedWindow: NSObject {
 	open var frameAutosaveName: NSWindow.FrameAutosaveName? { nil }
 	/// The default size for the window
 	open var contentRect: NSRect { NSRect(x: 100, y: 100, width: 200, height: 200) }
+	/// The style of toolbar assigned to the window
+	open var toolbarStyle: Window.ToolbarStyle { .unified }
+	/// Called when the window initially displays. Override to perform custom tasks with the window once its on screen
+	open func windowDidOpen(_ window: Window) {
+		// Do nothing
+	}
 
 	/// Create the content to display within the window
 	///
@@ -85,12 +89,15 @@ open class ManagedWindow: NSObject {
 
 	private let isVisible: ValueBinder<Bool>
 	private var currentWindow: DSFAppKitBuilder.Window?
-	private var isClosing: Bool = false
-	private var toolbarStyle: Window.ToolbarStyle?
 
 	private var titleBinder: ValueBinder<String>?
+	private var minimiseBinder: ValueBinder<Bool>?
+
 	private var openBlock: ((Window) -> Void)?
 	private var closeBlock: ((Window) -> Void)?
+
+	private var isClosing = ProtectedLock()
+	private let isUpdating = ProtectedLock()
 }
 
 private extension ManagedWindow {
@@ -110,10 +117,8 @@ private extension ManagedWindow {
 		)
 		.onClose { [weak self] window in
 			guard let `self` = self else { return }
-			if !self.isClosing {
-				self.isClosing = true
+			self.isClosing.tryLock {
 				self.isVisible.wrappedValue = false
-				self.isClosing = false
 			}
 			if let window = self.currentWindow {
 				self.closeBlock?(window)
@@ -127,7 +132,15 @@ private extension ManagedWindow {
 
 		if let window = self.currentWindow {
 			self.openBlock?(window)
+			self.windowDidOpen(window)
 			window.toolbarStyle(self.toolbarStyle)
+
+			window.onWindowMiniaturize = { [weak self] newState in
+				guard let `self` = self else { return }
+				self.isUpdating.tryLock {
+					self.minimiseBinder?.wrappedValue = newState
+				}
+			}
 		}
 	}
 
@@ -143,22 +156,15 @@ private extension ManagedWindow {
 	}
 }
 
-public extension ManagedWindow {
-	/// Set the style of the toolbar (only effective macOS 11+)
-	@discardableResult func toolbarStyle(_ style: Window.ToolbarStyle) -> Self {
-		self.toolbarStyle = style
-		return self
-	}
-}
-
-
 // MARK: - Callbacks
 
 public extension ManagedWindow {
+	/// Provide a block to call when the window appears on screen for the first time
 	@discardableResult func onOpen(_ block: @escaping (Window) -> Void) -> Self {
 		self.openBlock = block
 		return self
 	}
+	/// Provide a block to call when the window will close
 	@discardableResult func onClose(_ block: @escaping (Window) -> Void) -> Self {
 		self.closeBlock = block
 		return self
@@ -168,10 +174,25 @@ public extension ManagedWindow {
 // MARK: - Binder
 
 public extension ManagedWindow {
+	/// Bind the title of the window to a ValueBinder
 	@discardableResult func bindTitle(_ binder: ValueBinder<String>) -> Self {
 		self.titleBinder = binder
 		binder.register(self) { [weak self] newTitle in
 			self?.currentWindow?.window?.title = newTitle
+		}
+		return self
+	}
+
+	/// Bind the minimise state of the window to a ValueBinder
+	@discardableResult func bindMinimise(_ binder: ValueBinder<Bool>) -> Self {
+		self.minimiseBinder = binder
+		binder.register(self) { [weak self] newState in
+			guard let `self` = self else { return }
+			if let w = self.currentWindow?.window {
+				self.isUpdating.tryLock {
+					newState ? w.miniaturize(self) : w.deminiaturize(self)
+				}
+			}
 		}
 		return self
 	}
