@@ -60,10 +60,8 @@ public class PlainTextView: Element {
 
 		self.textBinder.register(self) { [weak self] newText in
 			guard let `self` = self else { return }
-			if !self.isUpdating {
-				self.isUpdating = true
+			self.isUpdating.tryLock {
 				self.contentView.textView.string = newText
-				self.isUpdating = false
 			}
 		}
 
@@ -87,25 +85,21 @@ public class PlainTextView: Element {
 	private var editableBinder: ValueBinder<Bool>?
 	private var selectableBinder: ValueBinder<Bool>?
 	private var selectionRangeBinder: ValueBinder<NSRange>?
-	private var isUpdating = false
+	private var isUpdating = ProtectedLock()
 
 	override public func view() -> NSView { self.contentView }
 }
 
 extension PlainTextView: NSTextViewDelegate {
 	public func textViewDidChangeSelection(_ notification: Notification) {
-		if !self.isUpdating {
-			self.isUpdating = true
+		self.isUpdating.tryLock {
 			self.selectionRangeBinder?.wrappedValue = self.contentView.textView.selectedRange()
-			self.isUpdating = false
 		}
 	}
 
 	public func textDidChange(_ notification: Notification) {
-		if !self.isUpdating {
-			self.isUpdating = true
+		self.isUpdating.tryLock {
 			self.textBinder.wrappedValue = self.contentView.textView.string
-			self.isUpdating = false
 		}
 	}
 }
@@ -179,10 +173,8 @@ public extension PlainTextView {
 		self.selectionRangeBinder = binder
 		binder.register(self) { [weak self] newValue in
 			guard let `self` = self else { return }
-			if !self.isUpdating {
-				self.isUpdating = true
+			self.isUpdating.tryLock {
 				self.contentView.textView.selectedRanges = [NSValue(range: newValue)]
-				self.isUpdating = false
 			}
 		}
 		return self
