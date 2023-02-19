@@ -15,7 +15,6 @@ import DSFToolbar
 public class PopoverSheetBuilder: ViewTestBed {
 	var title: String { String.localized("Windows/Sheets/Popovers") }
 	var type: String { "" }
-	var showContentInScroll: Bool { false }
 	var description: String { String.localized("Windows, sheets and popovers") }
 	func build() -> ElementController {
 		PopoverSheetBuilderController()
@@ -31,12 +30,15 @@ class PopoverSheetBuilderController: ElementController {
 	private let presentedPanelVisible = ValueBinder(false)
 	private let myPanel: MyPanel
 
+	// Alert defintions
+	private let alertResultString = ValueBinder("")
 	private let presentedAlertVisible = ValueBinder(false)
 
+	// Window definitions
+	let secondWindow: MyWindow
 	private let presentedWindowVisible = ValueBinder(false)
 	private let presentedWindowMinimised = ValueBinder(false)
 	private let presentedWindowTitle = ValueBinder("Window")
-	let secondWindow: MyWindow
 
 	// Sheet definition
 	let mySheet: MySheet
@@ -91,57 +93,77 @@ class PopoverSheetBuilderController: ElementController {
 	}
 
 	lazy var body: Element = {
-		Group(layoutType: .center) {
-			VStack {
-				// Alert
-				HStack {
-					Button(title: "Show an alert") { [weak self] _ in
-						self?.presentedAlertVisible.wrappedValue = true
-					}
-					.alert(isVisible: self.presentedAlertVisible, alertBuilder: self.buildAlert()) { response in
-						Swift.print("Alert response was: \(response)")
-					}
+		VStack(alignment: .leading) {
+			Label("Alerts").font(.headline)
+
+			HStack {
+				Button(title: "Show an alert") { [weak self] _ in
+					self?.presentedAlertVisible.wrappedValue = true
 				}
-
-				// Sheet
-				Button(title: "Present a modal sheet") { [weak self] _ in
-					self?.sheetVisible.wrappedValue = true
+				.alert(isVisible: self.presentedAlertVisible, alertBuilder: self.buildAlert()) { [weak self] response in
+					//Swift.print("Alert response was: \(response)")
+					self?.alertResultString.wrappedValue = "Response was: \(response.rawValue)"
 				}
-				.sheet(mySheet, isVisible: self.sheetVisible)
+				Label(self.alertResultString)
+					.font(NSFont.userFixedPitchFont(ofSize: 13))
+			}
 
-				// Popover
-				HStack {
-					Button(title: "Display a popover") { [weak self] _ in
-						self?.popoverShow.wrappedValue = true
-					}
-					.popover(self.myPopover, isVisible: self.popoverShow)
-					Label()
-						.font(NSFont.userFixedPitchFont(ofSize: 13))
-						.bindValue(self.sliderValue, formatter: self.sliderFormatter)
-						.width(40)
+			HDivider()
+
+			Label("Sheets").font(.headline)
+
+			// Sheet
+			Button(title: "Present a modal sheet") { [weak self] _ in
+				self?.sheetVisible.wrappedValue = true
+			}
+			.sheet(mySheet, isVisible: self.sheetVisible)
+
+			HDivider()
+
+			Label("Popover").font(.headline)
+
+			// Popover
+			HStack {
+				Button(title: "Display a popover") { [weak self] _ in
+					self?.popoverShow.wrappedValue = true
 				}
+				.popover(self.myPopover, isVisible: self.popoverShow)
+				Label()
+					.font(NSFont.userFixedPitchFont(ofSize: 13))
+					.bindValue(self.sliderValue, formatter: self.sliderFormatter)
+					.width(40)
+			}
 
-				Box("Panels") {
-					HStack {
-						Button(title: "Show") { [weak self] _ in
-							self?.presentedPanelVisible.wrappedValue = true
-						}
-						.panel(self.myPanel, isVisible: self.presentedPanelVisible)
-						.bindIsEnabled(self.presentedPanelVisible.toggled())
+			HDivider()
 
-						Button(title: "Close") { [weak self] _ in
-							self?.presentedPanelVisible.wrappedValue = false
-						}
-						.bindIsEnabled(self.presentedPanelVisible)
-					}
+			Label("Popover").font(.headline)
+
+			HStack {
+				Button(title: "Show") { [weak self] _ in
+					self?.presentedPanelVisible.wrappedValue = true
 				}
+				.panel(self.myPanel, isVisible: self.presentedPanelVisible)
+				.bindIsEnabled(self.presentedPanelVisible.toggled())
 
-				Box("Presenting a window") {
+				Button(title: "Close") { [weak self] _ in
+					self?.presentedPanelVisible.wrappedValue = false
+				}
+				.bindIsEnabled(self.presentedPanelVisible)
+			}
+
+			HDivider()
+
+			Label("Windows").font(.headline)
+
+			Box("Primary functions") {
+
+				VStack(alignment: .leading) {
 					HStack {
 						Label("Title:")
 						TextField(presentedWindowTitle)
-							.width(100)
+					}
 
+					HStack {
 						Button(title: "Show") { [weak self] _ in
 							self?.presentedWindowVisible.wrappedValue = true
 						}
@@ -165,7 +187,10 @@ class PopoverSheetBuilderController: ElementController {
 				}
 				.horizontalHuggingPriority(.defaultLow)
 			}
+
+			EmptyView()
 		}
+		.hugging(h: 10)
 	}()
 }
 
@@ -198,10 +223,8 @@ class MyWindow: ManagedWindow {
 
 	lazy var customToolbar: DSFToolbar = {
 		DSFToolbar(
-
 			toolbarIdentifier: NSToolbar.Identifier("Core"),
 			allowsUserCustomization: true) {
-
 				DSFToolbar.Item(NSToolbarItem.Identifier("item-new"))
 					.label("New")
 					.isSelectable(true)
@@ -382,4 +405,33 @@ struct PopoverSheetTemplateBuilderPreviews: PreviewProvider {
 		}
 	}
 }
+
+@available(macOS 10.15, *)
+private let __dummyPanel = MyPanel()
+struct MyPanelPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		__dummyPanel.buildContent()()
+			.SwiftUIPreview()
+	}
+}
+
+@available(macOS 10.15, *)
+private let __dummySheet = MySheet()
+struct MySheetPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		__dummySheet.buildContent()()
+			.SwiftUIPreview()
+	}
+}
+
+@available(macOS 10.15, *)
+private let __dummyValue = ValueBinder(65.0)
+private let __dummyPopover = MyPopover(sliderValue: __dummyValue)
+struct MyPopoverPreviews: PreviewProvider {
+	static var previews: some SwiftUI.View {
+		__dummyPopover.buildContent()()
+			.SwiftUIPreview()
+	}
+}
+
 #endif
