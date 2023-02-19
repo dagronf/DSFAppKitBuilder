@@ -41,6 +41,9 @@ class PopoverSheetBuilderController: ElementController {
 	// Sheet definition
 	let mySheet: MySheet
 
+	// Popover definition
+	let myPopover: MyPopover
+
 	init() {
 		// The secondary window
 		self.secondWindow = MyWindow(isVisible: self.presentedWindowVisible)
@@ -50,6 +53,9 @@ class PopoverSheetBuilderController: ElementController {
 
 		// The sheet
 		self.mySheet = MySheet()
+
+		// The popover
+		self.myPopover = MyPopover(sliderValue: self.sliderValue)
 
 		self.secondWindow.bindTitle(self.presentedWindowTitle)
 		self.secondWindow.bindMinimise(self.presentedWindowMinimised)
@@ -69,28 +75,6 @@ class PopoverSheetBuilderController: ElementController {
 	let sliderFormatter = NumberFormatter {
 		$0.maximumFractionDigits = 1
 		$0.minimumFractionDigits = 1
-	}
-
-	// The content of the popover
-	lazy var popoverContentBuilder: (() -> Element) = { [weak self] in
-		guard let `self` = self else { return Nothing() }
-		return Group(edgeInset: 20) {
-			VStack {
-				Label("Update the slider value")
-					.font(NSFont.boldSystemFont(ofSize: 14))
-				HStack {
-					ImageView(NSImage(named: "slider-tortoise")!)
-						.scaling(.scaleProportionallyDown)
-						.size(width: 24, height: 24)
-					Slider(range: 0 ... 100, value: 0)
-						.minWidth(250)
-						.bindValue(self.sliderValue)
-					ImageView(NSImage(named: "slider-rabbit")!)
-						.scaling(.scaleProportionallyDown)
-						.size(width: 24, height: 24)
-				}
-			}
-		}
 	}
 
 	func buildAlert() -> (() -> NSAlert) {
@@ -130,11 +114,7 @@ class PopoverSheetBuilderController: ElementController {
 					Button(title: "Display a popover") { [weak self] _ in
 						self?.popoverShow.wrappedValue = true
 					}
-					.popover(
-						isVisible: self.popoverShow,
-						preferredEdge: .maxY,
-						popoverContentBuilder
-					)
+					.popover(self.myPopover, isVisible: self.popoverShow)
 					Label()
 						.font(NSFont.userFixedPitchFont(ofSize: 13))
 						.bindValue(self.sliderValue, formatter: self.sliderFormatter)
@@ -350,6 +330,41 @@ class MySheet: SheetDefinition {
 	}
 	deinit {
 		Swift.print("MySheet: deinit")
+	}
+}
+
+class MyPopover: PopoverDefinition {
+
+	init(sliderValue: ValueBinder<Double>) {
+		self.sliderValue = sliderValue
+	}
+
+	let sliderValue: ValueBinder<Double>
+
+	override func buildContent() -> (() -> Element) {
+		{ [weak self] in
+			guard let `self` = self else { return Nothing() }
+			return Group(edgeInset: 20) {
+				VStack {
+					Label("Update the slider value")
+						.font(NSFont.boldSystemFont(ofSize: 14))
+					HStack {
+						ImageView(NSImage(named: "slider-tortoise")!)
+							.scaling(.scaleProportionallyDown)
+							.size(width: 24, height: 24)
+						Slider(range: 0 ... 100, value: 0)
+							.minWidth(250)
+							.bindValue(self.sliderValue)
+						ImageView(NSImage(named: "slider-rabbit")!)
+							.scaling(.scaleProportionallyDown)
+							.size(width: 24, height: 24)
+					}
+					Button(title: "Close") { [weak self] _ in
+						self?.dismiss()
+					}
+				}
+			}
+		}
 	}
 }
 

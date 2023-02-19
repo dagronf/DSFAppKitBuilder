@@ -31,16 +31,79 @@ import DSFValueBinders
 // MARK: - Presenting popover
 
 extension Element {
-	/// Attach a sheet to this element
+	/// Attach a popover using a PopoverDefinition object
+	/// - Parameters:
+	///   - popover: The popover definition
+	///   - isVisible: A ValueBinder to indicate whether the sheet is visible or not
+	/// - Returns: self
+	@discardableResult public func popover(
+		_ popover: PopoverDefinition,
+		isVisible: ValueBinder<Bool>
+	) -> Self {
+		popover.setup(parent: self, isVisible: isVisible)
+		return self
+	}
+
+	/// Attach a popover to this element
 	/// - Parameters:
 	///   - isVisible: A ValueBinder to indicate whether the sheet is visible or not
 	///   - preferredEdge: The edge of element the popover should prefer to be anchored to.
 	///   - builder: A builder for creating the sheet content
 	/// - Returns: self
-	public func popover(isVisible: ValueBinder<Bool>, preferredEdge: NSRectEdge, _ builder: @escaping () -> Element) -> Self {
+	public func popover(
+		isVisible: ValueBinder<Bool>,
+		preferredEdge: NSRectEdge,
+		_ builder: @escaping () -> Element
+	) -> Self {
 		let popoverInstance = PopoverInstance(self, isVisible: isVisible, preferredEdge: preferredEdge, builder)
 		attachedObjects.append(popoverInstance)
 		return self
+	}
+}
+
+// MARK: Popover Defintion
+
+/// A base definition for a sheet.
+open class PopoverDefinition {
+	open var title: String { NSLocalizedString("sheet", comment: "") }
+	/// The preferred edge for attaching the popover
+	open var preferredEdge: NSRectEdge { .minY }
+
+	/// Create the content to display within the sheet window
+	///
+	/// You must overload this class and implement `buildContent()` to create the window
+	open func buildContent() -> (() -> Element) {
+		fatalError("You must overload buildContent in your subclass")
+	}
+
+	public init() { }
+
+	/// Call to dismiss the popover. If the popover is not presented, does nothing
+	public func dismiss() {
+		if let binder = self.isVisibleBinder, binder.wrappedValue == true {
+			binder.wrappedValue = false
+		}
+	}
+
+	// Private
+	deinit {
+		if DSFAppKitBuilderShowDebuggingOutput {
+			Swift.print("\(self.self): deinit")
+		}
+	}
+	private var isVisibleBinder: ValueBinder<Bool>?
+	private var popoverInstance: PopoverInstance?
+}
+
+extension PopoverDefinition {
+	internal func setup(parent: Element, isVisible: ValueBinder<Bool>) {
+		self.isVisibleBinder = isVisible
+		self.popoverInstance = PopoverInstance(
+			parent,
+			isVisible: isVisible,
+			preferredEdge: self.preferredEdge,
+			self.buildContent()
+		)
 	}
 }
 
@@ -79,6 +142,7 @@ private class PopoverInstance: NSObject, NSPopoverDelegate {
 	) {
 		guard let parent = self.parent else { return }
 		let popover = NSPopover()
+		self.popover = popover
 		popover.behavior = .transient
 		popover.delegate = self
 
@@ -92,14 +156,22 @@ private class PopoverInstance: NSObject, NSPopoverDelegate {
 	}
 
 	public func popoverWillClose(_ notification: Notification) {
-		self.isVisible.wrappedValue = false
+		self.isClosing.tryLock {
+			self.isVisible.wrappedValue = false
+		}
 	}
 
 	private func dismissPopover(_ viewController: DSFAppKitBuilderAssignableViewController) {
+		isClosing.tryLock {
+			self.popover?.close()
+			self.popover = nil
+		}
 		self.viewController.reset()
 	}
 
+	let isClosing = ProtectedLock()
 	weak var parent: Element?
+	weak var popover: NSPopover?
 	let viewController: DSFAppKitBuilderAssignableViewController
 	let isVisible: ValueBinder<Bool>
 }
