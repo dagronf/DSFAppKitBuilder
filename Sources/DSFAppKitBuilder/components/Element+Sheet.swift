@@ -31,22 +31,36 @@ import DSFValueBinders
 // MARK: - Presenting sheet
 
 extension Element {
+	/// Attach a sheet using a SheetDefinition object
+	/// - Parameters:
+	///   - sheet: The sheet definition
+	///   - isVisible: A ValueBinder to indicate whether the sheet is visible or not
+	/// - Returns: self
+	@discardableResult public func sheet(
+		_ sheet: SheetDefinition,
+		isVisible: ValueBinder<Bool>
+	) -> Self {
+		sheet.setup(parent: self, isVisible: isVisible)
+		return self
+	}
+
 	/// Attach a sheet to this element
 	/// - Parameters:
 	///   - isVisible: A ValueBinder to indicate whether the sheet is visible or not
-	///   - isResizable: Is the user able to resize the sheet?
+	///   - styleMask: The stylemask to apply to the sheet window
+	///   - frameAutosaveName: The name AppKit uses to automatically save the window’s frame rectangle data in the defaults system.
 	///   - builder: A builder for creating the sheet content
 	/// - Returns: self
 	public func sheet(
 		isVisible: ValueBinder<Bool>,
-		isResizable: Bool = true,
+		styleMask: NSWindow.StyleMask = [.resizable],
 		frameAutosaveName: NSWindow.FrameAutosaveName? = nil,
 		_ builder: @escaping () -> Element
 	) -> Self {
 		let sheetInstance = SheetInstance(
 			parent: self,
 			isVisible: isVisible,
-			isResizable: isResizable,
+			styleMask: styleMask,
 			frameAutosaveName: frameAutosaveName,
 			builder
 		)
@@ -55,18 +69,73 @@ extension Element {
 	}
 }
 
+// MARK: Overridable sheet definition
+
+/// A base definition for a sheet.
+open class SheetDefinition {
+	open var title: String { NSLocalizedString("sheet", comment: "") }
+	/// Override to customize the window's style
+	open var styleMask: NSWindow.StyleMask { [.resizable] }
+	/// The default (initial) size for the window
+	open var contentRect: NSRect { NSRect(x: 0, y: 0, width: 200, height: 200) }
+	/// The name AppKit uses to automatically save the window’s frame rectangle data in the defaults system.
+	open var frameAutosaveName: NSWindow.FrameAutosaveName? { nil }
+
+	/// Create the content to display within the sheet window
+	///
+	/// You must overload this class and implement `buildContent()` to create the window
+	open func buildContent() -> (() -> Element) {
+		fatalError("You must overload buildContent in your subclass")
+	}
+
+	public init() { }
+
+	deinit {
+		if DSFAppKitBuilderShowDebuggingOutput {
+			Swift.print("\(self.self): deinit")
+		}
+	}
+
+	/// Call to dismiss the sheet. If the sheet is not visible, does nothing
+	public func dismiss() {
+		if let binder = self.isVisibleBinder, binder.wrappedValue == true {
+			binder.wrappedValue = false
+		}
+	}
+
+	// Private
+
+	private var isVisibleBinder: ValueBinder<Bool>?
+	private var sheetInstance: SheetInstance?
+}
+
+extension SheetDefinition {
+	internal func setup(parent: Element, isVisible: ValueBinder<Bool>) {
+		self.isVisibleBinder = isVisible
+
+		self.sheetInstance = SheetInstance(
+			parent: parent,
+			isVisible: isVisible,
+			styleMask: self.styleMask,
+			frameAutosaveName: self.frameAutosaveName,
+			self.buildContent()
+		)
+	}
+}
+
+
 // MARK: Sheet instance wrapper
 
 private class SheetInstance: NSObject, NSWindowDelegate {
 	init(
 		parent: Element,
 		isVisible: ValueBinder<Bool>,
-		isResizable: Bool = false,
+		styleMask: NSWindow.StyleMask,
 		frameAutosaveName: NSWindow.FrameAutosaveName?,
 		_ builder: @escaping () -> Element
 	) {
 		self.parent = parent
-		self.isResizable = isResizable
+		self.styleMask = styleMask
 		self.frameAutosaveName = frameAutosaveName
 		self.viewController = DSFAppKitBuilderAssignableViewController(builder)
 		self.isVisible = isVisible
@@ -97,7 +166,7 @@ private class SheetInstance: NSObject, NSWindowDelegate {
 
 		let window = KeyableWindow(
 			contentRect: .zero,
-			styleMask: self.isResizable ? [.resizable] : [],
+			styleMask: self.styleMask,
 			backing: .buffered,
 			defer: true
 		)
@@ -150,7 +219,7 @@ private class SheetInstance: NSObject, NSWindowDelegate {
 	weak var parent: Element?
 	let viewController: DSFAppKitBuilderAssignableViewController
 	let isVisible: ValueBinder<Bool>
-	let isResizable: Bool
+	let styleMask: NSWindow.StyleMask
 	let frameAutosaveName: NSWindow.FrameAutosaveName?
 
 	class KeyableWindow: NSWindow {

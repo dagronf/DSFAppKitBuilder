@@ -23,7 +23,7 @@ public class PopoverSheetBuilder: ViewTestBed {
 }
 
 class PopoverSheetBuilderController: ElementController {
-	let show = ValueBinder(false)
+	let sheetVisible = ValueBinder(false)
 	let popoverShow = ValueBinder(false) { newState in
 		Swift.print("Popover state is '\(newState)'")
 	}
@@ -38,12 +38,18 @@ class PopoverSheetBuilderController: ElementController {
 	private let presentedWindowTitle = ValueBinder("Window")
 	let secondWindow: MyWindow
 
+	// Sheet definition
+	let mySheet: MySheet
+
 	init() {
 		// The secondary window
 		self.secondWindow = MyWindow(isVisible: self.presentedWindowVisible)
 
 		// The panel to display
 		self.myPanel = MyPanel()
+
+		// The sheet
+		self.mySheet = MySheet()
 
 		self.secondWindow.bindTitle(self.presentedWindowTitle)
 		self.secondWindow.bindMinimise(self.presentedWindowMinimised)
@@ -87,31 +93,6 @@ class PopoverSheetBuilderController: ElementController {
 		}
 	}
 
-	// The content of the sheet
-	lazy var sheetContentBuilder: (() -> Element) = { [weak self] in
-		VStack(alignment: .leading) {
-			HStack {
-				ImageView(NSImage(named: NSImage.cautionName))
-					.size(width: 48, height: 48)
-				Label("Do something?")
-			}
-			HStack {
-				EmptyView()
-				HStack(alignment: .trailing, distribution: .fillEqually) {
-					Button(title: "OK", bezelStyle: .rounded) { [weak self] _ in
-						self?.show.wrappedValue = false
-					}
-					Button(title: "Cancel", bezelStyle: .rounded) { [weak self] _ in
-						self?.show.wrappedValue = false
-					}
-					.bezelColor(NSColor.systemRed)
-				}
-			}
-		}
-		.width(400)
-		.padding(20)
-	}
-
 	func buildAlert() -> (() -> NSAlert) {
 		{
 			let a = NSAlert()
@@ -134,19 +115,15 @@ class PopoverSheetBuilderController: ElementController {
 						self?.presentedAlertVisible.wrappedValue = true
 					}
 					.alert(isVisible: self.presentedAlertVisible, alertBuilder: self.buildAlert()) { response in
-						Swift.print("HEHEHEHEHEH \(response)")
+						Swift.print("Alert response was: \(response)")
 					}
 				}
 
 				// Sheet
 				Button(title: "Present a modal sheet") { [weak self] _ in
-					self?.show.wrappedValue = true
+					self?.sheetVisible.wrappedValue = true
 				}
-				.sheet(
-					isVisible: show,
-					frameAutosaveName: "Present:Sheet",
-					self.sheetContentBuilder
-				)
+				.sheet(mySheet, isVisible: self.sheetVisible)
 
 				// Popover
 				HStack {
@@ -178,8 +155,6 @@ class PopoverSheetBuilderController: ElementController {
 						.bindIsEnabled(self.presentedPanelVisible)
 					}
 				}
-
-
 
 				Box("Presenting a window") {
 					HStack {
@@ -345,6 +320,38 @@ class MyPanel: InspectorPanelDefinition {
 	}
 }
 
+class MySheet: SheetDefinition {
+	override var frameAutosaveName: NSWindow.FrameAutosaveName? { "Present:Sheet" }
+	override func buildContent() -> (() -> Element) {
+		{ [weak self] in
+			VStack(alignment: .leading) {
+				HStack {
+					ImageView(NSImage(named: NSImage.cautionName))
+						.size(width: 48, height: 48)
+					Label("Do something?")
+				}
+				HStack {
+					EmptyView()
+					HStack(alignment: .trailing, distribution: .fillEqually) {
+						Button(title: "OK", bezelStyle: .rounded) { [weak self] _ in
+							self?.dismiss()
+						}
+						Button(title: "Cancel", bezelStyle: .rounded) { [weak self] _ in
+							self?.dismiss()
+						}
+						.bezelColor(NSColor.systemRed)
+					}
+				}
+			}
+			.hugging(v: 999)
+			.width(400)
+			.padding(20)
+		}
+	}
+	deinit {
+		Swift.print("MySheet: deinit")
+	}
+}
 
 // MARK: - SwiftUI previews
 
@@ -356,26 +363,6 @@ struct PopoverSheetTemplateBuilderPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		SwiftUI.Group {
 			PopoverSheetBuilderController().body
-				.SwiftUIPreview()
-		}
-	}
-}
-
-@available(macOS 10.15, *)
-struct SheetContentBuilderPreviews: PreviewProvider {
-	static var previews: some SwiftUI.View {
-		SwiftUI.Group {
-			PopoverSheetBuilderController().sheetContentBuilder()
-				.SwiftUIPreview()
-		}
-	}
-}
-
-@available(macOS 10.15, *)
-struct PopoverContentBuilderPreviews: PreviewProvider {
-	static var previews: some SwiftUI.View {
-		SwiftUI.Group {
-			PopoverSheetBuilderController().popoverContentBuilder()
 				.SwiftUIPreview()
 		}
 	}
