@@ -28,6 +28,9 @@ class PopoverSheetBuilderController: ElementController {
 		Swift.print("Popover state is '\(newState)'")
 	}
 
+	private let presentedPanelVisible = ValueBinder(false)
+	private let myPanel: MyPanel
+
 	private let presentedAlertVisible = ValueBinder(false)
 
 	private let presentedWindowVisible = ValueBinder(false)
@@ -36,11 +39,14 @@ class PopoverSheetBuilderController: ElementController {
 	let secondWindow: MyWindow
 
 	init() {
+		// The secondary window
 		self.secondWindow = MyWindow(isVisible: self.presentedWindowVisible)
+
+		// The panel to display
+		self.myPanel = MyPanel()
+
 		self.secondWindow.bindTitle(self.presentedWindowTitle)
-
 		self.secondWindow.bindMinimise(self.presentedWindowMinimised)
-
 		self.secondWindow.onOpen { [weak self] window in
 			Swift.print("MyWindow: onOpen")
 		}
@@ -106,17 +112,18 @@ class PopoverSheetBuilderController: ElementController {
 		.padding(20)
 	}
 
-	func buildAlert() -> NSAlert {
-		let a = NSAlert()
-		a.messageText = "Delete the document?"
-		a.informativeText = "Are you sure you would like to delete the document?"
-		a.addButton(withTitle: "Cancel")
-		a.addButton(withTitle: "Delete")
-		a.alertStyle = .warning
-		a.icon = NSImage(named: "slider-tortoise")
-		return a
+	func buildAlert() -> (() -> NSAlert) {
+		{
+			let a = NSAlert()
+			a.messageText = "Delete the document?"
+			a.informativeText = "Are you sure you would like to delete the document?"
+			a.addButton(withTitle: "Cancel")
+			a.addButton(withTitle: "Delete")
+			a.alertStyle = .warning
+			a.icon = NSImage(named: "slider-tortoise")
+			return a
+		}
 	}
-
 
 	lazy var body: Element = {
 		Group(layoutType: .center) {
@@ -126,7 +133,7 @@ class PopoverSheetBuilderController: ElementController {
 					Button(title: "Show an alert") { [weak self] _ in
 						self?.presentedAlertVisible.wrappedValue = true
 					}
-					.alert(isVisible: self.presentedAlertVisible, alertBuilder: self.buildAlert) { response in
+					.alert(isVisible: self.presentedAlertVisible, alertBuilder: self.buildAlert()) { response in
 						Swift.print("HEHEHEHEHEH \(response)")
 					}
 				}
@@ -156,6 +163,23 @@ class PopoverSheetBuilderController: ElementController {
 						.bindValue(self.sliderValue, formatter: self.sliderFormatter)
 						.width(40)
 				}
+
+				Box("Panels") {
+					HStack {
+						Button(title: "Show") { [weak self] _ in
+							self?.presentedPanelVisible.wrappedValue = true
+						}
+						.panel(self.myPanel, isVisible: self.presentedPanelVisible)
+						.bindIsEnabled(self.presentedPanelVisible.toggled())
+
+						Button(title: "Close") { [weak self] _ in
+							self?.presentedPanelVisible.wrappedValue = false
+						}
+						.bindIsEnabled(self.presentedPanelVisible)
+					}
+				}
+
+
 
 				Box("Presenting a window") {
 					HStack {
@@ -189,6 +213,8 @@ class PopoverSheetBuilderController: ElementController {
 		}
 	}()
 }
+
+// MARK: - The secondary window definition
 
 class MyWindow: ManagedWindow {
 	override var title: String { "Whee!" }
@@ -239,10 +265,92 @@ class MyWindow: ManagedWindow {
 	}
 }
 
+// MARK: The panel definition
+
+class MyPanel: InspectorPanelDefinition {
+
+	let showAlert = ValueBinder(false)
+	func buildAlert() -> (() -> NSAlert) {
+		{
+			let a = NSAlert()
+			a.messageText = "Yay you reloaded!"
+			a.addButton(withTitle: "OK")
+			a.alertStyle = .informational
+			return a
+		}
+	}
+
+	override var title: String { "Inspector" }
+	override func buildContent() -> (() -> Element) {
+		{ [weak self] in
+			guard let `self` = self else { return Nothing() }
+			return VStack {
+				Grid {
+					GridRow(mergeCells: [0...1]) {
+						Label("VIDEO").font(.body.bold())
+						Grid.EmptyCell()
+					}
+					GridRow {
+						Label("Resolution:").font(.body.bold())
+						Label("1920x800")
+					}
+					GridRow {
+						Label("Format:").font(.body.bold())
+						Label("h264")
+					}
+					GridRow {
+						Label("HW Decoder:").font(.body.bold())
+						Label("videotoolbox")
+					}
+					GridRow {
+						Label("Bit rate:").font(.body.bold())
+						Label("4.23 Mbps")
+					}
+					GridRow {
+						Label("FPS:").font(.body.bold())
+						Label("23.97")
+					}
+					GridRow(mergeCells: [0...1]) {
+						HDivider()
+						Grid.EmptyCell()
+					}
+					GridRow(mergeCells: [0...1]) {
+						Label("AUDIO").font(.body.bold())
+						Grid.EmptyCell()
+					}
+					GridRow {
+						Label("Format:").font(.body.bold())
+						Label("floatp")
+					}
+					GridRow {
+						Label("Channels:").font(.body.bold())
+						Label("stereo")
+					}
+				}
+				.verticalHuggingPriority(.required)
+
+				HDivider()
+
+				Button(title: "Reload", bezelStyle: .inline) { [weak self] _ in
+					self?.showAlert.wrappedValue = true
+				}
+				.verticalHuggingPriority(.required)
+				.alert(isVisible: self.showAlert, alertBuilder: self.buildAlert()) { response in
+
+				}
+			}
+			.hugging(v: 999)
+			.padding(16)
+		}
+	}
+}
+
+
 // MARK: - SwiftUI previews
 
 #if DEBUG && canImport(SwiftUI)
 import SwiftUI
+
 @available(macOS 10.15, *)
 struct PopoverSheetTemplateBuilderPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
