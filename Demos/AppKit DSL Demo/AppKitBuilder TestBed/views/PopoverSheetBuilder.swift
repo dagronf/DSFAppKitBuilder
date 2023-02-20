@@ -406,8 +406,8 @@ struct PopoverSheetTemplateBuilderPreviews: PreviewProvider {
 	}
 }
 
-@available(macOS 10.15, *)
 private let __dummyPanel = MyPanel()
+@available(macOS 10.15, *)
 struct MyPanelPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		__dummyPanel.buildContent()()
@@ -415,8 +415,8 @@ struct MyPanelPreviews: PreviewProvider {
 	}
 }
 
-@available(macOS 10.15, *)
 private let __dummySheet = MySheet()
+@available(macOS 10.15, *)
 struct MySheetPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		__dummySheet.buildContent()()
@@ -424,9 +424,9 @@ struct MySheetPreviews: PreviewProvider {
 	}
 }
 
-@available(macOS 10.15, *)
 private let __dummyValue = ValueBinder(65.0)
 private let __dummyPopover = MyPopover(sliderValue: __dummyValue)
+@available(macOS 10.15, *)
 struct MyPopoverPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		__dummyPopover.buildContent()()

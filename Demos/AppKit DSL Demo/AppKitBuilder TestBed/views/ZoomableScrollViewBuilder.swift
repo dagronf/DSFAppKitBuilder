@@ -23,7 +23,6 @@ public class ZoomableScrollviewBuilder: ViewTestBed {
 }
 
 class ZoomableScrollviewBuilderController: ElementController {
-
 	let percentFormatter = NumberFormatter {
 		$0.numberStyle = .percent
 		$0.maximumFractionDigits = 0
@@ -33,6 +32,10 @@ class ZoomableScrollviewBuilderController: ElementController {
 			self?.title.wrappedValue = self?.percentFormatter.string(for: newValue) ?? ""
 		}
 	}()
+
+	deinit {
+		Swift.print("ZoomableScrollviewBuilderController: deinit")
+	}
 
 	let scaleToFitFraction = ValueBinder(1.0)
 	let title = ValueBinder("")
@@ -71,28 +74,40 @@ class ZoomableScrollviewBuilderController: ElementController {
 				.bindTitle(self.title)
 
 				VDivider()
+
 				Slider(scaleFraction, range: 0.01 ... 10)
+
 				Button(image: NSImage(named: "zoom-out")!, bezelStyle: .texturedSquare) { [weak self] _ in
 					self?.scaleFraction.wrappedValue -= 0.1
 				}
+				.bindIsEnabled(self.scaleFraction.transform { $0 > 0.01 })
+				.applyStyle(Button.Styling.noBorder)
+
 				Button(image: NSImage(named: "zoom-in")!, bezelStyle: .texturedSquare) { [weak self] _ in
 					self?.scaleFraction.wrappedValue += 0.1
 				}
+				.applyStyle(Button.Styling.noBorder)
+				.bindIsEnabled(self.scaleFraction.transform { $0 < 10 })
+
 				VDivider()
+
 				Button(image: NSImage(named: "zoom-11")!, bezelStyle: .texturedSquare) { [weak self] _ in
 					self?.scaleFraction.wrappedValue = 1
 				}
+				.applyStyle(Button.Styling.noBorder)
+				.bindIsEnabled(self.scaleFraction.transform { $0 == 1.0 }.toggled())
+
 				Button(image: NSImage(named: "zoom-fit")!, bezelStyle: .texturedSquare) { [weak self] _ in
 					guard let `self` = self else { return }
 					self.scaleFraction.wrappedValue = self.scaleToFitFraction.wrappedValue
 				}
+				.applyStyle(Button.Styling.noBorder)
 			}
 			ZoomableScrollView(scaleBinder: scaleFraction, range: 0.1 ... 10, fitHorizontally: false) {
 				ImageView(NSImage(named: "apple_logo_orig")!)
+					.scaling(.scaleNone)
 			}
 			.bindZoomToFitScale(self.scaleToFitFraction)
-			.horizontalHuggingPriority(.defaultLow)
-			.verticalHuggingPriority(.defaultLow)
 		}
 	}()
 }
