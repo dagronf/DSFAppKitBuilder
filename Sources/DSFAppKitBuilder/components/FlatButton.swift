@@ -28,8 +28,9 @@ import Foundation
 import AppKit.NSButton
 import DSFAppearanceManager
 
-public class FlatButton: Button<CSFlatButton> {
-
+/// A flat iOS-style button
+public class FlatButton: Button {
+	/// The style object for this button
 	public struct Style {
 		public let borderWidth: CGFloat
 		public let color: NSColor
@@ -64,14 +65,21 @@ public class FlatButton: Button<CSFlatButton> {
 		title: String,
 		type: NSButton.ButtonType = .momentaryLight,
 		style: FlatButton.Style = .standard,
-		_ onChange: Button<CSFlatButton>.ButtonAction? = nil
+		_ onChange: Button.ButtonAction? = nil
 	) {
-		super.init(title: title, type: type, bezelStyle: .roundRect, allowMixedState: false, onChange)
-
-		self.button.buttonColor = style.color
-		self.button.borderColor = style.borderColor
-		self.button.borderWidth = style.borderWidth
-		self.button.textColor = style.textColor
+		let custom = CSFlatButton()
+		super.init(
+			title: title,
+			type: type,
+			bezelStyle: .roundRect,
+			allowMixedState: false,
+			customButton: custom,
+			onChange
+		)
+		custom.buttonColor = style.color
+		custom.borderColor = style.borderColor
+		custom.borderWidth = style.borderWidth
+		custom.textColor = style.textColor
 		if let font = style.font {
 			self.button.font = font
 		}

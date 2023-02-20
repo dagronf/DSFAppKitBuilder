@@ -44,15 +44,12 @@ import DSFValueBinders
 /// A custom NSButton class type
 ///
 /// ```swift
-/// Button<AccentColorButton>(title: "Title") { [weak self] newState in
+/// Button(title: "Title", customButton: AccentColorButton()) { [weak self] newState in
 ///    // button action code
-/// }
-/// .additionalAppKitControlSettings { (item: AccentColorButton) in
-///     // configure custom AccentControlButton settings...
 /// }
 /// ```
 ///
-public class Button<ButtonType: NSButton>: Control {
+public class Button: Control {
 	/// The button's action type
 	public typealias ButtonAction = (NSButton.StateValue) -> Void
 
@@ -62,14 +59,24 @@ public class Button<ButtonType: NSButton>: Control {
 	///   - type: The type of button
 	///   - bezelStyle: The bezel to use for the button
 	///   - allowMixedState: Does the button allow mixed state?
+	///   - customButton: (Optional) Provide a custom button instance
 	///   - onChange: The block to call when the state of the button changes
 	public init(
 		title: String,
 		type: NSButton.ButtonType = .momentaryLight,
 		bezelStyle: NSButton.BezelStyle = .rounded,
 		allowMixedState: Bool = false,
+		customButton: NSButton? = nil,
 		_ onChange: ButtonAction? = nil
 	) {
+		self.button = {
+			if let customButton = customButton {
+				return customButton
+			}
+			else {
+				return NSButton()
+			}
+		}()
 		super.init()
 		self.button.title = title
 		self.button.bezelStyle = bezelStyle
@@ -90,18 +97,29 @@ public class Button<ButtonType: NSButton>: Control {
 	///   - type: The type of button
 	///   - bezelStyle: The bezel to use for the button
 	///   - allowMixedState: Does the button allow mixed state?
+	///   - customButton: (Optional) Provide a custom button instance
 	///   - onChange: The block to call when the state of the button changes
 	public init(
 		image: NSImage,
 		type: NSButton.ButtonType = .momentaryLight,
 		bezelStyle: NSButton.BezelStyle = .rounded,
 		allowMixedState: Bool = false,
+		customButton: NSButton? = nil,
 		_ onChange: ButtonAction? = nil
 	) {
+		self.button = {
+			if let customButton = customButton {
+				return customButton
+			}
+			else {
+				return NSButton()
+			}
+		}()
 		super.init()
 		self.button.image = image
 		self.button.imagePosition = .imageOnly
-		self.button.imageScaling = .scaleProportionallyUpOrDown
+		self.button.imageScaling = .scaleProportionallyDown
+
 		self.button.bezelStyle = bezelStyle
 		self.button.setButtonType(type)
 		self.button.allowsMixedState = allowMixedState
@@ -113,7 +131,7 @@ public class Button<ButtonType: NSButton>: Control {
 			self.action = onChange
 		}
 	}
-
+	
 	deinit {
 		self.action = nil
 		self.onOffBinder?.deregister(self)
@@ -125,7 +143,7 @@ public class Button<ButtonType: NSButton>: Control {
 
 	// Privates
 
-	internal let button = ButtonType()
+	internal let button: NSButton
 	override public func view() -> NSView { return self.button }
 	private var action: ButtonAction?
 
