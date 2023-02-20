@@ -65,6 +65,15 @@ class CheckboxBuilderController: ElementController {
 			HDivider()
 
 			HStack {
+				Label(String("Hiding the checkbox title:").localized())
+				CheckBox("This is a checkbox")
+					.hidesTitle(true)
+					.border(width: 1, color: .red)
+			}
+
+			HDivider()
+
+			HStack {
 				CheckBox("This is the first checkbox", allowMixedState: true)
 					.bindState(__state1)
 				EmptyView()

@@ -53,6 +53,12 @@ public class CheckBox: Button {
 			action
 		)
 	}
+
+	/// If true, the checkbox is shown as the check only, no title
+	public func hidesTitle(_ hide: Bool) -> Self {
+		self.button.imagePosition = hide ? .imageOnly : .imageLeading
+		return self
+	}
 }
 
 // MARK: - SwiftUI previews
@@ -81,6 +87,15 @@ struct CheckboxPreviews: PreviewProvider {
 
 				CheckBox("This is the first checkbox")
 					.bindOnOffState(__state1)
+
+				HDivider()
+
+				HStack {
+					Label("Hiding the checkbox title:")
+					CheckBox("This is a checkbox")
+						.hidesTitle(true)
+						.border(width: 1, color: .red)
+				}
 			}
 			.SwiftUIPreview()
 			.padding()
