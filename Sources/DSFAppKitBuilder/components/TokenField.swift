@@ -54,7 +54,8 @@ public class TokenField: TextField {
 		super.init()
 
 		self.updateOnEndEditingOnly = updateOnEndEditingOnly
-		
+
+		self.tokenField.alignment = .natural
 		self.tokenField.tokenStyle = tokenStyle
 		self.tokenField.delegate = self
 
