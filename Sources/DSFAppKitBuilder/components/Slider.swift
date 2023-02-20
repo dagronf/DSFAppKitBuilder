@@ -37,6 +37,7 @@ import DSFValueBinders
 ///    .bindValue(self.sliderValue)
 /// ```
 public class Slider: Control {
+
 	/// Create a slider element
 	/// - Parameters:
 	///   - range: The range of the slider
@@ -56,6 +57,20 @@ public class Slider: Control {
 		self.slider.target = self
 		self.slider.action = #selector(sliderDidChange(_:))
 		self.slider.isVertical = isVertical
+	}
+
+	/// Create a slider element
+	/// - Parameters:
+	///   - valueBinder: A valuebinder for the slider's value
+	///   - range: The range of the slider
+	///   - isVertical: A bool indicating the orientation (horizontal or vertical) of the slider.
+	public convenience init(
+		_ valueBinder: ValueBinder<Double>,
+		range: ClosedRange<Double> = 0 ... 100,
+		isVertical: Bool = false
+	) {
+		self.init(range: range, value: valueBinder.wrappedValue, isVertical: isVertical)
+		_ = bindValue(valueBinder)
 	}
 
 	deinit {

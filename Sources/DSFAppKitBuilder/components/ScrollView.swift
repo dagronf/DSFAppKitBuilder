@@ -25,6 +25,7 @@
 //
 
 import AppKit
+import DSFValueBinders
 
 final class FlippedClipView: NSClipView {
 	override var isFlipped: Bool {
@@ -45,6 +46,8 @@ final class FlippedClipView: NSClipView {
 ///}
 /// ```
 public class ScrollView: Element {
+
+	open var clipType: NSClipView.Type { FlippedClipView.self }
 
 	/// Create a ScrollView
 	/// - Parameters:
@@ -83,14 +86,18 @@ public class ScrollView: Element {
 		self.setup(
 			borderType: borderType,
 			fitHorizontally: fitHorizontally,
-			autohidesScrollers: autohidesScrollers)
+			autohidesScrollers: autohidesScrollers
+		)
 	}
 
 	// Private
-	private let scrollView = NSScrollView()
+	internal let scrollView = NSScrollView()
 	private let documentContent: Element
 	public override func view() -> NSView { return self.scrollView }
-	public override func childElements() -> [Element] { return [self.documentContent] } 
+	public override func childElements() -> [Element] { return [self.documentContent] }
+
+	func customSetup() { }
+
 }
 
 // MARK: - Modifiers
@@ -130,7 +137,10 @@ private extension ScrollView {
 			self.scrollView.hasHorizontalScroller = true
 		}
 
-		let clipView = FlippedClipView()
+		let clipView = clipType.init()
+
+		self.customSetup()
+
 		clipView.drawsBackground = false
 		self.scrollView.contentView = clipView
 		clipView.translatesAutoresizingMaskIntoConstraints = false

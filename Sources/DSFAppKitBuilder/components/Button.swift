@@ -84,6 +84,36 @@ public class Button<ButtonType: NSButton>: Control {
 		}
 	}
 
+	/// Create a button
+	/// - Parameters:
+	///   - image: The button's image
+	///   - type: The type of button
+	///   - bezelStyle: The bezel to use for the button
+	///   - allowMixedState: Does the button allow mixed state?
+	///   - onChange: The block to call when the state of the button changes
+	public init(
+		image: NSImage,
+		type: NSButton.ButtonType = .momentaryLight,
+		bezelStyle: NSButton.BezelStyle = .rounded,
+		allowMixedState: Bool = false,
+		_ onChange: ButtonAction? = nil
+	) {
+		super.init()
+		self.button.image = image
+		self.button.imagePosition = .imageOnly
+		self.button.imageScaling = .scaleProportionallyUpOrDown
+		self.button.bezelStyle = bezelStyle
+		self.button.setButtonType(type)
+		self.button.allowsMixedState = allowMixedState
+
+		self.button.target = self
+		self.button.action = #selector(self.performAction(_:))
+
+		if let onChange = onChange {
+			self.action = onChange
+		}
+	}
+
 	deinit {
 		self.action = nil
 		self.onOffBinder?.deregister(self)
