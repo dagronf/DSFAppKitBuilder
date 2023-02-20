@@ -70,7 +70,7 @@ public class PopupButton: Control {
 	// Private
 
 	public override func view() -> NSView { return self.popupButton }
-	private let popupButton = NSPopUpButton()
+	fileprivate let popupButton = NSPopUpButton()
 	private let content: [AnyMenuItem]
 
 	private var selectionBinder: ValueBinder<Int>?
@@ -155,4 +155,53 @@ private extension PopupButton {
 		// Tell the binder to update
 		self.selectionBinder?.wrappedValue = self.selectedIndex
 	}
+}
+
+/// A popup button that mimics the macOS Action (Gear) Button
+///
+/// Note that the selection index for the SystemStylePopoverButton is 1 based,
+/// so if you use `bindSelection` the indexing starts from 1
+public class SystemStylePopoverButton: PopupButton {
+	/// Create a gear popup
+	/// - Parameters:
+	///   - image: The image to use, or nil to use the standard macOS action template
+	///   - bezelStyle: The style of popup button to use
+	///   - isBordered: Does the control draw the bezel?
+	///   - builder: The menu builder
+	public convenience init(
+		image: NSImage = SystemStylePopoverButton.DefaultImage,
+		bezelStyle: NSButton.BezelStyle? = nil,
+		isBordered: Bool = false,
+		@MenuBuilder builder: () -> [AnyMenuItem]
+	) {
+		self.init(
+			bezelStyle: bezelStyle,
+			isBordered: isBordered,
+			content: builder()
+		)
+	}
+
+	/// Create a gear popup
+	/// - Parameters:
+	///   - image: The image to use, or nil to use the standard macOS action template
+	///   - bezelStyle: The style of popup button to use
+	///   - isBordered: Does the control draw the bezel?
+	///   - content: The menu items to provide in the popup
+	public init(
+		image: NSImage = SystemStylePopoverButton.DefaultImage,
+		bezelStyle: NSButton.BezelStyle? = nil,
+		isBordered: Bool = false,
+		content: [AnyMenuItem]
+	) {
+		super.init(pullsDown: true, bezelStyle: bezelStyle, content: content)
+		let actionItem = NSMenuItem()
+		actionItem.image = image
+		self.popupButton.menu?.insertItem(actionItem, at: 0)
+		let cell = self.popupButton.cell as? NSButtonCell
+		cell?.imagePosition = .imageOnly
+
+		self.popupButton.isBordered = isBordered
+	}
+
+	public static let DefaultImage = NSImage(named: "NSActionTemplate")!
 }
