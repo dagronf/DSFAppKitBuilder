@@ -46,6 +46,7 @@ public class ViewItems {
 		TextFieldBuilder(),
 		FlowLayoutBuilder(),
 		PopoverSheetBuilder(),
-		ZoomableScrollviewBuilder()
+		ZoomableScrollviewBuilder(),
+		PanelStyleBuilder()
 	].sorted { a, b in a.title < b.title }
 }
