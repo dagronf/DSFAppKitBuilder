@@ -52,16 +52,19 @@ public class PopupButton: Control {
 	///   - builder: The result builder for the popup buttons menu content
 	public convenience init(
 		pullsDown: Bool = false,
+		bezelStyle: NSButton.BezelStyle? = nil,
 		@MenuBuilder builder: () -> [AnyMenuItem]
 	) {
 		self.init(
 			pullsDown: pullsDown,
+			bezelStyle: bezelStyle,
 			content: builder()
 		)
 	}
 
 	deinit {
 		self.selectionBinder?.deregister(self)
+		self.titleBinder?.deregister(self)
 	}
 
 	// Private
@@ -72,15 +75,21 @@ public class PopupButton: Control {
 
 	private var selectionBinder: ValueBinder<Int>?
 	private var selectionChangeBlock: ((Int) -> Void)?
+	private var titleBinder: ValueBinder<String>?
 
 	internal init(
 		pullsDown: Bool = false,
+		bezelStyle: NSButton.BezelStyle? = nil,
 		content: [AnyMenuItem]
 	) {
 		self.content = content
 		super.init()
 
 		self.popupButton.pullsDown = pullsDown
+
+		if let bezelStyle = bezelStyle {
+			self.popupButton.bezelStyle = bezelStyle
+		}
 
 		self.popupButton.target = self
 		self.popupButton.action = #selector(selectionChanged(_:))
@@ -119,6 +128,14 @@ public extension PopupButton {
 		self.selectionBinder = selectionBinder
 		selectionBinder.register { [weak self] newValue in
 			self?.popupButton.selectItem(at: newValue)
+		}
+		return self
+	}
+
+	func bindTitle(_ titleBinder:  ValueBinder<String>) -> Self {
+		self.titleBinder = titleBinder
+		titleBinder.register(self) { [weak self] newValue in
+			self?.popupButton.title = newValue
 		}
 		return self
 	}

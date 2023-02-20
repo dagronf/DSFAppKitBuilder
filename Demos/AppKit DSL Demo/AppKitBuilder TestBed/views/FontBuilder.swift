@@ -36,6 +36,17 @@ class FontBuilderController: ElementController {
 			HDivider()
 
 			HStack {
+				Label(".system").font(.system)
+				VDivider()
+				Label(".systemSmall").font(.systemSmall)
+				VDivider()
+				Label(".label").font(.label)
+			}
+			.hugging(h: 10)
+
+			HDivider()
+
+			HStack {
 				Label("Plain text").font(.body)
 				VDivider()
 				Label("Bold text").font(.body.bold())

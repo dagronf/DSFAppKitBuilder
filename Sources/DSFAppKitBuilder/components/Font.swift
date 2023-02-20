@@ -92,6 +92,11 @@ public extension AKBFont {
 public extension AKBFont {
 	/// The standard system font
 	static let system = AKBFont(.systemFont(ofSize: NSFont.systemFontSize))
+	/// A small system font
+	static let systemSmall = AKBFont(.systemFont(ofSize: NSFont.smallSystemFontSize))
+	/// System font at label size
+	static let label = AKBFont(.systemFont(ofSize: NSFont.labelFontSize))
+
 	/// The font you use for body text.
 	static let body = AKBFont(.systemFont(ofSize: NSFont.systemFontSize))
 	/// The font you use for callouts.
@@ -159,6 +164,17 @@ struct FontPreviews: PreviewProvider {
 						Label("Plain text").font(.body.size(18))
 						Label("Plain text").font(.body.size(24))
 					}
+
+					HDivider()
+
+					HStack {
+						Label(".system").font(.system)
+						VDivider()
+						Label(".systemSmall").font(.systemSmall)
+						VDivider()
+						Label(".label").font(.label)
+					}
+
 					HDivider()
 					HStack {
 						Label("Plain text").font(.body)

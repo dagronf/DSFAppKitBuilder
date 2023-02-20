@@ -111,16 +111,23 @@ public class ZoomableScrollView: ScrollView {
 	private var zoomToFitScaleBinder: ValueBinder<Double>?
 }
 
-extension ZoomableScrollView {
+// MARK: - Binders
 
-	public func bindZoomToFitScale(_ value: ValueBinder<Double>) -> Self {
+public extension ZoomableScrollView {
+	/// Bind the scale required for a 'zoom-to-fit' to a valuebinder
+	///
+	/// Useful if you want to have a 'zoom to fit' button on your UI, and you need to extract
+	/// the scale value that will scale the content appropriately
+	func bindZoomToFitScale(_ value: ValueBinder<Double>) -> Self {
 		self.zoomToFitScaleBinder = value
 		value.register(self) { _ in
-
+			// Do nothing
 		}
 		return self
 	}
+}
 
+extension ZoomableScrollView {
 	func scale(_ scaleFactor: CGFloat) {
 		//self.scrollView.animator().magnification = scaleFactor
 		self.scrollView.magnification = scaleFactor

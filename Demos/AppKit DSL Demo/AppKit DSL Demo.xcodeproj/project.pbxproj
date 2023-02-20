@@ -53,7 +53,7 @@
 		235CBB3D298BA2AD00D3D4DE /* FontBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB3C298BA2AD00D3D4DE /* FontBuilder.swift */; };
 		235CBB3F298C842300D3D4DE /* DatePickerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB3E298C842300D3D4DE /* DatePickerBuilder.swift */; };
 		235CBB41298C843500D3D4DE /* ViewTestBed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235CBB40298C843500D3D4DE /* ViewTestBed.swift */; };
-		23600AF029A2F50D00FD2F2B /* ZoomableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23600AEF29A2F50D00FD2F2B /* ZoomableScrollView.swift */; };
+		23600AF029A2F50D00FD2F2B /* ZoomableScrollViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23600AEF29A2F50D00FD2F2B /* ZoomableScrollViewBuilder.swift */; };
 		236BA6722977769900FB72C4 /* IdentityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236BA6712977769900FB72C4 /* IdentityViewController.swift */; };
 		237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */; };
 		237E220329A07632002F3856 /* PopoverSheetBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E220229A07632002F3856 /* PopoverSheetBuilder.swift */; };
@@ -153,7 +153,7 @@
 		235CBB3C298BA2AD00D3D4DE /* FontBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontBuilder.swift; sourceTree = "<group>"; };
 		235CBB3E298C842300D3D4DE /* DatePickerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerBuilder.swift; sourceTree = "<group>"; };
 		235CBB40298C843500D3D4DE /* ViewTestBed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTestBed.swift; sourceTree = "<group>"; };
-		23600AEF29A2F50D00FD2F2B /* ZoomableScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomableScrollView.swift; sourceTree = "<group>"; };
+		23600AEF29A2F50D00FD2F2B /* ZoomableScrollViewBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomableScrollViewBuilder.swift; sourceTree = "<group>"; };
 		236BA6712977769900FB72C4 /* IdentityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityViewController.swift; sourceTree = "<group>"; };
 		237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollerTestDSL.swift; sourceTree = "<group>"; };
 		237E220229A07632002F3856 /* PopoverSheetBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverSheetBuilder.swift; sourceTree = "<group>"; };
@@ -331,7 +331,7 @@
 				23C818872993841A00816107 /* TokenFieldBuilder.swift */,
 				235CBB40298C843500D3D4DE /* ViewTestBed.swift */,
 				23910CA42990CDEE0016E150 /* VisualEffectBuilder.swift */,
-				23600AEF29A2F50D00FD2F2B /* ZoomableScrollView.swift */,
+				23600AEF29A2F50D00FD2F2B /* ZoomableScrollViewBuilder.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -588,7 +588,7 @@
 				23E50AF0299C5144005038CE /* FlowLayoutBuilder.swift in Sources */,
 				23910CA32990BBA60016E150 /* DynamicElementBuilder.swift in Sources */,
 				235CBB2B298B99A400D3D4DE /* AppDelegate.swift in Sources */,
-				23600AF029A2F50D00FD2F2B /* ZoomableScrollView.swift in Sources */,
+				23600AF029A2F50D00FD2F2B /* ZoomableScrollViewBuilder.swift in Sources */,
 				235CBB38298B99C300D3D4DE /* DisclosureViewBuilder.swift in Sources */,
 				235CBB3F298C842300D3D4DE /* DatePickerBuilder.swift in Sources */,
 				23910CA72990D46A0016E150 /* Utils.swift in Sources */,
