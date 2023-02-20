@@ -38,18 +38,24 @@ import DSFValueBinders
 /// ```
 public class PathControl: Control {
 	/// Create a path control displaying a constant URL value
-	public init(url: URL? = nil) {
+	public init(
+		url: URL? = nil,
+		style: NSPathControl.Style = .standard
+	) {
 		super.init()
 		self.setup()
-		self.pathControl.translatesAutoresizingMaskIntoConstraints = false
+		self.pathControl.pathStyle = style
 		self.pathControl.url = url
 	}
 
 	/// Create a path control with a binding to a URL
-	public init(bindingURL: ValueBinder<URL>) {
+	public init(
+		bindingURL: ValueBinder<URL>,
+		style: NSPathControl.Style = .standard
+	) {
 		super.init()
 		self.setup()
-		self.pathControl.translatesAutoresizingMaskIntoConstraints = false
+		self.pathControl.pathStyle = style
 		_ = self.bindURL(bindingURL)
 	}
 
