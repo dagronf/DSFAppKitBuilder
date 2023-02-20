@@ -169,16 +169,12 @@ public class SystemStylePopoverButton: PopupButton {
 	///   - isBordered: Does the control draw the bezel?
 	///   - builder: The menu builder
 	public convenience init(
-		image: NSImage = SystemStylePopoverButton.DefaultImage,
+		image: NSImage = SystemStylePopoverButton.SystemGearImage,
 		bezelStyle: NSButton.BezelStyle? = nil,
-		isBordered: Bool = false,
+		isBordered: Bool = true,
 		@MenuBuilder builder: () -> [AnyMenuItem]
 	) {
-		self.init(
-			bezelStyle: bezelStyle,
-			isBordered: isBordered,
-			content: builder()
-		)
+		self.init(bezelStyle: bezelStyle, isBordered: isBordered, content: builder())
 	}
 
 	/// Create a gear popup
@@ -188,9 +184,9 @@ public class SystemStylePopoverButton: PopupButton {
 	///   - isBordered: Does the control draw the bezel?
 	///   - content: The menu items to provide in the popup
 	public init(
-		image: NSImage = SystemStylePopoverButton.DefaultImage,
+		image: NSImage = SystemStylePopoverButton.SystemGearImage,
 		bezelStyle: NSButton.BezelStyle? = nil,
-		isBordered: Bool = false,
+		isBordered: Bool = true,
 		content: [AnyMenuItem]
 	) {
 		super.init(pullsDown: true, bezelStyle: bezelStyle, content: content)
@@ -199,9 +195,9 @@ public class SystemStylePopoverButton: PopupButton {
 		self.popupButton.menu?.insertItem(actionItem, at: 0)
 		let cell = self.popupButton.cell as? NSButtonCell
 		cell?.imagePosition = .imageOnly
-
+		cell?.bezelStyle = .texturedRounded
 		self.popupButton.isBordered = isBordered
 	}
 
-	public static let DefaultImage = NSImage(named: "NSActionTemplate")!
+	public static let SystemGearImage = NSImage(named: NSImage.actionTemplateName)!
 }
