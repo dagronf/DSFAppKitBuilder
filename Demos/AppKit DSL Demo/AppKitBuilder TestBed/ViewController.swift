@@ -96,6 +96,7 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 								}
 							}
 							Label(newItem.description)
+								.isSelectable(true)
 								.applyStyle(Label.Styling.multiline)
 						}
 						.hugging(h: 10, v: 999)
