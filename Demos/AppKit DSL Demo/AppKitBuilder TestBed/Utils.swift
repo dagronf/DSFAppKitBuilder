@@ -59,4 +59,5 @@ class FakeBox: Element {
 
 	let body: Element
 	override func view() -> NSView { self.body.view() }
+	override public func childElements() -> [Element] { [self.body] }
 }

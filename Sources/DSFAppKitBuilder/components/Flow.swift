@@ -90,6 +90,7 @@ public class Flow: Element {
 	private let content: [NSView]
 
 	override public func view() -> NSView { return self.collectionView }
+	override public func childElements() -> [Element] { self.elements }
 }
 
 // MARK: - Modifiers
