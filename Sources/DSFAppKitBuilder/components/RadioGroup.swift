@@ -42,7 +42,7 @@ import DSFValueBinders
 ///    Swift.print("radio is now \(whichSelection)")
 /// }
 /// ```
-public class RadioGroup: Control {
+public class RadioGroup: Stack {
 	/// Create a vertical radio group
 	/// - Parameters:
 	///   - orientation: The orientation for the radio buttons (vertically/horizontally)
@@ -54,7 +54,7 @@ public class RadioGroup: Control {
 		orientation: NSUserInterfaceLayoutOrientation = .vertical,
 		selected: Int = 0,
 		controlSize: NSButton.ControlSize? = nil,
-		spacing: CGFloat? = nil,
+		spacing: CGFloat = 6,
 		@RadioBuilder builder: () -> [RadioElement]
 	) {
 		self.init(
@@ -72,10 +72,6 @@ public class RadioGroup: Control {
 
 	// Private
 
-	override public func view() -> NSView { return self.radioGroup }
-	private let radioGroup = NSStackView()
-	private let content: [RadioElement]
-
 	private var actionCallback: ((Int) -> Void)?
 	private var selectionBinder: ValueBinder<Int>?
 
@@ -86,46 +82,39 @@ public class RadioGroup: Control {
 		orientation: NSUserInterfaceLayoutOrientation = .vertical,
 		selected: Int = 0,
 		controlSize: NSButton.ControlSize? = nil,
-		spacing: CGFloat? = nil,
+		spacing: CGFloat = 6,
 		content: [RadioElement]
 	) {
-		self.content = content
-		super.init()
 
-		self.radioGroup.orientation = orientation
-		self.radioGroup.alignment = (orientation == .vertical) ? .leading : .firstBaseline
-		if let s = spacing {
-			self.radioGroup.spacing = s
+		let content: [Button] = content.enumerated().compactMap { radio in
+			let item = Button(title: radio.element.title, type: .radio, bezelStyle: .rounded)
+			item.button.tag = radio.offset
+			if let t = radio.element.toolTip {
+				_ = item.toolTip(t)
+			}
+
+			return item
 		}
-		self.radioGroup.edgeInsets = NSEdgeInsets(top: 0, left: 4, bottom: 0, right: 0)
 
-		self.radioGroup.setContentHuggingPriority(.init(10), for: .horizontal)
+		super.init(
+			orientation: orientation,
+			spacing: spacing,
+			alignment: .leading,
+			distribution: nil,
+			content: content
+		)
 
-		content.enumerated().forEach { item in
-			let button = NSButton()
-			button.setButtonType(.radio)
-			button.translatesAutoresizingMaskIntoConstraints = false
-			button.tag = item.0
-			button.title = item.1.title
-			button.toolTip = item.1.toolTip
-			button.state = (selected == item.0) ? .on : .off
-
-			if let s = controlSize { button.controlSize = s }
-
-			button.target = self
-			button.action = #selector(radioSelected(_:))
-
-			button.setContentHuggingPriority(.defaultLow, for: .horizontal)
-			button.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-			button.setContentHuggingPriority(.defaultHigh, for: .vertical)
-			button.setContentCompressionResistancePriority(.required, for: .vertical)
-
-			radioGroup.addArrangedSubview(button)
+		content.forEach { item in
+			let tag = item.button.tag
+			let actionBlock: Button.ButtonAction = { [weak self] _ in
+				self?.radioSelected(tag)
+			}
+			_ = item.onChange(actionBlock)
 		}
 	}
 
 	/// Bind the radio group isEnabled state to a valuebinder
-	override public func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
+	public func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
 		self.isEnabledBinder = enabledBinding
 		enabledBinding.register { [weak self] newValue in
 			self?.updateElementEnabledStates()
@@ -139,7 +128,7 @@ public class RadioGroup: Control {
 internal extension RadioGroup {
 	// Set the currently selected radio button
 	func selectRadioWithTag(_ tag: Int) {
-		let rds = self.radioGroup.arrangedSubviews as? [NSButton]
+		let rds = self.stack.arrangedSubviews as? [NSButton]
 		rds?.forEach { $0.state = ($0.tag == tag) ? .on : .off }
 	}
 }
@@ -153,11 +142,11 @@ public extension RadioGroup {
 		return self
 	}
 
-	@objc private func radioSelected(_ item: NSButton) {
-		self.actionCallback?(item.tag)
+	@objc private func radioSelected(_ radioTag: Int) {
+		self.actionCallback?(radioTag)
 
 		// Tell the binder to update
-		self.selectionBinder?.wrappedValue = item.tag
+		self.selectionBinder?.wrappedValue = radioTag
 	}
 }
 
@@ -187,7 +176,7 @@ public extension RadioGroup {
 	private func updateElementEnabledStates() {
 		if let enabledBinding = self.isEnabledBinder {
 			let state = enabledBinding.wrappedValue
-			self.radioGroup.arrangedSubviews.compactMap { $0 as? NSButton }
+			self.stack.arrangedSubviews.compactMap { $0 as? NSButton }
 				.forEach { $0.isEnabled = state }
 		}
 
@@ -195,7 +184,7 @@ public extension RadioGroup {
 			let individuals = radioElementDisabledBinder {
 			let state = individuals.wrappedValue
 
-			self.radioGroup.arrangedSubviews
+			self.stack.arrangedSubviews
 				.enumerated()
 				.compactMap {
 					if let b = $0.1 as? NSButton {
