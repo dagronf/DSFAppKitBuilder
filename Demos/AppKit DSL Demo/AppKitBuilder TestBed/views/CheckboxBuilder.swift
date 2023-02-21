@@ -25,23 +25,19 @@ class CheckboxBuilderController: ElementController {
 
 	lazy var body: Element = {
 		VStack(spacing: 16, alignment: .leading) {
-			Label("Checkbox").font(.headline)
-			VStack(alignment: .leading) {
+			FakeBox("Checkbox", font: .headline) {
 				self.checkboxBody
 					.padding(4)
 			}
-			.edgeInsets(4)
-			.cornerRadius(4)
-			.border(width: 0.5, color: NSColor.tertiaryLabelColor)
-			.backgroundColor(NSColor.tertiaryLabelColor.withAlphaComponent(0.05))
-			.hugging(h: 10)
 
-			Box("RadioGroup") {
+			FakeBox("RadioGroup", font: .headline) {
 				self.radioBody
 					.padding(4)
 			}
-			.titleFont(.headline)
-			.horizontalHuggingPriority(10)
+//			.applyRecursively { element in
+//				element.border(width: 0.5, color: .systemRed)
+//				element.backgroundColor(NSColor.systemRed.withAlphaComponent(0.05))
+//			}
 		}
 		.hugging(h: 10)
 	}()
@@ -96,6 +92,8 @@ class CheckboxBuilderController: ElementController {
 	private let __elementDisabler = ValueBinder(NSSet(array: [1]))
 	private let __enabler2 = ValueBinder(true)
 
+	let primarySelection = ValueBinder(1)
+
 	lazy var radioBody: Element = {
 		VStack(alignment: .leading) {
 			Label("Vertical alignment (default settings)").font(.title3.bold())
@@ -104,6 +102,12 @@ class CheckboxBuilderController: ElementController {
 				RadioElement("second")
 				RadioElement("third")
 			}
+			.bindSelection(primarySelection)
+			HStack(spacing: 4) {
+				Label("Selected radio button is")
+				Label(primarySelection.stringValue())
+			}
+
 			HDivider()
 			Label("Horizontal alignment").font(.title3.bold())
 			HStack {
