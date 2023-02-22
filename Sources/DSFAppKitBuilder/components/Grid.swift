@@ -139,14 +139,19 @@ public extension Grid {
 		return self
 	}
 
+	@discardableResult func rowSpacing(_ spacing: CGFloat) -> Self {
+		self.gridView.rowSpacing = spacing
+		return self
+	}
+
 	/// Merge the specified cell indexes in 'row'
-	func mergeRowCells(_ columnIndexes: ClosedRange<Int>, inRowIndex row: Int) -> Self {
+	@discardableResult func mergeRowCells(_ columnIndexes: ClosedRange<Int>, inRowIndex row: Int) -> Self {
 		self.gridView.row(at: row).mergeCells(in: NSRange(columnIndexes))
 		return self
 	}
 
 	/// Merge the specified row indexes in 'column'
-	func mergeColumnCells(_ rowIndexes: ClosedRange<Int>, inColumnIndex column: Int) -> Self {
+	@discardableResult func mergeColumnCells(_ rowIndexes: ClosedRange<Int>, inColumnIndex column: Int) -> Self {
 		self.gridView.column(at: column).mergeCells(in: NSRange(rowIndexes))
 		return self
 	}
@@ -162,7 +167,7 @@ public extension Grid {
 	///   - rowAlignment: The cell alignment
 	///   - row: The row of the cell to modify
 	///   - column: The column of the cell to modify
-	func cellFormatting(
+	@discardableResult func cellFormatting(
 		xPlacement: NSGridCell.Placement = .inherited,
 		yPlacement: NSGridCell.Placement = .inherited,
 		rowAlignment: NSGridRow.Alignment = .inherited,
@@ -182,7 +187,7 @@ public extension Grid {
 	///   - column: the cell's column
 	///   - constraintBuilder: A block which returns an array of constraints to add
 	/// - Returns: self
-	func addingCellContraints(
+	@discardableResult func addingCellContraints(
 		atRowIndex row: Int,
 		columnIndex column: Int,
 		_ constraintBuilder: () -> [NSLayoutConstraint]
@@ -200,7 +205,7 @@ public extension Grid {
 
 public extension Grid {
 	/// A binding for hiding or showing rows within the grid
-	func bindHiddenRows(_ hiddenRowsBinder: ValueBinder<NSSet>) -> Self {
+	@discardableResult func bindHiddenRows(_ hiddenRowsBinder: ValueBinder<NSSet>) -> Self {
 		self.hiddenRowsBinder = hiddenRowsBinder
 		hiddenRowsBinder.register { [weak self] newValue in
 			guard let `self` = self else { return }
@@ -212,7 +217,7 @@ public extension Grid {
 	}
 
 	/// A binding for hiding or showing columns within the grid
-	func bindHiddenColumns(_ hiddenColumnsBinder: ValueBinder<NSSet>) -> Self {
+	@discardableResult func bindHiddenColumns(_ hiddenColumnsBinder: ValueBinder<NSSet>) -> Self {
 		self.hiddenColumnsBinder = hiddenColumnsBinder
 		hiddenColumnsBinder.register { [weak self] newValue in
 			guard let `self` = self else { return }
@@ -228,7 +233,7 @@ public extension Grid {
 
 public extension Grid {
 	/// Sets the priority with which a view resists being made larger than its intrinsic size.
-	func contentHuggingPriority(
+	@discardableResult func contentHuggingPriority(
 		h: NSLayoutConstraint.Priority? = nil,
 		v: NSLayoutConstraint.Priority? = nil
 	) -> Self {

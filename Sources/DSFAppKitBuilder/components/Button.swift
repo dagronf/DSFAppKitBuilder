@@ -174,21 +174,20 @@ public class Button: Control {
 // MARK: - Modifiers
 
 public extension Button {
-
 	/// Set the button's title
-	func title(_ title: String) -> Self {
+	@discardableResult func title(_ title: String) -> Self {
 		self.button.stringValue = title
 		return self
 	}
 
 	/// The title that the button displays when the button is in an on state.
-	func alternateTitle(_ title: String) -> Self {
+	@discardableResult func alternateTitle(_ title: String) -> Self {
 		self.button.alternateTitle = title
 		return self
 	}
 
 	/// Set the image that appears on the button when it’s in an off state
-	func image(
+	@discardableResult func image(
 		_ image: NSImage,
 		imagePosition: NSControl.ImagePosition? = nil,
 		imageScaling: NSImageScaling? = nil,
@@ -206,19 +205,19 @@ public extension Button {
 	}
 
 	/// Set the image that appears on the button when it’s in an on state
-	func alternateImage(_ image: NSImage) -> Self {
+	@discardableResult func alternateImage(_ image: NSImage) -> Self {
 		self.button.alternateImage = image
 		return self
 	}
 
 	/// A Boolean value that determines whether the button has a border.
-	func isBordered(_ isBordered: Bool) -> Self {
+	@discardableResult func isBordered(_ isBordered: Bool) -> Self {
 		self.button.isBordered = isBordered
 		return self
 	}
 
 	/// Set the button's initial state
-	func state(_ state: NSControl.StateValue) -> Self {
+	@discardableResult func state(_ state: NSControl.StateValue) -> Self {
 		self.button.state = state
 		return self
 	}
@@ -226,7 +225,7 @@ public extension Button {
 	/// Set the bezel color for the button.
 	///
 	/// Note: Not all button types support bezel colors.
-	func bezelColor(_ color: NSColor) -> Self {
+	@discardableResult func bezelColor(_ color: NSColor) -> Self {
 		self.button.bezelColor = color
 		return self
 	}
@@ -234,9 +233,19 @@ public extension Button {
 	/// Applies a tint color to template image and text content, in combination with other theme-appropriate effects. Only applicable to borderless buttons
 	///
 	/// Only applicable on 10.14 and later. 10.13 will ignore calls.
-	func contentTintColor(_ color: NSColor) -> Self {
+	@discardableResult func contentTintColor(_ color: NSColor) -> Self {
 		if #available(macOS 10.14, *) {
 			self.button.contentTintColor = color
+		}
+		return self
+	}
+
+	/// Indicate whether the button’s action has a destructive effect.
+	///
+	/// Only takes effect on macOS 11 and later
+	@discardableResult func hasDestructiveAction(_ isDestructive: Bool) -> Self {
+		if #available(macOS 11.0, *) {
+			button.hasDestructiveAction = isDestructive
 		}
 		return self
 	}

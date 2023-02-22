@@ -47,6 +47,7 @@ public class ViewItems {
 		FlowLayoutBuilder(),
 		PopoverSheetBuilder(),
 		ZoomableScrollviewBuilder(),
-		PanelStyleBuilder()
+		PanelStyleBuilder(),
+		ViewControllerDemoBuilder()
 	].sorted { a, b in a.title < b.title }
 }
