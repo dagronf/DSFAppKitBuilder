@@ -78,7 +78,7 @@ class FirstLastNameViewController: DSFAppKitBuilderViewController {
 	// The view body
 	override var viewBody: Element {
 		Group(layoutType: .center) {
-			VisualEffectView(effect: .init(material: .underPageBackground), padding: 16) {
+			VisualEffectView(effect: .init(material: .titlebar), padding: 16) {
 				VStack(spacing: 12) {
 					HStack(spacing: 12) {
 						ImageView().image(NSImage(named: "web-user")!)
