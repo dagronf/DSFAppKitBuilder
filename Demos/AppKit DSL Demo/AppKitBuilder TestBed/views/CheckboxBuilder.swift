@@ -25,35 +25,31 @@ class CheckboxBuilderController: ElementController {
 
 	lazy var body: Element = {
 		VStack(spacing: 16, alignment: .leading) {
-			FakeBox("Checkbox", font: .headline) {
+			FakeBox(NSLocalizedString("Checkboxes", comment: "Checkboxes are fun!"), font: .headline) {
 				self.checkboxBody
 					.padding(4)
 			}
-
-			FakeBox("RadioGroup", font: .headline) {
+			Box(NSLocalizedString("RadioGroup", comment: ""), font: .headline) {
 				self.radioBody
 					.padding(4)
 			}
-//			.applyRecursively { element in
-//				element.border(width: 0.5, color: .systemRed)
-//				element.backgroundColor(NSColor.systemRed.withAlphaComponent(0.05))
-//			}
+			.showDebugFrames()
 		}
 		.hugging(h: 10)
 	}()
 
 	lazy var checkboxBody: Element = {
 		VStack(alignment: .leading) {
-			CheckBox("off", allowMixedState: true)
+			CheckBox(NSLocalizedString("off", comment: ""), allowMixedState: true)
 				.state(.off)
 				.horizontalHuggingPriority(10)
-			CheckBox("on", allowMixedState: true)
+			CheckBox(NSLocalizedString("on", comment: ""), allowMixedState: true)
 				.state(.on)
 				.horizontalHuggingPriority(10)
-			CheckBox("mixed", allowMixedState: true)
+			CheckBox(NSLocalizedString("mixed", comment: ""), allowMixedState: true)
 				.state(.mixed)
 				.horizontalHuggingPriority(10)
-			CheckBox("disabled")
+			CheckBox(NSLocalizedString("disabled", comment: ""))
 				.state(.on)
 				.isEnabled(false)
 				.horizontalHuggingPriority(10)
@@ -61,8 +57,8 @@ class CheckboxBuilderController: ElementController {
 			HDivider()
 
 			HStack {
-				Label(String("Hiding the checkbox title:").localized())
-				CheckBox("This is a checkbox")
+				Label(NSLocalizedString("Hiding the checkbox title:", comment: ""))
+				CheckBox(NSLocalizedString("This is a checkbox", comment: ""))
 					.hidesTitle(true)
 					.border(width: 1, color: .red)
 			}
@@ -70,10 +66,10 @@ class CheckboxBuilderController: ElementController {
 			HDivider()
 
 			HStack {
-				CheckBox("This is the first checkbox", allowMixedState: true)
+				CheckBox(NSLocalizedString("This is the first checkbox", comment: ""), allowMixedState: true)
 					.bindState(__state1)
 				EmptyView()
-				Button(title: "Toggle", bezelStyle: .roundRect) { [weak self] _ in
+				Button(title: NSLocalizedString("Toggle", comment: ""), bezelStyle: .roundRect) { [weak self] _ in
 					guard let `self` = self else { return }
 					let current = self.__state1.wrappedValue
 					switch current {
@@ -98,32 +94,32 @@ class CheckboxBuilderController: ElementController {
 		VStack(alignment: .leading) {
 			Label("Vertical alignment (default settings)").font(.title3.bold())
 			RadioGroup(orientation: .vertical) {
-				RadioElement("first")
-				RadioElement("second")
-				RadioElement("third")
+				RadioElement(NSLocalizedString("first", comment: ""))
+				RadioElement(NSLocalizedString("second", comment: ""))
+				RadioElement(NSLocalizedString("third", comment: ""))
 			}
 			.bindSelection(primarySelection)
 			HStack(spacing: 4) {
-				Label("Selected radio button is")
+				Label(NSLocalizedString("Selected radio button is", comment: ""))
 				Label(primarySelection.stringValue())
 			}
 
 			HDivider()
-			Label("Horizontal alignment").font(.title3.bold())
+			Label(NSLocalizedString("Horizontal alignment", comment: "")).font(.title3.bold())
 			HStack {
 				CompatibleSwitch(onOffBinder: __enabler)
 				RadioGroup(orientation: .horizontal) {
-					RadioElement("first 1")
-					RadioElement("second 2")
-					RadioElement("third 3")
+					RadioElement(NSLocalizedString("first 1", comment: ""))
+					RadioElement(NSLocalizedString("second 2", comment: ""))
+					RadioElement(NSLocalizedString("third 3", comment: ""))
 				}
 				.bindIsEnabled(__enabler)
 			}
 			HDivider()
-			Label("Disable individual items").font(.title3.bold())
+			Label(NSLocalizedString("Disable individual items", comment: "")).font(.title3.bold())
 			HStack {
 				CompatibleSwitch(onOffBinder: __enabler2)
-				Label("Disabled radio elements ->")
+				Label(NSLocalizedString("Disabled radio elements ->", comment: ""))
 				Segmented(trackingMode: .selectAny) {
 					Segment("1")
 					Segment("2")
@@ -134,13 +130,13 @@ class CheckboxBuilderController: ElementController {
 				.bindSelectedSegments(__elementDisabler)
 			}
 			RadioGroup(orientation: .vertical) {
-				RadioElement("first")
-				RadioElement("second")
-				RadioElement("third")
+				RadioElement(NSLocalizedString("first", comment: ""))
+				RadioElement(NSLocalizedString("second", comment: ""))
+				RadioElement(NSLocalizedString("third", comment: ""))
 			}
 			.bindIsEnabled(__enabler2)
 			.bindRadioElementsDisabled(__elementDisabler)
-			EmptyView()
+			//EmptyView()
 		}
 		.hugging(h: 10)
 	}()

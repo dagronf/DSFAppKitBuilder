@@ -306,6 +306,17 @@ public extension Element {
 	}
 }
 
+// MARK: - Debugging help
+
+public extension Element {
+	func showDebugFrames() -> Self {
+		self.applyRecursively { element in
+			element.border(width: 0.5, color: .systemRed)
+			element.backgroundColor(NSColor.systemRed.withAlphaComponent(0.05))
+		}
+	}
+}
+
 // MARK: - Dimensions
 
 public extension Element {

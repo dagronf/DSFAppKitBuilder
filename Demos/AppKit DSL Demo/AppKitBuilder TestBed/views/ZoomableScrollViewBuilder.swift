@@ -40,28 +40,32 @@ class ZoomableScrollviewBuilderController: ElementController {
 	let scaleToFitFraction = ValueBinder(1.0)
 	let title = ValueBinder("")
 
+	func setScaleFraction(_ fraction: Double) {
+		self.scaleFraction.wrappedValue = 0.25
+	}
+
 	lazy var body: Element = {
 		VStack {
 			HStack {
 				PopupButton(pullsDown: true, bezelStyle: .roundRect) {
 					MenuItem("25%")
-						.onAction { [weak self] in self?.scaleFraction.wrappedValue = 0.25 }
+						.onAction { [weak self] in self?.setScaleFraction(0.25) }
 					MenuItem("50%")
-						.onAction { [weak self] in self?.scaleFraction.wrappedValue = 0.50 }
+						.onAction { [weak self] in self?.setScaleFraction(0.50) }
 					MenuItem("75%")
-						.onAction { [weak self] in self?.scaleFraction.wrappedValue = 0.75 }
+						.onAction { [weak self] in self?.setScaleFraction(0.75) }
 					MenuItem("100%")
-						.onAction { [weak self] in self?.scaleFraction.wrappedValue = 1.00 }
+						.onAction { [weak self] in self?.setScaleFraction(1.00) }
 					MenuItem("125%")
-						.onAction { [weak self] in self?.scaleFraction.wrappedValue = 1.25 }
+						.onAction { [weak self] in self?.setScaleFraction(1.25) }
 					MenuItem("150%")
-						.onAction { [weak self] in self?.scaleFraction.wrappedValue = 1.50 }
+						.onAction { [weak self] in self?.setScaleFraction(1.50) }
 					MenuItem("200%")
-						.onAction { [weak self] in self?.scaleFraction.wrappedValue = 2.00 }
+						.onAction { [weak self] in self?.setScaleFraction(2.00) }
 					MenuItem("300%")
-						.onAction { [weak self] in self?.scaleFraction.wrappedValue = 3.00 }
+						.onAction { [weak self] in self?.setScaleFraction(3.00) }
 					MenuItem("400%")
-						.onAction { [weak self] in self?.scaleFraction.wrappedValue = 4.00 }
+						.onAction { [weak self] in self?.setScaleFraction(4.00) }
 					Separator()
 					MenuItem("Fit")
 						.onAction { [weak self] in

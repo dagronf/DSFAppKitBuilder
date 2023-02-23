@@ -46,6 +46,7 @@ public class Box: Element {
 	public convenience init(
 		_ title: String,
 		titlePosition: NSBox.TitlePosition = .atTop,
+		font: AKBFont? = nil,
 		_ builder: () -> Element) {
 			self.init(
 				title,
@@ -61,6 +62,7 @@ public class Box: Element {
 	public init(
 		_ title: String,
 		titlePosition: NSBox.TitlePosition = .atTop,
+		font: AKBFont? = nil,
 		content: Element)
 	{
 		self.content = content
@@ -74,6 +76,10 @@ public class Box: Element {
 		boxView.title = title
 		boxView.titlePosition = titlePosition
 
+		if let font = font {
+			boxView.titleFont = font.font
+		}
+
 		boxView.needsLayout = true
 		boxView.layoutSubtreeIfNeeded()
 	}
@@ -82,6 +88,7 @@ public class Box: Element {
 	private let boxView = NSBox()
 	private var boxContent: NSView { return boxView.contentView! }
 	public override func view() -> NSView { return self.boxView }
+	public override func childElements() -> [Element] { [content] }
 	private let content: Element
 }
 
