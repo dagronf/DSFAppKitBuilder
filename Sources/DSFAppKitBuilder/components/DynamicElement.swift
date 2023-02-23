@@ -91,6 +91,10 @@ private extension DynamicElement {
 
 			self.rootView.addSubview(newView)
 			newView.pinEdges(to: self.rootView)
+
+			newView.invalidateIntrinsicContentSize()
+			newView.needsLayout = true
+			newView.needsUpdateConstraints = true
 		}
 	}
 }

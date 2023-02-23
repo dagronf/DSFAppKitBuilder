@@ -60,11 +60,13 @@ public class TextField: Label {
 	///   - placeholderText: The placeholder text to use for the text field
 	public init(
 		_ text: ValueBinder<String>,
-		_ placeholderText: String? = nil)
-	{
+		_ placeholderText: String? = nil,
+		updateOnEndEditingOnly: Bool = false
+	) {
 		super.init(nil)
 		self.configureDefaults()
 
+		self.updateOnEndEditingOnly = updateOnEndEditingOnly
 		self.label.placeholderString = placeholderText
 		self.label.delegate = self
 

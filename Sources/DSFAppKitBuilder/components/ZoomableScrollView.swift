@@ -150,14 +150,4 @@ extension ZoomableScrollView {
 			self.scrollView.magnify(toFit: sz)
 		}
 	}
-
-//	func zoomToFitScale() -> Double {
-//		let contentRect = self.scrollView.contentView.frame
-//		let documentRect = self.scrollView.documentView!.bounds
-//
-//		let dx = contentRect.size.width / documentRect.size.width
-//		let dy = contentRect.size.height / documentRect.size.height
-//
-//		return min(dx, dy)
-//	}
 }
