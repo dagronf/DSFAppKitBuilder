@@ -97,3 +97,78 @@ extension PaddableTextField {
 		}
 	}
 }
+
+
+// MARK: - Secure field
+
+// A secure text field with configurable edge insets
+@IBDesignable
+class PaddableSecureTextField: NSSecureTextField {
+
+	@IBInspectable var topInset: CGFloat = 0 {
+		didSet { self.edgeInsets.top = self.topInset }
+	}
+	@IBInspectable var leadingInset: CGFloat = 0 {
+		didSet { self.edgeInsets.left = self.leadingInset }
+	}
+	@IBInspectable var bottomInset: CGFloat = 0 {
+		didSet { self.edgeInsets.bottom = self.bottomInset }
+	}
+	@IBInspectable var trailingInset: CGFloat = 0 {
+		didSet { self.edgeInsets.right = self.trailingInset }
+	}
+
+	/// The edge insets to apply to the field
+	@objc var edgeInsets = NSEdgeInsets() {
+		didSet {
+			if let cell = self.cell as? PaddableSecureTextFieldCell {
+				cell.edgeInsets = edgeInsets
+				self.needsLayout = true
+				self.invalidateIntrinsicContentSize()
+			}
+		}
+	}
+
+	override init(frame frameRect: NSRect) {
+		super.init(frame: frameRect)
+	}
+
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		self.customCell.edgeInsets = self.edgeInsets
+	}
+
+	class override var cellClass: AnyClass? {
+		get { PaddableSecureTextFieldCell.self }
+		set {}
+	}
+
+	private var customCell: PaddableSecureTextFieldCell { self.cell as! PaddableSecureTextFieldCell }
+}
+
+// MARK: - Padded cell
+
+extension PaddableSecureTextField {
+	@objc(PaddableSecureTextFieldCell) public class PaddableSecureTextFieldCell: NSSecureTextFieldCell {
+		public var edgeInsets = NSEdgeInsets()
+
+		override func cellSize(forBounds rect: NSRect) -> NSSize {
+			var size = super.cellSize(forBounds: rect)
+			size.width += (edgeInsets.left + edgeInsets.right)
+			size.height += (edgeInsets.top + edgeInsets.bottom)
+			return size
+		}
+
+		override func drawingRect(forBounds rect: NSRect) -> NSRect {
+			var newRect = rect
+
+			// If we are right-to-left, then the horizontal insets are swapped
+			newRect.origin.x += (self.userInterfaceLayoutDirection == .leftToRight) ? edgeInsets.left : edgeInsets.right
+			newRect.origin.y += edgeInsets.top
+			newRect.size.width -= (edgeInsets.left + edgeInsets.right)
+			newRect.size.height -= (edgeInsets.top + edgeInsets.bottom)
+			return super.drawingRect(forBounds: newRect)
+		}
+	}
+}
+

@@ -14,8 +14,8 @@ import DSFValueBinders
 import Defaults
 
 extension Defaults.Keys {
-	static let firstName = Key<String>("first-name", default: "Amelia")
-	static let lastName = Key<String>("last-name", default: "Airhart")
+	static let username = Key<String>("username", default: "admin")
+	static let password = Key<String>("password", default: "admin")
 }
 
 class FirstLastNameViewController: DSFAppKitBuilderViewController {
@@ -23,18 +23,22 @@ class FirstLastNameViewController: DSFAppKitBuilderViewController {
 	// * https://www.kalzumeus.com/2010/06/17/falsehoods-programmers-believe-about-names/
 	// * https://shinesolutions.com/2018/01/08/falsehoods-programmers-believe-about-names-with-examples/
 	// Just being used for demo purposes
-	let firstNameBinder = ValueBinder<String>(Defaults[.firstName])
-	let lastNameBinder = ValueBinder<String>(Defaults[.lastName])
 
-	// The full name ("<firstname> <lastname>") of the user
-	// (THIS METHOD OF USER NAMING IS FLAWED. NEVER USE IN PRODUCTION CODE. Purely for demo purposes)
-	let fullNameBinder = ValueBinder<String>("")
+	let usernameBinder = ValueBinder<String>(Defaults[.username])
 
-	// Have there been changes to the user?
-	let hasUpdates = ValueBinder<Bool>(false)
+	let passwordBinder = ValueBinder<String>(Defaults[.password])
+	let password2Binder = ValueBinder<String>(Defaults[.password])
 
-	// Is the current name different to the default name?
-	let canReset = ValueBinder<Bool>(false)
+	// A valuebinder whose output is dependent on the two passwords being equal
+	private lazy var passwordsMatch: CombiningValueBuilder = {
+		CombiningValueBuilder(self.passwordBinder, self.password2Binder) { $0 == $1 }
+	}()
+
+	let canApplyChanges = ValueBinder<Bool>(false)
+	let canRevertChanges = ValueBinder<Bool>(false)
+	let canResetChanges = ValueBinder<Bool>(false)
+
+	let showPasswords = ValueBinder(false)
 
 	init() {
 		super.init(nibName: nil, bundle: nil)
@@ -45,18 +49,28 @@ class FirstLastNameViewController: DSFAppKitBuilderViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	deinit {
+		Swift.print("FirstLastNameViewController: deinit")
+	}
+
 	override func viewDidLoad() {
-		self.firstNameBinder.register() { [weak self] newValue in
-			self?.updateFullName()
+		self.usernameBinder.register() { [weak self] newValue in
+			self?.reflectUserChanges()
 		}
 
-		self.lastNameBinder.register() { [weak self] newValue in
-			self?.updateFullName()
+		self.passwordBinder.register() { [weak self] newValue in
+			self?.reflectUserChanges()
+		}
+
+		self.password2Binder.register() { [weak self] newValue in
+			self?.reflectUserChanges()
 		}
 	}
 
-	let firstNameTitle = NSLocalizedString("First Name", comment: "")
-	let lastNameTitle = NSLocalizedString("Last Name", comment: "")
+	let usernameTitle = NSLocalizedString("Username", comment: "")
+	let passwordTitle = NSLocalizedString("Password", comment: "")
+	let password2Title = NSLocalizedString("Retype Password", comment: "")
+
 	let resetTitle = NSLocalizedString("Reset", comment: "")
 	let revertTitle = NSLocalizedString("Revert", comment: "")
 	let applyChangesTitle = NSLocalizedString("Apply Changes", comment: "")
@@ -71,19 +85,34 @@ class FirstLastNameViewController: DSFAppKitBuilderViewController {
 							.size(width: 72, height: 72)
 						Grid {
 							GridRow(rowAlignment: .firstBaseline) {
-								Label(self.firstNameTitle).font(.headline)
-								TextField(self.firstNameBinder, self.firstNameTitle)
+								Label(self.usernameTitle).font(.headline)
+								TextField(self.usernameBinder)
+									.placeholderText("username")
 									.minWidth(175)
 									.font(.body).labelPadding(2)
 							}
 							GridRow(rowAlignment: .firstBaseline) {
-								Label(self.lastNameTitle).font(.headline)
-								TextField(self.lastNameBinder, self.lastNameTitle)
+								Label(self.passwordTitle).font(.headline)
+								SecureTextField(self.passwordBinder, updateOnEndEditingOnly: false)
+									.placeholderText("password")
 									.minWidth(175)
 									.font(.body).labelPadding(2)
 							}
+							GridRow(rowAlignment: .firstBaseline) {
+								Label(self.password2Title).font(.headline)
+								SecureTextField(self.password2Binder, updateOnEndEditingOnly: false)
+									.placeholderText("password")
+									.minWidth(175)
+									.font(.body)
+									.labelPadding(2)
+							}
 							GridRow(rowAlignment: .firstBaseline, mergeCells: [0 ... 1]) {
-								Label(self.fullNameBinder).font(.body).textColor(.placeholderTextColor)
+								IfElse(self.passwordsMatch) {
+									Label(NSLocalizedString("Passwords match", comment: ""))
+								} whenFalse: {
+									Label(NSLocalizedString("Passwords don't match", comment: ""))
+										.textColor(.systemRed)
+								}
 							}
 						}
 						.rowSpacing(8)
@@ -97,19 +126,19 @@ class FirstLastNameViewController: DSFAppKitBuilderViewController {
 						Button(title: self.resetTitle) { [weak self] _ in
 							self?.resetChanges()
 						}
-						.bindIsEnabled(self.canReset)
+						.bindIsEnabled(self.canResetChanges)
 						EmptyView()
 						Button(title: self.revertTitle) { [weak self] _ in
 							self?.revertChanges()
 						}
-						.bindIsEnabled(self.hasUpdates)
+						.bindIsEnabled(self.canRevertChanges)
 						.hasDestructiveAction(true)
 						.bezelColor(.red)
 
 						Button(title: self.applyChangesTitle) { [weak self] _ in
 							self?.applyChanges()
 						}
-						.bindIsEnabled(self.hasUpdates)
+						.bindIsEnabled(self.canApplyChanges)
 					}
 				}
 			}
@@ -119,37 +148,59 @@ class FirstLastNameViewController: DSFAppKitBuilderViewController {
 }
 
 extension FirstLastNameViewController {
-	private func updateFullName() {
-		let n = self.firstNameBinder.wrappedValue + " " + self.lastNameBinder.wrappedValue
-		self.fullNameBinder.wrappedValue = n.count == 1 ? "<empty>" : n
-		self.updateChangeStatus()
-	}
 
-	private func updateChangeStatus() {
-		self.hasUpdates.wrappedValue =
-			self.firstNameBinder.wrappedValue != Defaults[.firstName] ||
-			self.lastNameBinder.wrappedValue != Defaults[.lastName]
-		self.canReset.wrappedValue =
-			Defaults.Keys.firstName.defaultValue != Defaults[.firstName] ||
-			Defaults.Keys.lastName.defaultValue != Defaults[.lastName]
+	private func reflectUserChanges() {
+		if !self.passwordsMatch.wrappedValue {
+			self.canApplyChanges.wrappedValue = false
+			self.canRevertChanges.wrappedValue = true
+			self.canResetChanges.wrappedValue = true
+		}
+		else {
+			let usernameOrPasswordChanged =
+				self.usernameBinder.wrappedValue != Defaults[.username] ||
+				self.passwordBinder.wrappedValue != Defaults[.password]
+
+			if usernameOrPasswordChanged {
+				self.canApplyChanges.wrappedValue = true
+				self.canRevertChanges.wrappedValue = true
+				self.canResetChanges.wrappedValue = true
+			}
+			else {
+				self.canResetChanges.wrappedValue = false
+				self.canRevertChanges.wrappedValue = false
+				self.canApplyChanges.wrappedValue = false
+			}
+		}
+
+		let hasChangedFromDefaults =
+			Defaults[.username] != Defaults.Keys.username.defaultValue ||
+			Defaults[.password] != Defaults.Keys.password.defaultValue
+
+		self.canResetChanges.wrappedValue = hasChangedFromDefaults
 	}
 
 	private func revertChanges() {
-		self.firstNameBinder.wrappedValue = Defaults[.firstName]
-		self.lastNameBinder.wrappedValue = Defaults[.lastName]
+		self.usernameBinder.wrappedValue = Defaults[.username]
+		self.passwordBinder.wrappedValue = Defaults[.password]
+		self.password2Binder.wrappedValue = Defaults[.password]
+		self.reflectUserChanges()
 	}
 
 	private func applyChanges() {
-		Defaults[.firstName] = self.firstNameBinder.wrappedValue
-		Defaults[.lastName] = self.lastNameBinder.wrappedValue
-		self.updateChangeStatus()
+		Defaults[.username] = self.usernameBinder.wrappedValue
+		Defaults[.password] = self.passwordBinder.wrappedValue
+		self.reflectUserChanges()
 	}
 
 	private func resetChanges() {
-		Defaults[.firstName] = Defaults.Keys.firstName.defaultValue
-		Defaults[.lastName] = Defaults.Keys.lastName.defaultValue
-		self.revertChanges()
-		self.updateChangeStatus()
+		Defaults[.username] = Defaults.Keys.username.defaultValue
+		Defaults[.password] = Defaults.Keys.password.defaultValue
+
+		self.usernameBinder.wrappedValue = Defaults[.username]
+		self.passwordBinder.wrappedValue = Defaults[.password]
+		self.password2Binder.wrappedValue = Defaults[.password]
+
+		self.reflectUserChanges()
 	}
 }
 
