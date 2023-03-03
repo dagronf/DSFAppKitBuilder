@@ -41,7 +41,7 @@ class ZoomableScrollviewBuilderController: ElementController {
 	let title = ValueBinder("")
 
 	func setScaleFraction(_ fraction: Double) {
-		self.scaleFraction.wrappedValue = 0.25
+		self.scaleFraction.wrappedValue = fraction
 	}
 
 	lazy var body: Element = {
