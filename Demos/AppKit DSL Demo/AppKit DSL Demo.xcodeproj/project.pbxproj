@@ -303,11 +303,11 @@
 				23AD0C90299B1A3A006FFFE9 /* TextFieldBuilder.swift */,
 				23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */,
 				23C818872993841A00816107 /* TokenFieldBuilder.swift */,
+				23A9024829A6BB7300D45732 /* ViewControllerDemoBuilder.swift */,
+				23A9024A29A6BC0000D45732 /* ViewControllerDemoBuilder+Content.swift */,
 				235CBB40298C843500D3D4DE /* ViewTestBed.swift */,
 				23910CA42990CDEE0016E150 /* VisualEffectBuilder.swift */,
 				23600AEF29A2F50D00FD2F2B /* ZoomableScrollViewBuilder.swift */,
-				23A9024829A6BB7300D45732 /* ViewControllerDemoBuilder.swift */,
-				23A9024A29A6BC0000D45732 /* ViewControllerDemoBuilder+Content.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -781,7 +781,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.AppKitBuilder-TestBed";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -811,7 +811,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.dagronf.AppKitBuilder-TestBed";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -23,6 +23,7 @@ class TextFieldBuilder: ViewTestBed {
 class TextFieldBuilderController: ElementController {
 	let stringValue = ValueBinder("Sample text")
 	let doubleValue = ValueBinder(12.3456)
+
 	let doubleFormatter = NumberFormatter {
 		$0.allowsFloats = true
 		$0.minimumFractionDigits = 0
@@ -40,6 +41,9 @@ class TextFieldBuilderController: ElementController {
 
 	let editText = ValueBinder("Text goes here...")
 
+	let dynFont1 = DynamicFontService.shared.add(.monospaced.size(11).weight(.ultraLight))
+	let dynFont2 = DynamicFontService.shared.add(.body.size(16).weight(.light))
+
 	lazy var newAttr: Element = {
 		if #available(macOS 12, *) {
 			var attributes = AttributeContainer()
@@ -56,6 +60,22 @@ class TextFieldBuilderController: ElementController {
 
 	lazy var body: Element = {
 		VStack(spacing: 12, alignment: .leading) {
+			FakeBox("Dynamic") {
+				VStack(alignment: .leading) {
+					Slider(DynamicFontService.shared.currentScale, range: 0.25 ... 4.0)
+						.width(250)
+					Label("This is the title")
+						.dynamicFont(.title1)
+					Label("Whooooo!")
+						.dynamicFont(.body)
+					Button(title: "Press me!", bezelStyle: .texturedSquare)
+						.dynamicFont(.body)
+					ComboButton(style: .split, "Whooo!", menu: nil)
+						.dynamicFont(.label)
+				}
+			}
+			.dynamicFont(.label)
+
 			FakeBox("Labels") {
 				VStack(alignment: .leading) {
 					newAttr
@@ -73,20 +93,25 @@ class TextFieldBuilderController: ElementController {
 			FakeBox("Label with padding") {
 				Flow {
 					Label("Label with no padding")
+						.dynamicFont(.system)
 						.backgroundColor(.systemBlue)
 					Label("Label with 8 padding")
+						.dynamicFont(.system)
 						.labelPadding(8)
 						.backgroundColor(.systemBlue)
 					Label("Label with 16 padding")
+						.dynamicFont(.system)
 						.labelPadding(16)
 						.backgroundColor(.systemBlue)
 					Label("Label with leading padding")
+						.dynamicFont(.system)
 						.labelPadding(NSEdgeInsets(top: 0, left: 16, bottom: 0, right: 0))
 						.horizontalCompressionResistancePriority(.defaultLow)
 						.horizontalHuggingPriority(999)
 						.backgroundColor(.systemBlue)
 				}
 			}
+			.dynamicFont(.system)
 			HDivider()
 
 			FakeBox("Label with wrapping/truncation") {
@@ -96,7 +121,7 @@ class TextFieldBuilderController: ElementController {
 						.labelPadding(3)
 						.applyStyle(Label.Styling.multiline)
 						.border(width: 0.5, color: .systemRed)
-						.font(.monospaced.size(11).weight(.ultraLight))
+						.dynamicFont(dynFont1)
 					HDivider()
 					Label("Single-line truncation").font(.body.bold())
 					Grid {
@@ -126,7 +151,7 @@ class TextFieldBuilderController: ElementController {
 					HDivider()
 					Label("Multi-line truncation, uneven padding, fixed max rows").font(.body.bold())
 					Label(dummyText)
-						.font(.body.size(16).weight(.light))
+						.dynamicFont(dynFont2)
 						.labelPadding(NSEdgeInsets(top: 2, left: 48, bottom: 2, right: 4))
 						.applyStyle(Label.Styling.Multiline(maximumNumberOfLines: 3))
 						.border(width: 0.5, color: .systemGreen)
@@ -136,16 +161,16 @@ class TextFieldBuilderController: ElementController {
 			HDivider()
 			Grid {
 				GridRow(rowAlignment: .firstBaseline) {
-					Label("String value")
-					TextField(stringValue)
+					Label("String value").dynamicFont(.system)
+					TextField(stringValue).dynamicFont(.system)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label("Double value")
-					NumberField(doubleValue, numberFormatter: doubleFormatter)
+					Label("Double value").dynamicFont(.system)
+					NumberField(doubleValue, numberFormatter: doubleFormatter).dynamicFont(.system)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label("Int value")
-					NumberField(intValue, numberFormatter: intFormatter)
+					Label("Int value").dynamicFont(.system)
+					NumberField(intValue, numberFormatter: intFormatter).dynamicFont(.system)
 				}
 			}
 			.columnFormatting(xPlacement: .trailing, atColumn: 0)
@@ -156,19 +181,20 @@ class TextFieldBuilderController: ElementController {
 				VStack(alignment: .leading) {
 					Grid {
 						GridRow(rowAlignment: .firstBaseline) {
-							Label("[4, 4, 4, 4]")
+							Label("[4, 4, 4, 4]").dynamicFont(.system)
 							TextField(editText)
 								.labelPadding(NSEdgeInsets(top: 4, left: 4, bottom: 4, right: 4))
+								.dynamicFont(.system)
 						}
 						GridRow(rowAlignment: .firstBaseline) {
-							Label("[10, 25, 6, 40]")
+							Label("[10, 25, 6, 40]").dynamicFont(.system)
 							TextField(editText)
 								.labelPadding(NSEdgeInsets(top: 10, left: 25, bottom: 6, right: 40))
-								.font(.body.size(16).weight(.light).italic())
+								.dynamicFont(.body.size(16).weight(.light).italic())
 						}
 						GridRow(rowAlignment: .firstBaseline) {
-							Label("[0, 0, 0, 0]")
-							TextField(editText)
+							Label("[0, 0, 0, 0]").dynamicFont(.system)
+							TextField(editText).dynamicFont(.system)
 						}
 					}
 					.columnFormatting(xPlacement: .trailing, atColumn: 0)

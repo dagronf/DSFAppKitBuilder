@@ -84,6 +84,10 @@ public class Flow: Element {
 		self.collectionView.reloadData()
 	}
 
+	func invalidateLayout() {
+		self.collectionView.collectionViewLayout?.invalidateLayout()
+	}
+
 	// Private
 	private let collectionView = FlowCollectionView()
 	private let elements: [Element]

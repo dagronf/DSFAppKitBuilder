@@ -52,6 +52,7 @@ public class DisclosureView: Element {
 	convenience public init(
 		title: String,
 		titleFont: AKBFont? = nil,
+		dynamicTitleFont: DynamicFont? = nil,
 		headerHeight: Double? = nil,
 		initiallyExpanded: Bool = true,
 		header: (() -> Element)? = nil,
@@ -60,6 +61,7 @@ public class DisclosureView: Element {
 		self.init(
 			title: title,
 			titleFont: titleFont,
+			dynamicTitleFont: dynamicTitleFont,
 			headerHeight: headerHeight,
 			initiallyExpanded: initiallyExpanded,
 			isExpandedBinder: nil,
@@ -78,6 +80,7 @@ public class DisclosureView: Element {
 	convenience public init(
 		title: String,
 		titleFont: AKBFont? = nil,
+		dynamicTitleFont: DynamicFont? = nil,
 		headerHeight: Double? = nil,
 		isExpandedBinder: ValueBinder<Bool>,
 		header: (() -> Element)? = nil,
@@ -86,6 +89,7 @@ public class DisclosureView: Element {
 		self.init(
 			title: title,
 			titleFont: titleFont,
+			dynamicTitleFont: dynamicTitleFont,
 			headerHeight: headerHeight,
 			initiallyExpanded: false,
 			isExpandedBinder: isExpandedBinder,
@@ -105,6 +109,7 @@ public class DisclosureView: Element {
 	internal init(
 		title: String,
 		titleFont: AKBFont? = nil,
+		dynamicTitleFont: DynamicFont? = nil,
 		headerHeight: Double? = nil,
 		initiallyExpanded: Bool = true,
 		isExpandedBinder: ValueBinder<Bool>? = nil,
@@ -113,6 +118,7 @@ public class DisclosureView: Element {
 	) {
 		self.title = title
 		self.titleFont = titleFont ?? AKBFont.headline.weight(.bold)
+		self.dynamicTitleFont = dynamicTitleFont
 		self.initiallyExpanded = initiallyExpanded
 		self.childElement = builder()
 		self.headerElement = header?()
@@ -141,6 +147,7 @@ public class DisclosureView: Element {
 						.onLabelClicked { [weak self] in
 							self?.toggleState()
 						}
+						.dynamicFont(self.dynamicTitleFont)
 					EmptyView()
 						.horizontalHuggingPriority(10)
 					Maybe(self.headerElement)
@@ -171,6 +178,7 @@ public class DisclosureView: Element {
 
 	private let title: String
 	private let titleFont: AKBFont
+	private var dynamicTitleFont: DynamicFont?
 	private let initiallyExpanded: Bool
 	private let headerHeight: Double?
 

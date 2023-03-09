@@ -7,6 +7,9 @@
 
 import Cocoa
 import DSFAppKitBuilder
+import DSFToolbar
+import DSFMenuBuilder
+import DSFValueBinders
 
 class ViewController: NSViewController {
 
@@ -14,8 +17,18 @@ class ViewController: NSViewController {
 	@IBOutlet weak var contentView: DSFAppKitBuilderView!
 
 	var controller: ElementController?
+	private let scalingMenuItem = ScalingMenuViewController()
 
 	let viewItems = ViewItems()
+
+	lazy var scaleMenu = createScaleFontMenu()
+	lazy var customToolbar = createToolbar()
+
+	let headlineFont: AKBFont = .title1.weight(.medium)
+	let typeFont: AKBFont = .title1.weight(.medium).withSymbolicTraits(.monoSpace)
+	let descriptionFont: AKBFont = .system
+
+	private let selectedScaleIndex = ValueBinder(3)
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -29,6 +42,7 @@ class ViewController: NSViewController {
 
 	override func viewDidAppear() {
 		super.viewDidAppear()
+		customToolbar.attachedWindow = self.view.window
 	}
 
 	override var representedObject: Any? {
@@ -52,6 +66,7 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 	func displayEmptyView() {
 		self.contentView.element = Group(layoutType: .center) {
 			Label(String.localized("No selection"))
+				.dynamicFont(.system)
 		}
 	}
 
@@ -88,15 +103,18 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 					VisualEffectView(effect: .init(material: .titlebar), padding: 8) {
 						VStack(alignment: .leading) {
 							HStack {
-								Label(newItem.title).font(.title1.weight(.medium)).applyStyle(Label.Styling.truncatingTail)
+								Label(newItem.title)
+									.dynamicFont(self.headlineFont)
+									.applyStyle(Label.Styling.truncatingTail)
 								Maybe(!newItem.type.isEmpty) {
 									Label("(\(newItem.type))")
-										.font(.title1.weight(.medium).withSymbolicTraits(.monoSpace))
+										.dynamicFont(self.typeFont)
 										.applyStyle(Label.Styling.truncatingTail)
 								}
 							}
 							Label(newItem.description)
 								.isSelectable(true)
+								.dynamicFont(self.descriptionFont)
 								.applyStyle(Label.Styling.multiline)
 						}
 						.hugging(h: 10, v: 999)
@@ -107,5 +125,63 @@ extension ViewController: NSTableViewDataSource, NSTableViewDelegate {
 					content
 				}
 		}
+	}
+}
+
+extension ViewController {
+
+	private func setScaleFraction(_ fraction: Double) {
+		DynamicFontService.shared.scale(by: fraction)
+	}
+
+	private func createScaleFontMenu() -> DSFMenuBuilder.Menu {
+		DSFMenuBuilder.Menu {
+			MenuItem("25%")
+				.onAction { [weak self] in self?.setScaleFraction(0.25) }
+			MenuItem("50%")
+				.onAction { [weak self] in self?.setScaleFraction(0.50) }
+			MenuItem("75%")
+				.onAction { [weak self] in self?.setScaleFraction(0.75) }
+			MenuItem("100%")
+				.onAction { [weak self] in self?.setScaleFraction(1.00) }
+			MenuItem("125%")
+				.onAction { [weak self] in self?.setScaleFraction(1.25) }
+			MenuItem("150%")
+				.onAction { [weak self] in self?.setScaleFraction(1.50) }
+			MenuItem("200%")
+				.onAction { [weak self] in self?.setScaleFraction(2.00) }
+			MenuItem("300%")
+				.onAction { [weak self] in self?.setScaleFraction(3.00) }
+			MenuItem("400%")
+				.onAction { [weak self] in self?.setScaleFraction(4.00) }
+			Separator()
+			ViewItem("scale", self.scalingMenuItem)
+		}
+	}
+
+	private func createToolbar() -> DSFToolbar {
+		DSFToolbar("Main Toolbar", allowsUserCustomization: true) {
+			DSFToolbar.PopupMenu("font-scale", menu: self.scaleMenu.menu)
+				.label("Scale")
+				.legacySizes(minSize: NSSize(width: 72, height: 14))
+				.bindSelectedIndex(self.selectedScaleIndex)
+		}
+	}
+}
+
+class ScalingMenuViewController: NSViewController {
+	deinit { Swift.print("ScalingMenuViewController: deinit") }
+	override func loadView() {
+		let v = DSFAppKitBuilderView {
+			VStack(alignment: .leading) {
+				Label("Scaling").font(.systemSmall)
+				Slider(DynamicFontService.shared.currentScale, range: 0.25 ... 4.0)
+					.numberOfTickMarks(5)
+					.controlSize(.small)
+			}
+			.stackPadding(NSEdgeInsets(top: 0, left: 16, bottom: 4, right: 16))
+			.width(150)
+		}
+		self.view = v
 	}
 }

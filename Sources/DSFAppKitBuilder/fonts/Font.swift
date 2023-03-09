@@ -88,37 +88,40 @@ public extension AKBFont {
 // MARK: - Standard font definitions
 
 // Inspiration: https://gist.github.com/shaps80/2d21b2ab92ea4fddd7b545d77a47024b
+// Scaling values taken from Interface Builder
 
 public extension AKBFont {
 	/// The standard system font
-	static let system = AKBFont(.systemFont(ofSize: NSFont.systemFontSize))
+	static let system = AKBFont(.systemFont(ofSize: NSFont.systemFontSize))								// 13
 	/// A small system font
 	static let systemSmall = AKBFont(.systemFont(ofSize: NSFont.smallSystemFontSize))
 	/// System font at label size
 	static let label = AKBFont(.systemFont(ofSize: NSFont.labelFontSize))
+}
 
+public extension AKBFont {
 	/// The font you use for body text.
-	static let body = AKBFont(.systemFont(ofSize: NSFont.systemFontSize))
+	static let body = AKBFont(.systemFont(ofSize: NSFont.systemFontSize))								// 13
 	/// The font you use for callouts.
-	static let callout = AKBFont(.systemFont(ofSize: NSFont.systemFontSize - 1))
+	static let callout = AKBFont(.systemFont(ofSize: NSFont.systemFontSize - 1))						// 12
 	/// The font you use for standard captions.
-	static let caption1 = AKBFont(.systemFont(ofSize: NSFont.systemFontSize - 5))
+	static let caption1 = AKBFont(.systemFont(ofSize: NSFont.systemFontSize - 3))						// 10
 	/// The font you use for alternate captions.
-	static let caption2 = AKBFont(.systemFont(ofSize: NSFont.systemFontSize - 6))
+	static let caption2 = AKBFont(.systemFont(ofSize: NSFont.systemFontSize - 2.5))					// Appears to be 10.5?
 	/// The font you use in footnotes.
-	static let footnote = AKBFont(.systemFont(ofSize: NSFont.systemFontSize - 4))
+	static let footnote = AKBFont(.systemFont(ofSize: NSFont.systemFontSize - 4))						// 10?
 	/// The font you use for headings.
-	static let headline = AKBFont(.systemFont(ofSize: NSFont.systemFontSize, weight: .semibold))
+	static let headline = AKBFont(.systemFont(ofSize: NSFont.systemFontSize, weight: .semibold))	// 13
 	/// The font you use for subheadings.
-	static let subheadline = AKBFont(.systemFont(ofSize: NSFont.systemFontSize - 2))
+	static let subheadline = AKBFont(.systemFont(ofSize: NSFont.systemFontSize - 2))					// 11
 	/// The font you use for large titles.
-	static let largeTitle = AKBFont(.systemFont(ofSize: NSFont.systemFontSize + 17))
+	static let largeTitle = AKBFont(.systemFont(ofSize: NSFont.systemFontSize + 13))					// 26
 	/// The font you use for first-level hierarchical headings.
-	static let title1 = AKBFont(.systemFont(ofSize: NSFont.systemFontSize + 11))
+	static let title1 = AKBFont(.systemFont(ofSize: NSFont.systemFontSize + 9))						// 22
 	/// The font you use for second-level hierarchical headings.
-	static let title2 = AKBFont(.systemFont(ofSize: NSFont.systemFontSize + 5))
+	static let title2 = AKBFont(.systemFont(ofSize: NSFont.systemFontSize + 4))						// 17
 	/// The font you use for third-level hierarchical headings.
-	static let title3 = AKBFont(.systemFont(ofSize: NSFont.systemFontSize + 3))
+	static let title3 = AKBFont(.systemFont(ofSize: NSFont.systemFontSize + 2))						// 15
 	/// A font with monospaced digits
 	static let monospacedDigit = AKBFont(.monospacedDigitSystemFont(ofSize: NSFont.systemFontSize, weight: .regular))
 	/// The font to use for monospaced text

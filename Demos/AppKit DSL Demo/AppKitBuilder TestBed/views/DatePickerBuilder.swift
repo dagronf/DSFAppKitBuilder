@@ -29,12 +29,16 @@ class DatePickerBuilderController: ElementController {
 				Label("Default").font(NSFont.boldSystemFont(ofSize: 14))
 				HStack {
 					DatePicker(date: self.__previewDate)
+						.dynamicFont(.system)
 					DatePicker(date: __previewDate)
+						.dynamicFont(.system)
 						.isEnabled(false)
 				}
 				HStack {
 					DatePicker(date: __previewDate, style: .textField)
+						.dynamicFont(.systemSmall)
 					DatePicker(date: __previewDate, style: .textField)
+						.dynamicFont(.systemSmall)
 						.isEnabled(false)
 				}
 			}

@@ -75,6 +75,8 @@ class FirstLastNameViewController: DSFAppKitBuilderViewController {
 	let revertTitle = NSLocalizedString("Revert", comment: "")
 	let applyChangesTitle = NSLocalizedString("Apply Changes", comment: "")
 
+	let headlineFont = DynamicFontService.shared.add(.headline)
+
 	// The view body
 	override var viewBody: Element {
 		Group(layoutType: .center) {
@@ -85,25 +87,25 @@ class FirstLastNameViewController: DSFAppKitBuilderViewController {
 							.size(width: 72, height: 72)
 						Grid {
 							GridRow(rowAlignment: .firstBaseline) {
-								Label(self.usernameTitle).font(.headline)
+								Label(self.usernameTitle).dynamicFont(self.headlineFont)
 								TextField(self.usernameBinder)
 									.placeholderText("username")
 									.minWidth(175)
-									.font(.body).labelPadding(2)
+									.dynamicFont(.body).labelPadding(2)
 							}
 							GridRow(rowAlignment: .firstBaseline) {
-								Label(self.passwordTitle).font(.headline)
+								Label(self.passwordTitle).dynamicFont(self.headlineFont)
 								SecureTextField(self.passwordBinder, updateOnEndEditingOnly: false)
 									.placeholderText("password")
 									.minWidth(175)
-									.font(.body).labelPadding(2)
+									.dynamicFont(.body).labelPadding(2)
 							}
 							GridRow(rowAlignment: .firstBaseline) {
-								Label(self.password2Title).font(.headline)
+								Label(self.password2Title).dynamicFont(.headline)
 								SecureTextField(self.password2Binder, updateOnEndEditingOnly: false)
 									.placeholderText("password")
 									.minWidth(175)
-									.font(.body)
+									.dynamicFont(.body)
 									.labelPadding(2)
 							}
 							GridRow(rowAlignment: .firstBaseline, mergeCells: [0 ... 1]) {
@@ -123,21 +125,24 @@ class FirstLastNameViewController: DSFAppKitBuilderViewController {
 					HDivider()
 
 					HStack() {
-						Button(title: self.resetTitle) { [weak self] _ in
+						Button(title: self.resetTitle, bezelStyle: .regularSquare) { [weak self] _ in
 							self?.resetChanges()
 						}
 						.bindIsEnabled(self.canResetChanges)
+						.dynamicFont(.system)
 						EmptyView()
-						Button(title: self.revertTitle) { [weak self] _ in
+						Button(title: self.revertTitle, bezelStyle: .regularSquare) { [weak self] _ in
 							self?.revertChanges()
 						}
 						.bindIsEnabled(self.canRevertChanges)
+						.dynamicFont(.system)
 						.hasDestructiveAction(true)
 						.bezelColor(.red)
 
-						Button(title: self.applyChangesTitle) { [weak self] _ in
+						Button(title: self.applyChangesTitle, bezelStyle: .regularSquare) { [weak self] _ in
 							self?.applyChanges()
 						}
+						.dynamicFont(.system)
 						.bindIsEnabled(self.canApplyChanges)
 					}
 				}

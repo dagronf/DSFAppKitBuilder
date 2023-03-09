@@ -26,13 +26,14 @@ class DisclosureViewController: ElementController {
 	let __onOffBinder1 = ValueBinder(true)
 	let __onOffBinder2 = ValueBinder(false)
 	let __headerFont = AKBFont.title3.bold()
+	private lazy var __dynamicHeaderFont = DynamicFontService.shared.add(__headerFont)
 
 	lazy var body: Element = {
 		VStack(alignment: .leading) {
 			VStack(alignment: .leading) {
 				VStack(alignment: .leading) {
 					Label("Basic control").font(__headerFont)
-					DisclosureView(title: "Format") {
+					DisclosureView(title: "Format", dynamicTitleFont: __dynamicHeaderFont) {
 						HStack {
 							Label("Format style!")
 							EmptyView()

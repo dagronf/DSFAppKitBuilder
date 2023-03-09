@@ -25,6 +25,7 @@
 //
 
 import Foundation
+import AppKit
 
 /// Perform an immediate `transform` of a given `subject`. The `transform`
 /// function may just mutate the given `subject`, or replace it entirely.
@@ -89,4 +90,27 @@ extension Collection {
 extension NSSet {
 	@inlinable var isEmpty: Bool { return self.count == 0 }
 	@inlinable var isNotEmpty: Bool { return self.count > 0 }
+}
+
+extension NSCollectionView {
+	// Invalidate the layout for this NSCollectionView
+	@inlinable func invalidateCollectionViewLayout() {
+		self.collectionViewLayout?.invalidateLayout()
+	}
+}
+
+extension NSView {
+	// Wander up the view hierarchy to find an inclosing collection view
+	func enclosingCollectionView() -> NSCollectionView? {
+		var s: NSView? = self.superview
+		while s != nil {
+			if let e = s as? NSCollectionView {
+				return e
+			}
+			else {
+				s = s?.superview
+			}
+		}
+		return nil
+	}
 }

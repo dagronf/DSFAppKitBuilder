@@ -84,12 +84,19 @@ public class Box: Element {
 		boxView.layoutSubtreeIfNeeded()
 	}
 
+	deinit {
+		if self.hasDynamicFont {
+			DynamicFontService.shared.deregister(self)
+		}
+	}
+
 	// Private
 	private let boxView = NSBox()
 	private var boxContent: NSView { return boxView.contentView! }
 	public override func view() -> NSView { return self.boxView }
 	public override func childElements() -> [Element] { [content] }
 	private let content: Element
+	private var hasDynamicFont: Bool = false
 }
 
 // MARK: - Modifiers
@@ -106,4 +113,87 @@ public extension Box {
 		self.boxView.titleFont = font.font
 		return self
 	}
+
+	func dynamicFont(_ font: DynamicFont) -> Self {
+		DynamicFontService.shared.register(self, font: font) { [weak self] newFont in
+			self?.boxView.titleFont = newFont
+		}
+		self.hasDynamicFont = true
+		return self
+	}
 }
+
+// MARK: - FakeBox
+
+/// A fake box-style element which handles autolayout slightly better
+public class FakeBox: Element {
+	public init(_ title: String, font: AKBFont? = nil, @ElementBuilder builder: () -> [Element]) {
+		let font = font ?? AKBFont(NSFont.systemFont(ofSize: NSFont.smallSystemFontSize))
+		self.body = Nothing()
+		super.init()
+		self.body = VStack(spacing: 1, alignment: .leading) {
+			Label(title)
+				.labelPadding(NSEdgeInsets(top: 0, left: 8, bottom: 0, right: 0))
+				.font(font)
+				.applyStyle(Label.Styling.truncatingTail)
+				.horizontalHuggingPriority(1)
+				.bindElement(self.binder)
+			VStack(spacing: 8, alignment: .leading, elements: builder())
+				.stackPadding(6)
+				.cornerRadius(6)
+				.border(width: 0.5, color: NSColor.quaternaryLabelColor)
+				.backgroundColor(NSColor.quaternaryLabelColor.withAlphaComponent(0.05))
+				.hugging(h: 1)
+		}
+		.hugging(h: 1)
+		.accessibility([.group(title)])
+	}
+
+	public init(_ title: String, font: AKBFont? = nil, _ content: Element) {
+		let font = font ?? AKBFont(NSFont.systemFont(ofSize: NSFont.smallSystemFontSize))
+		self.body = Nothing()
+		super.init()
+		self.body = VStack(spacing: 1, alignment: .leading) {
+			Label(title)
+				.labelPadding(NSEdgeInsets(top: 0, left: 4, bottom: 0, right: 0))
+				.font(font)
+				.applyStyle(Label.Styling.truncatingTail)
+				.horizontalHuggingPriority(1)
+				.bindElement(self.binder)
+			content
+				.cornerRadius(6)
+				.border(width: 0.5, color: NSColor.quaternaryLabelColor)
+				.backgroundColor(NSColor.quaternaryLabelColor.withAlphaComponent(0.05))
+				.horizontalHuggingPriority(1)
+		}
+		.hugging(h: 1)
+		.accessibility([.group(title)])
+	}
+
+	deinit {
+		if self.hasDynamicFont {
+			DynamicFontService.shared.deregister(self)
+		}
+	}
+
+	var body: Element
+	var hasDynamicFont = false
+	private let binder = ElementBinder()
+	public override func view() -> NSView { self.body.view() }
+	override public func childElements() -> [Element] { [self.body] }
+}
+
+// MARK: - Modifiers
+
+public extension FakeBox {
+	/// Set a dynamic font for the title of the box
+	func dynamicFont(_ font: DynamicFont) -> Self {
+		DynamicFontService.shared.register(self, font: font) { [weak self] newFont in
+			guard let l = self?.binder.element as? Label else { fatalError() }
+			l.label.font = newFont
+		}
+		self.hasDynamicFont = true
+		return self
+	}
+}
+

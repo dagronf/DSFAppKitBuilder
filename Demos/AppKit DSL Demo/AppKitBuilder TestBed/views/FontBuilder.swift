@@ -22,58 +22,67 @@ class FontBuilderController: ElementController {
 
 	fileprivate let _sampleText = "Sphinx of black quartz judge my vow 19.330"
 
+	class LayoutStyle: DSFAppKitBuilder.LabelStyle {
+		static let shared = LayoutStyle()
+		func apply(_ labelElement: DSFAppKitBuilder.Label) -> DSFAppKitBuilder.Label {
+			labelElement
+				.truncatesLastVisibleLine(true)
+				.lineBreakMode(.byTruncatingTail)
+				.horizontalHuggingPriority(.init(10))
+				.horizontalCompressionResistancePriority(.init(10))
+		}
+	}
+
 	lazy var body: Element = {
 		VStack(alignment: .leading) {
+			Flow(minimumInteritemSpacing: 4) {
+				Label("Plain text (default)").dynamicFont(.body)
+				Label("Plain text (14)").dynamicFont(.body.size(14))
+				Label("Plain text (16)").dynamicFont(.body.size(16))
+				Label("Plain text (18)").dynamicFont(.body.size(18))
+				Label("Plain text (24)").dynamicFont(.body.size(24))
+			}
+
+			HDivider()
+
 			HStack {
-				Label("Plain text").font(.body)
-				Label("Plain text").font(.body.size(14))
-				Label("Plain text").font(.body.size(16))
-				Label("Plain text").font(.body.size(18))
-				Label("Plain text").font(.body.size(24))
+				Label(".system").dynamicFont(.system)
+				VDivider()
+				Label(".systemSmall").dynamicFont(.systemSmall)
+				VDivider()
+				Label(".label").dynamicFont(.label)
 			}
 			.hugging(h: 10)
 
 			HDivider()
 
-			HStack {
-				Label(".system").font(.system)
-				VDivider()
-				Label(".systemSmall").font(.systemSmall)
-				VDivider()
-				Label(".label").font(.label)
+			Flow(minimumInteritemSpacing: 4) {
+				Label("Plain text").dynamicFont(.body)
+				VDivider().height(16)
+				Label("Bold text").dynamicFont(.body.bold())
+				VDivider().height(16)
+				Label("Italic text").dynamicFont(.body.italic())
+				VDivider().height(16)
+				Label("Bold Italic text").dynamicFont(.body.bold().italic())
+				VDivider().height(16)
+				Label("Heavy text").dynamicFont(.body.weight(.heavy))
+				VDivider().height(16)
+				Label("Black Italic text").dynamicFont(.body.weight(.black).italic())
 			}
-			.hugging(h: 10)
-
-			HDivider()
 
 			HStack {
-				Label("Plain text").font(.body)
+				Label("Monospaced").dynamicFont(.monospaced)
 				VDivider()
-				Label("Bold text").font(.body.bold())
-				VDivider()
-				Label("Italic text").font(.body.italic())
-				VDivider()
-				Label("Bold Italic text").font(.body.bold().italic())
-				VDivider()
-				Label("Heavy text").font(.body.weight(.heavy))
-				VDivider()
-				Label("Black Italic text").font(.body.weight(.black).italic())
+				Label("Monospaced Bold").dynamicFont(.monospaced.bold())
 			}
 			.hugging(h: 10)
 
 			HStack {
-				Label("Monospaced").font(.monospaced)
+				Label("standard").dynamicFont(.title2)
 				VDivider()
-				Label("Monospaced Bold").font(.monospaced.bold())
-			}
-			.hugging(h: 10)
-
-			HStack {
-				Label("standard").font(.title2)
+				Label("expanded").dynamicFont(.title2.expanded())
 				VDivider()
-				Label("expanded").font(.title2.expanded())
-				VDivider()
-				Label("condensed").font(.title2.condensed())
+				Label("condensed").dynamicFont(.title2.condensed())
 			}
 			.hugging(h: 10)
 
@@ -82,59 +91,63 @@ class FontBuilderController: ElementController {
 			Grid {
 				GridRow(rowAlignment: .firstBaseline) {
 					Label("Style").font(.title3.bold()).applyStyle(Label.Styling.truncatingTail)
-					Label("Preview").font(.title3.bold()).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label("Preview").font(.title3.bold()).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".body").font(.monospaced)
-					Label(_sampleText).font(.body).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".body").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.body).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".callout").font(.monospaced)
-					Label(_sampleText).font(.caption1).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".callout").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.caption1).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".caption1").font(.monospaced)
-					Label(_sampleText).font(.caption1).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".caption1").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.caption1).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".footnote").font(.monospaced)
-					Label(_sampleText).font(.footnote).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".caption2").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.caption2).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".headline").font(.monospaced)
-					Label(_sampleText).font(.headline).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".footnote").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.footnote).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".subheadline").font(.monospaced)
-					Label(_sampleText).font(.subheadline).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".headline").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.headline).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".system").font(.monospaced)
-					Label(_sampleText).font(.system).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".subheadline").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.subheadline).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".largeTitle").font(.monospaced)
-					Label(_sampleText).font(.largeTitle).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".system").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.system).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".title1").font(.monospaced)
-					Label(_sampleText).font(.title1).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".largeTitle").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.largeTitle).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".title2").font(.monospaced)
-					Label(_sampleText).font(.title2).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".title1").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.title1).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".title3").font(.monospaced)
-					Label(_sampleText).font(.title3).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".title2").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.title2).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".monospacedDigit").font(.monospaced)
-					Label(_sampleText).font(.monospacedDigit).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".title3").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.title3).applyStyle(LayoutStyle.shared)
 				}
 				GridRow(rowAlignment: .firstBaseline) {
-					Label(".monospaced").font(.monospaced)
-					Label(_sampleText).font(.monospaced).truncatesLastVisibleLine(true).lineBreakMode(.byTruncatingTail).horizontalCompressionResistancePriority(.init(10))
+					Label(".monospacedDigit").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.monospacedDigit).applyStyle(LayoutStyle.shared)
+				}
+				GridRow(rowAlignment: .firstBaseline) {
+					Label(".monospaced").dynamicFont(.monospaced)
+					Label(_sampleText).dynamicFont(.monospaced).applyStyle(LayoutStyle.shared)
 				}
 			}
 			.horizontalHuggingPriority(10)
@@ -143,11 +156,11 @@ class FontBuilderController: ElementController {
 			
 			HStack {
 				Button(title: "Pressable!")
-				Button(title: "Pressable!").font(.system.bold())
-				Button(title: "Pressable!").font(.system.italic())
+				Button(title: "Pressable!").dynamicFont(.system.bold())
+				Button(title: "Pressable!").dynamicFont(.system.italic())
 				VDivider()
-				CheckBox("Checkbox!").font(.system.italic())
-				CheckBox("Checkbox!").font(.system.bold())
+				CheckBox("Checkbox!").dynamicFont(.system.italic())
+				CheckBox("Checkbox!").dynamicFont(.system.bold())
 			}
 			.hugging(h: 10)
 		}

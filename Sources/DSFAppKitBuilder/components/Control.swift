@@ -37,6 +37,10 @@ public class Control: Element {
 	deinit {
 		self.isEnabledBinder?.deregister(self)
 		self.fontBinder?.deregister(self)
+
+		if self.hasDynamicFont {
+			DynamicFontService.shared.deregister(self)
+		}
 	}
 
 	@objc open func onControlSizeChange(_ controlSize: NSControl.ControlSize) {
@@ -56,6 +60,7 @@ public class Control: Element {
 	private var isEnabledBinder: ValueBinder<Bool>?
 	private var fontBinder: ValueBinder<NSFont?>?
 	private var control: NSControl { return view() as! NSControl }
+	private var hasDynamicFont: Bool = false
 }
 
 // MARK: - Modifiers
@@ -92,20 +97,46 @@ public extension Control {
 
 public extension Control {
 	/// Set the enabled state for the control
-	func isEnabled(_ isEnabled: Bool) -> Self {
+	@discardableResult func isEnabled(_ isEnabled: Bool) -> Self {
 		control.isEnabled = isEnabled
 		return self
 	}
 
 	/// The font used to draw text in the receiver’s cell.
-	func font(_ font: NSFont?) -> Self {
+	@discardableResult func font(_ font: NSFont?) -> Self {
 		self.control.font = font
 		return self
 	}
 
 	/// The font used to draw text in the receiver’s cell.
-	func font(_ font: AKBFont) -> Self {
+	@discardableResult func font(_ font: AKBFont) -> Self {
 		self.control.font = font.font
+		return self
+	}
+
+	/// A dynamic font based on a font template
+	@discardableResult func dynamicFont(_ font: AKBFont) -> Self {
+		let dFont = DynamicFontService.shared.dynamicFont(for: font) ?? DynamicFontService.shared.add(font)
+		return self.dynamicFont(dFont)
+	}
+
+	/// Set the font to be a dynamic font
+	@discardableResult func dynamicFont(_ font: DynamicFont?) -> Self {
+		guard let font = font else { return self }
+		DynamicFontService.shared.register(self, font: font) { [weak self] newFont in
+			guard let control = self?.control else { return }
+			control.font = newFont
+			control.needsLayout = true
+			control.needsUpdateConstraints = true
+			control.needsDisplay = true
+			control.invalidateIntrinsicContentSize()
+
+			control.layout()
+
+			// If we're embedded in a collection view, make sure we invalidate the layout
+			control.enclosingCollectionView()?.invalidateCollectionViewLayout()
+		}
+		self.hasDynamicFont = true
 		return self
 	}
 }
