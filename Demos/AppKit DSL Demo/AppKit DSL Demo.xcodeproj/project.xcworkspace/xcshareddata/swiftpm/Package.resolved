@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "AppKitFocusOverlay",
+        "repositoryURL": "https://github.com/dagronf/AppKitFocusOverlay",
+        "state": {
+          "branch": null,
+          "revision": "a594d2c545166d7902aa1c4d60ecfec12c465dc2",
+          "version": "0.7.0"
+        }
+      },
+      {
         "package": "Defaults",
         "repositoryURL": "https://github.com/sindresorhus/Defaults",
         "state": {
@@ -89,6 +98,15 @@
           "branch": null,
           "revision": "faa38ac769f8efdc73270730e56086775a26f655",
           "version": "0.11.0"
+        }
+      },
+      {
+        "package": "HotKey",
+        "repositoryURL": "https://github.com/dagronf/HotKey",
+        "state": {
+          "branch": null,
+          "revision": "c13662730cb5bc28de4a799854bbb018a90649bf",
+          "version": "0.1.3"
         }
       }
     ]

@@ -74,6 +74,7 @@
 		23C818882993841A00816107 /* TokenFieldBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C818872993841A00816107 /* TokenFieldBuilder.swift */; };
 		23CC72C22999BE11004EB3C4 /* PlainTextViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CC72C12999BE11004EB3C4 /* PlainTextViewBuilder.swift */; };
 		23E50AF0299C5144005038CE /* FlowLayoutBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E50AEF299C5144005038CE /* FlowLayoutBuilder.swift */; };
+		23E5722829BAACC7005B57BB /* AppKitFocusOverlay in Frameworks */ = {isa = PBXBuildFile; productRef = 23E5722729BAACC7005B57BB /* AppKitFocusOverlay */; };
 		23EBC53626DDA0CC001A861E /* GridDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC53526DDA0CC001A861E /* GridDSL.swift */; };
 		23F884852977451600ADC53D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F884842977451600ADC53D /* AppDelegate.swift */; };
 		23F884872977451600ADC53D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F884862977451600ADC53D /* ViewController.swift */; };
@@ -186,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23A9024729A6BB4F00D45732 /* Defaults in Frameworks */,
+				23E5722829BAACC7005B57BB /* AppKitFocusOverlay in Frameworks */,
 				237E220529A0C7A2002F3856 /* DSFToolbar in Frameworks */,
 				235CBB3A298B99D800D3D4DE /* DSFAppKitBuilder in Frameworks */,
 			);
@@ -366,6 +368,7 @@
 				235CBB39298B99D800D3D4DE /* DSFAppKitBuilder */,
 				237E220429A0C7A2002F3856 /* DSFToolbar */,
 				23A9024629A6BB4F00D45732 /* Defaults */,
+				23E5722729BAACC7005B57BB /* AppKitFocusOverlay */,
 			);
 			productName = "AppKitBuilder TestBed";
 			productReference = 235CBB28298B99A300D3D4DE /* AppKitBuilder TestBed.app */;
@@ -428,6 +431,7 @@
 			packageReferences = (
 				237E74D5282C73040069846A /* XCRemoteSwiftPackageReference "Defaults" */,
 				23FEE85829790DD900E4497D /* XCRemoteSwiftPackageReference "DSFToolbar" */,
+				23E5722629BAACC7005B57BB /* XCRemoteSwiftPackageReference "AppKitFocusOverlay" */,
 			);
 			productRefGroup = 2304027626AF7E5F002016FD /* Products */;
 			projectDirPath = "";
@@ -955,6 +959,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		23E5722629BAACC7005B57BB /* XCRemoteSwiftPackageReference "AppKitFocusOverlay" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dagronf/AppKitFocusOverlay";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.7.0;
+			};
+		};
 		23FEE85829790DD900E4497D /* XCRemoteSwiftPackageReference "DSFToolbar" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dagronf/DSFToolbar";
@@ -983,6 +995,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 237E74D5282C73040069846A /* XCRemoteSwiftPackageReference "Defaults" */;
 			productName = Defaults;
+		};
+		23E5722729BAACC7005B57BB /* AppKitFocusOverlay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 23E5722629BAACC7005B57BB /* XCRemoteSwiftPackageReference "AppKitFocusOverlay" */;
+			productName = AppKitFocusOverlay;
 		};
 		23F88491297745DD00ADC53D /* DSFAppKitBuilder */ = {
 			isa = XCSwiftPackageProductDependency;
