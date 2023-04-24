@@ -113,7 +113,7 @@ struct SearchFieldBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				SearchFieldBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}

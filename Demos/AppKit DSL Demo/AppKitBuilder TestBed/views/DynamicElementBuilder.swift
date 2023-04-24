@@ -82,7 +82,7 @@ struct ElementViewBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				DynamicElementBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}

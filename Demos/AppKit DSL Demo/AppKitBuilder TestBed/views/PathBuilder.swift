@@ -152,7 +152,7 @@ struct PathBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				PathBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}

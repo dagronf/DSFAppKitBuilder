@@ -363,7 +363,7 @@ class ButtonBuilderController: ElementController {
 				}
 				.columnFormatting(xPlacement: .center, atColumn: 1)
 
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.hugging(h: 10)
 		}

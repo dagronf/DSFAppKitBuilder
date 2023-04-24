@@ -99,7 +99,7 @@ struct GridBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				GridBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}

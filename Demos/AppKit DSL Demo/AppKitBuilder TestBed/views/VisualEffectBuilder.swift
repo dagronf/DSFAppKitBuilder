@@ -143,7 +143,7 @@ struct VisualEffectBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				VisualEffectBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}

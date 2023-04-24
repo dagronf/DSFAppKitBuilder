@@ -72,15 +72,6 @@
           "revision": "faa38ac769f8efdc73270730e56086775a26f655",
           "version": "0.11.0"
         }
-      },
-      {
-        "package": "Repeat",
-        "repositoryURL": "https://github.com/dagronf/Repeat",
-        "state": {
-          "branch": null,
-          "revision": "9df757d0936c15dfd9d01067766fab87e927f838",
-          "version": "0.6.0"
-        }
       }
     ]
   },

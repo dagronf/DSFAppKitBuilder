@@ -100,7 +100,7 @@ struct ColorWellBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				ColorWellBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}

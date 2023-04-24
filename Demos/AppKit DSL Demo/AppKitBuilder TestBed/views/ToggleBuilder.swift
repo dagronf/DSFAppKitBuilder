@@ -151,7 +151,7 @@ struct ToggleBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				ToggleBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}

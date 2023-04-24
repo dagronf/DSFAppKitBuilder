@@ -121,7 +121,7 @@ struct FlowLayoutBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				FlowLayoutBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}

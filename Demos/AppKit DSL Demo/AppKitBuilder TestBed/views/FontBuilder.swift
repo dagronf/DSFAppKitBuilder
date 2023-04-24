@@ -175,7 +175,7 @@ struct FontBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				FontBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}

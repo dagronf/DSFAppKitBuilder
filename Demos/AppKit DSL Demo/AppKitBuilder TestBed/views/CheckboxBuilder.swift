@@ -152,7 +152,7 @@ struct CheckboxBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				CheckboxBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}

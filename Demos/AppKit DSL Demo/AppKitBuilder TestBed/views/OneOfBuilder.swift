@@ -98,7 +98,7 @@ struct OneOfBuilderPreviews: PreviewProvider {
 		SwiftUI.Group {
 			VStack {
 				OneOfBuilder().build().body
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 			.SwiftUIPreview()
 		}
