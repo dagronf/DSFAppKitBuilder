@@ -358,6 +358,7 @@ TextField()
 | `SearchField`      | An `NSSearchField` wrapper |
 | `SecureTextField`  | An `NSSecureTextField` wrapper |
 | `Segmented`        | An `NSSegmentedControl` wrapper |
+| `Shape`            | A view that displays a CGPath |
 | `Slider`           | An `NSSlider` wrapper |
 | `Stepper`          | An `NSStepper` wrapper |
 | `Switch`           | An `NSSwitch` wrapper |
@@ -376,6 +377,7 @@ TextField()
 | `DynamicElement`   | A hot-swappable element which displays the view contained in a `ValueBinder` |
 | `Flow`             | An element that is a collection of elements that flow across, then down |
 | `Grid`             | An `NSGridView` wrapper |
+| `List`             | A 'list' style element which builds its content from an array of elements and dynamically updates its content as the array of elements change |
 | `HStack`           | A horizontal stack    |
 | `VStack`           | A vertical stack      |
 | `ZStack`           | Layer multiple Elements on top of each other |

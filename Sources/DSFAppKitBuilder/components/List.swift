@@ -27,7 +27,6 @@
 import AppKit
 import DSFValueBinders
 
-
 /// A 'list' style element which builds its content from an array of elements and dynamically
 /// updates its content as the array of elements change
 ///

@@ -27,10 +27,21 @@
 import AppKit
 import DSFValueBinders
 
+/// A view that displays a CGPath
+///
+/// ```swift
+///   DSFAppKitBuilder.Shape(path: CGPath(ellipseIn: CGRect(x: 0, y: 0, width: 32, height: 32), transform: nil))
+///      .fillColor(.red)
+///
+/// ```
 public class Shape: Element {
-	let path: CGPath
+	/// Create a shape with an NSBezierPath
+	public convenience init(path: NSBezierPath) {
+		self.init(path: path.cgPath)
+	}
+
+	/// Create a shape with a CGPath
 	public init(path: CGPath) {
-		self.path = path
 		self.content.path = path
 		super.init()
 
@@ -40,9 +51,29 @@ public class Shape: Element {
 		self.size(width: bounds.width, height: bounds.height)
 	}
 
+	/// Create a shape that displays a dynamic CGPath
+	convenience public init(path: ValueBinder<CGPath>) {
+		self.init(path: path.wrappedValue)
+		self._path = path
+		path.register(self) { [weak self] newValue in
+			guard let `self` = self else { return }
+			self.content.path = newValue
+			let bounds = newValue.boundingBoxOfPath
+			self.size(width: bounds.width, height: bounds.height)
+		}
+	}
+
+	deinit {
+		if let path = self._path {
+			path.deregister(self)
+			self._path = nil
+		}
+	}
+
 	override public func view() -> NSView { return self.content }
 	private let content = ShapeView()
 
+	private var _path: ValueBinder<CGPath>?
 	private var _fillColor: NSColor = .textBackgroundColor
 	private var _strokeColor: NSColor = .textColor
 }
@@ -50,19 +81,22 @@ public class Shape: Element {
 public extension Shape {
 	/// Convenience for creating an ellipse shape
 	@inlinable static func Ellipse(width: CGFloat, height: CGFloat) -> Shape {
-		Shape.init(path: CGPath(ellipseIn: CGRect(x: 0, y: 0, width: width, height: height), transform: nil))
+		Shape(path: CGPath(ellipseIn: CGRect(x: 0, y: 0, width: width, height: height), transform: nil))
 	}
+
 	/// Convenience for creating a circle shape
 	@inlinable static func Circle(_ dimension: CGFloat) -> Shape {
 		Self.Ellipse(width: dimension, height: dimension)
 	}
+
 	/// Convenience for creating a round rect shape
 	@inlinable static func RoundedRect(width: CGFloat, height: CGFloat, cornerRadius: CGFloat) -> Shape {
 		let pth = CGPath(
 			roundedRect: CGRect(x: 0, y: 0, width: width, height: height),
 			cornerWidth: min(width / 2, cornerRadius),
 			cornerHeight: min(height / 2, cornerRadius),
-			transform: nil)
+			transform: nil
+		)
 		return Shape(path: pth)
 	}
 }
@@ -132,10 +166,9 @@ public extension Shape {
 }
 
 private extension Shape {
-
 	private func syncColors() {
-		self.content.shape.fillColor = _fillColor.cgColor
-		self.content.shape.strokeColor = _strokeColor.cgColor
+		self.content.shape.fillColor = self._fillColor.cgColor
+		self.content.shape.strokeColor = self._strokeColor.cgColor
 	}
 
 	class ShapeView: NSView {
