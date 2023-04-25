@@ -35,6 +35,9 @@ public class Shape: Element {
 		super.init()
 
 		self.receiveThemeNotifications = true
+
+		let bounds = path.boundingBoxOfPath
+		self.size(width: bounds.width, height: bounds.height)
 	}
 
 	override public func view() -> NSView { return self.content }
