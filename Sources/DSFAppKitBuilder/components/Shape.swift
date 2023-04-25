@@ -48,6 +48,26 @@ public class Shape: Element {
 }
 
 public extension Shape {
+	/// Convenience for creating an ellipse shape
+	@inlinable static func Ellipse(width: CGFloat, height: CGFloat) -> Shape {
+		Shape.init(path: CGPath(ellipseIn: CGRect(x: 0, y: 0, width: width, height: height), transform: nil))
+	}
+	/// Convenience for creating a circle shape
+	@inlinable static func Circle(_ dimension: CGFloat) -> Shape {
+		Self.Ellipse(width: dimension, height: dimension)
+	}
+	/// Convenience for creating a round rect shape
+	@inlinable static func RoundedRect(width: CGFloat, height: CGFloat, cornerRadius: CGFloat) -> Shape {
+		let pth = CGPath(
+			roundedRect: CGRect(x: 0, y: 0, width: width, height: height),
+			cornerWidth: min(width / 2, cornerRadius),
+			cornerHeight: min(height / 2, cornerRadius),
+			transform: nil)
+		return Shape(path: pth)
+	}
+}
+
+public extension Shape {
 	/// The fill color
 	@discardableResult func fillColor(_ color: NSColor, _ fillRule: CAShapeLayerFillRule = .nonZero) -> Self {
 		self._fillColor = color
