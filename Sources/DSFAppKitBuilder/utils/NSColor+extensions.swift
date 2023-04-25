@@ -99,3 +99,10 @@ extension NSColor {
 		return defaultColor
 	}
 }
+
+extension NSColor {
+	/// Create an NSColor from an optional CGColor
+	@inlinable @inline(__always) static func from(_ color: CGColor?) -> NSColor? {
+		using(color) { NSColor(cgColor: $0) } ?? nil
+	}
+}

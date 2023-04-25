@@ -204,7 +204,7 @@ public extension Element {
 	///   - opacity: The opacity of the layer’s shadow
 	/// - Returns: Self
 	@discardableResult
-	func shadow(
+	@objc func shadow(
 		radius: CGFloat = 3,
 		offset: CGSize = CGSize(width: 0, height: -3),
 		color: NSColor = .shadowColor,

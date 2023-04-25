@@ -145,6 +145,11 @@ public extension Label {
 		return self
 	}
 
+	/// The color of the text field’s content as a CGColor
+	@inlinable func textColor(_ textColor: CGColor?) -> Self {
+		self.textColor(NSColor.from(textColor))
+	}
+
 	/// A Boolean value that determines whether the user can select the content of the text field.
 	func isSelectable(_ s: Bool) -> Self {
 		self.label.isSelectable = s

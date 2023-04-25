@@ -106,14 +106,14 @@ extension List {
 import DSFMenuBuilder
 import SwiftUI
 
-let items = ValueBinder([0,1,2,3,4,5,6,7,8,9])
+private let __debugItems = ValueBinder([0,1,2,3,4,5,6,7,8,9])
 
 @available(macOS 10.15, *)
 struct ListPreviews: PreviewProvider {
 	static var previews: some SwiftUI.View {
 		SwiftUI.Group {
 			VStack {
-				DSFAppKitBuilder.List(items) { item in
+				DSFAppKitBuilder.List(__debugItems) { item in
 					Label("Noodle \(item)")
 				}
 			}

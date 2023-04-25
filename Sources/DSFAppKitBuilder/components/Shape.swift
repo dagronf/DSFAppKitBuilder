@@ -35,25 +35,45 @@ public class Shape: Element {
 		super.init()
 	}
 
-	public override func view() -> NSView { return self.content }
+	override public func view() -> NSView { return self.content }
 	private let content = ShapeView()
 }
 
 public extension Shape {
 	/// The fill color
-	func fillColor(_ color: CGColor, _ fillRule: CAShapeLayerFillRule = .nonZero) -> Self {
+	@discardableResult func fillColor(_ color: CGColor, _ fillRule: CAShapeLayerFillRule = .nonZero) -> Self {
 		self.content.shape.fillColor = color
 		self.content.shape.fillRule = fillRule
 		return self
 	}
+
 	/// The stroke color
-	func strokeColor(_ color: CGColor) -> Self {
+	@discardableResult func strokeColor(_ color: CGColor) -> Self {
 		self.content.shape.strokeColor = color
 		return self
 	}
+
 	/// The line width
-	func lineWidth(_ width: CGFloat) -> Self {
+	@discardableResult func lineWidth(_ width: CGFloat) -> Self {
 		self.content.shape.lineWidth = width
+		return self
+	}
+
+	/// A drop shadow for the path
+	@discardableResult override func shadow(
+		radius: CGFloat = 3,
+		offset: CGSize = CGSize(width: 0, height: -3),
+		color: NSColor = .shadowColor,
+		opacity: CGFloat = 0.5
+	) -> Self {
+		self.content.layer?.masksToBounds = false
+		using(self.content.shape) {
+			$0.shadowRadius = radius
+			$0.shadowOffset = offset
+			$0.shadowColor = color.cgColor
+			$0.shadowOpacity = Float(opacity)
+			$0.masksToBounds = false
+		}
 		return self
 	}
 }
@@ -71,7 +91,7 @@ private extension Shape {
 		let shape = CAShapeLayer()
 		var path: CGPath? {
 			didSet {
-				self.shape.path = path
+				self.shape.path = self.path
 			}
 		}
 
@@ -79,12 +99,14 @@ private extension Shape {
 			super.init(frame: .zero)
 			self.translatesAutoresizingMaskIntoConstraints = false
 			self.wantsLayer = true
-			self.layer!.addSublayer(shape)
-
+			self.layer!.addSublayer(self.shape)
 		}
+
+		@available(*, unavailable)
 		required init?(coder: NSCoder) {
 			fatalError("init(coder:) has not been implemented")
 		}
+
 		override func layout() {
 			super.layout()
 			self.shape.frame = self.bounds
