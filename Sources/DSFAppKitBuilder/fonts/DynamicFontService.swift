@@ -67,13 +67,16 @@ public class DynamicFontService {
 		self.currentScale.wrappedValue = fraction
 	}
 
-	// The current scale binder
+	/// The current scale binder
 	public private(set) lazy var currentScale = ValueBinder<Double>(1.0) { [weak self] newValue in
 		guard let `self` = self else { return }
 		self.isUpdating.whileLocked {
 			self._scale(by: newValue)
 		}
 	}
+
+	/// Current scale value
+	@inlinable public var currentScaleValue: Double { self.currentScale.wrappedValue }
 
 	// The scalable fonts
 	private lazy var fonts: [DynamicFont] = DynamicFont.DefaultFonts
