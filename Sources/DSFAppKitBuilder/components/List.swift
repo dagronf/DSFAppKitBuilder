@@ -27,7 +27,26 @@
 import AppKit
 import DSFValueBinders
 
+
+/// A 'list' style element which builds its content from an array of elements and dynamically
+/// updates its content as the array of elements change
+///
+/// ```swift
+/// let items = ValueBinder([0,1,2,3,4,5,6,7,8,9])
+/// …
+///    List(self.items) { item in
+///       HStack {
+///          Text("Item \(item)")
+///          Button(...)
+///       }
+///    }
+///
+/// ```
 public class List<ListItem>: Element {
+	/// Creates a list element
+	/// - Parameters:
+	///   - elements: The elements to bind to the list
+	///   - listItemContent: The builder function operating on each item in the list
 	public init(
 		_ elements: ValueBinder<[ListItem]>,
 		_ listItemContent: @escaping (ListItem) -> Element)
@@ -58,7 +77,7 @@ public class List<ListItem>: Element {
 	private var currentElements: [Element] = []
 }
 
-extension List {
+public extension List {
 	/// The inset for the list
 	func edgeInsets(_ edgeInsets: NSEdgeInsets) -> Self {
 		self.stack.edgeInsets = edgeInsets
@@ -78,7 +97,7 @@ extension List {
 	}
 }
 
-extension List {
+private extension List {
 	func updateItems() {
 		assert(Thread.isMainThread)
 		self.removeAllItems()
@@ -93,12 +112,11 @@ extension List {
 		}
 	}
 
-	private func removeAllItems() {
+	func removeAllItems() {
 		self.stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
 		self.currentElements = []
 	}
 }
-
 
 // MARK: - SwiftUI previews
 

@@ -56,24 +56,24 @@ class ListBuilderController: ElementController {
 					}
 				}
 				.padding(4)
-				.backgroundColor(NSColor.secondaryLabelColor)
+				.backgroundColor(NSColor.black.withAlphaComponent(0.1))
 
 				List(self.items) { item in
 					VStack {
 						HStack {
 							DSFAppKitBuilder.Shape(path: CGPath(ellipseIn: CGRect(x: 1, y: 1, width: 31, height: 31), transform: nil))
 								.fillColor(CGColor.random())
-								.strokeColor(NSColor.textColor.cgColor)
+								.strokeColor(NSColor.textColor)
 								.lineWidth(0.5)
 								.shadow(radius: 1, offset: CGSize(width: 0.5, height: -1))
 								.size(width: 33, height: 33)
 							VStack(spacing: 0, alignment: .leading) {
 								Label("Noodle \(item)")
 									.horizontalHuggingPriority(10)
-									.font(.title2)
+									.dynamicFont(.title2)
 								Label("Description")
 									.textColor(NSColor.disabledControlTextColor)
-									.font(.caption1.italic())
+									.dynamicFont(.caption1.italic())
 									.horizontalHuggingPriority(10)
 							}
 							EmptyView()

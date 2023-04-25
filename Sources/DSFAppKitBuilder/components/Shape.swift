@@ -33,24 +33,41 @@ public class Shape: Element {
 		self.path = path
 		self.content.path = path
 		super.init()
+
+		self.receiveThemeNotifications = true
 	}
 
 	override public func view() -> NSView { return self.content }
 	private let content = ShapeView()
+
+	private var _fillColor: NSColor = .textBackgroundColor
+	private var _strokeColor: NSColor = .textColor
 }
 
 public extension Shape {
 	/// The fill color
-	@discardableResult func fillColor(_ color: CGColor, _ fillRule: CAShapeLayerFillRule = .nonZero) -> Self {
-		self.content.shape.fillColor = color
+	@discardableResult func fillColor(_ color: NSColor, _ fillRule: CAShapeLayerFillRule = .nonZero) -> Self {
+		self._fillColor = color
 		self.content.shape.fillRule = fillRule
+		self.syncColors()
+		return self
+	}
+
+	/// The fill color
+	@discardableResult func fillColor(_ color: CGColor, _ fillRule: CAShapeLayerFillRule = .nonZero) -> Self {
+		self.fillColor(NSColor(cgColor: color) ?? .textBackgroundColor, fillRule)
+	}
+
+	/// The stroke color
+	@discardableResult func strokeColor(_ color: NSColor) -> Self {
+		self._strokeColor = color
+		self.syncColors()
 		return self
 	}
 
 	/// The stroke color
 	@discardableResult func strokeColor(_ color: CGColor) -> Self {
-		self.content.shape.strokeColor = color
-		return self
+		self.strokeColor(NSColor(cgColor: color) ?? .textColor)
 	}
 
 	/// The line width
@@ -76,6 +93,11 @@ public extension Shape {
 		}
 		return self
 	}
+
+	override func onThemeChange() {
+		super.onThemeChange()
+		self.syncColors()
+	}
 }
 
 public extension Shape {
@@ -87,6 +109,12 @@ public extension Shape {
 }
 
 private extension Shape {
+
+	private func syncColors() {
+		self.content.shape.fillColor = _fillColor.cgColor
+		self.content.shape.strokeColor = _strokeColor.cgColor
+	}
+
 	class ShapeView: NSView {
 		let shape = CAShapeLayer()
 		var path: CGPath? {
