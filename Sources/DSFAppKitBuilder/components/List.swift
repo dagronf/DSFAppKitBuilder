@@ -33,12 +33,15 @@ import DSFValueBinders
 /// ```swift
 /// let items = ValueBinder([0,1,2,3,4,5,6,7,8,9])
 /// …
-///    List(self.items) { item in
+///    List(self.items) { [weak self] item in
 ///       HStack {
 ///          Text("Item \(item)")
 ///          Button(...)
 ///       }
 ///    }
+///
+/// Note the use of `[weak self]` in the initial `List` block - it's important that the self is held weakly
+/// throughout the list builder block.
 ///
 /// ```
 public class List<ListItem>: Element {
@@ -70,7 +73,9 @@ public class List<ListItem>: Element {
 		let v = NSStackView()
 		v.translatesAutoresizingMaskIntoConstraints = false
 		v.orientation = .vertical
-		v.alignment = .leading
+		v.alignment = .width
+		v.setHuggingPriority(.init(10), for: .horizontal)
+		v.setContentHuggingPriority(.init(10), for: .horizontal)
 		return v
 	}()
 	private var currentElements: [Element] = []
@@ -78,19 +83,24 @@ public class List<ListItem>: Element {
 
 public extension List {
 	/// The inset for the list
-	func edgeInsets(_ edgeInsets: NSEdgeInsets) -> Self {
+	@discardableResult func edgeInsets(_ edgeInsets: NSEdgeInsets) -> Self {
 		self.stack.edgeInsets = edgeInsets
 		return self
 	}
 
+	@discardableResult func edgeInsets(_ edgeInset: CGFloat) -> Self {
+		self.stack.edgeInsets = NSEdgeInsets(edgeInset: edgeInset)
+		return self
+	}
+
 	/// The minimum spacing, in points, between adjacent views in the list.
-	func spacing(_ spacing: CGFloat) -> Self {
+	@discardableResult func spacing(_ spacing: CGFloat) -> Self {
 		self.stack.spacing = spacing
 		return self
 	}
 
 	/// The view alignment within the list.
-	func alignment(_ alignment: NSLayoutConstraint.Attribute) -> Self {
+	@discardableResult func alignment(_ alignment: NSLayoutConstraint.Attribute) -> Self {
 		self.stack.alignment = alignment
 		return self
 	}

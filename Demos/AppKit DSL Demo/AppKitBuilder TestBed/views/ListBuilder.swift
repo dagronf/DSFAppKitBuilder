@@ -37,7 +37,7 @@ class ListBuilderController: ElementController {
 	}
 
 	lazy var body: Element = {
-		Group(layoutType: .center) {
+		Group(layoutType: .pinEdges) {
 			VStack {
 
 				HStack {
@@ -54,18 +54,22 @@ class ListBuilderController: ElementController {
 						self.listSize += (self.listSize > 1) ? -1 : 0
 						self.rebuildSequence()
 					}
+					EmptyView()
 				}
 				.padding(4)
 				.backgroundColor(NSColor.black.withAlphaComponent(0.1))
 
-				List(self.items) { item in
+				List(self.items) { [weak self] item in
 					VStack {
 						HStack {
-							DSFAppKitBuilder.Shape(path: CGPath(ellipseIn: CGRect(x: 0, y: 0, width: 32, height: 32), transform: nil))
+							DSFAppKitBuilder.Shape.Circle(32)
 								.fillColor(CGColor.random())
 								.strokeColor(NSColor.textColor)
 								.lineWidth(0.5)
 								.shadow(radius: 1, offset: CGSize(width: 0.5, height: -1))
+								.onClickGesture {
+									Swift.print("clicked \(item)!")
+								}
 							VStack(spacing: 0, alignment: .leading) {
 								Label("Noodle \(item)")
 									.horizontalHuggingPriority(10)
@@ -76,20 +80,21 @@ class ListBuilderController: ElementController {
 									.horizontalHuggingPriority(10)
 							}
 							EmptyView()
-								.width(100)
 							Button(title: "Show") { [weak self] _ in
+								guard let `self` = self else { return }
 								Swift.print("Pressed \(item)")
-								self?.showItem = item
-								self?.showSheet.wrappedValue = true
+								self.showItem = item
+								self.showSheet.wrappedValue = true
 							}
 						}
 						HDivider()
 					}
 				}
+				.edgeInsets(NSEdgeInsets(edgeInset: 12))
 			}
-			.hugging(h: 10)
 		}
-		.alert(isVisible: self.showSheet, alertBuilder: {
+		.alert(isVisible: self.showSheet, alertBuilder: { [weak self] in
+			guard let `self` = self else { return NSAlert() }
 			let a = NSAlert()
 			a.messageText = "Noodle \(self.showItem)"
 			return a
