@@ -41,7 +41,7 @@ open class DSFAppKitBuilderViewController: NSViewController {
 		self.view = self._displayElement?.view() ?? NSView()
 	}
 
-	public override func loadView() {
+	open override func loadView() {
 		self.reloadBody()
 	}
 

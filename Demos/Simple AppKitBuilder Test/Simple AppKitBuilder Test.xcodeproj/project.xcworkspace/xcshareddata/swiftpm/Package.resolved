@@ -38,6 +38,15 @@
         }
       },
       {
+        "package": "DSFSearchField",
+        "repositoryURL": "https://github.com/dagronf/DSFSearchField",
+        "state": {
+          "branch": null,
+          "revision": "d2dac5e143a8e5ce49f9f12412932684072089ba",
+          "version": "2.0.0"
+        }
+      },
+      {
         "package": "DSFStepperView",
         "repositoryURL": "https://github.com/dagronf/DSFStepperView",
         "state": {
@@ -51,8 +60,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFToggleButton",
         "state": {
           "branch": null,
-          "revision": "17e140dc686e3622bba7a8b6a68495338c293b59",
-          "version": "7.0.0"
+          "revision": "4d7b97d0412c6ce5371fe74686ffa9383360731b",
+          "version": "7.0.3"
         }
       },
       {
@@ -60,8 +69,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFValueBinders",
         "state": {
           "branch": null,
-          "revision": "1cedd5760b0c2c3abff94e65c7af938206d9cdb8",
-          "version": "0.9.1"
+          "revision": "faa38ac769f8efdc73270730e56086775a26f655",
+          "version": "0.11.0"
         }
       }
     ]
