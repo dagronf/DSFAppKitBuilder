@@ -30,7 +30,6 @@ import AppKit
 extension Element: NSGestureRecognizerDelegate {
 	public func onClickGesture(clicksRequired: Int = 1, _ block: @escaping () -> Void) -> Self {
 		let cl = NSClickGestureRecognizer()
-		cl.delegate = self
 		cl.numberOfClicksRequired = clicksRequired
 		cl.actionBlock = { block() }
 		self.view().addGestureRecognizer(cl)

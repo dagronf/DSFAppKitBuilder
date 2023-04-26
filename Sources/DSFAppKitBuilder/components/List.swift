@@ -47,16 +47,23 @@ import DSFValueBinders
 public class List<ListItem>: Element {
 	/// Creates a list element
 	/// - Parameters:
+	///   - spacing: The spacing to use between list elements
+	///   - useAlternatingRowBackground: If true, alternates the background color of each row
 	///   - elements: The elements to bind to the list
 	///   - listItemContent: The builder function operating on each item in the list
 	public init(
+		spacing: CGFloat? = nil,
+		useAlternatingRowBackground: Bool = true,
 		_ elements: ValueBinder<[ListItem]>,
 		_ listItemContent: @escaping (ListItem) -> Element)
 	{
+		self.useAlternatingRowBackground = useAlternatingRowBackground
 		self.elements = elements
 		self.mapFunc = listItemContent
 
 		super.init()
+
+		if let spacing = spacing { self.spacing(spacing) }
 
 		elements.register { [weak self] newValue in
 			DispatchQueue.main.async {
@@ -78,6 +85,8 @@ public class List<ListItem>: Element {
 		v.setContentHuggingPriority(.init(10), for: .horizontal)
 		return v
 	}()
+	private let useAlternatingRowBackground: Bool
+	private var alternatingColors: (NSColor, NSColor)?
 	private var currentElements: [Element] = []
 }
 
@@ -104,6 +113,12 @@ public extension List {
 		self.stack.alignment = alignment
 		return self
 	}
+
+	/// The colors to use when drawing the row backgrounds
+	@discardableResult func rowColors(_ c0: NSColor, _ c1: NSColor) -> Self {
+		self.alternatingColors = (c0, c1)
+		return self
+	}
 }
 
 private extension List {
@@ -111,12 +126,34 @@ private extension List {
 		assert(Thread.isMainThread)
 		self.removeAllItems()
 		let content = self.elements.wrappedValue
-		content.forEach { item in
-			let element = self.mapFunc(item)
-			let v = element.view()
-			if !(v is NothingView) {
-				stack.addArrangedSubview(v)
-				self.currentElements.append(element)
+
+		self.view().usingEffectiveAppearance {
+
+			var rowState = false
+
+			content.forEach { item in
+				// Generate the display element for the item
+				let element = self.mapFunc(item)
+
+				if self.useAlternatingRowBackground {
+					if let alternatingColors = alternatingColors {
+						element.backgroundColor(rowState ? alternatingColors.0 : alternatingColors.1)
+					}
+					else {
+						if #available(macOS 10.14, *) {
+							element.backgroundColor(.alternatingContentBackgroundColors[rowState ? 0 : 1])
+						} else {
+							element.backgroundColor(.controlAlternatingRowBackgroundColors[rowState ? 0 : 1])
+						}
+					}
+				}
+
+				let v = element.view()
+				if !(v is NothingView) {
+					stack.addArrangedSubview(v)
+					self.currentElements.append(element)
+					rowState.toggle()
+				}
 			}
 		}
 	}

@@ -21,6 +21,8 @@ public class ListBuilder: ViewTestBed {
 	}
 }
 
+private let __descriptionFont = DynamicFontService.shared.add(.caption1.italic())
+
 class ListBuilderController: ElementController {
 	let items = ValueBinder([0,1,2,3,4,5,6,7,8,9])
 	let showSheet = ValueBinder(false)
@@ -59,39 +61,38 @@ class ListBuilderController: ElementController {
 				.padding(4)
 				.backgroundColor(NSColor.black.withAlphaComponent(0.1))
 
-				List(self.items) { [weak self] item in
-					VStack {
-						HStack {
-							DSFAppKitBuilder.Shape.Circle(32)
-								.fillColor(CGColor.random())
-								.strokeColor(NSColor.textColor)
-								.lineWidth(0.5)
-								.shadow(radius: 1, offset: CGSize(width: 0.5, height: -1))
-								.onClickGesture {
-									Swift.print("clicked \(item)!")
-								}
-							VStack(spacing: 0, alignment: .leading) {
-								Label("Noodle \(item)")
-									.horizontalHuggingPriority(10)
-									.dynamicFont(.title2)
-								Label("Description")
-									.textColor(NSColor.disabledControlTextColor)
-									.dynamicFont(.caption1.italic())
-									.horizontalHuggingPriority(10)
+				List(spacing: 0, self.items) { [weak self] item in
+					HStack {
+						DSFAppKitBuilder.Shape.Circle(32)
+							.fillColor(CGColor.random())
+							.strokeColor(NSColor.textColor)
+							.lineWidth(0.5)
+							.shadow(radius: 1, offset: CGSize(width: 0.5, height: -1))
+							.onClickGesture {
+								Swift.print("clicked \(item)!")
 							}
-							EmptyView()
-							Button(title: "Show") { [weak self] _ in
-								guard let `self` = self else { return }
-								Swift.print("Pressed \(item)")
-								self.showItem = item
-								self.showSheet.wrappedValue = true
-							}
+						VStack(spacing: 0, alignment: .leading) {
+							Label("This is an item - \(item)")
+								.horizontalHuggingPriority(10)
+								.dynamicFont(.title2)
+							Label("Description")
+								.textColor(NSColor.disabledControlTextColor)
+								.dynamicFont(__descriptionFont)
+								.horizontalHuggingPriority(10)
 						}
-						HDivider()
+						EmptyView()
+						Button(title: "Show") { [weak self] _ in
+							guard let `self` = self else { return }
+							Swift.print("Pressed \(item)")
+							self.showItem = item
+							self.showSheet.wrappedValue = true
+						}
 					}
+					.stackPadding(8)
 				}
-				.edgeInsets(NSEdgeInsets(edgeInset: 12))
+				//.rowColors(NSColor.systemPurple, NSColor.systemPink)
 			}
+			.edgeInsets(NSEdgeInsets(edgeInset: 12))
 		}
 		.alert(isVisible: self.showSheet, alertBuilder: { [weak self] in
 			guard let `self` = self else { return NSAlert() }
