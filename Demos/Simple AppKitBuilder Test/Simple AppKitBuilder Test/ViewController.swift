@@ -17,7 +17,7 @@ class ViewController: NSViewController {
 		super.viewDidLoad()
 
 		// Attack the
-		self.primaryView.builder = self.identity // Set our builder as the view's builder
+		self.primaryView.element = self.identity.body // Set our builder as the view's builder
 	}
 }
 

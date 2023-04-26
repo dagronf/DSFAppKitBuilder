@@ -35,9 +35,12 @@ public class Maybe: Element {
 	/// An element IF a condition block returns as true
 	public init(_ condition: @autoclosure () -> Bool, _ element: () -> Element) {
 		if condition() {
-			self.underlyingView = element().view()
+			let e = element()
+			self.underlyingElement = e
+			self.underlyingView = e.view()
 		}
 		else {
+			self.underlyingElement = nil
 			self.underlyingView = NothingView()
 		}
 	}
@@ -45,18 +48,22 @@ public class Maybe: Element {
 	/// An element IF a condition block returns as true
 	public init(_ condition: @autoclosure () -> Bool, _ element: Element) {
 		if condition() {
+			self.underlyingElement = element
 			self.underlyingView = element.view()
 		}
 		else {
+			self.underlyingElement = nil
 			self.underlyingView = NothingView()
 		}
 	}
 
 	/// If the element is non-nil, adds the element to the build, otherwise it is ignored
 	public init(_ element: Element?) {
+		self.underlyingElement = element
 		self.underlyingView = element?.view() ?? NothingView()
 	}
 
 	public override func view() -> NSView { self.underlyingView }
 	private let underlyingView: NSView
+	private let underlyingElement: Element?
 }
