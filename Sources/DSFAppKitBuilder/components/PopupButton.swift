@@ -49,6 +49,7 @@ public class PopupButton: Control {
 	/// Create a PopupButton instance, using DSFMenuBuilder to build the popup button menu content
 	/// - Parameters:
 	///   - pullsDown: A Boolean value indicating whether the button displays a pull-down or pop-up menu.
+	///   - bezelStyle: The bezel style to use
 	///   - builder: The result builder for the popup buttons menu content
 	public convenience init(
 		pullsDown: Bool = false,
@@ -62,22 +63,12 @@ public class PopupButton: Control {
 		)
 	}
 
-	deinit {
-		self.selectionBinder?.deregister(self)
-		self.titleBinder?.deregister(self)
-	}
-
-	// Private
-
-	public override func view() -> NSView { return self.popupButton }
-	fileprivate let popupButton = NSPopUpButton()
-	private let content: [AnyMenuItem]
-
-	private var selectionBinder: ValueBinder<Int>?
-	private var selectionChangeBlock: ((Int) -> Void)?
-	private var titleBinder: ValueBinder<String>?
-
-	internal init(
+	/// Create a PopupButton instance with an array of menu items
+	/// - Parameters:
+	///   - pullsDown: A Boolean value indicating whether the button displays a pull-down or pop-up menu.
+	///   - bezelStyle: The bezel style to use
+	///   - content: The menu items to provide in the popup
+	public init(
 		pullsDown: Bool = false,
 		bezelStyle: NSButton.BezelStyle? = nil,
 		content: [AnyMenuItem]
@@ -97,6 +88,21 @@ public class PopupButton: Control {
 		let menu = Menu(content: content).menu
 		self.popupButton.menu = menu
 	}
+
+	deinit {
+		self.selectionBinder?.deregister(self)
+		self.titleBinder?.deregister(self)
+	}
+
+	// Private
+
+	public override func view() -> NSView { return self.popupButton }
+	fileprivate let popupButton = NSPopUpButton()
+	private let content: [AnyMenuItem]
+
+	private var selectionBinder: ValueBinder<Int>?
+	private var selectionChangeBlock: ((Int) -> Void)?
+	private var titleBinder: ValueBinder<String>?
 }
 
 // MARK: - Modifiers
