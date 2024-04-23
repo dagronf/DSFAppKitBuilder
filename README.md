@@ -347,6 +347,7 @@ TextField()
 | `VDivider`         | A vertical divider element |
 | `EmptyView`        | A spacer view |
 | `Group`            | A element that contains another element |
+| `Image`            | A simple view showing an image |
 | `ImageView`        | An `NSImageView` wrapper |
 | `Label`            | An `NSTextField` wrapper configured as a read-only label |
 | `Link`             | An `NSTextField` displaying a read-only hyperlink |

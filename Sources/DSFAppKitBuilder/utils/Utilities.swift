@@ -114,3 +114,9 @@ extension NSView {
 		return nil
 	}
 }
+
+extension NSImage {
+	@inlinable func cgImage() -> CGImage? {
+		self.cgImage(forProposedRect: nil, context: nil, hints: nil)
+	}
+}
