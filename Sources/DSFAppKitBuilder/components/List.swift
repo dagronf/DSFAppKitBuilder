@@ -33,30 +33,28 @@ import DSFValueBinders
 /// ```swift
 /// let items = ValueBinder([0,1,2,3,4,5,6,7,8,9])
 /// …
-///    List(self.items) { [weak self] item in
-///       HStack {
-///          Text("Item \(item)")
-///          Button(...)
-///       }
+/// List(self.items) { [weak self] item in
+///    HStack {
+///       Text("Item \(item)")
+///       Button(...)
 ///    }
-///
+/// }
+/// ```
 /// Note the use of `[weak self]` in the initial `List` block - it's important that the self is held weakly
 /// throughout the list builder block.
-///
-/// ```
 public class List<ListItem>: Element {
-	/// Creates a list element
+	/// Creates a list element from a binding
 	/// - Parameters:
 	///   - spacing: The spacing to use between list elements
 	///   - useAlternatingRowBackground: If true, alternates the background color of each row
 	///   - elements: The elements to bind to the list
-	///   - listItemContent: The builder function operating on each item in the list
+	///   - listItemContent: The builder function operating on each item in the list to build its display element
 	public init(
 		spacing: CGFloat? = nil,
 		useAlternatingRowBackground: Bool = true,
 		_ elements: ValueBinder<[ListItem]>,
-		_ listItemContent: @escaping (ListItem) -> Element)
-	{
+		_ listItemContent: @escaping (ListItem) -> Element
+	) {
 		self.useAlternatingRowBackground = useAlternatingRowBackground
 		self.elements = elements
 		self.mapFunc = listItemContent
@@ -69,6 +67,29 @@ public class List<ListItem>: Element {
 			DispatchQueue.main.async {
 				self?.updateItems()
 			}
+		}
+	}
+
+	/// Create a list element from a static (non-changing) array of items
+	/// - Parameters:
+	///   - spacing: The spacing to use between list elements
+	///   - useAlternatingRowBackground: If true, alternates the background color of each row
+	///   - elements: The elements to bind to the list
+	///   - listItemContent: The builder function operating on each item in the list to build its display element
+	public init(
+		spacing: CGFloat? = nil,
+		useAlternatingRowBackground: Bool = true,
+		_ elements: [ListItem],
+		_ listItemContent: @escaping (ListItem) -> Element
+	) {
+		self.useAlternatingRowBackground = useAlternatingRowBackground
+		self.mapFunc = listItemContent
+		self.elements = ValueBinder(elements)
+		super.init()
+
+		if let spacing = spacing { self.spacing(spacing) }
+		DispatchQueue.main.async { [weak self] in
+			self?.updateItems()
 		}
 	}
 

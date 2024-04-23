@@ -28,6 +28,8 @@ class ListBuilderController: ElementController {
 	let showSheet = ValueBinder(false)
 	var showItem: Int = 0
 
+	let staticItems = ["one", "two", "three", "four"]
+
 	var listSize = 6
 	func rebuildSequence() {
 		let n = (0 ..< listSize).map { _ in Int.random(in: 0...9) }
@@ -61,6 +63,9 @@ class ListBuilderController: ElementController {
 				.padding(4)
 				.backgroundColor(NSColor.black.withAlphaComponent(0.1))
 
+				Label("Dynamic item list").font(NSFont.boldSystemFont(ofSize: 14))
+					.horizontalHuggingPriority(.init(10))
+
 				List(spacing: 0, self.items) { [weak self] item in
 					HStack {
 						DSFAppKitBuilder.Shape.Circle(32)
@@ -90,6 +95,20 @@ class ListBuilderController: ElementController {
 					}
 					.stackPadding(8)
 				}
+
+				Label("Static item list").font(NSFont.boldSystemFont(ofSize: 14))
+					.horizontalHuggingPriority(.init(10))
+
+				List(spacing: 0, self.staticItems) { [weak self] item in
+					HStack {
+						Label("List item is \(item)")
+							.horizontalHuggingPriority(.init(10))
+						EmptyView()
+					}
+					.padding(4)
+				}
+				.horizontalHuggingPriority(.init(10))
+
 				//.rowColors(NSColor.systemPurple, NSColor.systemPink)
 			}
 			.edgeInsets(NSEdgeInsets(edgeInset: 12))
