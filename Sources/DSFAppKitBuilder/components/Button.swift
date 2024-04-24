@@ -303,30 +303,6 @@ public extension Button {
 	}
 }
 
-// MARK: - Radio grouping
-
-/// A binder object for combining multiple button elements into a radio grouping
-/// (ie. only a single selection at any one time)
-///
-/// let colorBinder = ValueBinder(RadioBinding())
-public class RadioBinding {
-	// The buttons in the radio grouping
-	internal var radioButtons: [Element] = []
-
-	// The currently selected index of the button within the group
-	public private(set) var selectedIndex: Int = -1
-
-	// The id for the currently selected item within the group
-	public internal(set) var selectedID: UUID? {
-		didSet {
-			self.selectedIndex = self.radioButtons.firstIndex { $0.id == selectedID } ?? -1
-		}
-	}
-
-	/// Default initializer
-	public init() { }
-}
-
 public extension Button {
 	/// Link buttons together into a radio group style button collection, with only one 'on' at any time
 	/// - Parameters:

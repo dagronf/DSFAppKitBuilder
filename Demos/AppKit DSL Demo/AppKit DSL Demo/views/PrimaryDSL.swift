@@ -273,6 +273,9 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 					.onChange { state in
 						Swift.print("Color graphite!")
 					}
+				Button(title: "pink!") { _ in
+					self.selectedColor.wrappedValue.activate(at: 3)
+				}
 			}
 			
 			HDivider()
@@ -325,6 +328,9 @@ class PrimaryDSL: NSObject, DSFAppKitBuilderViewHandler {
 			}
 
 			EmptyView()
+				.onChange(of: self.stepperViewValue) { newValue in
+					Swift.print("On change: \(newValue)")
+				}
 		}
 	}
 }
