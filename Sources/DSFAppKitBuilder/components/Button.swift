@@ -60,6 +60,7 @@ public class Button: Control {
 	///   - bezelStyle: The bezel to use for the button
 	///   - allowMixedState: Does the button allow mixed state?
 	///   - customButton: (Optional) Provide a custom button instance
+	///   - customButtonCell: (Optional) Provide a custom button cell
 	///   - onChange: The block to call when the state of the button changes
 	public init(
 		title: String,
@@ -67,10 +68,16 @@ public class Button: Control {
 		bezelStyle: NSButton.BezelStyle = .rounded,
 		allowMixedState: Bool = false,
 		customButton: NSButton? = nil,
+		customButtonCell: NSButtonCell? = nil,
 		_ onChange: ButtonAction? = nil
 	) {
 		self.button = {
-			if let customButton = customButton {
+			if let customButtonCell = customButtonCell {
+				let b = NSButton()
+				b.cell = customButtonCell
+				return b
+			}
+			else if let customButton = customButton {
 				return customButton
 			}
 			else {
@@ -98,6 +105,7 @@ public class Button: Control {
 	///   - bezelStyle: The bezel to use for the button
 	///   - allowMixedState: Does the button allow mixed state?
 	///   - customButton: (Optional) Provide a custom button instance
+	///   - customButtonCell: (Optional) Provide a custom button cell
 	///   - onChange: The block to call when the state of the button changes
 	public init(
 		image: NSImage,
@@ -105,10 +113,16 @@ public class Button: Control {
 		bezelStyle: NSButton.BezelStyle = .rounded,
 		allowMixedState: Bool = false,
 		customButton: NSButton? = nil,
+		customButtonCell: NSButtonCell? = nil,
 		_ onChange: ButtonAction? = nil
 	) {
 		self.button = {
-			if let customButton = customButton {
+			if let customButtonCell = customButtonCell {
+				let b = NSButton()
+				b.cell = customButtonCell
+				return b
+			}
+			else if let customButton = customButton {
 				return customButton
 			}
 			else {
