@@ -73,6 +73,22 @@ public class TextField: Label {
 		_ = self.bindText(text)
 	}
 
+//	public init(
+//		_ value: DoubleStringBinder,
+//		_ placeholderText: String? = nil,
+//		updateOnEndEditingOnly: Bool = false
+//	) {
+//		super.init(nil)
+//		self.configureDefaults()
+//
+//		self.updateOnEndEditingOnly = updateOnEndEditingOnly
+//		self.label.placeholderString = placeholderText
+//		self.label.delegate = self
+//		self.label.formatter = textValue.formatter
+//
+//		_ = self.bindText(textValue.text)
+//	}
+
 	deinit {
 		self.textValueBinder?.deregister(self)
 	}

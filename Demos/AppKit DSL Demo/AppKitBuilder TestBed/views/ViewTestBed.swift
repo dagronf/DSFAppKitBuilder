@@ -33,6 +33,7 @@ public class ViewItems {
 		DatePickerBuilder(),
 		ButtonBuilder(),
 		GridBuilder(),
+		FormBuilder(),
 		OneOfBuilder(),
 		ToggleBuilder(),
 		ColorWellBuilder(),

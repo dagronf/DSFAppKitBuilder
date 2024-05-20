@@ -293,15 +293,27 @@ public extension Element {
 		Group(edgeInsets: value) { self }
 	}
 
+	/// Apply padding to the element by wrapping it in a Group
+	/// - Parameters:
+	///   - top: top padding
+	///   - leading: leading padding
+	///   - bottom: bottom padding
+	///   - trailing: trailing padding
+	/// - Returns: A new group
+	func padding(top: CGFloat = 0, leading: CGFloat = 0, bottom: CGFloat = 0, trailing: CGFloat = 0) -> Group {
+		Group(edgeInsets: NSEdgeInsets(top: top, left: leading, bottom: bottom, right: trailing)) { self }
+	}
+}
+
+// MARK: - Visual effect wrapping
+
+public extension Element {
 	/// Wrap the current element in a VisualEffectView
 	/// - Parameters:
 	///   - effect: The effect to apply to the wrapper view
 	///   - padding: The edge inset to apply for child elements
 	/// - Returns: VisualEffectView
-	func visualEffect(
-		_ effect: VisualEffect,
-		padding: CGFloat? = nil
-	) -> VisualEffectView {
+	func visualEffect(_ effect: VisualEffect, padding: CGFloat? = nil) -> VisualEffectView {
 		VisualEffectView(effect: effect, padding: padding) { self }
 	}
 }

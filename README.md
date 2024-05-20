@@ -377,6 +377,7 @@ TextField()
 | `DisclosureGroup`  | An element that is a collection of `DisclosureView` elements |
 | `DynamicElement`   | A hot-swappable element which displays the view contained in a `ValueBinder` |
 | `Flow`             | An element that is a collection of elements that flow across, then down |
+| `Form`             | An element that simulates a Form |
 | `Grid`             | An `NSGridView` wrapper |
 | `List`             | A 'list' style element which builds its content from an array of elements and dynamically updates its content as the array of elements change |
 | `HStack`           | A horizontal stack    |
@@ -561,121 +562,12 @@ The code is documented and will produce nice documentation for each element when
 
 * `SplitView` needs to be a top-level object. They REALLY don't like playing in an autolayout container (eg. embedding a splitview inside a stackview)
 
-## Releases
-
-### 9.3.0
-
-* Made `DSFAppKitBuilderView` easier to use
-* SwiftUI previews of your DSFAppKitBuilder views (10.15+)
-
-### 9.2.0
-
-* Custom font support
-
-### 9.1.0
-
-* Added scalable toggle button [DSFToggleButton](https://github.com/dagronf/DSFToggleButton)
-
-### 9.0.0
-
-* Dropped support for macOS 10.11 and macOS 10.12. To support macOS 10.12/10.11 stick with version 8.9.0.
-* Moved to Swift 5.4 and above (Xcode 12.5 and later)
-
-### 8.9.0
-
-* Added `NSComboButton` support
-
-### 8.8.0
-
-* Added `NSDatePicker` support
-
-### 8.7.0
-
-* Added `NSComboBox` support
-
-...
-
-### 6.1.0
-
-* Added `DSFAppKitBuilderViewController`.
-* Fixed some demo issues.
-
-### 6.0.0
-
-* Changed to use DSFMenuBuilder
-
-### 5.1.0
-
-* Added `NSGridView` support
-
-### 5.0.0
-
-* Some work on windows/sheets and popovers
-
-### 4.3.0
-
-* Added preliminary `NSWindow` support
-* Added preliminary `NSPopover` support
-
-### 4.2.1
-
-* Added wraps and truncating support for `Label`
-
-### 4.2.0
-
-* Added support back to 10.11
-
-### 4.1.0
-
-* Added secure text field
-* Cleanup the destruction of bindings
-
-### 4.0.2
-
-* Automatically call ValueBinder() callback (if specified) to set initial values.
-
-### 4.0.1
-
-* Fixed bug where slider value binding wasn't updating
-
-### 4.0.0
-
-**BREAKING**
-
-* Moved to using `ValueBinder` instead of `@objc dynamic var` to allow passing bindable dynamic values through to child elements.
-
-### 3.0.1
-
-* Added `PathControl`
-
-### 0.3.0
-
-* Add theme handling (dark mode detection)
-* Add font modifier for Button
-* Removed `addedToParentView` overridable function
-* Changed public `nsView` to `view()`
-* Simple logging
-
-### 0.2.1
-
-* Added `ZStack`
-
-### 0.2.0
-
-* Added `VisualEffectView`
-
-### 0.1.0
-
-* Initial release
-
 ## License
-
-MIT. Use it and abuse it for anything you want, just attribute my work. Let me know if you do use it somewhere, I'd love to hear about it!
 
 ```
 MIT License
 
-Copyright (c) 2021 Darren Ford
+Copyright (c) 2024 Darren Ford
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

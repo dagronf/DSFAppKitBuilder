@@ -38,6 +38,7 @@
 		232EC66126B223A30042C7F7 /* TabDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232EC66026B223A30042C7F7 /* TabDSL.swift */; };
 		232EC66326B223C40042C7F7 /* SplitDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232EC66226B223C40042C7F7 /* SplitDSL.swift */; };
 		234AEF332974E58B00758E6A /* TertiaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AEF322974E58A00758E6A /* TertiaryDSL.swift */; };
+		2350C3702BFAD7DA00CFC96B /* FormBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2350C36F2BFAD7D900CFC96B /* FormBuilder.swift */; };
 		2351367C26B3DAAE0026EAA1 /* BoxDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */; };
 		23513C6C298DDF4D00CDBE36 /* OneOfBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */; };
 		23513C6E298DE6DA00CDBE36 /* ToggleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */; };
@@ -128,6 +129,7 @@
 		232EC66226B223C40042C7F7 /* SplitDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitDSL.swift; sourceTree = "<group>"; };
 		23350DB226CDF4DA00A5CA09 /* AppKit-DSL-Demo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "AppKit-DSL-Demo-Info.plist"; sourceTree = SOURCE_ROOT; };
 		234AEF322974E58A00758E6A /* TertiaryDSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TertiaryDSL.swift; sourceTree = "<group>"; };
+		2350C36F2BFAD7D900CFC96B /* FormBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormBuilder.swift; sourceTree = "<group>"; };
 		2351367B26B3DAAE0026EAA1 /* BoxDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoxDSL.swift; sourceTree = "<group>"; };
 		23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneOfBuilder.swift; sourceTree = "<group>"; };
 		23513C6D298DE6DA00CDBE36 /* ToggleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleBuilder.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 				23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */,
 				23E50AEF299C5144005038CE /* FlowLayoutBuilder.swift */,
 				235CBB3C298BA2AD00D3D4DE /* FontBuilder.swift */,
+				2350C36F2BFAD7D900CFC96B /* FormBuilder.swift */,
 				239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */,
 				236151D129F6721B004C9402 /* ListBuilder.swift */,
 				23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */,
@@ -516,6 +519,7 @@
 				239A1FB4298CD9AB00F5B5AD /* GridBuilder.swift in Sources */,
 				23910CA1299071240016E150 /* SearchFieldBuilder.swift in Sources */,
 				239A1FB6298CDF0C00F5B5AD /* ComboButtonBuilder.swift in Sources */,
+				2350C3702BFAD7DA00CFC96B /* FormBuilder.swift in Sources */,
 				23CC72C22999BE11004EB3C4 /* PlainTextViewBuilder.swift in Sources */,
 				23513C6C298DDF4D00CDBE36 /* OneOfBuilder.swift in Sources */,
 				235CBB41298C843500D3D4DE /* ViewTestBed.swift in Sources */,
