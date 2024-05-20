@@ -6,13 +6,18 @@
 //
 
 import Cocoa
+
 import DSFAppKitBuilder
+import AppKitFocusOverlay
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
 
+	let focus = AppKitFocusOverlay()
+
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
-		// Insert code here to initialize your application
+		
+		_ = focus
 
 		// Uncomment the following line to show debugging output when debugging
 		// DSFAppKitBuilderShowDebuggingOutput = true

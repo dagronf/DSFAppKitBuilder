@@ -30,6 +30,7 @@
 		2304028B26AF7EFB002016FD /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2304028A26AF7EFB002016FD /* Utilities.swift */; };
 		2305CC1B29A347D4001C92EB /* PanelStyleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2305CC1A29A347D4001C92EB /* PanelStyleBuilder.swift */; };
 		23063A6126DC69DE00AC7715 /* WindowPopoverSheetDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23063A6026DC69DE00AC7715 /* WindowPopoverSheetDSL.swift */; };
+		230E6C3C2BEEF84D00E13D84 /* AppKitFocusOverlay in Frameworks */ = {isa = PBXBuildFile; productRef = 230E6C3B2BEEF84D00E13D84 /* AppKitFocusOverlay */; };
 		2314B32B26AFB816003BAA0C /* DSFAppKitBuilder in Frameworks */ = {isa = PBXBuildFile; productRef = 2314B32A26AFB816003BAA0C /* DSFAppKitBuilder */; };
 		2314B32D26AFD71C003BAA0C /* SecondaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2314B32C26AFD71C003BAA0C /* SecondaryDSL.swift */; };
 		2324632626C11A2800FF3158 /* ZStackDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2324632526C11A2800FF3158 /* ZStackDSL.swift */; };
@@ -180,6 +181,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23FEE85A29790DD900E4497D /* DSFToolbar in Frameworks */,
+				230E6C3C2BEEF84D00E13D84 /* AppKitFocusOverlay in Frameworks */,
 				2314B32B26AFB816003BAA0C /* DSFAppKitBuilder in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +351,7 @@
 			packageProductDependencies = (
 				2314B32A26AFB816003BAA0C /* DSFAppKitBuilder */,
 				23FEE85929790DD900E4497D /* DSFToolbar */,
+				230E6C3B2BEEF84D00E13D84 /* AppKitFocusOverlay */,
 			);
 			productName = "AppKit DSL Demo";
 			productReference = 2304027526AF7E5F002016FD /* AppKit DSL Demo.app */;
@@ -984,6 +987,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		230E6C3B2BEEF84D00E13D84 /* AppKitFocusOverlay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 23E5722629BAACC7005B57BB /* XCRemoteSwiftPackageReference "AppKitFocusOverlay" */;
+			productName = AppKitFocusOverlay;
+		};
 		2314B32A26AFB816003BAA0C /* DSFAppKitBuilder */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DSFAppKitBuilder;
