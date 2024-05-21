@@ -33,7 +33,7 @@ class CheckboxBuilderController: ElementController {
 				self.radioBody
 					.padding(4)
 			}
-			.showDebugFrames()
+			//.showDebugFrames()
 		}
 		.hugging(h: 10)
 	}()

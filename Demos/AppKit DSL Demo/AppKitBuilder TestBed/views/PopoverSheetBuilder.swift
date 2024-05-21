@@ -61,7 +61,7 @@ class PopoverSheetBuilderController: ElementController {
 
 		self.secondWindow.bindTitle(self.presentedWindowTitle)
 		self.secondWindow.bindMinimise(self.presentedWindowMinimised)
-		self.secondWindow.onOpen { [weak self] window in
+		self.secondWindow.onOpen { window in // [weak self] window in
 			Swift.print("MyWindow: onOpen")
 		}
 		self.secondWindow.onClose { _ in

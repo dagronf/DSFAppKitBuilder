@@ -54,7 +54,7 @@ public class RadioGroup: Stack {
 		orientation: NSUserInterfaceLayoutOrientation = .vertical,
 		selected: Int = 0,
 		controlSize: NSButton.ControlSize? = nil,
-		spacing: CGFloat = 6,
+		spacing: CGFloat = 4,
 		@RadioBuilder builder: () -> [RadioElement]
 	) {
 		self.init(
@@ -110,16 +110,14 @@ public class RadioGroup: Stack {
 				self?.radioSelected(tag)
 			}
 			_ = item.onChange(actionBlock)
-		}
-	}
 
-	/// Bind the radio group isEnabled state to a valuebinder
-	public func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
-		self.isEnabledBinder = enabledBinding
-		enabledBinding.register { [weak self] newValue in
-			self?.updateElementEnabledStates()
+			if orientation == .vertical {
+				item.button.setContentCompressionResistancePriority(
+					.init(900),
+					for: orientation == .vertical ? .vertical : .horizontal
+				)
+			}
 		}
-		return self
 	}
 }
 
@@ -153,6 +151,15 @@ public extension RadioGroup {
 // MARK: - Bindings
 
 public extension RadioGroup {
+	/// Bind the radio group isEnabled state to a valuebinder
+	func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
+		self.isEnabledBinder = enabledBinding
+		enabledBinding.register { [weak self] newValue in
+			self?.updateElementEnabledStates()
+		}
+		return self
+	}
+
 	/// Bind the selection
 	func bindSelection(_ selectionBinder: ValueBinder<Int>) -> Self {
 		self.selectionBinder = selectionBinder

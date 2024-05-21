@@ -37,6 +37,8 @@ class FormBuilderController: ElementController {
 	@ValueBinding var excitement: Double = 1.0
 	@ValueBinding var language: Int = 0
 
+	@ValueBinding var radioSelection: Int = 2
+
 	@ValueBinding var total: Double = 0
 
 	@ValueBinding var labelIsText: String = "This is text"
@@ -91,6 +93,16 @@ class FormBuilderController: ElementController {
 					.bindValue(self.$total)
 			})
 
+			Form.Row(
+				"Selection:",
+				RadioGroup() {
+					RadioElement("first")
+					RadioElement("second")
+					RadioElement("third")
+				}
+					.bindSelection($radioSelection)
+			)
+
 			Form.Row.Divider()
 
 			Form.Row(
@@ -98,11 +110,7 @@ class FormBuilderController: ElementController {
 				TextField($labelIsText)
 			)
 		}
-//		.applyRecursively { element in
-//			_ = element
-//				.border(width: 0.5, color: NSColor.systemRed)
-//				.backgroundColor(NSColor.systemRed.withAlphaComponent(0.05))
-//		}
+		//.showDebugFrames()
 	}()
 }
 
