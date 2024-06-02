@@ -101,6 +101,8 @@ public extension Shape {
 	}
 }
 
+// MARK: Methods
+
 public extension Shape {
 	/// The fill color
 	@discardableResult func fillColor(_ color: NSColor, _ fillRule: CAShapeLayerFillRule = .nonZero) -> Self {
@@ -152,6 +154,7 @@ public extension Shape {
 	}
 
 	override func onThemeChange() {
+		// Detect theme changes to reflect the change in the shape
 		super.onThemeChange()
 		self.syncColors()
 	}
@@ -161,6 +164,75 @@ public extension Shape {
 	/// Fallback 'all formatting' access
 	func format(_ formatBlock: (CAShapeLayer) -> Void) -> Self {
 		formatBlock(self.content.shape)
+		return self
+	}
+}
+
+// MARK: Bindings
+
+public extension Shape {
+	/// Bind the fill color
+	/// - Parameter colorBinder: The color binder
+	/// - Returns: self
+	@discardableResult func bindFillColor(_ colorBinder: ValueBinder<NSColor>) -> Self {
+		colorBinder.register(self) { [weak self] newValue in
+			disablingAnimations {
+				self?.fillColor(newValue)
+			}
+		}
+		self.bindings.append(self, colorBinder)
+		return self
+	}
+
+	/// Bind the fill color
+	/// - Parameter colorBinder: The color binder
+	/// - Returns: self
+	@discardableResult func bindFillColor(_ colorBinder: ValueBinder<CGColor>) -> Self {
+		colorBinder.register(self) { [weak self] newValue in
+			disablingAnimations {
+				self?.fillColor(newValue)
+			}
+		}
+		self.bindings.append(self, colorBinder)
+		return self
+	}
+
+	/// Bind the stroke color
+	/// - Parameter colorBinder: The color binder
+	/// - Returns: self
+	@discardableResult func bindStrokeColor(_ colorBinder: ValueBinder<NSColor>) -> Self {
+		colorBinder.register(self) { [weak self] newValue in
+			disablingAnimations {
+				self?.strokeColor(newValue)
+			}
+		}
+		self.bindings.append(self, colorBinder)
+		return self
+	}
+
+	/// Bind the stroke color
+	/// - Parameter colorBinder: The color binder
+	/// - Returns: self
+	@discardableResult func bindStrokeColor(_ colorBinder: ValueBinder<CGColor>) -> Self {
+		colorBinder.register(self) { [weak self] newValue in
+			disablingAnimations {
+				self?.strokeColor(newValue)
+			}
+		}
+		self.bindings.append(self, colorBinder)
+		return self
+	}
+
+	/// Bind the line width
+	/// - Parameter lineWidthBinder: The width of the stroke
+	/// - Returns: self
+	@discardableResult func bindLineWidth(_ lineWidthBinder: ValueBinder<Double>) -> Self {
+		lineWidthBinder.register(self) { [weak self] newValue in
+			disablingAnimations {
+				self?.lineWidth(newValue)
+			}
+		}
+		self.bindings.append(self, lineWidthBinder)
 		return self
 	}
 }

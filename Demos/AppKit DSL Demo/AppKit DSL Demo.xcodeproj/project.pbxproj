@@ -73,6 +73,7 @@
 		23A9024929A6BB7300D45732 /* ViewControllerDemoBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A9024829A6BB7300D45732 /* ViewControllerDemoBuilder.swift */; };
 		23A9024B29A6BC0000D45732 /* ViewControllerDemoBuilder+Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A9024A29A6BC0000D45732 /* ViewControllerDemoBuilder+Content.swift */; };
 		23AD0C91299B1A3A006FFFE9 /* TextFieldBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AD0C90299B1A3A006FFFE9 /* TextFieldBuilder.swift */; };
+		23BF5EB62C0BDA6100136160 /* BindingsExamplesBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BF5EB52C0BDA6100136160 /* BindingsExamplesBuilder.swift */; };
 		23C6E90A26AF971600FBF106 /* PrimaryDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C6E90926AF971600FBF106 /* PrimaryDSL.swift */; };
 		23C818882993841A00816107 /* TokenFieldBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C818872993841A00816107 /* TokenFieldBuilder.swift */; };
 		23CC72C22999BE11004EB3C4 /* PlainTextViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CC72C12999BE11004EB3C4 /* PlainTextViewBuilder.swift */; };
@@ -163,6 +164,7 @@
 		23A9024829A6BB7300D45732 /* ViewControllerDemoBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerDemoBuilder.swift; sourceTree = "<group>"; };
 		23A9024A29A6BC0000D45732 /* ViewControllerDemoBuilder+Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewControllerDemoBuilder+Content.swift"; sourceTree = "<group>"; };
 		23AD0C90299B1A3A006FFFE9 /* TextFieldBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBuilder.swift; sourceTree = "<group>"; };
+		23BF5EB52C0BDA6100136160 /* BindingsExamplesBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindingsExamplesBuilder.swift; sourceTree = "<group>"; };
 		23C4B93F2993B4E900BD4425 /* AppKitBuilder_TestBed.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppKitBuilder_TestBed.plist; sourceTree = "<group>"; };
 		23C6E90926AF971600FBF106 /* PrimaryDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDSL.swift; sourceTree = "<group>"; };
 		23C818872993841A00816107 /* TokenFieldBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFieldBuilder.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				23954471299F4AFD002763A9 /* BlankTemplateBuilder.swift */,
+				23BF5EB52C0BDA6100136160 /* BindingsExamplesBuilder.swift */,
 				239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */,
 				23513C79298E383000CDBE36 /* CheckboxBuilder.swift */,
 				23513C6F298DE8AE00CDBE36 /* ColorWellBuilder.swift */,
@@ -522,6 +525,7 @@
 				2350C3702BFAD7DA00CFC96B /* FormBuilder.swift in Sources */,
 				23CC72C22999BE11004EB3C4 /* PlainTextViewBuilder.swift in Sources */,
 				23513C6C298DDF4D00CDBE36 /* OneOfBuilder.swift in Sources */,
+				23BF5EB62C0BDA6100136160 /* BindingsExamplesBuilder.swift in Sources */,
 				235CBB41298C843500D3D4DE /* ViewTestBed.swift in Sources */,
 				235CBB3D298BA2AD00D3D4DE /* FontBuilder.swift in Sources */,
 				23513C78298E2B8800CDBE36 /* String+localized.swift in Sources */,
