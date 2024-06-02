@@ -76,7 +76,9 @@ open class Element: NSObject {
 		self.attachedSheets = []
 		self.onAppearObserver = nil
 		self.receiveThemeNotifications = false
-		self.isHiddenBinder?.deregister(self)
+
+		self.bindings.deregisterAll()
+
 		Logger.Debug("Element [\(type(of: self))] deinit")
 	}
 
@@ -91,7 +93,9 @@ open class Element: NSObject {
 
 	// MARK: Binding
 
-	private var isHiddenBinder: ValueBinder<Bool>?
+//	internal var isHiddenBinder: ValueBinder<Bool>?
+//	internal var widthConstraintBinder: ValueBinder<Double>?
+//	internal var heightConstraintBinder: ValueBinder<Double>?
 
 	// CGColor convertibles
 	private var _backgroundColor: NSColor?
@@ -104,6 +108,9 @@ open class Element: NSObject {
 	internal var attachedSheets: [DSFAppKitBuilderAssignableViewController] = []
 
 	internal var attachedObjects: [AnyObject] = []
+
+	// General bindings to be removed when the view is removed
+	internal let bindings = BindingsBag()
 }
 
 // MARK: - Dark mode handling
@@ -335,10 +342,10 @@ public extension Element {
 	/// Binding for showing or hiding the element
 	@discardableResult
 	func bindIsHidden(_ isHiddenBinder: ValueBinder<Bool>) -> Self {
-		self.isHiddenBinder = isHiddenBinder
-		isHiddenBinder.register { [weak self] newValue in
+		isHiddenBinder.register(self) { [weak self] newValue in
 			self?.view().isHidden = newValue
 		}
+		self.bindings.append(self, isHiddenBinder)
 		return self
 	}
 

@@ -26,6 +26,7 @@
 
 import Foundation
 import AppKit
+import DSFValueBinders
 
 // MARK: - Dimensions
 
@@ -38,23 +39,33 @@ public extension Element {
 	/// - Returns: Self
 	@discardableResult
 	func size(width: Double, height: Double, priority: NSLayoutConstraint.Priority? = nil) -> Self {
-		return self.width(width, priority: priority).height(height, priority: priority)
+		return self
+			.width(width, priority: priority)
+			.height(height, priority: priority)
 	}
 }
 
 // MARK: Width setting
 
 public extension Element {
+	// All the width constraints for the element
+	private var allWidthConstraints: [NSLayoutConstraint] {
+		self.view().constraints.filter({ $0.identifier == "forcedWidth" })
+	}
+
 	/// Set the width of the element
 	///
 	/// If the value is nil, no constraint is applied
 	@discardableResult
-	func width(_ value: Double?, relation: NSLayoutConstraint.Relation = .equal, priority: NSLayoutConstraint.Priority? = nil) -> Self {
+	func width(
+		_ value: Double?,
+		relation: NSLayoutConstraint.Relation = .equal,
+		priority: NSLayoutConstraint.Priority? = nil
+	) -> Self {
 		guard let value = value else { return self }
 		with(self.view()) { view in
-
 			// Remove any forced width constraints firest
-			view.constraints.filter({ $0.identifier == "forcedWidth" }).forEach { view.removeConstraint($0) }
+			allWidthConstraints.forEach { view.removeConstraint($0) }
 
 			// Create and attach a new width constraint
 			let c = NSLayoutConstraint(
@@ -94,6 +105,11 @@ public extension Element {
 // MARK: Height setting
 
 public extension Element {
+	// Get all constraints marked as our height constraints
+	private var allHeightConstraints: [NSLayoutConstraint] {
+		self.view().constraints.filter({ $0.identifier == "forcedHeight" })
+	}
+
 	/// Set the height of the element
 	///
 	/// If the value is nil, no constraint is applied
@@ -102,7 +118,7 @@ public extension Element {
 		guard let value = value else { return self }
 		with(self.view()) { view in
 			// Removed any forced height constraints
-			view.constraints.filter({ $0.identifier == "forcedHeight" }).forEach { view.removeConstraint($0) }
+			allHeightConstraints.forEach { view.removeConstraint($0) }
 
 			// Create and attach a new height constraint
 			let c = NSLayoutConstraint(
@@ -136,5 +152,82 @@ public extension Element {
 	@discardableResult
 	func maxHeight(_ value: Double, priority: NSLayoutConstraint.Priority? = nil) -> Self {
 		self.height(value, relation: .lessThanOrEqual, priority: priority)
+	}
+}
+
+// MARK: Binding
+
+public extension Element {
+	/// Bind the element's width
+	/// - Parameters:
+	///   - widthBinder: The width binder
+	///   - priority: The autolayout priority
+	/// - Returns: self
+	@discardableResult func bindWidth(
+		_ widthBinder: ValueBinder<Double>,
+		priority: NSLayoutConstraint.Priority? = nil
+	) -> Self {
+		guard allWidthConstraints.isEmpty else {
+			assert(false, "Attempting to bind width constraint to an element with a fixed width already assigned")
+			return self
+		}
+
+		let view = self.view()
+
+		let c = NSLayoutConstraint(
+			item: view, attribute: .width,
+			relatedBy: .equal,
+			toItem: nil, attribute: .notAnAttribute,
+			multiplier: 1, constant: widthBinder.wrappedValue
+		)
+		c.identifier = "forcedWidth"
+		if let p = priority { c.priority = p }
+		view.addConstraint(c)
+
+		widthBinder.register(self) { [weak self] newValue in
+			c.constant = newValue
+			self?.view().needsUpdateConstraints = true
+		}
+
+		self.bindings.append(self, widthBinder)
+
+		return self
+	}
+
+	/// Bind the element's height
+	/// - Parameters:
+	///   - widthBinder: The height binder
+	///   - priority: The autolayout priority
+	/// - Returns: self
+	@discardableResult func bindHeight(
+		_ heightBinder: ValueBinder<Double>,
+		priority: NSLayoutConstraint.Priority? = nil
+	) -> Self {
+
+		guard allHeightConstraints.isEmpty else {
+			assert(false, "Attempting to bind height constraint to an element with a fixed height already assigned")
+			return self
+		}
+
+		let view = self.view()
+
+		let c = NSLayoutConstraint(
+			item: view, attribute: .height,
+			relatedBy: .equal,
+			toItem: nil, attribute: .notAnAttribute,
+			multiplier: 1, constant: heightBinder.wrappedValue
+		)
+		c.identifier = "forcedHeight"
+		if let p = priority { c.priority = p }
+		view.addConstraint(c)
+
+		heightBinder.register(self) { [weak self] newValue in
+			c.constant = newValue
+			self?.view().needsUpdateConstraints = true
+		}
+
+		self.bindings.append(self, heightBinder)
+
+		return self
 	}
 }
