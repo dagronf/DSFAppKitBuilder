@@ -139,7 +139,7 @@ class PathBuilderController: ElementController {
 				}
 			}
 			.columnFormatting(xPlacement: .trailing, atColumn: 0)
-			EmptyView()
+			DSFAppKitBuilder.EmptyView()
 		}
 	}()
 }

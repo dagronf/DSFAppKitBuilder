@@ -99,7 +99,7 @@ class ComboButtonController: ElementController {
 						ComboButton(style: .unified, "Unified Style", menu: nil).controlSize(.mini).isEnabled(false)
 					}
 				}
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 
 			HDivider()

@@ -36,7 +36,7 @@ class DisclosureViewController: ElementController {
 					DisclosureView(title: "Format", dynamicTitleFont: __dynamicHeaderFont) {
 						HStack {
 							Label("Format style!")
-							EmptyView()
+							DSFAppKitBuilder.EmptyView()
 							Toggle()
 						}
 					}
@@ -46,12 +46,12 @@ class DisclosureViewController: ElementController {
 						VStack {
 							HStack {
 								Label("Format style!")
-								EmptyView()
+								DSFAppKitBuilder.EmptyView()
 								Toggle()
 							}
 							HStack {
 								Label("Values")
-								EmptyView()
+								DSFAppKitBuilder.EmptyView()
 								TextField().width(60)
 								TextField().width(60)
 								TextField().width(60)
@@ -73,7 +73,7 @@ class DisclosureViewController: ElementController {
 						.horizontalCompressionResistancePriority(.defaultLow)
 						.truncatesLastVisibleLine(true)
 						.lineBreakMode(.byTruncatingHead)
-					EmptyView()
+					DSFAppKitBuilder.EmptyView()
 					Label("first:")
 					Toggle()
 						.bindOnOff(__onOffBinder1)
@@ -95,7 +95,7 @@ class DisclosureViewController: ElementController {
 				}) {
 					HStack {
 						Label("Format style!")
-						EmptyView()
+						DSFAppKitBuilder.EmptyView()
 						Toggle()
 					}
 				}
@@ -108,7 +108,7 @@ class DisclosureViewController: ElementController {
 				}) {
 					HStack {
 						Label("Format style!")
-						EmptyView()
+						DSFAppKitBuilder.EmptyView()
 						Toggle()
 					}
 				}
@@ -126,7 +126,7 @@ class DisclosureViewController: ElementController {
 			Label("Disclosure Group").font(__headerFont)
 			self.otherContent
 
-			EmptyView()
+			DSFAppKitBuilder.EmptyView()
 		}
 	}()
 
@@ -150,7 +150,7 @@ class DisclosureViewController: ElementController {
 							MenuItem("Exactly")
 							MenuItem("Between")
 						}
-						EmptyView()
+						DSFAppKitBuilder.EmptyView()
 						TextField("one")
 							.isEnabled(false)
 							.bindValue(firstSize, formatter: firstSizeFormatter)
@@ -161,14 +161,14 @@ class DisclosureViewController: ElementController {
 					}
 					HStack {
 						Label("Before Paragraph")
-						EmptyView()
+						DSFAppKitBuilder.EmptyView()
 						TextField("one")
 							.width(60)
 						Stepper()
 					}
 					HStack {
 						Label("After Paragraph")
-						EmptyView()
+						DSFAppKitBuilder.EmptyView()
 						TextField("one")
 							.width(60)
 						Stepper()

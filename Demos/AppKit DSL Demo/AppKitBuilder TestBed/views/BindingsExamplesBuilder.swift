@@ -62,7 +62,7 @@ class BindingsExampleBuilderController: ElementController {
 					Form.Row(
 						"fill color:",
 						HStack {
-							EmptyView()
+							DSFAppKitBuilder.EmptyView()
 							ColorWell(style: .default, showsAlpha: true, isBordered: true)
 								.bindColor(fillColor)
 								.width(50)
@@ -71,7 +71,7 @@ class BindingsExampleBuilderController: ElementController {
 					Form.Row(
 						"stroke color:",
 						HStack {
-							EmptyView()
+							DSFAppKitBuilder.EmptyView()
 							ColorWell(style: .default, showsAlpha: true, isBordered: true)
 								.bindColor(strokeColor)
 								.width(50)

@@ -50,6 +50,7 @@ public class ViewItems {
 		ZoomableScrollviewBuilder(),
 		PanelStyleBuilder(),
 		ViewControllerDemoBuilder(),
-		BindingsExampleBuilder()
+		BindingsExampleBuilder(),
+		LevelIndicatorBuilder()
 	].sorted { a, b in a.title < b.title }
 }

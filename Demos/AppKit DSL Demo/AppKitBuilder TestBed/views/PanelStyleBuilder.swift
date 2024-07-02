@@ -54,7 +54,7 @@ class PanelStyleBuilderController: ElementController {
 		VStack(alignment: .leading) {
 			HStack {
 				Label("Write Images").font(.title3.bold())
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 				CheckBox()
 					.hidesTitle(true)
 					.bindOnOffState(self.shouldWrite)
@@ -142,7 +142,7 @@ class PanelStyleBuilderController: ElementController {
 			.columnFormatting(xPlacement: .trailing, atColumn: 0)
 			.horizontalHuggingPriority(10)
 			HDivider()
-			EmptyView()
+			DSFAppKitBuilder.EmptyView()
 		}
 		.hugging(h: 20)
 	}()

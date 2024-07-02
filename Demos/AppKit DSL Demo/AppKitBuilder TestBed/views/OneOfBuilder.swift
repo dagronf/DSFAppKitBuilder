@@ -40,7 +40,7 @@ class OneOfBuilderController: ElementController {
 					}
 					.bindSelection(__visible)
 
-					EmptyView()
+					DSFAppKitBuilder.EmptyView()
 
 					OneOf(__visible) {
 						HStack(spacing: 2) {
@@ -85,7 +85,7 @@ class OneOfBuilderController: ElementController {
 				}
 			}
 			.horizontalHuggingPriority(10)
-			EmptyView()
+			DSFAppKitBuilder.EmptyView()
 		}
 	}()
 }

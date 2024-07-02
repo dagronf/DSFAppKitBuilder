@@ -50,7 +50,7 @@ class DynamicElementBuilderController: ElementController {
 								VStack {
 									HStack {
 										Label("Format style!")
-										EmptyView()
+										DSFAppKitBuilder.EmptyView()
 										Toggle()
 									}
 									ImageView(NSImage(named: "status-bar-icon"))
@@ -68,7 +68,7 @@ class DynamicElementBuilderController: ElementController {
 			DynamicElement(elementBinder, visualEffect: .init(material: .sidebar))
 				.border(width: 0.5, color: NSColor.systemRed)
 
-			EmptyView()
+			DSFAppKitBuilder.EmptyView()
 		}
 		.hugging(h: 10)
 	}()

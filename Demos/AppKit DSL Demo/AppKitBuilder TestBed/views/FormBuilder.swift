@@ -43,73 +43,101 @@ class FormBuilderController: ElementController {
 
 	@ValueBinding var labelIsText: String = "This is text"
 
+	@ValueBinding var ratingValue: Double = 0.0
+	let ratingFormatter: NumberFormatter = {
+		let f = NumberFormatter()
+		f.maximumFractionDigits = 0
+		return f
+	}()
+
 	deinit {
 		Swift.print("FormBuilderController: deinit")
 	}
 
 	lazy var body: Element = {
-		Form(spacerHeight: 8) {
-			Form.Row("Name:", TextField($name).placeholderText("User name"))
-			Form.Row("Password:", SecureTextField($password).placeholderText("Password"))
-			Form.Row("Email:", TextField($email).placeholderText("User email address"))
+		VStack {
+			Form(spacerHeight: 8) {
+				Form.Row("Name:", TextField($name).placeholderText("User name"))
+				Form.Row("Password:", SecureTextField($password).placeholderText("Password"))
+				Form.Row("Email:", TextField($email).placeholderText("User email address"))
 
-			Form.Row.Spacer()
+				Form.Row.Spacer()
 
-			Form.Row(
-				"Language:",
-				PopupButton {
-					MenuItem("English (UK)")
-					MenuItem("Japanese")
-					MenuItem("Te Reo Māori")
-				}
-				.bindSelection(self.$language)
-			)
-			Form.Row(
-				CheckBox("Enable Notifications")
-					.bindOnOffState($enableNotifications)
-			)
-			Form.Row(
-				CheckBox("Aggressive").bindOnOffState($aggressive)
-					.bindIsEnabled($enableNotifications)
-					.padding(leading: 20)
-			)
+				Form.Row(
+					"Language:",
+					PopupButton {
+						MenuItem("English (UK)")
+						MenuItem("Japanese")
+						MenuItem("Te Reo Māori")
+					}
+						.bindSelection(self.$language)
+				)
+				Form.Row(
+					CheckBox("Enable Notifications")
+						.bindOnOffState($enableNotifications)
+				)
+				Form.Row(
+					CheckBox("Aggressive").bindOnOffState($aggressive)
+						.bindIsEnabled($enableNotifications)
+						.padding(leading: 20)
+				)
 
-			Form.Row.Divider()
+				Form.Row.Divider()
 
-			Form.Row(
-				"Excitement Level:",
-				HStack(spacing: 8) {
-					Label("😴").font(.title3)
-					Slider($excitement, range: 0 ... 10)
-						.numberOfTickMarks(11, allowsTickMarkValuesOnly: true)
-					Label("🤩").font(.title3)
-				}
-			)
-			Form.Row("Validation percent:", HStack(spacing: 4) {
-				NumberField(self.$total, numberFormatter: numberFormatter)
-					.width(48)
-					.verticalCompressionResistancePriority(.required)
-				Stepper(range: 0 ... 100, value: 20)
-					.bindValue(self.$total)
-			})
+				Form.Row(
+					Label("Excitement Level:").dynamicFont(.system),
+					HStack(spacing: 8) {
+						Label("😴").font(.title3)
+						Slider($excitement, range: 0 ... 10)
+							.numberOfTickMarks(11, allowsTickMarkValuesOnly: true)
+						Label("🤩").font(.title3)
+					}
+				)
 
-			Form.Row(
-				"Selection:",
-				RadioGroup() {
-					RadioElement("first")
-					RadioElement("second")
-					RadioElement("third")
-				}
+				Form.Row(
+					"Validation percent:",
+					HStack(spacing: 4) {
+						NumberField(self.$total, numberFormatter: numberFormatter)
+							.width(48)
+							.verticalCompressionResistancePriority(.required)
+						Stepper(range: 0 ... 100, value: 20)
+							.bindValue(self.$total)
+					}
+				)
+
+				Form.Row(
+					"Selection:",
+					RadioGroup() {
+						RadioElement("first")
+						RadioElement("second")
+						RadioElement("third")
+					}
 					.bindSelection($radioSelection)
-			)
+				)
 
-			Form.Row.Divider()
+				Form.Row(
+					"Rating:",
+					HStack {
+						LevelIndicator(
+							style: .rating,
+							value: $ratingValue,
+							range: 0.001 ... 5
+						)
+						.isEditable(true)
+						Label($ratingValue.stringValue(using: ratingFormatter))
+					}
+				)
 
-			Form.Row(
-				$labelIsText.transform { "\($0):" },
-				TextField($labelIsText)
-			)
+				Form.Row.Divider()
+
+				Form.Row(
+					$labelIsText.transform { "\($0):" },
+					TextField($labelIsText)
+				)
+			}
+			.width(400)
 		}
+		.hugging(h: 1)
 		//.showDebugFrames()
 	}()
 }

@@ -69,6 +69,7 @@
 		239A1FB2298CCB9400F5B5AD /* ButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */; };
 		239A1FB4298CD9AB00F5B5AD /* GridBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */; };
 		239A1FB6298CDF0C00F5B5AD /* ComboButtonBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */; };
+		239D4E902C33DF92001E8D19 /* LevelIndicatorBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239D4E8F2C33DF92001E8D19 /* LevelIndicatorBuilder.swift */; };
 		23A9024729A6BB4F00D45732 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = 23A9024629A6BB4F00D45732 /* Defaults */; };
 		23A9024929A6BB7300D45732 /* ViewControllerDemoBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A9024829A6BB7300D45732 /* ViewControllerDemoBuilder.swift */; };
 		23A9024B29A6BC0000D45732 /* ViewControllerDemoBuilder+Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A9024A29A6BC0000D45732 /* ViewControllerDemoBuilder+Content.swift */; };
@@ -161,6 +162,7 @@
 		239A1FB1298CCB9400F5B5AD /* ButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonBuilder.swift; sourceTree = "<group>"; };
 		239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridBuilder.swift; sourceTree = "<group>"; };
 		239A1FB5298CDF0C00F5B5AD /* ComboButtonBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComboButtonBuilder.swift; sourceTree = "<group>"; };
+		239D4E8F2C33DF92001E8D19 /* LevelIndicatorBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelIndicatorBuilder.swift; sourceTree = "<group>"; };
 		23A9024829A6BB7300D45732 /* ViewControllerDemoBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerDemoBuilder.swift; sourceTree = "<group>"; };
 		23A9024A29A6BC0000D45732 /* ViewControllerDemoBuilder+Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewControllerDemoBuilder+Content.swift"; sourceTree = "<group>"; };
 		23AD0C90299B1A3A006FFFE9 /* TextFieldBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldBuilder.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 				235CBB3C298BA2AD00D3D4DE /* FontBuilder.swift */,
 				2350C36F2BFAD7D900CFC96B /* FormBuilder.swift */,
 				239A1FB3298CD9AB00F5B5AD /* GridBuilder.swift */,
+				239D4E8F2C33DF92001E8D19 /* LevelIndicatorBuilder.swift */,
 				236151D129F6721B004C9402 /* ListBuilder.swift */,
 				23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */,
 				2305CC1A29A347D4001C92EB /* PanelStyleBuilder.swift */,
@@ -527,6 +530,7 @@
 				23513C6C298DDF4D00CDBE36 /* OneOfBuilder.swift in Sources */,
 				23BF5EB62C0BDA6100136160 /* BindingsExamplesBuilder.swift in Sources */,
 				235CBB41298C843500D3D4DE /* ViewTestBed.swift in Sources */,
+				239D4E902C33DF92001E8D19 /* LevelIndicatorBuilder.swift in Sources */,
 				235CBB3D298BA2AD00D3D4DE /* FontBuilder.swift in Sources */,
 				23513C78298E2B8800CDBE36 /* String+localized.swift in Sources */,
 				2305CC1B29A347D4001C92EB /* PanelStyleBuilder.swift in Sources */,

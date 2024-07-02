@@ -58,7 +58,7 @@ class ListBuilderController: ElementController {
 						self.listSize += (self.listSize > 1) ? -1 : 0
 						self.rebuildSequence()
 					}
-					EmptyView()
+					DSFAppKitBuilder.EmptyView()
 				}
 				.padding(4)
 				.backgroundColor(NSColor.black.withAlphaComponent(0.1))
@@ -85,7 +85,7 @@ class ListBuilderController: ElementController {
 								.dynamicFont(__descriptionFont)
 								.horizontalHuggingPriority(10)
 						}
-						EmptyView()
+						DSFAppKitBuilder.EmptyView()
 						Button(title: "Show") { [weak self] _ in
 							guard let `self` = self else { return }
 							Swift.print("Pressed \(item)")
@@ -103,7 +103,7 @@ class ListBuilderController: ElementController {
 					HStack {
 						Label("List item is \(item)")
 							.horizontalHuggingPriority(.init(10))
-						EmptyView()
+						DSFAppKitBuilder.EmptyView()
 					}
 					.padding(4)
 				}

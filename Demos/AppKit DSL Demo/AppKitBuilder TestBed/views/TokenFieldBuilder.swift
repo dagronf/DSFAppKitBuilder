@@ -42,7 +42,7 @@ class TokenFieldBuilderController: ElementController {
 				HStack {
 					Label("Tokens:").font(.system.bold())
 					Label(self.tokenField1.stringValue())
-					EmptyView()
+					DSFAppKitBuilder.EmptyView()
 				}
 			}
 
@@ -57,7 +57,7 @@ class TokenFieldBuilderController: ElementController {
 					HStack {
 						Label("Tokens:").font(.system.bold())
 						Label(self.tokenField2.stringValue())
-						EmptyView()
+						DSFAppKitBuilder.EmptyView()
 					}
 				}
 				.hugging(h: 1)
@@ -142,7 +142,7 @@ class TokenFieldBuilderController: ElementController {
 						.lineBreakMode(.byTruncatingTail)
 						.wraps(true)
 						.horizontalPriorities(hugging: 100, compressionResistance: 100)
-					EmptyView()
+					DSFAppKitBuilder.EmptyView()
 				}
 			}
 
@@ -155,7 +155,7 @@ class TokenFieldBuilderController: ElementController {
 						.lineBreakMode(.byTruncatingTail)
 						.wraps(true)
 						.horizontalPriorities(hugging: 100, compressionResistance: 100)
-					EmptyView()
+					DSFAppKitBuilder.EmptyView()
 				}
 			}
 		}

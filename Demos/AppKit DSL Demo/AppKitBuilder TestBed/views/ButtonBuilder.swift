@@ -48,7 +48,7 @@ class ButtonBuilderController: ElementController {
 				self.buildButtonType()
 				VDivider()
 				self.buildButtonTint()
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 			}
 
 			HDivider()
@@ -110,7 +110,7 @@ class ButtonBuilderController: ElementController {
 					}
 					.columnFormatting(xPlacement: .trailing, trailingPadding: 8, atColumn: 0)
 				}
-				EmptyView()
+				DSFAppKitBuilder.EmptyView()
 
 //				HStack(alignment: .leading) {
 //					Label("Switches:")
@@ -122,7 +122,7 @@ class ButtonBuilderController: ElementController {
 			}
 			.horizontalHuggingPriority(10)
 
-			EmptyView()
+			DSFAppKitBuilder.EmptyView()
 		}
 	}()
 
@@ -238,7 +238,7 @@ class ButtonBuilderController: ElementController {
 			.cellFormatting(xPlacement: .center, atRowIndex: 0, columnIndex: 3)
 			.cellFormatting(xPlacement: .center, atRowIndex: 0, columnIndex: 4)
 
-			EmptyView()
+			DSFAppKitBuilder.EmptyView()
 		}
 	}
 

@@ -123,17 +123,8 @@ private extension Form {
 			}
 			else {
 				let title: NSView
-				if let binder = item.labelBinder {
-					let e = DSFAppKitBuilder.Label(binder)
-						.horizontalHuggingPriority(.defaultHigh)
-					_childElements.append(e)
-					title = e.view()
-				}
-				else if let t = item.label {
-					let e = DSFAppKitBuilder.Label(t)
-						.horizontalHuggingPriority(.defaultHigh)
-					_childElements.append(e)
-					title = e.view()
+				if let binder = item.labelElement {
+					title = binder.view()
 				}
 				else {
 					title = NSGridCell.emptyContentView
@@ -195,7 +186,7 @@ public extension Form {
 		/// - Parameters:
 		///   - displayElement: The value element
 		public init(_ displayElement: Element) {
-			self.label = nil
+			self.labelElement = nil
 			self.displayElement = displayElement
 			self.spacing = nil
 		}
@@ -204,7 +195,7 @@ public extension Form {
 		/// - Parameters:
 		///   - builder: The value builder
 		public init(@ElementBuilder _ builder: () -> Element) {
-			self.label = nil
+			self.labelElement = nil
 			self.displayElement = builder()
 			self.spacing = nil
 		}
@@ -214,7 +205,7 @@ public extension Form {
 		///   - label: The label for the row
 		///   - displayElement: The value element
 		public init(_ label: String, _ displayElement: Element) {
-			self.label = label
+			self.labelElement = Label(label).horizontalHuggingPriority(.defaultHigh)
 			self.displayElement = displayElement
 			self.spacing = nil
 		}
@@ -224,7 +215,7 @@ public extension Form {
 		///   - label: The row label
 		///   - builder: The value builder
 		public init(_ label: String, @ElementBuilder builder: () -> Element) {
-			self.label = label
+			self.labelElement = Label(label).horizontalHuggingPriority(.defaultHigh)
 			self.displayElement = builder()
 			self.spacing = nil
 		}
@@ -233,9 +224,8 @@ public extension Form {
 		/// - Parameters:
 		///   - label: The bindable label text
 		///   - displayElement: The value element
-		public init(_ label: ValueBinder<String>, _ displayElement: Element) {
-			self.label = nil
-			self.labelBinder = label
+		public init(_ labelBinder: ValueBinder<String>, _ displayElement: Element) {
+			self.labelElement = Label(labelBinder).horizontalHuggingPriority(.defaultHigh)
 			self.displayElement = displayElement
 			self.spacing = nil
 		}
@@ -245,25 +235,33 @@ public extension Form {
 		///   - label: The bindable label text
 		///   - builder: The value builder
 		public init(_ labelBinder: ValueBinder<String>, @ElementBuilder builder: () -> Element) {
-			self.label = nil
-			self.labelBinder = labelBinder
+			self.labelElement = Label(labelBinder).horizontalHuggingPriority(.defaultHigh)
 			self.displayElement = builder()
+			self.spacing = nil
+		}
+
+		/// Create a form row with a label element and a value element
+		/// - Parameters:
+		///   - labelElement: The row's label
+		///   - valueElement: The element that displays the row's value
+		public init(_ labelElement: Label, _ valueElement: Element) {
+			self.labelElement = labelElement.horizontalHuggingPriority(.defaultHigh)
+			self.displayElement = valueElement
 			self.spacing = nil
 		}
 
 		// private
 
 		private init(isDivider: Bool, spacing: CGFloat? = nil) {
-			self.label = nil
-			self.labelBinder = nil
+			self.labelElement = nil
 			self.displayElement = isDivider ? VDivider() : EmptyView()
 			self.spacing = spacing
 		}
 
-		let label: String?
+		let labelElement: Element?
+
 		let displayElement: Element
 		let spacing: CGFloat?
-		var labelBinder: ValueBinder<String>?
 	}
 }
 

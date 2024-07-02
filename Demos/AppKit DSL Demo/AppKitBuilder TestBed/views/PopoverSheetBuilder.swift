@@ -188,7 +188,7 @@ class PopoverSheetBuilderController: ElementController {
 				.horizontalHuggingPriority(.defaultLow)
 			}
 
-			EmptyView()
+			DSFAppKitBuilder.EmptyView()
 		}
 		.hugging(h: 10)
 	}()
@@ -334,7 +334,7 @@ class MySheet: SheetDefinition {
 					Label("Do something?")
 				}
 				HStack {
-					EmptyView()
+					DSFAppKitBuilder.EmptyView()
 					HStack(alignment: .trailing, distribution: .fillEqually) {
 						Button(title: "OK", bezelStyle: .rounded) { [weak self] _ in
 							self?.dismiss()
