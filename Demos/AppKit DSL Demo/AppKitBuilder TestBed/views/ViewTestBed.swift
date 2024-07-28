@@ -51,6 +51,7 @@ public class ViewItems {
 		PanelStyleBuilder(),
 		ViewControllerDemoBuilder(),
 		BindingsExampleBuilder(),
-		LevelIndicatorBuilder()
+		LevelIndicatorBuilder(),
+		PagerBuilder()
 	].sorted { a, b in a.title < b.title }
 }

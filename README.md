@@ -350,7 +350,9 @@ TextField()
 | `Image`            | A simple view showing an image |
 | `ImageView`        | An `NSImageView` wrapper |
 | `Label`            | An `NSTextField` wrapper configured as a read-only label |
+| `LevelIndicator`   | An `NSLevelIndicator` wrapper |
 | `Link`             | An `NSTextField` displaying a read-only hyperlink |
+| `Pager`            | A pager control |
 | `PathControl`      | An `NSPathControl` wrapper |
 | `PopupButton`      | An `NSPopupButton` wrapper |
 | `ProgressBar`      | An `NSProgressIndicator` wrapper |

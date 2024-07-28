@@ -61,6 +61,7 @@
 		237BD46226B0F54C00D94649 /* ScrollerTestDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */; };
 		237E220329A07632002F3856 /* PopoverSheetBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E220229A07632002F3856 /* PopoverSheetBuilder.swift */; };
 		237E220529A0C7A2002F3856 /* DSFToolbar in Frameworks */ = {isa = PBXBuildFile; productRef = 237E220429A0C7A2002F3856 /* DSFToolbar */; };
+		238E9E7E2C567CE900C2B1D4 /* PagerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238E9E7D2C567CE900C2B1D4 /* PagerBuilder.swift */; };
 		23910CA1299071240016E150 /* SearchFieldBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23910CA0299071240016E150 /* SearchFieldBuilder.swift */; };
 		23910CA32990BBA60016E150 /* DynamicElementBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */; };
 		23910CA52990CDEE0016E150 /* VisualEffectBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23910CA42990CDEE0016E150 /* VisualEffectBuilder.swift */; };
@@ -154,6 +155,7 @@
 		236BA6712977769900FB72C4 /* IdentityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityViewController.swift; sourceTree = "<group>"; };
 		237BD46126B0F54C00D94649 /* ScrollerTestDSL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollerTestDSL.swift; sourceTree = "<group>"; };
 		237E220229A07632002F3856 /* PopoverSheetBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverSheetBuilder.swift; sourceTree = "<group>"; };
+		238E9E7D2C567CE900C2B1D4 /* PagerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagerBuilder.swift; sourceTree = "<group>"; };
 		23910CA0299071240016E150 /* SearchFieldBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFieldBuilder.swift; sourceTree = "<group>"; };
 		23910CA22990BBA60016E150 /* DynamicElementBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicElementBuilder.swift; sourceTree = "<group>"; };
 		23910CA42990CDEE0016E150 /* VisualEffectBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectBuilder.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				236151D129F6721B004C9402 /* ListBuilder.swift */,
 				23513C6B298DDF4D00CDBE36 /* OneOfBuilder.swift */,
 				2305CC1A29A347D4001C92EB /* PanelStyleBuilder.swift */,
+				238E9E7D2C567CE900C2B1D4 /* PagerBuilder.swift */,
 				23513C71298DEB8700CDBE36 /* PathBuilder.swift */,
 				23CC72C12999BE11004EB3C4 /* PlainTextViewBuilder.swift */,
 				237E220229A07632002F3856 /* PopoverSheetBuilder.swift */,
@@ -549,6 +552,7 @@
 				23910CA72990D46A0016E150 /* Utils.swift in Sources */,
 				23C818882993841A00816107 /* TokenFieldBuilder.swift in Sources */,
 				23513C70298DE8AE00CDBE36 /* ColorWellBuilder.swift in Sources */,
+				238E9E7E2C567CE900C2B1D4 /* PagerBuilder.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
