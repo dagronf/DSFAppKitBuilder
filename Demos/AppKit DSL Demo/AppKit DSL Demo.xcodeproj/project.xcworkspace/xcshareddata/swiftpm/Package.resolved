@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFAppearanceManager",
         "state": {
           "branch": null,
-          "revision": "676cfd4e6aaa3cf6422990734c22544373db5c1a",
-          "version": "3.3.0"
+          "revision": "e9add5fdf05fe50950d105c77963b7373ddb5ad4",
+          "version": "3.5.1"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFPagerControl",
         "state": {
           "branch": null,
-          "revision": "9fce788ab0d05d51999f39a03121f759a025c7f0",
-          "version": "2.2.0"
+          "revision": "1840ea1af5f68bb91d06edfbf8aa4a8cf4266a11",
+          "version": "2.4.0"
         }
       },
       {
@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFSearchField",
         "state": {
           "branch": null,
-          "revision": "d2dac5e143a8e5ce49f9f12412932684072089ba",
-          "version": "2.0.0"
+          "revision": "8f118439e1e74b3afb8dc8cbdc049d7979aa045e",
+          "version": "2.2.2"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFStepperView",
         "state": {
           "branch": null,
-          "revision": "d81b22a217b1ae0a1acb6c025fcbfdbf7bd6ad2e",
-          "version": "4.0.0"
+          "revision": "9db5b3ab9981d6604c24e9f162a8eb21b0061baf",
+          "version": "4.3.0"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFToggleButton",
         "state": {
           "branch": null,
-          "revision": "4d7b97d0412c6ce5371fe74686ffa9383360731b",
-          "version": "7.0.3"
+          "revision": "434fab25cde1d9876350107a5edb1825a8e29fda",
+          "version": "7.1.0"
         }
       },
       {

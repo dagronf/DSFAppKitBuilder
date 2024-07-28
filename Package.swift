@@ -13,13 +13,13 @@ let package = Package(
 		.library(name: "DSFAppKitBuilder-shared", type: .dynamic, targets: ["DSFAppKitBuilder"]),
 	],
 	dependencies: [
-		.package(url: "https://github.com/dagronf/DSFPagerControl", from: "2.2.0"),
+		.package(url: "https://github.com/dagronf/DSFPagerControl", from: "2.4.0"),
 		.package(url: "https://github.com/dagronf/DSFMenuBuilder", from: "1.2.1"),
 		.package(url: "https://github.com/dagronf/DSFValueBinders", from: "0.20.0"),
 		.package(url: "https://github.com/dagronf/DSFComboButton", from: "1.0.0"),
-		.package(url: "https://github.com/dagronf/DSFToggleButton", from: "7.0.0"),
-		.package(url: "https://github.com/dagronf/DSFStepperView", from: "4.0.0"),
-		.package(url: "https://github.com/dagronf/DSFSearchField", from: "2.0.0")
+		.package(url: "https://github.com/dagronf/DSFToggleButton", from: "7.1.0"),
+		.package(url: "https://github.com/dagronf/DSFStepperView", from: "4.3.0"),
+		.package(url: "https://github.com/dagronf/DSFSearchField", from: "2.2.2")
 	],
 	targets: [
 		.target(
