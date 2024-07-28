@@ -47,11 +47,18 @@ public class Box: Element {
 		_ title: String,
 		titlePosition: NSBox.TitlePosition = .atTop,
 		font: AKBFont? = nil,
-		_ builder: () -> Element) {
-			self.init(
-				title,
-				titlePosition: titlePosition,
-				content: builder())
+		_ builder: () -> Element
+	) {
+		self.init(
+			title,
+			titlePosition: titlePosition,
+			content: builder())
+	}
+
+	/// Create a box without a title
+	/// - Parameter builder: The builder for the box content
+	public convenience init(_ builder: () -> Element) {
+		self.init("", titlePosition: .noTitle, content: builder())
 	}
 
 	/// Create a box
@@ -63,8 +70,8 @@ public class Box: Element {
 		_ title: String,
 		titlePosition: NSBox.TitlePosition = .atTop,
 		font: AKBFont? = nil,
-		content: Element)
-	{
+		content: Element
+	) {
 		self.content = content
 		super.init()
 
