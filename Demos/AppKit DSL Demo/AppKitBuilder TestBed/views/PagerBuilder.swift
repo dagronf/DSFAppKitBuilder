@@ -29,6 +29,8 @@ class PagerBuilderController: ElementController {
 	@ValueBinding var pageCount: Int = 4
 	@ValueBinding var pageCountSelection: Int = 0
 
+	@ValueBinding var pagerEnabled: Bool = true
+
 	lazy var body: Element = {
 		Group(layoutType: .center) {
 			VStack {
@@ -66,13 +68,19 @@ class PagerBuilderController: ElementController {
 						}
 						.width(250)
 						Box("Allows mouse interactions") {
-							Pager(
-								pageCount: 7,
-								selectedPage: $selectedPage2,
-								allowsMouseInteration: true,
-								selectedColor: .systemYellow,
-								unselectedColor: .systemYellow.withAlphaComponent(0.2)
-							)
+							HStack {
+								Pager(
+									pageCount: 7,
+									selectedPage: $selectedPage2,
+									allowsMouseInteration: true,
+									selectedColor: .systemYellow,
+									unselectedColor: .systemYellow.withAlphaComponent(0.2)
+								)
+								.bindIsEnabled($pagerEnabled)
+								CheckBox("Enabled")
+									.bindOnOffState($pagerEnabled)
+									.controlSize(.small)
+							}
 							.padding(4)
 						}
 						.width(250)

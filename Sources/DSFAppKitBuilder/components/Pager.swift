@@ -43,7 +43,7 @@ import DSFValueBinders
 ///    unselectedColor: .systemYellow.withAlphaComponent(0.2)
 ///)
 /// ```
-public class Pager: Control {
+public class Pager: Element {
 	/// Create a level indicator
 	/// - Parameters:
 	///   - indicatorShape: The indicator shape
@@ -94,7 +94,7 @@ public class Pager: Control {
 	deinit {
 		self.selectedPageBinder.deregister(self)
 		self.pageCountBinder?.deregister(self)
-
+		self.isEnabledBinder?.deregister(self)
 		self.pageCountBinder = nil
 		self.validatePageChangeBlock = nil
 		self.actionCallback = nil
@@ -108,6 +108,7 @@ public class Pager: Control {
 	private var pageCountBinder: ValueBinder<Int>?
 	private var validatePageChangeBlock: ((Int) -> Bool)?
 	private var actionCallback: ((Int) -> Void)?
+	private var isEnabledBinder: ValueBinder<Bool>?
 }
 
 // MARK: - Actions
@@ -132,7 +133,13 @@ public extension Pager {
 
 // MARK: - Modifiers
 
-public extension Pager { }
+public extension Pager {
+	/// Set the enabled state for the pager
+	func isEnabled(_ isEnabled: Bool) -> Self {
+		self.pagerControl.isEnabled = isEnabled
+		return self
+	}
+}
 
 // MARK: - Bindings
 
@@ -145,6 +152,17 @@ public extension Pager {
 		value.register(self) { [weak self] newPageCount in
 			self?.pagerControl.pageCount = newPageCount
 		}
+		return self
+	}
+
+	/// Binding for isEnabled
+	/// - Parameter enabledBinding: The enabled binding
+	/// - Returns: self
+	func bindIsEnabled(_ enabledBinding: ValueBinder<Bool>) -> Self {
+		enabledBinding.register(self) { [weak self] newValue in
+			self?.pagerControl.isEnabled = newValue
+		}
+		self.isEnabledBinder = enabledBinding
 		return self
 	}
 }
