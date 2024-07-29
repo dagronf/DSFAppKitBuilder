@@ -99,17 +99,30 @@ class PagerBuilderController: ElementController {
 					}
 
 					Box {
-						Pager(
-							indicatorShape: DSFPagerControl.VerticalIndicatorShape(),
-							pageCount: 7,
-							selectedPage: $selectedPage2,
-							allowsKeyboardInteration: true,
-							allowsMouseInteration: true
-						)
-						.didChangeToPage { newPage in
-							Swift.print("Vertical changed page to \(newPage)")
+						HStack {
+							Pager(
+								indicatorShape: DSFPagerControl.VerticalIndicatorShape(),
+								pageCount: 7,
+								selectedPage: $selectedPage2,
+								allowsKeyboardInteration: true,
+								allowsMouseInteration: true
+							)
+							.didChangeToPage { newPage in
+								Swift.print("Vertical changed page to \(newPage)")
+							}
+							.padding(4)
+
+							Pager(
+								indicatorShape: DSFPagerControl.ChunkyVerticalShape(),
+								pageCount: 7,
+								selectedPage: $selectedPage2,
+								allowsMouseInteration: true
+							)
+							.didChangeToPage { newPage in
+								Swift.print("Vertical changed page to \(newPage)")
+							}
+							.padding(4)
 						}
-						.padding(4)
 					}
 				}
 
