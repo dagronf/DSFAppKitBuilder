@@ -997,7 +997,7 @@
 			repositoryURL = "https://github.com/dagronf/DSFToolbar";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 3.0.0;
+				minimumVersion = 5.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

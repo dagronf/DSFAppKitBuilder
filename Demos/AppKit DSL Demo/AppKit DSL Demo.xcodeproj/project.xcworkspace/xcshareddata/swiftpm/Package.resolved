@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFToolbar",
         "state": {
           "branch": null,
-          "revision": "124102478525079c24cd22ab6ec44d80c3174154",
-          "version": "3.2.2"
+          "revision": "f486eb1e532d77fd2a9c9eb21f3e90a0b092ba45",
+          "version": "5.1.0"
         }
       },
       {
@@ -96,8 +96,8 @@
         "repositoryURL": "https://github.com/dagronf/DSFValueBinders",
         "state": {
           "branch": null,
-          "revision": "e8aaed8ce422459dcdd9e2d6fa1da8a84053bdc5",
-          "version": "0.20.0"
+          "revision": "8bbcacda087d1f0da384c8ad2fda061faabda3f1",
+          "version": "1.0.1"
         }
       },
       {

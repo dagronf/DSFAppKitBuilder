@@ -229,7 +229,7 @@ class MyWindow: ManagedWindow {
 					.label("New")
 					.isSelectable(true)
 					.image(NSImage(named: "slider-rabbit")!)
-					.shouldEnable { [weak self] in
+					.willEnable { [weak self] in
 						false
 					}
 					.action { [weak self] _ in
