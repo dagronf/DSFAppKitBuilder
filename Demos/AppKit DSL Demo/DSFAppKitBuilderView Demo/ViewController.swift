@@ -102,8 +102,8 @@ class ViewController: NSViewController {
 		}
 	}
 
-	private lazy var selection = ValueBinder<NSSet>(NSSet(array: [1])) { [weak self] newValue in
-		Swift.print("Selection is now \(newValue)")
+	private lazy var selection = ValueBinder<IndexSet>(IndexSet(integer: 1)) { [weak self] newValue in
+		Swift.print("Selection is now \(Array(newValue))")
 		guard let `self` = self else { return }
 
 		if newValue.contains(0) {
@@ -117,8 +117,8 @@ class ViewController: NSViewController {
 		}
 	}
 
-	private lazy var format = ValueBinder<NSSet>(NSSet(array: [])) { [weak self] newValue in
-		Swift.print("Format is now \(newValue)")
+	private lazy var format = ValueBinder<IndexSet>(IndexSet()) { [weak self] newValue in
+		Swift.print("Format is now \(Array(newValue))")
 //		guard
 //			let `self` = self,
 //			let textField = self.titleBinder.element as? TextField,
@@ -159,7 +159,7 @@ class ViewController: NSViewController {
 
 			DSFToolbar.Segmented(
 				.init("alignment"),
-				type: .Grouped,
+				type: .grouped,
 				switching: .selectOne
 				) {
 					DSFToolbar.Segmented.Segment(title: "")
@@ -174,7 +174,7 @@ class ViewController: NSViewController {
 
 			DSFToolbar.Segmented(
 				.init("format"),
-				type: .Grouped,
+				type: .grouped,
 				switching: .selectAny
 				) {
 					DSFToolbar.Segmented.Segment(title: "")
