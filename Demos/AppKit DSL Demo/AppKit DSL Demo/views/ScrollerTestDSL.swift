@@ -18,7 +18,7 @@ class ScrollerTestDSL: NSObject, DSFAppKitBuilderViewHandler {
 	}
 
 	lazy var body: Element =
-		ScrollView(borderType: .lineBorder, fitHorizontally: true) {
+		ScrollView(borderType: .noBorder, fitHorizontally: true) {
 			VStack(spacing: 16, alignment: .leading) {
 				HStack(alignment: .lastBaseline) {
 					CheckBox("Play sound")

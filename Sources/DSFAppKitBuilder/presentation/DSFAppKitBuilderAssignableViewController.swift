@@ -19,39 +19,48 @@
 
 import AppKit
 
-/// A view controller for controlling a DSFAppKitBuilder view
+/// A view controller that displays the result of executing a builder function
 ///
 /// Usage :-
 ///
 /// ```swift
-/// class MyViewController: DSFAppKitBuilderViewController {
-///    override var viewBody: Element {
-///       DSFAppKitBuilder.Label("Wheeee!")
-///    }
+/// var myViewController = DSFAppKitBuilderAssignableViewController { [weak self] in
+///    DSFAppKitBuilder.Label("Wheeee!")
 /// }
 /// ```
-open class DSFAppKitBuilderViewController: NSViewController {
+public class DSFAppKitBuilderAssignableViewController: NSViewController {
+	public init(_ builder: @escaping () -> Element) {
+		self._builder = builder
+		super.init(nibName: nil, bundle: nil)
+	}
 
-	/// The body for the view. Must be overridden in derived classes to display content
-	open var viewBody: Element {
-		Swift.print("WARNING: \(Self.self) has not defined builder view content")
-		return EmptyView()
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	public override func loadView() {
+		self.reloadBody()
 	}
 
 	/// Rebuild the view from the viewBody
 	public func reloadBody() {
-		self._displayElement = self.viewBody
+		self._displayElement = _builder()
 		self.view = self._displayElement?.view() ?? NSView()
 	}
 
-	open override func loadView() {
-		self.reloadBody()
+	// private
+
+	internal func reset() {
+		self._displayElement = nil
+		self.rootView.element = Nothing()
 	}
 
-	// Private
+	/// The builder block, so it can be
+	private let _builder: () -> Element
+	private let rootView = DSFAppKitBuilderView()
 
 	// Keep a hold of the display body element, so that it doesn't deinit itself.
 	// Internally most items are weakly held so it's the owners responsibility for
 	// maintaining its lifecycle
-	fileprivate var _displayElement: Element?
+	private var _displayElement: Element?
 }
