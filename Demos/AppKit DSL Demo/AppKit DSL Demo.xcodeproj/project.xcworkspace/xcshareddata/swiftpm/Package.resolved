@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/dagronf/AppKitFocusOverlay",
         "state": {
           "branch": null,
-          "revision": "a594d2c545166d7902aa1c4d60ecfec12c465dc2",
-          "version": "0.7.0"
+          "revision": "08eeaff0eedd0c32b5001f77a57855292c658b55",
+          "version": "2.0.0"
         }
       },
       {
@@ -105,8 +105,8 @@
         "repositoryURL": "https://github.com/dagronf/HotKey",
         "state": {
           "branch": null,
-          "revision": "c13662730cb5bc28de4a799854bbb018a90649bf",
-          "version": "0.1.3"
+          "revision": "31234dfbb4330b90ee10d89fbacb77316781cc06",
+          "version": "0.2.0"
         }
       }
     ]

@@ -989,7 +989,7 @@
 			repositoryURL = "https://github.com/dagronf/AppKitFocusOverlay";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.7.0;
+				minimumVersion = 2.0.0;
 			};
 		};
 		23FEE85829790DD900E4497D /* XCRemoteSwiftPackageReference "DSFToolbar" */ = {
